@@ -1,0 +1,27 @@
+id: success-metrics
+title: Defines a measurable outcome
+rationale: >
+  Without a target the team optimises outputs instead of outcomes and never
+  knows when it is winning or done.
+weight: 10
+severity: high
+applies_to: [brief]
+criteria: >
+  States how success is measured: an outcome with a direction and ideally a
+  target. Pass if measurable. Partial if a goal is named but unmeasurable. Fail
+  if success is undefined.
+pass_examples:
+  - "Success: reduce no-show bookings by 30% within two seasons."
+fail_examples:
+  - "Success means happy users and a product we're proud of."
+references:
+  - tier: practice
+    title: "SMART criteria"
+    locator: "Measurable, Time-bound"
+    url: https://en.wikipedia.org/wiki/SMART_criteria
+  - tier: practice
+    title: "OKR"
+    locator: "outcomes over outputs"
+    url: https://en.wikipedia.org/wiki/OKR
+owners: ["@welance/perfect-brief"]
+version: 2

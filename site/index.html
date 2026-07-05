@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
+<meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
+    --rule:#D2D3CB; --rule-strong:#B9BAB1;
+    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
+    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+    --disp:'Space Grotesk',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px 96px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  header{padding:40px 0 18px;border-bottom:2px solid var(--ink)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  h1{font-family:var(--mono);font-weight:600;font-size:clamp(28px,5vw,44px);margin:12px 0 6px;letter-spacing:-.01em}
+  h1 .b{color:var(--accent)}
+  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin:44px 0 14px}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+  p{max-width:66ch;margin:0 0 14px}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+  .btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:10px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);display:inline-block}
+  .btn:hover{background:var(--accent);border-color:var(--accent);text-decoration:none}
+  .btn.ghost{background:none;color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  pre{background:var(--paper-2);border:1px solid var(--rule-strong);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 14px}
+  pre b{color:var(--accent);font-weight:600}
+  .two{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 14px}
+  @media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
+  .card{border:1px solid var(--rule-strong);background:var(--paper-2);padding:14px 16px}
+  .card h3{font-family:var(--mono);font-size:13px;margin:0 0 6px}
+  .card p{font-size:14.5px;margin:0;color:var(--ink-soft)}
+  .card .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block;margin-bottom:2px}
+  .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
+  .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
+  .triad b{color:var(--accent)}
+  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule-strong);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">welance · open source</div>
+    <h1>The Perfect Brief<span class="b">_</span></h1>
+    <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
+    <div class="cta">
+      <a class="btn" href="console.html">Try the console</a>
+      <a class="btn ghost" href="rules.html">Read the rules</a>
+      <a class="btn ghost" href="https://github.com/welance/perfect-brief">Source</a>
+    </div>
+  </header>
+
+  <div class="eyebrow"><span>what it does</span></div>
+  <p>It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
+  <p>Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
+  <div class="two">
+    <div class="card"><span class="n g">92 / 100</span><h3>Directory-ready</h3><p>High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
+    <div class="card"><span class="n f">blocked</span><h3>…and still not published</h3><p>The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
+  </div>
+
+  <div class="eyebrow"><span>how it works</span></div>
+  <p>There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
+  <p>The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p>
+  <pre>curl -X POST https://briefs.welance.com/v1/score \
+  -H 'content-type: application/json' \
+  -d '{"brief":"…","judge":"llm"}'
+
+{ "score": 92.0, "band": "Directory-ready", <b>"decision": "blocked"</b>,
+  "gate": { "passed": false, "missing": ["anonymised"] },
+  "verdicts": [ … per-rule status + verbatim evidence … ],
+  "ruleset_version": "1.0.0+83107baec655" }</pre>
+  <p style="font-size:14px;color:var(--ink-soft)">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+
+  <div class="eyebrow"><span>why we built it, honestly</span></div>
+  <p>We are <a href="https://welance.com">Welance</a>, a small collective of independent senior teams, working together since 2012. We're building <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
+  <p>There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
+  <p>This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
+
+  <div class="eyebrow"><span>governance</span></div>
+  <div class="triad">
+    <b>anyone proposes</b> — every rule is a file; open a PR, no gatekeeping<br>
+    <b>evidence merges</b> — the public fixture corpus in CI decides, not taste<br>
+    <b>anyone forks</b> — MIT; the exit right is the real anti-capture guarantee
+  </div>
+  <p style="font-size:14px;color:var(--ink-soft)">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
+
+  <footer>
+    <span>The Perfect Brief · a Welance open-source project</span>
+    <span><a href="console.html">console</a> · <a href="rules.html">rules</a> · <a href="https://briefs.welance.com/docs">API docs</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
+  </footer>
+</div>
+</body>
+</html>

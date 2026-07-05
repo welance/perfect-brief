@@ -1,0 +1,26 @@
+id: users-identified
+title: Names and situates the users
+rationale: >
+  "Everyone" is no one. Without a named user and context the team can't
+  prioritise, design, or test.
+weight: 7
+severity: high
+applies_to: [brief]
+criteria: >
+  Identifies at least one concrete user segment and the context in which they
+  act. Pass if specific. Partial if vague. Fail if the user is "everyone".
+pass_examples:
+  - "Primary users: shift managers at independent restaurants, on mobile during service."
+fail_examples:
+  - "The platform is for everyone who wants to book things online."
+references:
+  - tier: standard
+    title: "ISO 9241-210"
+    locator: "specify the context of use"
+    url: https://www.iso.org/standard/77520.html
+  - tier: practice
+    title: "Personas"
+    locator: "named, situated users"
+    url: https://en.wikipedia.org/wiki/Persona_(user_experience)
+owners: ["@welance/perfect-brief"]
+version: 2

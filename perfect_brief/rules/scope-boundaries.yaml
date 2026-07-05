@@ -1,0 +1,26 @@
+id: scope-boundaries
+title: States what is explicitly out of scope
+rationale: >
+  Most overruns come from the gap between assumed-included and assumed-excluded.
+  Naming exclusions up front is cheaper than renegotiating mid-project.
+weight: 11
+severity: medium
+applies_to: [brief]
+criteria: >
+  Explicitly names at least one thing out of scope, or states a clear boundary.
+  Pass if explicit. Partial if only implied. Fail if open-ended.
+pass_examples:
+  - "In scope: web checkout. Out of scope: native apps, multi-currency."
+fail_examples:
+  - "Build the full platform and anything else needed to launch."
+references:
+  - tier: practice
+    title: "Scope statement"
+    locator: "in-scope vs out-of-scope is stated"
+    url: https://en.wikipedia.org/wiki/Scope_(project_management)
+  - tier: encyclopedic
+    title: "Scope creep"
+    locator: "the failure this prevents"
+    url: https://en.wikipedia.org/wiki/Scope_creep
+owners: ["@welance/perfect-brief"]
+version: 2

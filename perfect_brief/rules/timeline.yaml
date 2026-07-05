@@ -1,0 +1,22 @@
+id: timeline
+title: A timeline or deadline is stated
+rationale: >
+  Doability and matching both depend on time. A brief with no horizon can't be
+  scheduled, staffed, or sized; a stated deadline turns "someday" into a plan.
+weight: 8
+severity: medium
+applies_to: [brief]
+criteria: >
+  Names a timeframe, deadline, or milestone for the work. Pass if a concrete
+  horizon is given. Partial if only vaguely time-bound ("soon"). Fail if absent.
+pass_examples:
+  - "MVP must ship before the spring season; design done by week 4."
+fail_examples:
+  - "No rush, whenever it's ready."
+references:
+  - tier: standard
+    title: "ISO/IEC/IEEE 29148:2018"
+    locator: "schedule as a constraint"
+    url: https://www.iso.org/standard/72089.html
+owners: ["@welance/perfect-brief"]
+version: 1

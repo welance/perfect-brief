@@ -1,0 +1,22 @@
+id: assumptions-risks
+title: Surfaces key assumptions & risks
+rationale: >
+  The assumptions a brief leaves unstated are exactly where products die. Naming
+  the biggest risk lets the team de-risk it first.
+weight: 3
+severity: medium
+applies_to: [brief]
+criteria: >
+  Names at least one explicit assumption or risk. Pass if a real one is stated.
+  Partial if only generic uncertainty. Fail if none.
+pass_examples:
+  - "Risk: restaurants may not keep availability current; we validate that first."
+fail_examples:
+  - "We don't foresee any problems."
+references:
+  - tier: standard
+    title: "ISO 31000"
+    locator: "identify risks early"
+    url: https://www.iso.org/iso-31000-risk-management.html
+owners: ["@welance/perfect-brief"]
+version: 2

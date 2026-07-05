@@ -1,0 +1,23 @@
+id: data-compliance
+title: Names the compliance regime for personal data
+rationale: >
+  Distinct from anonymising the brief: this is about the product. If it handles
+  personal data, retrofitting privacy is the most expensive rework. Not doable
+  as written without it.
+weight: 3
+severity: high
+applies_to: [brief]
+criteria: >
+  Applies only if the product involves personal data. Then: names the compliance
+  regime (GDPR, DPA, privacy by design). Not applicable if no personal data.
+pass_examples:
+  - "Stores customer booking history; GDPR lawful basis is contract; DPA required."
+fail_examples:
+  - "Collects user emails and payment details. (no mention of legal basis)"
+references:
+  - tier: standard
+    title: "GDPR — Reg. (EU) 2016/679"
+    locator: "lawful basis, privacy by design"
+    url: https://gdpr-info.eu/
+owners: ["@welance/perfect-brief"]
+version: 2

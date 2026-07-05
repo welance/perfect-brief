@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Perfect Digital Product Brief · welance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
+    --rule:#D2D3CB; --rule-strong:#B9BAB1;
+    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
+    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --disp:'Space Grotesk',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 110px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);padding:1px 5px;border:1px solid var(--rule)}
+  p.body{max-width:64ch}
+
+  header{padding:46px 0 22px;border-bottom:2px solid var(--ink)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  h1{font-family:var(--disp);font-weight:700;font-size:clamp(32px,6vw,56px);line-height:1.02;margin:14px 0 0;letter-spacing:-.02em}
+  .hero-sub{font-size:clamp(18px,2.6vw,23px);max-width:30ch;margin:16px 0 0;color:var(--ink-soft)}
+  .hero-ratio{font-family:var(--mono);font-weight:600;font-size:clamp(30px,7vw,64px);letter-spacing:-.02em;margin:30px 0 6px;line-height:1}
+  .hero-ratio .s{color:var(--accent)} .hero-ratio .t{color:var(--ink-soft)}
+  .hero-ratio-cap{font-family:var(--mono);font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+  .navlink{font-family:var(--mono);font-size:12.5px;margin-top:22px;display:inline-block}
+
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:12px;margin:54px 0 18px}
+  .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+
+  .pull{margin:40px 0;padding:24px 26px;border:2px solid var(--ink);background:var(--paper-2);position:relative}
+  .pull .tag{position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .pull p{margin:0;font-size:clamp(17px,2.5vw,22px);line-height:1.45} .pull b{font-weight:600} .pull .em{color:var(--accent)}
+
+  /* gate scale */
+  .gate{border:1px solid var(--ink);margin:10px 0;display:flex;height:46px;overflow:hidden;font-family:var(--mono);font-size:11px}
+  .gate div{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.3;padding:0 6px}
+  .gate .r{width:40%;background:var(--fail-bg);color:var(--fail)} .gate .s{width:35%;background:var(--partial-bg);color:var(--partial);border-left:1px solid var(--ink);border-right:1px solid var(--ink)} .gate .a{width:25%;background:var(--pass-bg);color:var(--pass)}
+  .gate b{font-size:13px} .gate small{color:var(--ink-soft)}
+  .gatecap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-top:4px}
+
+  /* report mini-sample */
+  .sample{border:1px solid var(--rule-strong);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
+  .sample .ok{color:var(--pass)} .sample .gap{color:var(--fail)} .sample .src{color:var(--ink-soft)}
+
+  /* rule cards */
+  .rule{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:16px}
+  .rule-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid var(--rule);background:var(--paper)}
+  .rule-id{font-family:var(--mono);font-size:13.5px;font-weight:600} .rule-title{font-size:15px;color:var(--ink-soft)}
+  .badges{margin-left:auto;display:flex;gap:6px}
+  .badge{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border:1px solid}
+  .b-w{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+  .b-high{border-color:var(--fail);color:var(--fail);background:var(--fail-bg)} .b-medium{border-color:var(--partial);color:var(--partial);background:var(--partial-bg)}
+  .rule-body{padding:13px 16px} .field{margin-bottom:13px} .field:last-child{margin-bottom:0}
+  .field .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}
+  .field .v{font-size:14px;line-height:1.55}
+  .refs{font-family:var(--mono);font-size:11.5px;line-height:1.8}
+  .tier{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:.05em;padding:1px 5px;border:1px solid currentColor;margin-right:6px}
+  .tier.standard{color:var(--pass)} .tier.practice{color:var(--accent)} .tier.encyclopedic{color:var(--ink-soft)}
+
+  /* governance steps */
+  .gov{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
+  @media(min-width:680px){.gov{grid-template-columns:repeat(3,1fr)}}
+  .gcard{border:1px solid var(--rule-strong);background:var(--paper-2);padding:15px}
+  .gcard h4{font-family:var(--mono);font-size:13px;margin:0 0 8px} .gcard p{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
+  .gcard.propose h4{color:var(--accent)} .gcard.merge h4{color:var(--partial)} .gcard.fork h4{color:var(--pass)}
+
+  .invite{border:2px dashed var(--accent);background:var(--accent-bg);padding:18px 20px;margin-top:22px}
+  .invite h4{font-family:var(--mono);font-size:13px;margin:0 0 6px;color:var(--accent)} .invite p{margin:0;font-size:14px;max-width:60ch}
+
+  .tiers{list-style:none;padding:0;margin:6px 0 0}
+  .tiers li{padding:11px 0;border-bottom:1px solid var(--rule);max-width:66ch;font-size:14.5px}
+  .tiers li:last-child{border-bottom:0} .tiers b{font-family:var(--mono);font-size:12.5px}
+
+  footer{margin-top:64px;padding-top:18px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">welance.com/articles · the open ruleset</div>
+    <h1>The Perfect Digital&nbsp;Product Brief</h1>
+    <p class="hero-sub">A good brief gives a product the right start. We made the standard open.</p>
+    <div class="hero-ratio"><span class="s">20%</span> brief · <span class="t">80%</span> team</div>
+    <div class="hero-ratio-cap">where the success of a digital product actually comes from</div>
+    <a class="navlink" href="test.html">→ score a brief in the live console</a>
+  </header>
+
+  <p class="body" style="margin-top:34px">We put together teams for a living, so we see it constantly: a product's outcome is mostly the team — but the brief is the 20% that decides whether that team starts on solid ground or spends the first month untangling what was meant. Usually that untangling happens in workshops: expensive, slow, and dependent on us being in the room.</p>
+  <p class="body">So we're proposing something more modest and more useful: a way to check a brief for <b>grip on reality, doability, and scalability</b> before anyone starts — and we're publishing the whole standard openly, so it isn't ours to gatekeep. This page is the standard. The console scores against it. The rules live on GitHub, and anyone can change them.</p>
+
+  <div class="pull">
+    <div class="tag">the one invariant</div>
+    <p>An LLM reads the brief and judges each rule — pass, partial, fail, with evidence. It <b>never</b> sees the weights and <b>never</b> decides the number. <span class="em">Code</span> does the maths and the publish decision, the same way every time.</p>
+  </div>
+  <p class="body">That line is what makes a score you can argue with instead of a verdict from a black box. Every point traces to a rule and a source. Disagree? The rule is a file you can open a pull request against.</p>
+
+  <!-- HOW THE SCORE READS -->
+  <div class="eyebrow"><span>what you get back</span></div>
+  <p class="body" style="margin-top:-4px">Not a grade — a <b>progress bar toward publication</b>. A number, what's already strong, what would raise it, and a checkable source behind every line. The "what would raise it" list is literally your to-do to cross the line.</p>
+  <div class="sample">
+    PERFECT BRIEF SCORE 72/100 — with reservation<br>
+    <span class="ok">✓ Scope boundaries</span> — you named what's out ("no native apps in v1").<br>
+    &nbsp;&nbsp;<span class="src">scope-boundaries · source: project scope management</span><br>
+    <span class="gap">✗ Measurable success</span> (worth 3 pts) — "happy users" is an opinion, not a target.<br>
+    &nbsp;&nbsp;Try: "reduce no-shows by 30% within two seasons."<br>
+    &nbsp;&nbsp;<span class="src">success-metrics · source: SMART — Measurable, Time-bound</span>
+  </div>
+
+  <!-- SCORE vs GATE -->
+  <div class="eyebrow"><span>score vs gate · two axes</span></div>
+  <p class="body" style="margin-top:-4px">The score says <b>how good</b> a brief is. A separate <b>gate</b> says whether it may publish at all. Keeping them apart is the point: a brilliant brief that leaks the client's name shouldn't go on a blind noticeboard, and no average should be able to paper over that.</p>
+  <div class="gate">
+    <div class="r"><b>&lt; 45</b><small>Needs work</small></div>
+    <div class="s"><b>45 – 84</b><small>Getting there / Strong</small></div>
+    <div class="a"><b>85 +</b><small>Directory-ready</small></div>
+  </div>
+  <div class="gatecap"><span>← descriptive score bands</span><span>bands, floor &amp; gate live in scoring.yaml — contestable</span></div>
+  <p class="body" style="margin-top:16px">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely.</p>
+
+  <!-- RULESET -->
+  <div class="eyebrow"><span>the ruleset · 14 rules</span></div>
+  <p class="body" style="margin-top:-4px">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests.</p>
+  <div id="ruleset"></div>
+
+  <!-- CITATION TIERS -->
+  <div class="eyebrow"><span>why every line cites a source</span></div>
+  <p class="body" style="margin-top:-4px">In the AI era, fluency is free — a brief can read beautifully and say nothing. Anchoring each rule to an authoritative source pushes the score toward substance over polish. Sources are typed by authority, and pinned &amp; human-verified in the PR, never generated by the model:</p>
+  <ul class="tiers">
+    <li><b>Standard</b> — ISO/IEEE, W3C, OWASP, EN, AgID, GDPR. Authoritative and stable. Preferred.</li>
+    <li><b>Practice</b> — INVEST, SMART, OKR, scope management, Designers Italia. Recognised professional practice.</li>
+    <li><b>Encyclopedic</b> — Wikipedia. A friendly way in to name a concept; never the sole anchor for a normative claim.</li>
+  </ul>
+
+  <!-- GOVERNANCE -->
+  <div class="eyebrow"><span>who controls the bar</span></div>
+  <p class="body" style="margin-top:-4px">We run the directory and the bar — a conflict of interest. Making the bar open-source is what defuses it: a credible signal we're not tuning the metre in our own favour. Three gestures, kept separate:</p>
+  <div class="gov">
+    <div class="gcard propose"><h4>Anyone proposes</h4><p>Open a PR on GitHub. Zero gatekeeping on contribution — this is the part that says we're not the bouncer.</p></div>
+    <div class="gcard merge"><h4>Evidence merges</h4><p>A change ships when it passes the public fixture corpus in CI and gets review. Not because a curator likes it. Maintainership is earned by good PRs, not appointed.</p></div>
+    <div class="gcard fork"><h4>Anyone forks</h4><p>It's OSS. If the bar is ever unfair, fork it and run your own. That exit right keeps the maintainers honest better than any promise.</p></div>
+  </div>
+  <p class="body" style="margin-top:18px">The fixtures are the immune system: a corpus of labelled briefs with expected scores. Try to quietly lower the bar to slip a weak brief through and you break the corpus — CI rejects you. To get around it you'd have to delete fixtures, and that's a visible, suspicious diff.</p>
+
+  <div class="invite">
+    <h4>A rule we'd love a PR for</h4>
+    <p><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
+  </div>
+
+  <footer><span>The Perfect Digital Product Brief · welance</span><a href="test.html">→ live console</a></footer>
+</div>
+
+<script>
+const RULES=[
+ {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not-fail",
+  rationale:"A titled brief is findable, scannable, and signals that the author knows what the thing is. On a noticeboard, a missing title is the first failure of communication.",
+  criteria:"The brief opens with a short, specific title naming the product or problem. Partial if a title exists but is generic.",
+  refs:[["practice","Design brief","names itself up front"]]},
+ {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not-fail",
+  rationale:"A solution with no stated problem can't be validated, prioritised, or measured. Starting from a problem is the first grip on reality.",
+  criteria:"Names the user problem the product addresses, distinct from the proposed solution. Partial if the problem is only implied.",
+  refs:[["practice","Jobs to be Done","frame the need before the solution"]]},
+ {id:"scope-boundaries",title:"States what is explicitly out of scope",weight:11,severity:"medium",
+  rationale:"Most overruns come from the gap between assumed-included and assumed-excluded. Naming exclusions up front is cheap.",
+  criteria:"Explicitly names at least one thing out of scope, or states a clear boundary. Partial if only implied.",
+  refs:[["practice","Scope statement","in-scope vs out-of-scope"],["encyclopedic","Scope creep","the failure this prevents"]]},
+ {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not-fail",
+  rationale:"A brief with no budget, or one below the engagement floor, can't be matched to a senior team. The floor is marketplace policy.",
+  criteria:"States a budget figure. Pass at/above the floor with headroom; warn if it only just clears; fail if absent or below. Floor is policy in scoring.yaml.",
+  refs:[["practice","Statement of work — budget","engagement is sized before it starts"]]},
+ {id:"success-metrics",title:"Defines a measurable outcome",weight:10,severity:"high",
+  rationale:"Without a target the team optimises outputs instead of outcomes and never knows when it's winning or done.",
+  criteria:"States how success is measured: an outcome with a direction and ideally a target. Fail if success is an opinion.",
+  refs:[["practice","SMART criteria","Measurable, Time-bound"],["practice","OKR","outcomes over outputs"]]},
+ {id:"deliverables-concrete",title:"Deliverables are concrete (definition of done)",weight:10,severity:"high",
+  rationale:"Vague scope is the single best predictor of handoff disputes. If a deliverable can't be checked off, the parties will disagree later.",
+  criteria:"Each deliverable has an observable acceptance condition a third party could verify. Adjective-only descriptions don't count.",
+  refs:[["standard","ISO/IEC/IEEE 29148:2018",'characteristic: "verifiable"'],["practice","INVEST","the T for Testable"]]},
+ {id:"timeline",title:"A timeline or deadline is stated",weight:8,severity:"medium",
+  rationale:"Doability and matching both depend on time. A brief with no horizon can't be scheduled, staffed, or sized.",
+  criteria:"Names a timeframe, deadline, or milestone for the work. Fail if absent.",
+  refs:[["standard","ISO/IEC/IEEE 29148:2018","schedule as a constraint"]]},
+ {id:"anonymised",title:"Anonymised & blind-safe",weight:8,severity:"high",gate:"pass",
+  rationale:"The Directory is blind: teams respond to substance, not brand. A brief that leaks the company, named people, contacts, or personal data breaks blind review.",
+  criteria:"No company/brand names, named individuals, contact details (emails, phones, URLs), or personal data. Pass only if fully clean.",
+  refs:[["practice","Blind review reduces bias","judge substance, not identity"],["standard","GDPR — data minimisation (Art. 5)","don't expose data you don't need"]]},
+ {id:"users-identified",title:"Names and situates the users",weight:7,severity:"high",
+  rationale:"\u2018Everyone\u2019 is no one. Without a named user and context, the team can't prioritise, design, or test.",
+  criteria:"Identifies at least one concrete user segment and the context in which they act. Fail if the user is \u2018everyone\u2019.",
+  refs:[["standard","ISO 9241-210","specify the context of use"],["practice","Personas (UX)","named, situated users"]]},
+ {id:"team-shape",title:"Indicates the team it needs",weight:6,severity:"medium",
+  rationale:"On a team marketplace, the brief is also a matching signal. Saying what capabilities the work needs lets the right team self-select.",
+  criteria:"Gives some indication of the team or skills the work calls for: roles, disciplines, size, or duration.",
+  refs:[["practice","Cross-functional team / RACI","name the roles the work needs"]]},
+ {id:"constraints-tech",title:"Technical constraints are on the table",weight:4,severity:"medium",
+  rationale:"Doability lives partly here: existing stack, required integrations, platforms. Stated early they're options; discovered late, crises. (Budget and timeline are scored separately.)",
+  criteria:"Names at least one concrete technical constraint: stack, platform, a required integration, or an environment limit.",
+  refs:[["standard","ISO/IEC/IEEE 29148:2018","design & implementation constraints"]]},
+ {id:"assumptions-risks",title:"Surfaces key assumptions & risks",weight:3,severity:"medium",
+  rationale:"The assumptions a brief leaves unstated are exactly where products die. Name the biggest risk and de-risk it first.",
+  criteria:"Names at least one explicit assumption or risk (technical, market, or dependency).",
+  refs:[["standard","ISO 31000","identify risks early"]]},
+ {id:"data-compliance",title:"Names the compliance regime for personal data",weight:3,severity:"high",
+  rationale:"Distinct from anonymising the brief: this is about the product. If it handles personal data, retrofitting privacy is the most expensive rework.",
+  criteria:"Applies only if the product involves personal data. Then: names the compliance regime (GDPR, DPA, privacy-by-design). Otherwise not applicable.",
+  refs:[["standard","GDPR — Reg. (EU) 2016/679","lawful basis, by design"]]},
+ {id:"accessibility-considered",title:"Accessibility is an explicit expectation",weight:2,severity:"medium",
+  rationale:"For public and many commercial EU products this is law, not a nicety — and it widens the audience the product scales to.",
+  criteria:"States an accessibility expectation for any user-facing product (e.g. WCAG level). Not applicable if there's no user-facing surface.",
+  refs:[["standard","WCAG 2.2 (W3C)","conformance level AA"],["standard","EN 301 549 / AgID","EU & Italian public-sector duty"]]},
+];
+document.getElementById("ruleset").innerHTML=RULES.map(r=>`
+ <div class="rule">
+   <div class="rule-top"><span class="rule-id">${r.gate?"★ ":""}${r.id}</span><span class="rule-title">${r.title}</span>
+     <span class="badges"><span class="badge b-w">weight ${r.weight}</span>${r.gate?`<span class="badge b-high">★ gate · ${r.gate}</span>`:`<span class="badge b-${r.severity}">${r.severity}</span>`}</span></div>
+   <div class="rule-body">
+     <div class="field"><div class="k">why it matters</div><div class="v">${r.rationale}</div></div>
+     <div class="field"><div class="k">criteria · the model reads this</div><div class="v">${r.criteria}</div></div>
+     <div class="field"><div class="k">sources</div><div class="refs">${r.refs.map(x=>`<span class="tier ${x[0]}">${x[0]}</span>${x[1]} — ${x[2]}`).join("<br>")}</div></div>
+   </div></div>`).join("");
+</script>
+</body>
+</html>

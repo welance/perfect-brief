@@ -1,0 +1,30 @@
+id: anonymised
+title: The brief is anonymised and blind-safe
+rationale: >
+  The Directory is blind: teams respond to substance, not brand. A brief that
+  leaks the company, named people, contact details, or personal data breaks the
+  fairness of blind review and can expose data it shouldn't. This is a hard
+  publication requirement.
+weight: 8
+severity: high
+gate: pass
+applies_to: [brief]
+criteria: >
+  The brief contains no company/brand names, no named individuals, no contact
+  details (emails, phones, URLs), and no personal data. Pass only if fully
+  clean. Fail if any identifying or personal information is present.
+pass_examples:
+  - "Integrates with the existing payment provider; the client is a regional hospitality group."
+fail_examples:
+  - "We're Acme Srl; contact mara.rossi@acme.it; integrates with our Stripe account."
+references:
+  - tier: practice
+    title: "Blind review reduces bias"
+    locator: "responders judge substance, not identity"
+    url: https://en.wikipedia.org/wiki/Blind_experiment
+  - tier: standard
+    title: "GDPR — data minimisation (Art. 5)"
+    locator: "don't expose personal data you don't need"
+    url: https://gdpr-info.eu/art-5-gdpr/
+owners: ["@welance/perfect-brief"]
+version: 1

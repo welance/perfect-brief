@@ -1,0 +1,25 @@
+id: budget-floor
+title: Budget is stated and clears the floor
+rationale: >
+  A brief with no budget, or one below the engagement floor, cannot be matched
+  to a senior team realistically. The floor is a marketplace policy: it keeps
+  the noticeboard to projects a curated team can actually take on.
+weight: 11
+severity: high
+gate: not_fail
+applies_to: [brief]
+criteria: >
+  States a budget figure. Pass if at or above the floor with headroom. Partial
+  (warn) if it only just clears the floor. Fail if no figure, or below the floor.
+  The floor amount is policy, set in scoring.yaml (budget_floor), not hardcoded.
+pass_examples:
+  - "Budget band 25-40k for the v1 build."
+fail_examples:
+  - "Budget: around 4k, flexible."
+references:
+  - tier: practice
+    title: "Statement of work — budget"
+    locator: "engagement is sized before it starts"
+    url: https://en.wikipedia.org/wiki/Statement_of_work
+owners: ["@welance/perfect-brief"]
+version: 1

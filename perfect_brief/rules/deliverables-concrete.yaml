@@ -1,0 +1,27 @@
+id: deliverables-concrete
+title: Deliverables are concrete & measurable (definition of done)
+rationale: >
+  Vague scope is the best predictor of handoff disputes. If a deliverable can't
+  be checked off objectively, the parties will disagree later about whether it
+  was met. This is the brief's definition of done.
+weight: 10
+severity: high
+applies_to: [brief]
+criteria: >
+  Each deliverable has an observable acceptance condition a third party could
+  verify. Adjective-only descriptions don't count. Partial if some are concrete.
+pass_examples:
+  - "Auth login with email + SPID, sessions persisted, logout invalidates server-side."
+fail_examples:
+  - "A robust, future-proof authentication experience."
+references:
+  - tier: standard
+    title: "ISO/IEC/IEEE 29148:2018"
+    locator: 'requirement characteristic: "verifiable"'
+    url: https://www.iso.org/standard/72089.html
+  - tier: practice
+    title: "INVEST — the T for Testable"
+    locator: "a good requirement is testable"
+    url: https://en.wikipedia.org/wiki/INVEST_(mnemonic)
+owners: ["@welance/perfect-brief"]
+version: 2

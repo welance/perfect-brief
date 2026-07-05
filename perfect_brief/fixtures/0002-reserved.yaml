@@ -1,0 +1,15 @@
+id: 0002-reserved
+input_type: brief
+input: >
+  # Catalogue site
+
+  Problem: independent makers can't show their catalogue online without a
+  developer. Budget around 12k. Build it.
+expected: {min: 42, max: 60}
+expected_decision: reserved
+expected_verdicts:
+  clear-title: pass
+  problem-defined: pass
+  budget-floor: partial
+  anonymised: pass
+notes: Passes all four gates (budget only just clears) but thin on substance — published with reservation.

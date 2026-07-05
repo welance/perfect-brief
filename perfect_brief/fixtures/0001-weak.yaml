@@ -1,0 +1,12 @@
+id: 0001-weak
+input_type: brief
+input: >
+  We want to build a modern, scalable platform that delights everyone and is
+  future-proof. It should feel premium and handle everything as we grow.
+expected: {min: 0, max: 25}
+expected_decision: blocked
+expected_verdicts:
+  clear-title: fail
+  problem-defined: fail
+  budget-floor: fail
+notes: No title, no problem, no budget, buzzword scope. Fails three gates.

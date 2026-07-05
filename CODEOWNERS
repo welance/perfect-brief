@@ -1,0 +1,7 @@
+# Anyone may open a PR. Merges to the live bar require review by a maintainer.
+# Maintainership is earned through a track record of good PRs — not appointed.
+# And the whole ruleset is OSS and forkable: if the bar is ever unfair, fork it.
+
+/rules/        @welance/perfect-brief-maintainers
+/scoring.yaml  @welance/perfect-brief-maintainers
+/fixtures/     @welance/perfect-brief-maintainers

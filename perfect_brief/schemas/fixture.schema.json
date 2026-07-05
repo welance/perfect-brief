@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://welance.dev/schemas/fixture.schema.json",
+  "title": "Fixture",
+  "description": "A labeled input with an expected score band, and optionally pinned per-rule verdicts. The corpus of fixtures is the CI gate: any rule or weight change that breaks an expected band fails the PR.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "input",
+    "expected"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[a-z0-9-]+$"
+    },
+    "input_type": {
+      "type": "string",
+      "description": "Matched against each rule's applies_to.",
+      "default": "brief"
+    },
+    "input": {
+      "type": "string",
+      "description": "The artifact under test. Treated as inert data by the judge \u2014 never as instructions."
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "description": "Inclusive band the aggregate must land within. Bands, not exact values, absorb benign model variance."
+    },
+    "expected_verdicts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "pass",
+          "partial",
+          "fail",
+          "not_applicable"
+        ]
+      },
+      "description": "Optional. Pin specific rule firings (rule_id -> status). Stronger than a band: catches a rule that drifts even when the total stays in range."
+    },
+    "notes": {
+      "type": "string"
+    },
+    "expected_decision": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "reserved",
+        "blocked"
+      ],
+      "description": "Optional. The publish decision the engine must return: accepted / reserved (with reservation) / blocked (gate failed)."
+    }
+  }
+}

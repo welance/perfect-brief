@@ -1,0 +1,48 @@
+# scoring.yaml — the deterministic, contestable half.
+#
+# The score says how good a brief is. The gate says whether it may publish.
+# Two axes, kept separate (this replaces the old severity-cap mechanism).
+# Everything here is policy: PR it like any rule, gated by the fixture corpus.
+
+# Per-rule status -> [0,1] contribution.
+status_scores:
+  pass: 1.0
+  partial: 0.5   # shown as "warn" in the UI
+  fail: 0.0
+  # not_applicable rules are excluded from the denominator and renormalised.
+
+# Verdicts below this confidence flag the result for human review.
+confidence_threshold: 0.5
+abstain_when_no_rules_apply: true
+
+# Marketplace policy used by the budget-floor rule (euros). Contestable.
+budget_floor: 10000
+
+# --- The gate: hard requirements that must hold to publish at all -----------
+# Each: a rule id and what it must satisfy.
+#   not_fail -> status must be pass or partial
+#   pass     -> status must be pass
+# Miss any one and the brief is blocked, with the unmet requirements listed.
+gate:
+  - {rule: clear-title,     require: not_fail}
+  - {rule: problem-defined, require: not_fail}
+  - {rule: budget-floor,    require: not_fail}
+  - {rule: anonymised,      require: pass}
+
+# --- Descriptive quality bands (the score's label) --------------------------
+bands:
+  - {min: 85, label: "Directory-ready"}
+  - {min: 68, label: "Strong"}
+  - {min: 45, label: "Getting there"}
+  - {min: 0,  label: "Needs work"}
+
+# --- Publication decision ---------------------------------------------------
+#   gate failed                 -> blocked   (not published; fix the listed gaps)
+#   gate ok AND score >= accept -> accepted  (published, no reservation)
+#   gate ok AND score <  accept -> reserved  (published, community check pending)
+publication:
+  accept: 85
+  labels:
+    accepted: "Accepted — published"
+    reserved: "Accepted with reservation — community check pending"
+    blocked:  "Blocked — hard requirements unmet"

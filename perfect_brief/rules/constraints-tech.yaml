@@ -1,0 +1,23 @@
+id: constraints-tech
+title: Technical constraints are on the table
+rationale: >
+  Doability lives partly here: existing stack, required integrations, platforms,
+  and hard technical limits. Stated early they are options; discovered late they
+  are crises. (Budget and timeline are scored separately.)
+weight: 4
+severity: medium
+applies_to: [brief]
+criteria: >
+  Names at least one concrete technical constraint: stack, platform, a required
+  integration, or an environment limit. Pass if present. Fail if none.
+pass_examples:
+  - "Built on the existing Next.js + Postgres stack; integrates with the current payment provider."
+fail_examples:
+  - "We're flexible on everything technical."
+references:
+  - tier: standard
+    title: "ISO/IEC/IEEE 29148:2018"
+    locator: "design & implementation constraints"
+    url: https://www.iso.org/standard/72089.html
+owners: ["@welance/perfect-brief"]
+version: 1

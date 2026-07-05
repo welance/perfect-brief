@@ -1,0 +1,25 @@
+id: clear-title
+title: The brief has a clear title
+rationale: >
+  A titled brief is findable, scannable, and signals that the author knows what
+  the thing is. On a noticeboard of many briefs, a missing or vague title is the
+  first failure of communication.
+weight: 5
+severity: medium
+gate: not_fail
+applies_to: [brief]
+criteria: >
+  The brief opens with a short, specific title naming the product or problem.
+  Pass if a clear title/heading is present. Partial if a title exists but is
+  generic ("New project"). Fail if there is no title at all.
+pass_examples:
+  - "# Real-time availability for independent restaurant bookings"
+fail_examples:
+  - "(brief starts straight into a wall of text with no title)"
+references:
+  - tier: practice
+    title: "Design brief — names itself up front"
+    locator: "a brief leads with a clear subject"
+    url: https://en.wikipedia.org/wiki/Design_brief
+owners: ["@welance/perfect-brief"]
+version: 1

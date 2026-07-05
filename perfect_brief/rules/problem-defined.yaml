@@ -1,0 +1,24 @@
+id: problem-defined
+title: States a problem, not just a solution
+rationale: >
+  A solution with no stated problem cannot be validated, prioritised, or
+  measured. Starting from a problem is the first grip on reality.
+weight: 12
+severity: high
+gate: not_fail
+applies_to: [brief]
+criteria: >
+  Names the user problem the product addresses, distinct from the proposed
+  solution. Pass if explicit. Partial if a problem is implied but only the
+  solution is described. Fail if it jumps straight to a solution.
+pass_examples:
+  - "Small restaurants lose bookings because staff can't update availability in real time."
+fail_examples:
+  - "We want to build a modern booking platform."
+references:
+  - tier: practice
+    title: "Jobs to be Done"
+    locator: "frame the need before the solution"
+    url: https://en.wikipedia.org/wiki/Outcome-Driven_Innovation
+owners: ["@welance/perfect-brief"]
+version: 2

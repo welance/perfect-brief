@@ -1,0 +1,24 @@
+id: team-shape
+title: Indicates the shape of team it needs
+rationale: >
+  On a team marketplace, the brief is also a matching signal. Saying what
+  capabilities the work needs — roles, skills, seniority, size — lets the right
+  team self-select and saves a round of clarification.
+weight: 6
+severity: medium
+applies_to: [brief]
+criteria: >
+  Gives some indication of the team or skills the work calls for (roles,
+  disciplines, size, or duration). Pass if indicated. Partial if very vague.
+  Fail if absent.
+pass_examples:
+  - "Needs a full-stack developer and a product designer for roughly eight weeks."
+fail_examples:
+  - "(no mention of what kind of team or skills are needed)"
+references:
+  - tier: practice
+    title: "Cross-functional team / RACI"
+    locator: "name the roles the work needs"
+    url: https://en.wikipedia.org/wiki/Responsibility_assignment_matrix
+owners: ["@welance/perfect-brief"]
+version: 1

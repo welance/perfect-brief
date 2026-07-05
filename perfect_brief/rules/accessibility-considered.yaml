@@ -1,0 +1,27 @@
+id: accessibility-considered
+title: Accessibility is an explicit expectation
+rationale: >
+  For public and many commercial EU products this is law, not a nicety, and it
+  widens the audience the product can scale to.
+weight: 2
+severity: medium
+applies_to: [brief]
+criteria: >
+  States an accessibility expectation for any user-facing product (e.g. WCAG
+  level). Pass if named. Partial if vague. Fail if a public product omits it.
+  Not applicable if there is no user-facing surface.
+pass_examples:
+  - "Public booking page targets WCAG 2.2 AA, tested with keyboard and screen reader."
+fail_examples:
+  - "A beautiful public website. (no accessibility mention)"
+references:
+  - tier: standard
+    title: "WCAG 2.2 (W3C)"
+    locator: "conformance level AA"
+    url: https://www.w3.org/TR/WCAG22/
+  - tier: standard
+    title: "EN 301 549 / AgID"
+    locator: "EU & Italian public-sector duty"
+    url: https://www.agid.gov.it/it/design-servizi/accessibilita
+owners: ["@welance/perfect-brief"]
+version: 2

@@ -1,0 +1,32 @@
+# briefs.welance.com — scoring service + its only stateful dependency (Redis cache).
+# The service is stateless; Redis holds ephemeral verdict cache + rate-limit counters.
+services:
+  api:
+    build: .
+    image: welance/perfect-brief:1.0.0
+    env_file: .env
+    environment:
+      PB_REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/v1/healthz').status==200 else 1)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    # cache only: no persistence, LRU eviction under memory pressure
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
