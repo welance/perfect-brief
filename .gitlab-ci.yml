@@ -9,6 +9,3 @@ include:
 variables:
   STORAGE_USER_ID: '10001' # the Dockerfile's non-root app user
   PROJECT_ID: 'r001-15'
-  # production-only service: no noprod tenants, so develop/staging deploys are off
-  DEV_TARGET: 'none'
-  STAGING_TARGET: 'none'
