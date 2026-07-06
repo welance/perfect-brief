@@ -1,0 +1,14 @@
+# Deploy twin: gitlab.com/welance/r001-15-perfect-brief (see NOTES.md).
+# GitHub is the public face; this pipeline builds the container image and
+# GitOps-bumps the r001-15-production tenant in platform/tenants/welance-prod.
+include:
+  - project: 'welance/platform/pipelines/templates/pipeline/git-flow'
+    ref: release/1.1.0
+    file: 'node.yml'
+
+variables:
+  STORAGE_USER_ID: '10001' # the Dockerfile's non-root app user
+  PROJECT_ID: 'r001-15'
+  # production-only service: no noprod tenants, so develop/staging deploys are off
+  DEV_TARGET: 'none'
+  STAGING_TARGET: 'none'
