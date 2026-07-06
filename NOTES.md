@@ -27,4 +27,5 @@ in `env.yaml`, `PB_ANTHROPIC_API_KEY` stays the literal
 `deployment.onepassword.enabled: true`. No plaintext secrets in git.
 
 **Pages.** GitHub Pages via Actions workflow (upload-pages-artifact of `site/`,
-no `/docs` rename). Phase 5 directory-issue link: (pending).
+no `/docs` rename). Phase 5 directory-issue link:
+https://gitlab.com/welance/r001-06-directory/-/work_items/1
