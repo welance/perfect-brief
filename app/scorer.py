@@ -73,13 +73,15 @@ def _verdicts_from_cache(data: list[dict]) -> list[Verdict]:
     ]
 
 
-async def _judge(brief: str, judge_kind: str, model: str | None) -> tuple[list[Verdict], bool, str | None]:
+async def _judge(
+    brief: str, judge_kind: str, model: str | None, api_key: str | None
+) -> tuple[list[Verdict], bool, str | None]:
     """Return (verdicts, cached, resolved_model)."""
     if judge_kind == "mock":
         verdicts = await asyncio.to_thread(judge_all, MockJudge(), _RULES, brief, "brief")
         return verdicts, False, None
 
-    use = llm_client.resolve_model(model)
+    use = llm_client.resolve_model(model, allow_any=bool(api_key))
     # a verdict is reproducible only against (ruleset_version, model)
     key = f"pb:v:{_VERSION}:llm:{use}:{_sha(brief)}"
     hit = await cache.get_json(key)
@@ -87,14 +89,16 @@ async def _judge(brief: str, judge_kind: str, model: str | None) -> tuple[list[V
         return _verdicts_from_cache(hit), True, use
 
     prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
-    raw = await llm_client.complete(prompt, use)
+    raw = await llm_client.complete(prompt, use, api_key)
     verdicts = llm.parse_judge(_RULES, raw)
     await cache.set_json(key, _verdicts_to_cache(verdicts), settings().cache_ttl_seconds)
     return verdicts, False, use
 
 
-async def score(brief: str, locale: str, judge_kind: str, model: str | None = None) -> ScoreResponse:
-    verdicts, cached, used_model = await _judge(brief, judge_kind, model)
+async def score(
+    brief: str, locale: str, judge_kind: str, model: str | None = None, api_key: str | None = None
+) -> ScoreResponse:
+    verdicts, cached, used_model = await _judge(brief, judge_kind, model, api_key)
     breakdown = aggregate(verdicts, _RULES, _CFG)
     vmap = {v.rule_id: v for v in verdicts}
     out_verdicts = [
@@ -127,17 +131,23 @@ async def score(brief: str, locale: str, judge_kind: str, model: str | None = No
     )
 
 
-async def suggest(brief: str, rule_id: str, locale: str, model: str | None = None) -> list[Suggestion]:
+async def suggest(
+    brief: str, rule_id: str, locale: str, model: str | None = None, api_key: str | None = None
+) -> list[Suggestion]:
     rule = _RULES.get(rule_id)
     if rule is None:
         raise KeyError(rule_id)
     prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
-    raw = await llm_client.complete(prompt, model)
+    raw = await llm_client.complete(prompt, model, api_key)
     return [Suggestion(rule_id=rule_id, label=s["label"], text=s["text"]) for s in llm.parse_suggestions(raw)]
 
 
 async def suggest_all(
-    brief: str, rule_ids: list[str] | None, locale: str, model: str | None = None
+    brief: str,
+    rule_ids: list[str] | None,
+    locale: str,
+    model: str | None = None,
+    api_key: str | None = None,
 ) -> list[Suggestion]:
     if rule_ids is None:
         verdicts = await asyncio.to_thread(judge_all, MockJudge(), _RULES, brief, "brief")
@@ -150,6 +160,6 @@ async def suggest_all(
     if not subset:
         return []
     prompt = llm.render_suggest_all_prompt(subset, brief, LOCALE_NAMES.get(locale))
-    raw = await llm_client.complete(prompt, model)
+    raw = await llm_client.complete(prompt, model, api_key)
     by = llm.parse_suggestions_all(raw)
     return [Suggestion(rule_id=r.id, label=r.title, text=by[r.id]) for r in subset if r.id in by]

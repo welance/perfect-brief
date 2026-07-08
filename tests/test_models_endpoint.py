@@ -31,6 +31,22 @@ def test_disallowed_model_rejected(monkeypatch):
         llm_client.resolve_model("openai/gpt-4o")
 
 
+def test_byok_header_enables_llm_judge(client, monkeypatch):
+    async def fake_complete(prompt, model=None, api_key=None):
+        assert api_key == "sk-or-user-key"
+        return '[{"rule_id":"clear-title","status":"pass","confidence":0.9,"quote":"t","note":""}]'
+
+    monkeypatch.setattr(llm_client, "complete", fake_complete)
+    body = {"brief": "# T\nProblem: x. Budget 15k.", "judge": "llm"}
+    # without a key and with no server key configured: 503
+    assert client.post("/v1/score", json=body).status_code == 503
+    # with a caller key: the judge runs, and the resolved model is recorded
+    r = client.post("/v1/score", json=body, headers={"x-llm-key": "sk-or-user-key"})
+    assert r.status_code == 200
+    data = r.json()
+    assert data["judge"] == "llm" and data["model"]
+
+
 def test_score_with_disallowed_model_is_422(client, monkeypatch):
     stub = Settings(openrouter_api_key="or-test", openrouter_models="anthropic/claude-sonnet-4.5")
     monkeypatch.setattr(llm_client, "settings", lambda: stub)

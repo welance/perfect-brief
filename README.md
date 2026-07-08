@@ -67,6 +67,11 @@ or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
 
+Bring your own key: send `X-LLM-Key: <your OpenRouter key>` and the call runs
+on your key — any model allowed (you pay), used per request, never stored or
+logged. Use a spend-capped key. The console exposes this as an optional field
+in live mode.
+
 Other endpoints:
 
 - `POST /v1/suggest` `{brief, rule_id, locale, model?}` → tailored fixes for one gap (LLM).

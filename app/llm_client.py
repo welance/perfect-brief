@@ -49,10 +49,16 @@ def default_model() -> str:
     return available_models()[0]
 
 
-def resolve_model(requested: str | None) -> str:
-    """Validate a per-request model against the server's allowlist."""
+def resolve_model(requested: str | None, allow_any: bool = False) -> str:
+    """Validate a per-request model against the server's allowlist.
+
+    allow_any=True (bring-your-own-key requests): the caller pays, so any
+    model is accepted — it is still recorded in the cache key and response.
+    """
     if not requested:
         return default_model()
+    if allow_any:
+        return requested
     allowed = available_models()
     if requested not in allowed:
         raise ModelNotAllowed(
@@ -71,16 +77,20 @@ def _anthropic():
     return anthropic.AsyncAnthropic(api_key=cfg.anthropic_api_key)
 
 
-async def complete(prompt: str, model: str | None = None) -> str:
+async def complete(prompt: str, model: str | None = None, api_key: str | None = None) -> str:
+    """api_key: an optional caller-supplied OpenRouter key (bring your own key).
+
+    Used for this call only — never logged, never stored.
+    """
     cfg = settings()
-    use = resolve_model(model)
-    if _use_openrouter():
+    use = resolve_model(model, allow_any=bool(api_key))
+    if api_key or _use_openrouter():
         import httpx
 
         async with httpx.AsyncClient(timeout=120) as client:
             resp = await client.post(
                 OPENROUTER_URL,
-                headers={"Authorization": f"Bearer {cfg.openrouter_api_key}"},
+                headers={"Authorization": f"Bearer {api_key or cfg.openrouter_api_key}"},
                 json={
                     "model": use,
                     "max_tokens": cfg.llm_max_tokens,

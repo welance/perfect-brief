@@ -10,8 +10,9 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
@@ -78,9 +79,17 @@ def _guard(brief: str) -> None:
         raise HTTPException(status_code=413, detail=f"brief exceeds {settings().request_max_chars} chars")
 
 
-def _judge_kind(requested: str | None) -> str:
+# A caller-supplied OpenRouter key (bring your own key): used for that call
+# only, never stored, never logged. It also unlocks any model (the caller pays).
+ByokHeader = Annotated[
+    str | None,
+    Header(alias="x-llm-key", description="Optional: your own OpenRouter key for this call."),
+]
+
+
+def _judge_kind(requested: str | None, byok: str | None = None) -> str:
     kind = requested or settings().default_judge
-    if kind == "llm" and not llm_client.configured():
+    if kind == "llm" and not llm_client.configured() and not byok:
         raise HTTPException(status_code=503, detail="LLM judge not configured; use judge='mock'")
     return kind
 
@@ -135,11 +144,11 @@ async def get_rules() -> RulesResponse:
 
 
 @app.post("/v1/score", response_model=ScoreResponse, tags=["score"], dependencies=[Depends(rate_limit)])
-async def post_score(req: ScoreRequest) -> ScoreResponse:
+async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreResponse:
     _guard(req.brief)
-    kind = _judge_kind(req.judge)
+    kind = _judge_kind(req.judge, x_llm_key)
     try:
-        return await scorer.score(req.brief, req.locale, kind, req.model)
+        return await scorer.score(req.brief, req.locale, kind, req.model, x_llm_key)
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except LLMNotConfigured as exc:
@@ -150,12 +159,12 @@ async def post_score(req: ScoreRequest) -> ScoreResponse:
 
 
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
-async def post_suggest(req: SuggestRequest) -> list[Suggestion]:
+async def post_suggest(req: SuggestRequest, x_llm_key: ByokHeader = None) -> list[Suggestion]:
     _guard(req.brief)
-    if not llm_client.configured():
+    if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest(req.brief, req.rule_id, req.locale, req.model)
+        return await scorer.suggest(req.brief, req.rule_id, req.locale, req.model, x_llm_key)
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown rule: {req.rule_id}") from None
     except ModelNotAllowed as exc:
@@ -167,12 +176,12 @@ async def post_suggest(req: SuggestRequest) -> list[Suggestion]:
 @app.post(
     "/v1/suggest/all", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)]
 )
-async def post_suggest_all(req: SuggestAllRequest) -> list[Suggestion]:
+async def post_suggest_all(req: SuggestAllRequest, x_llm_key: ByokHeader = None) -> list[Suggestion]:
     _guard(req.brief)
-    if not llm_client.configured():
+    if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model)
+        return await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model, x_llm_key)
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
