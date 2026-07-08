@@ -13,18 +13,23 @@ class ScoreRequest(BaseModel):
     brief: str = Field(..., description="The brief text to score.")
     locale: str = Field("en-GB", description="Display locale (also steers LLM output language).")
     judge: JudgeKind | None = Field(None, description="Override the default judge for this call.")
+    model: str | None = Field(
+        None, description="LLM model for the judge; must be in GET /v1/models. Default: server default."
+    )
 
 
 class SuggestRequest(BaseModel):
     brief: str
     rule_id: str
     locale: str = "en-GB"
+    model: str | None = None
 
 
 class SuggestAllRequest(BaseModel):
     brief: str
     rule_ids: list[str] | None = Field(None, description="Defaults to every failing/partial rule.")
     locale: str = "en-GB"
+    model: str | None = None
 
 
 class VerdictOut(BaseModel):
@@ -55,6 +60,7 @@ class ScoreResponse(BaseModel):
     ruleset_version: str
     engine: str
     judge: JudgeKind
+    model: str | None = None  # resolved LLM model; null for the mock judge
     cached: bool
 
 
@@ -89,6 +95,12 @@ class RulesResponse(BaseModel):
     gate: list[dict]
     bands: list[dict]
     rules: list[RuleOut]
+
+
+class ModelsResponse(BaseModel):
+    default: str
+    available: list[str]
+    llm_configured: bool
 
 
 class Health(BaseModel):

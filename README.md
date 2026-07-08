@@ -59,13 +59,20 @@ suite. Add the key to unlock the `llm` judge and `/v1/suggest`.
 ```
 The `ruleset_version` is your audit trail: it pins exactly which bar judged a
 brief, and the score is reproducible against it (LLM judge runs at temperature 0
-and is cached by `(ruleset_version, brief)`).
+and is cached by `(ruleset_version, model, brief)`).
+
+The judge's LLM is either direct Anthropic (`PB_ANTHROPIC_API_KEY` + `PB_MODEL`)
+or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
+`model` from the server's allowlist (`PB_OPENROUTER_MODELS`, exact
+vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
+The resolved model is returned in every score for a reproducible audit trail.
 
 Other endpoints:
 
-- `POST /v1/suggest` `{brief, rule_id, locale}` → tailored fixes for one gap (LLM).
-- `POST /v1/suggest/all` `{brief, rule_ids?, locale}` → one fix per failing gap; omit `rule_ids` to auto-detect (LLM).
+- `POST /v1/suggest` `{brief, rule_id, locale, model?}` → tailored fixes for one gap (LLM).
+- `POST /v1/suggest/all` `{brief, rule_ids?, locale, model?}` → one fix per failing gap; omit `rule_ids` to auto-detect (LLM).
 - `GET /v1/rules` → the full catalogue (id, title, weight, gate, criteria, references) for the directory UI.
+- `GET /v1/models` → the enabled judge models (`default` + `available`) for a model picker.
 - `GET /v1/healthz` → status + ruleset version + whether the LLM is configured.
 - `GET /` → the interactive console.
 

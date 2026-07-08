@@ -10,8 +10,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="PB_", env_file=".env", extra="ignore")
 
-    # LLM judge / suggestions
+    # LLM judge / suggestions. Two providers; OpenRouter wins if both keys set.
     anthropic_api_key: str | None = None
+    openrouter_api_key: str | None = None
+    # Comma-separated OpenRouter slugs a request may pick from (exact slugs,
+    # vendor-prefixed — e.g. "anthropic/claude-sonnet-4.5,openai/gpt-4o").
+    # First entry is the default when OpenRouter is active. Empty = PB_MODEL only.
+    openrouter_models: str = ""
     model: str = "claude-sonnet-4-6"
     llm_max_tokens: int = 1500
 

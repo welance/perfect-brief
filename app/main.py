@@ -15,10 +15,11 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from . import anthropic_client, cache, scorer
-from .anthropic_client import LLMNotConfigured
+from . import cache, llm_client, scorer
+from .llm_client import LLMNotConfigured, ModelNotAllowed
 from .models import (
     Health,
+    ModelsResponse,
     ReferenceOut,
     RuleOut,
     RulesResponse,
@@ -43,7 +44,7 @@ async def lifespan(app: FastAPI):
         "ruleset %s · %d rules · LLM configured: %s",
         scorer.version(),
         len(scorer.rules()),
-        anthropic_client.configured(),
+        llm_client.configured(),
     )
     yield
     await cache.close()
@@ -79,7 +80,7 @@ def _guard(brief: str) -> None:
 
 def _judge_kind(requested: str | None) -> str:
     kind = requested or settings().default_judge
-    if kind == "llm" and not anthropic_client.configured():
+    if kind == "llm" and not llm_client.configured():
         raise HTTPException(status_code=503, detail="LLM judge not configured; use judge='mock'")
     return kind
 
@@ -92,7 +93,16 @@ async def healthz() -> Health:
     return Health(
         ruleset_version=scorer.version(),
         engine=scorer.engine(),
-        llm_configured=anthropic_client.configured(),
+        llm_configured=llm_client.configured(),
+    )
+
+
+@app.get("/v1/models", response_model=ModelsResponse, tags=["meta"])
+async def get_models() -> ModelsResponse:
+    return ModelsResponse(
+        default=llm_client.default_model(),
+        available=llm_client.available_models(),
+        llm_configured=llm_client.configured(),
     )
 
 
@@ -129,7 +139,9 @@ async def post_score(req: ScoreRequest) -> ScoreResponse:
     _guard(req.brief)
     kind = _judge_kind(req.judge)
     try:
-        return await scorer.score(req.brief, req.locale, kind)
+        return await scorer.score(req.brief, req.locale, kind, req.model)
+    except ModelNotAllowed as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except LLMNotConfigured as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
@@ -140,12 +152,14 @@ async def post_score(req: ScoreRequest) -> ScoreResponse:
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
 async def post_suggest(req: SuggestRequest) -> list[Suggestion]:
     _guard(req.brief)
-    if not anthropic_client.configured():
+    if not llm_client.configured():
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest(req.brief, req.rule_id, req.locale)
+        return await scorer.suggest(req.brief, req.rule_id, req.locale, req.model)
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown rule: {req.rule_id}") from None
+    except ModelNotAllowed as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=502, detail=f"suggest error: {exc}") from exc
 
@@ -155,10 +169,12 @@ async def post_suggest(req: SuggestRequest) -> list[Suggestion]:
 )
 async def post_suggest_all(req: SuggestAllRequest) -> list[Suggestion]:
     _guard(req.brief)
-    if not anthropic_client.configured():
+    if not llm_client.configured():
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest_all(req.brief, req.rule_ids, req.locale)
+        return await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model)
+    except ModelNotAllowed as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=502, detail=f"suggest error: {exc}") from exc
 

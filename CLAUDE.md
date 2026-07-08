@@ -20,8 +20,11 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
    the same commit, with the reason in the message.
 4. **`perfect_brief/` is the future standalone OSS package.** Keep it
    importable with zero service deps inside (no fastapi/redis imports there).
-5. **LLM key server-side only** (`PB_ANTHROPIC_API_KEY`, env). Temperature 0.
-   Verdicts cached by `(ruleset_version, sha256(brief))`.
+5. **LLM keys server-side only** (`PB_ANTHROPIC_API_KEY` or
+   `PB_OPENROUTER_API_KEY`, env). Temperature 0. Per-request model choice is
+   restricted to the `PB_OPENROUTER_MODELS` allowlist, and verdicts are cached
+   by `(ruleset_version, model, sha256(brief))` — the model is part of the
+   audit trail, never a free-text input.
 6. The engine is **verified** (fixtures 5/5, JS↔Python parity). Do not refactor
    it, do not rewrite `app/static/index.html` / `site/*.html` from scratch —
    surgical edits only.
