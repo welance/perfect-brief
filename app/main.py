@@ -171,6 +171,12 @@ async def index() -> FileResponse:
     return FileResponse(STATIC / "index.html")
 
 
+@app.get("/console.html", include_in_schema=False)
+async def console() -> FileResponse:
+    # the console is index.html here; site/rules.html links it as console.html
+    return FileResponse(STATIC / "index.html")
+
+
 if STATIC.exists():
     from fastapi.staticfiles import StaticFiles
 

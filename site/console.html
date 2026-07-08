@@ -125,6 +125,12 @@
   footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule-strong);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .modebtn{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink);background:none;border:0;border-bottom:1px dashed var(--ink-soft);padding:0 0 1px;cursor:pointer}
   .modebtn:hover{color:var(--accent);border-color:var(--accent)}
+  .modebtn.live{color:var(--accent-bg);background:var(--accent);border:1px solid var(--accent);padding:2px 8px}
+  /* unmissable "AI is working" pill */
+  #aiwork{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:70;font-family:var(--mono);font-size:12.5px;font-weight:600;background:var(--accent);color:#fff;padding:10px 18px;box-shadow:0 6px 24px rgba(24,26,27,.35);align-items:center;gap:9px}
+  #aiwork.on{display:flex}
+  #aiwork .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:aipulse 1.1s ease-in-out infinite}
+  @keyframes aipulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
   .stale{font-family:var(--mono);font-size:11px;color:var(--partial);margin-left:12px}
   html[dir=rtl] .stale{margin-left:0;margin-right:12px}
   .find-ev{font-family:var(--mono);font-size:11.5px;color:var(--ink);margin-top:7px;line-height:1.55;border-left:2px solid var(--pass);padding-left:9px;font-style:italic}
@@ -169,6 +175,7 @@
       <div class="row"><button class="btn" id="run" data-i18n="run">Score brief</button><span class="stale" id="stale" style="display:none"></span></div>
       <div class="offline" id="offline" data-i18n="offlineNonEN"></div>
       <div class="fixtoast" id="toast"></div>
+      <div id="aiwork" role="status" aria-live="polite"><span class="dot"></span><span id="aiwork-t"></span></div>
       <div class="note" id="adv-note" style="display:none"><b>note·</b> <span data-i18n="advNote"></span></div>
       <div class="note" id="blocked-note" style="display:none;border-left-color:var(--fail);background:var(--fail-bg)"><b style="color:var(--fail)">gate·</b> <span data-i18n="blockedNote"></span></div>
       <div class="eyebrow" style="margin-top:26px" data-i18n="verdict">verdict</div>
@@ -201,7 +208,7 @@
   <footer><span>The Perfect Brief · scorer</span><span data-i18n="footerB"></span></footer>
 </div>
 <script>
-const REPO="https://github.com/welance/perfect-brief/blob/main/rules";
+const REPO="https://github.com/welance/perfect-brief/blob/main/perfect_brief/rules";
 const API=location.hostname.endsWith("github.io")?"https://briefs.welance.com":"";
 const I18N={
 "en-GB":{_meta:{name:"English (UK)",flag:"EN",dir:"ltr"},title:"The Perfect Brief",thesis:"20% brief, 80% team. This scores the 20% — and lets you fix it in place. The score says how good it is; a separate gate of hard requirements says whether it may publish.",invariant:"An open ruleset steers the bar; an LLM only judges; code owns every number, the gate, and the publish decision.",nav:"→ why this exists, the rules, and how to change them",yourBrief:"your brief",run:"Score brief",presetWeak:"weak",presetMid:"promising",presetStrong:"ready",presetBlocked:"blocked ◀",presetAdv:"adversarial",verdict:"verdict",labelAccepted:"Accepted — published",labelReserved:"With reservation — community check",labelBlocked:"Blocked — hard requirements unmet",labelNoRules:"No applicable rules",gateLabel:"publish gate",gateUnmet:"unmet",bandReady:"Directory-ready",bandStrong:"Strong",bandGetting:"Getting there",bandNeeds:"Needs work",reviewMeta:"human review — low confidence on",strong:"What's strong",raise:"What would raise it",raiseHint:'tap “add a fix” on any gap — pick an option to splice it in and re-score.',naLabel:"Not applicable:",ptsLabel:"pts",addFix:"✚ add a fix",menuHead:"choose an insertion — it splices into the brief at the right spot",tailorAI:"✦ tailor with AI",aiHint:"analyse this brief, propose options that fit its domain",aiThinking:"✦ reading your brief…",aiFail:"AI unavailable here — built-in options shown",inserted:"inserted",advNote:"the brief asks to be published with full marks. It isn't obeyed — the judge treats it as inert data, so the instruction gets scored, not followed.",blockedNote:"a high-quality brief, but it leaks a brand name and an email — so the gate blocks it. The score can read ‘Directory-ready’ and still not publish: anonymisation is a hard requirement. Tap the anonymised fix to clear it.",bar:"the bar",barNote:"The diffable knobs — each rule's weight. The model never sees them. Move one and the verdict re-derives. The gate (★) is separate: those rules must hold to publish at all.",reset:"↺ reset the weights",footerB:"score = how good · gate = may it publish — two axes, kept separate",langLabel:"language","r_clear-title":"The brief has a clear title","r_problem-defined":"States a problem, not just a solution","r_users-identified":"Names and situates the users","r_success-metrics":"Defines a measurable outcome","r_deliverables-concrete":"Deliverables are concrete (definition of done)","r_scope-boundaries":"States what is out of scope","r_budget-floor":"Budget is stated and clears the floor","r_timeline":"A timeline or deadline is stated","r_anonymised":"Anonymised & blind-safe","r_team-shape":"Indicates the team it needs","r_constraints-tech":"Technical constraints are on the table","r_assumptions-risks":"Surfaces key assumptions & risks","r_data-compliance":"Names the compliance regime for personal data","r_accessibility-considered":"Accessibility is an explicit expectation",offlineNonEN:"Offline scoring is English-only (keyword mock). With the live LLM judge, a brief in any language is scored against the English rules.","judgeMockLbl":"mock · keyword","judgeLiveLbl":"live · LLM","scoreLiveBtn":"✦ Score with AI","judging":"✦ judging all rules…","staleLbl":"edited — re-score with AI","evidenceLabel":"in your brief:","notMet":"still not met — pick another option or edit the brief directly","fixAll":"✚ Fix all gaps","fixAllLive":"✦ Fix all with AI","fixingAll":"✦ fixing all gaps…","fixesApplied":"fixes applied","anonManual":"needs manual removal of identifiers"},
@@ -418,9 +425,10 @@ async function runLive(){const text=$("#input").value;setJudging(true);
  catch(e){lastVerdicts=RULES.map(r=>({rule_id:r.id,...judge(r.id,text)}));showToastRaw(t("aiFail"));}
  setJudging(false);render(lastVerdicts,aggregate(lastVerdicts),text);stale=false;markStale();}
 function scoreAction(){MODE==="live"?runLive():run();}
-function setJudging(on){const b=$("#run");b.disabled=on;b.textContent=on?t("judging"):(MODE==="live"?t("scoreLiveBtn"):t("run"));}
+function setAIWork(on,msg){const w=$("#aiwork");if(!w)return;w.classList.toggle("on",!!on);if(msg)$("#aiwork-t").textContent=msg;}
+function setJudging(on){const b=$("#run");b.disabled=on;b.textContent=on?t("judging"):(MODE==="live"?t("scoreLiveBtn"):t("run"));setAIWork(on,t("judging"));}
 function markStale(){const el=$("#stale");if(el){el.style.display=(MODE==="live"&&stale)?"inline":"none";el.textContent=t("staleLbl");}}
-function updateModeBtn(){const b=$("#modebtn");if(b)b.textContent=MODE==="live"?t("judgeLiveLbl"):t("judgeMockLbl");if(!$("#run").disabled)$("#run").textContent=MODE==="live"?t("scoreLiveBtn"):t("run");markStale();}
+function updateModeBtn(){const b=$("#modebtn");if(b){b.textContent=MODE==="live"?t("judgeLiveLbl"):t("judgeMockLbl");b.classList.toggle("live",MODE==="live");}if(!$("#run").disabled)$("#run").textContent=MODE==="live"?t("scoreLiveBtn"):t("run");markStale();}
 function showToastRaw(msg){const el=$("#toast");el.innerHTML=esc(msg);el.classList.add("show");clearTimeout(el._h);el._h=setTimeout(()=>el.classList.remove("show"),4200);}
 function showToast(label,before,after){
  const el=$("#toast"); el.style.color=""; el.style.background=""; el.style.borderColor="";
@@ -451,7 +459,7 @@ async function aiSuggestAll(ids,brief){
  const by={}; (Array.isArray(data)?data:[]).forEach(o=>{if(o&&o.rule_id&&o.text)by[o.rule_id]=String(o.text);});
  return ids.filter(id=>by[id]).map(id=>({id,text:by[id],label:ruleTitle(id)}));
 }
-function setBusyAll(on){const b=$("#fixall");if(b){b.disabled=on;b.textContent=on?t("fixingAll"):(MODE==="live"?t("fixAllLive"):t("fixAll"));}}
+function setBusyAll(on){const b=$("#fixall");if(b){b.disabled=on;b.textContent=on?t("fixingAll"):(MODE==="live"?t("fixAllLive"):t("fixAll"));}if(MODE==="live")setAIWork(on,t("fixingAll"));}
 function showToastAll(n,before,after,anon){
  const el=$("#toast"); el.style.color=""; el.style.background=""; el.style.borderColor="";
  const delta=(before!==null&&after!==null)?` <span class="d">·&nbsp; ${before} → ${after}</span>`:"";
@@ -505,8 +513,10 @@ async function aiSuggest(id){
  return (Array.isArray(data)?data:[]).filter(o=>o&&o.label&&o.text).slice(0,4).map(o=>({label:String(o.label),text:String(o.text),ai:true}));
 }
 async function fetchFixes(id){
+ setAIWork(true,t("aiThinking"));
  try{ const r=await aiSuggest(id); if(r&&r.length){aiCache[id]=r;delete aiFailed[id];} else {aiFailed[id]=true;} }
  catch(e){ aiFailed[id]=true; }
+ setAIWork(false);
  const menu=document.getElementById("menu-"+id); if(menu){ renderMenu(id); menu.classList.add("open"); }
 }
 $("#findings").addEventListener("click",ev=>{

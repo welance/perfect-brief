@@ -49,9 +49,17 @@
   .sample{border:1px solid var(--rule-strong);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
   .sample .ok{color:var(--pass)} .sample .gap{color:var(--fail)} .sample .src{color:var(--ink-soft)}
 
-  /* rule cards */
-  .rule{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:16px}
-  .rule-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid var(--rule);background:var(--paper)}
+  /* rule cards — accordion: all visible, open only if curious */
+  .rule{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:10px}
+  details.rule>summary{list-style:none;cursor:pointer}
+  details.rule>summary::-webkit-details-marker{display:none}
+  .rule-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;background:var(--paper)}
+  details.rule[open] .rule-top{border-bottom:1px solid var(--rule)}
+  .rule-top:hover{background:var(--paper-2)}
+  .chev{font-family:var(--mono);font-size:15px;color:var(--ink-soft);transition:transform .15s;line-height:1}
+  details.rule[open] .chev{transform:rotate(45deg)}
+  .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule-strong);padding:2px 6px;background:var(--paper-2)}
+  .rule-num:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
   .rule-id{font-family:var(--mono);font-size:13.5px;font-weight:600} .rule-title{font-size:15px;color:var(--ink-soft)}
   .badges{margin-left:auto;display:flex;gap:6px}
   .badge{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border:1px solid}
@@ -61,6 +69,7 @@
   .field .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}
   .field .v{font-size:14px;line-height:1.55}
   .refs{font-family:var(--mono);font-size:11.5px;line-height:1.8}
+  .refs a{color:var(--accent)}
   .tier{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:.05em;padding:1px 5px;border:1px solid currentColor;margin-right:6px}
   .tier.standard{color:var(--pass)} .tier.practice{color:var(--accent)} .tier.encyclopedic{color:var(--ink-soft)}
 
@@ -89,7 +98,7 @@
     <p class="hero-sub">A good brief gives a product the right start. We made the standard open.</p>
     <div class="hero-ratio"><span class="s">20%</span> brief · <span class="t">80%</span> team</div>
     <div class="hero-ratio-cap">where the success of a digital product actually comes from</div>
-    <a class="navlink" href="test.html">→ score a brief in the live console</a>
+    <a class="navlink" href="console.html">→ score a brief in the live console</a>
   </header>
 
   <p class="body" style="margin-top:34px">We put together teams for a living, so we see it constantly: a product's outcome is mostly the team — but the brief is the 20% that decides whether that team starts on solid ground or spends the first month untangling what was meant. Usually that untangling happens in workshops: expensive, slow, and dependent on us being in the room.</p>
@@ -126,7 +135,7 @@
 
   <!-- RULESET -->
   <div class="eyebrow"><span>the ruleset · 14 rules</span></div>
-  <p class="body" style="margin-top:-4px">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests.</p>
+  <p class="body" style="margin-top:-4px">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests. Numbers (R01–R14) are for easy reference in discussion — link any rule directly, e.g. <code>rules.html#anonymised</code>; the <code>id</code> is the canonical name in PRs and API verdicts.</p>
   <div id="ruleset"></div>
 
   <!-- CITATION TIERS -->
@@ -153,7 +162,7 @@
     <p><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
   </div>
 
-  <footer><span>The Perfect Digital Product Brief · welance</span><a href="test.html">→ live console</a></footer>
+  <footer><span>The Perfect Digital Product Brief · welance</span><a href="console.html">→ live console</a></footer>
 </div>
 
 <script>
@@ -161,69 +170,73 @@ const RULES=[
  {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not-fail",
   rationale:"A titled brief is findable, scannable, and signals that the author knows what the thing is. On a noticeboard, a missing title is the first failure of communication.",
   criteria:"The brief opens with a short, specific title naming the product or problem. Partial if a title exists but is generic.",
-  refs:[["practice","Design brief","names itself up front"]]},
+  refs:[["practice", "Design brief — names itself up front", "a brief leads with a clear subject", "https://en.wikipedia.org/wiki/Design_brief"]]},
  {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not-fail",
   rationale:"A solution with no stated problem can't be validated, prioritised, or measured. Starting from a problem is the first grip on reality.",
   criteria:"Names the user problem the product addresses, distinct from the proposed solution. Partial if the problem is only implied.",
-  refs:[["practice","Jobs to be Done","frame the need before the solution"]]},
+  refs:[["practice", "Jobs to be Done", "frame the need before the solution", "https://en.wikipedia.org/wiki/Outcome-Driven_Innovation"]]},
  {id:"scope-boundaries",title:"States what is explicitly out of scope",weight:11,severity:"medium",
   rationale:"Most overruns come from the gap between assumed-included and assumed-excluded. Naming exclusions up front is cheap.",
   criteria:"Explicitly names at least one thing out of scope, or states a clear boundary. Partial if only implied.",
-  refs:[["practice","Scope statement","in-scope vs out-of-scope"],["encyclopedic","Scope creep","the failure this prevents"]]},
+  refs:[["practice", "Scope statement", "in-scope vs out-of-scope is stated", "https://en.wikipedia.org/wiki/Scope_(project_management)"], ["encyclopedic", "Scope creep", "the failure this prevents", "https://en.wikipedia.org/wiki/Scope_creep"]]},
  {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not-fail",
   rationale:"A brief with no budget, or one below the engagement floor, can't be matched to a senior team. The floor is marketplace policy.",
   criteria:"States a budget figure. Pass at/above the floor with headroom; warn if it only just clears; fail if absent or below. Floor is policy in scoring.yaml.",
-  refs:[["practice","Statement of work — budget","engagement is sized before it starts"]]},
+  refs:[["practice", "Statement of work — budget", "engagement is sized before it starts", "https://en.wikipedia.org/wiki/Statement_of_work"]]},
  {id:"success-metrics",title:"Defines a measurable outcome",weight:10,severity:"high",
   rationale:"Without a target the team optimises outputs instead of outcomes and never knows when it's winning or done.",
   criteria:"States how success is measured: an outcome with a direction and ideally a target. Fail if success is an opinion.",
-  refs:[["practice","SMART criteria","Measurable, Time-bound"],["practice","OKR","outcomes over outputs"]]},
+  refs:[["practice", "SMART criteria", "Measurable, Time-bound", "https://en.wikipedia.org/wiki/SMART_criteria"], ["practice", "OKR", "outcomes over outputs", "https://en.wikipedia.org/wiki/OKR"]]},
  {id:"deliverables-concrete",title:"Deliverables are concrete (definition of done)",weight:10,severity:"high",
   rationale:"Vague scope is the single best predictor of handoff disputes. If a deliverable can't be checked off, the parties will disagree later.",
   criteria:"Each deliverable has an observable acceptance condition a third party could verify. Adjective-only descriptions don't count.",
-  refs:[["standard","ISO/IEC/IEEE 29148:2018",'characteristic: "verifiable"'],["practice","INVEST","the T for Testable"]]},
+  refs:[["standard", "ISO/IEC/IEEE 29148:2018", "requirement characteristic: \"verifiable\"", "https://www.iso.org/standard/72089.html"], ["practice", "INVEST — the T for Testable", "a good requirement is testable", "https://en.wikipedia.org/wiki/INVEST_(mnemonic)"]]},
  {id:"timeline",title:"A timeline or deadline is stated",weight:8,severity:"medium",
   rationale:"Doability and matching both depend on time. A brief with no horizon can't be scheduled, staffed, or sized.",
   criteria:"Names a timeframe, deadline, or milestone for the work. Fail if absent.",
-  refs:[["standard","ISO/IEC/IEEE 29148:2018","schedule as a constraint"]]},
+  refs:[["standard", "ISO/IEC/IEEE 29148:2018", "schedule as a constraint", "https://www.iso.org/standard/72089.html"]]},
  {id:"anonymised",title:"Anonymised & blind-safe",weight:8,severity:"high",gate:"pass",
   rationale:"The Directory is blind: teams respond to substance, not brand. A brief that leaks the company, named people, contacts, or personal data breaks blind review.",
   criteria:"No company/brand names, named individuals, contact details (emails, phones, URLs), or personal data. Pass only if fully clean.",
-  refs:[["practice","Blind review reduces bias","judge substance, not identity"],["standard","GDPR — data minimisation (Art. 5)","don't expose data you don't need"]]},
+  refs:[["practice", "Blind review reduces bias", "responders judge substance, not identity", "https://en.wikipedia.org/wiki/Blind_experiment"], ["standard", "GDPR — data minimisation (Art. 5)", "don't expose personal data you don't need", "https://gdpr-info.eu/art-5-gdpr/"]]},
  {id:"users-identified",title:"Names and situates the users",weight:7,severity:"high",
   rationale:"\u2018Everyone\u2019 is no one. Without a named user and context, the team can't prioritise, design, or test.",
   criteria:"Identifies at least one concrete user segment and the context in which they act. Fail if the user is \u2018everyone\u2019.",
-  refs:[["standard","ISO 9241-210","specify the context of use"],["practice","Personas (UX)","named, situated users"]]},
+  refs:[["standard", "ISO 9241-210", "specify the context of use", "https://www.iso.org/standard/77520.html"], ["practice", "Personas", "named, situated users", "https://en.wikipedia.org/wiki/Persona_(user_experience)"]]},
  {id:"team-shape",title:"Indicates the team it needs",weight:6,severity:"medium",
   rationale:"On a team marketplace, the brief is also a matching signal. Saying what capabilities the work needs lets the right team self-select.",
   criteria:"Gives some indication of the team or skills the work calls for: roles, disciplines, size, or duration.",
-  refs:[["practice","Cross-functional team / RACI","name the roles the work needs"]]},
+  refs:[["practice", "Cross-functional team / RACI", "name the roles the work needs", "https://en.wikipedia.org/wiki/Responsibility_assignment_matrix"]]},
  {id:"constraints-tech",title:"Technical constraints are on the table",weight:4,severity:"medium",
   rationale:"Doability lives partly here: existing stack, required integrations, platforms. Stated early they're options; discovered late, crises. (Budget and timeline are scored separately.)",
   criteria:"Names at least one concrete technical constraint: stack, platform, a required integration, or an environment limit.",
-  refs:[["standard","ISO/IEC/IEEE 29148:2018","design & implementation constraints"]]},
+  refs:[["standard", "ISO/IEC/IEEE 29148:2018", "design & implementation constraints", "https://www.iso.org/standard/72089.html"]]},
  {id:"assumptions-risks",title:"Surfaces key assumptions & risks",weight:3,severity:"medium",
   rationale:"The assumptions a brief leaves unstated are exactly where products die. Name the biggest risk and de-risk it first.",
   criteria:"Names at least one explicit assumption or risk (technical, market, or dependency).",
-  refs:[["standard","ISO 31000","identify risks early"]]},
+  refs:[["standard", "ISO 31000", "identify risks early", "https://www.iso.org/iso-31000-risk-management.html"]]},
  {id:"data-compliance",title:"Names the compliance regime for personal data",weight:3,severity:"high",
   rationale:"Distinct from anonymising the brief: this is about the product. If it handles personal data, retrofitting privacy is the most expensive rework.",
   criteria:"Applies only if the product involves personal data. Then: names the compliance regime (GDPR, DPA, privacy-by-design). Otherwise not applicable.",
-  refs:[["standard","GDPR — Reg. (EU) 2016/679","lawful basis, by design"]]},
+  refs:[["standard", "GDPR — Reg. (EU) 2016/679", "lawful basis, privacy by design", "https://gdpr-info.eu/"]]},
  {id:"accessibility-considered",title:"Accessibility is an explicit expectation",weight:2,severity:"medium",
   rationale:"For public and many commercial EU products this is law, not a nicety — and it widens the audience the product scales to.",
   criteria:"States an accessibility expectation for any user-facing product (e.g. WCAG level). Not applicable if there's no user-facing surface.",
-  refs:[["standard","WCAG 2.2 (W3C)","conformance level AA"],["standard","EN 301 549 / AgID","EU & Italian public-sector duty"]]},
+  refs:[["standard", "WCAG 2.2 (W3C)", "conformance level AA", "https://www.w3.org/TR/WCAG22/"], ["standard", "EN 301 549 / AgID", "EU & Italian public-sector duty", "https://www.agid.gov.it/it/design-servizi/accessibilita"]]},
 ];
-document.getElementById("ruleset").innerHTML=RULES.map(r=>`
- <div class="rule">
-   <div class="rule-top"><span class="rule-id">${r.gate?"★ ":""}${r.id}</span><span class="rule-title">${r.title}</span>
-     <span class="badges"><span class="badge b-w">weight ${r.weight}</span>${r.gate?`<span class="badge b-high">★ gate · ${r.gate}</span>`:`<span class="badge b-${r.severity}">${r.severity}</span>`}</span></div>
+const RULE_SRC="https://github.com/welance/perfect-brief/blob/main/perfect_brief/rules";
+document.getElementById("ruleset").innerHTML=RULES.map((r,i)=>`
+ <details class="rule" id="${r.id}">
+   <summary class="rule-top"><a class="rule-num" href="#${r.id}" title="link to this rule">R${String(i+1).padStart(2,"0")}</a><span class="rule-id">${r.gate?"★ ":""}${r.id}</span><span class="rule-title">${r.title}</span>
+     <span class="badges"><span class="badge b-w">weight ${r.weight}</span>${r.gate?`<span class="badge b-high">★ gate · ${r.gate}</span>`:`<span class="badge b-${r.severity}">${r.severity}</span>`}<span class="chev">+</span></span></summary>
    <div class="rule-body">
      <div class="field"><div class="k">why it matters</div><div class="v">${r.rationale}</div></div>
      <div class="field"><div class="k">criteria · the model reads this</div><div class="v">${r.criteria}</div></div>
-     <div class="field"><div class="k">sources</div><div class="refs">${r.refs.map(x=>`<span class="tier ${x[0]}">${x[0]}</span>${x[1]} — ${x[2]}`).join("<br>")}</div></div>
-   </div></div>`).join("");
+     <div class="field"><div class="k">sources · cited in the rule file the judge scores from</div><div class="refs">${r.refs.map(x=>`<span class="tier ${x[0]}">${x[0]}</span><a href="${x[3]}" target="_blank" rel="noopener">${x[1]}</a> — ${x[2]}`).join("<br>")}<br><span class="tier practice">file</span><a href="${RULE_SRC}/${r.id}.yaml" target="_blank" rel="noopener">${r.id}.yaml</a> — the contestable rule itself</div></div>
+   </div></details>`).join("");
+// deep link: /rules.html#anonymised opens and scrolls to that rule
+(function(){const h=location.hash.slice(1);if(!h)return;const el=document.getElementById(h);if(el&&el.classList.contains("rule")){el.open=true;el.scrollIntoView({block:"start"});}})();
+document.querySelectorAll(".rule-num").forEach(a=>a.addEventListener("click",e=>{const d=e.target.closest("details");if(d)d.open=true;}));
 </script>
 </body>
 </html>
