@@ -60,6 +60,7 @@
   details.rule[open] .chev{transform:rotate(45deg)}
   .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule-strong);padding:2px 6px;background:var(--paper-2)}
   .rule-num:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
+  .rule-w{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);border:1px solid var(--accent);background:var(--accent-bg);padding:2px 6px}
   .rule-id{font-family:var(--mono);font-size:13.5px;font-weight:600} .rule-title{font-size:15px;color:var(--ink-soft)}
   .badges{margin-left:auto;display:flex;gap:6px}
   .badge{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border:1px solid}
@@ -227,8 +228,8 @@ const RULES=[
 const RULE_SRC="https://github.com/welance/perfect-brief/blob/main/perfect_brief/rules";
 document.getElementById("ruleset").innerHTML=RULES.map((r,i)=>`
  <details class="rule" id="${r.id}">
-   <summary class="rule-top"><a class="rule-num" href="#${r.id}" title="link to this rule">R${String(i+1).padStart(2,"0")}</a><span class="rule-id">${r.gate?"★ ":""}${r.id}</span><span class="rule-title">${r.title}</span>
-     <span class="badges"><span class="badge b-w">weight ${r.weight}</span>${r.gate?`<span class="badge b-high">★ gate · ${r.gate}</span>`:`<span class="badge b-${r.severity}">${r.severity}</span>`}<span class="chev">+</span></span></summary>
+   <summary class="rule-top"><a class="rule-num" href="#${r.id}" title="link to this rule">R${String(i+1).padStart(2,"0")}</a><span class="rule-w" title="weight — steers the score in code">W:${r.weight}</span><span class="rule-id">${r.gate?"★ ":""}${r.id}</span><span class="rule-title">${r.title}</span>
+     <span class="badges">${r.gate?`<span class="badge b-high">★ gate · ${r.gate}</span>`:`<span class="badge b-${r.severity}">${r.severity}</span>`}<span class="chev">+</span></span></summary>
    <div class="rule-body">
      <div class="field"><div class="k">why it matters</div><div class="v">${r.rationale}</div></div>
      <div class="field"><div class="k">criteria · the model reads this</div><div class="v">${r.criteria}</div></div>
