@@ -1,8 +1,13 @@
-blank_issues_enabled: false
+# Blank issues stay on — bugs, questions and mis-scores don't all fit a form,
+# and an open bar shouldn't make people fight a template to talk to it.
+blank_issues_enabled: true
 contact_links:
   - name: Security vulnerability (private)
     url: https://github.com/welance/perfect-brief/security/advisories/new
     about: Please report vulnerabilities privately — see SECURITY.md.
-  - name: The ruleset, explained
+  - name: How the bar is governed
+    url: https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md
+    about: Anyone proposes · evidence merges · anyone forks — and the clock every rule change runs on.
+  - name: See the ruleset live
     url: https://welance.github.io/perfect-brief/rules.html
-    about: The 14 rules with rationale, sources, and how to contest them.
+    about: The 14 rules, weights and gate as the scorer applies them.

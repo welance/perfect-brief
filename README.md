@@ -112,7 +112,10 @@ same endpoint server-to-server when it needs to persist a verdict.
   not a quiet penalty on the number.
 - **Governance.** Anyone proposes a rule change via PR; the fixture corpus in CI
   is the immune system — a change that moves the numbers must move the fixtures
-  too, in the open.
+  too, in the open. Rule-change PRs run on a 7-day community discussion window
+  before anyone merges — the PR template walks you through what a complete
+  proposal contains, and [GOVERNANCE.md](GOVERNANCE.md) spells out the clock.
+  Disagreeing with the bar is a first-class use of this repo.
 
 ## Develop & test
 
