@@ -1,0 +1,51 @@
+# The on-ramp for people who think the bar is wrong but aren't ready to PR:
+# a structured proposal that can gather discussion (and a co-author) first.
+name: Rule change proposal
+description: The bar mis-scores something — propose a change before writing the PR.
+title: "[rule] "
+labels: ["rule-change", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Anyone proposes — that's the design. If you can already write the PR,
+        skip this and open one (the PR template walks you through it). This
+        form is for starting the discussion first, or for flagging a
+        mis-score you can't fix yourself.
+  - type: input
+    id: target
+    attributes:
+      label: What are you contesting?
+      description: A rule id (e.g. `budget-floor`), a weight, a gate membership, or a threshold in `scoring.yaml`.
+      placeholder: anonymised · weight 8 · gate:pass
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change, concretely?
+      description: Before → after. "Care more about X" becomes a number or a criterion edit here.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why — with evidence
+      description: |
+        Why does this predict a better brief or a smoother build? Cite sources
+        (standard > practice > encyclopedic, pinned to version/clause) and — best
+        of all — a real brief the current bar mis-scores (anonymise it first).
+    validations:
+      required: true
+  - type: textarea
+    id: corpus
+    attributes:
+      label: Expected corpus impact
+      description: Which fixture briefs should flip band, if any? "None" is a valid answer for a criteria clarification.
+  - type: checkboxes
+    id: followup
+    attributes:
+      label: Follow-through
+      options:
+        - label: I'm willing to turn this into a PR (with fixtures) if the discussion supports it
+        - label: I've read GOVERNANCE.md — evidence merges, taste doesn't
