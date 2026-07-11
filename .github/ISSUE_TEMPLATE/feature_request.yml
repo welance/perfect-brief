@@ -1,0 +1,27 @@
+name: Feature request
+description: Propose a change to the service or consoles (for rule changes, use the rule template).
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: The need first, not the solution — same bar we hold briefs to.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: seam
+    attributes:
+      label: The invariant check
+      description: >
+        The one non-negotiable (GOVERNANCE.md): the LLM only judges; code owns
+        every number, the gate, and the decision. Say briefly why this change
+        keeps that seam intact.
+    validations:
+      required: true
