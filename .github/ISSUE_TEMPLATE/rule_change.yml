@@ -1,0 +1,54 @@
+name: Rule change proposal
+description: Propose a new rule, a reweighting, or a sharper criterion — the PR-shaped discussion.
+labels: ["ruleset"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The bar is contestable by design — see
+        [the ruleset](https://welance.github.io/perfect-brief/rules.html) and
+        CONTRIBUTING.md. If you're ready, a PR against
+        `perfect_brief/rules/` beats an issue; use this when you want
+        discussion first.
+  - type: input
+    id: rule
+    attributes:
+      label: Rule
+      description: Existing rule id (e.g. R09 / anonymised) or the proposed new id.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - new rule
+        - reweighting (weight/severity)
+        - sharper criteria
+        - better sources
+        - gate change (hard requirement)
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why this predicts a better brief or a smoother build.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sources
+      description: >
+        Verifiable references, tiered standard > practice > encyclopedic —
+        authored and checked by you, never model-generated. Encyclopedic may
+        not be the sole anchor of a normative claim.
+  - type: textarea
+    id: fixtures
+    attributes:
+      label: Fixture impact
+      description: >
+        Which fixture briefs would move, and to which expected band? A change
+        that moves numbers must update fixtures in the same PR — the corpus is
+        the immune system.

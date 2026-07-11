@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability (private)
+    url: https://github.com/welance/perfect-brief/security/advisories/new
+    about: Please report vulnerabilities privately — see SECURITY.md.
+  - name: The ruleset, explained
+    url: https://welance.github.io/perfect-brief/rules.html
+    about: The 14 rules with rationale, sources, and how to contest them.

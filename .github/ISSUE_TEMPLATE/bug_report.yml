@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in the service, engine, or console behaves wrongly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security issue? Please **don't** file it here — use
+        [private vulnerability reporting](https://github.com/welance/perfect-brief/security/advisories/new)
+        (see SECURITY.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - engine (perfect_brief/ — scoring, gate, judge seam)
+        - service (app/ — API, cache, rate limit, CORS)
+        - console (app/static/, site/ — UI, mock judge, live mode)
+        - pages / docs
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: >
+        Smallest brief + request (or console steps) that shows it. For scoring
+        disputes include the ruleset_version from the response — a verdict is
+        only reproducible against it.
+      placeholder: |
+        1. POST /v1/score with {"brief": "...", "judge": "mock"}
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: ruleset_version / commit
+      placeholder: 1.0.0+83107baec655
+  - type: checkboxes
+    id: no-secrets
+    attributes:
+      label: No secrets
+      options:
+        - label: This report contains no API keys, credentials, or personal data.
+          required: true
