@@ -1,0 +1,28 @@
+name: mirror-gitlab
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mirror-gitlab
+  cancel-in-progress: false
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # develop is the deploy twin's integration branch; the git-flow pipeline
+      # builds and deploys the develop environment on every push. One-way
+      # mirror: GitHub main is canonical, so force-push (like GitLab's own
+      # push-mirroring) keeps develop identical even if it diverges.
+      - name: Push main to GitLab develop
+        env:
+          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+        run: |
+          git push --force \
+            "https://oauth2:${GITLAB_MIRROR_TOKEN}@gitlab.com/welance/r001-15-perfect-brief.git" \
+            HEAD:refs/heads/develop
