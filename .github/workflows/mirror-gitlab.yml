@@ -16,13 +16,25 @@ jobs:
         with:
           fetch-depth: 0
       # develop is the deploy twin's integration branch; the git-flow pipeline
-      # builds and deploys the develop environment on every push. One-way
-      # mirror: GitHub main is canonical, so force-push (like GitLab's own
-      # push-mirroring) keeps develop identical even if it diverges.
+      # builds and deploys the develop environment. One-way mirror: GitHub
+      # main is canonical, so force-push (like GitLab's own push-mirroring)
+      # keeps develop identical even if it diverges.
+      #
+      # ci.skip + explicit trigger: pipelines created by the project-token bot
+      # cannot include the private git-flow CI template, so the push skips CI
+      # and the trigger token (owned by a project member) starts the pipeline.
       - name: Push main to GitLab develop
         env:
           GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
         run: |
-          git push --force \
+          git push --force -o ci.skip \
             "https://oauth2:${GITLAB_MIRROR_TOKEN}@gitlab.com/welance/r001-15-perfect-brief.git" \
             HEAD:refs/heads/develop
+      - name: Trigger develop pipeline
+        env:
+          GITLAB_TRIGGER_TOKEN: ${{ secrets.GITLAB_TRIGGER_TOKEN }}
+        run: |
+          curl --fail-with-body -s -X POST \
+            -F "token=${GITLAB_TRIGGER_TOKEN}" \
+            -F "ref=develop" \
+            "https://gitlab.com/api/v4/projects/welance%2Fr001-15-perfect-brief/trigger/pipeline"
