@@ -1,6 +1,6 @@
 # Suggestion verifier loop (verifier-of-the-verifier) — design
 
-Date: 2026-07-16 · Status: approved by project owner (models + loop shape) · Spec author: Claude
+Date: 2026-07-16 · Status: implemented 2026-07-17 (plan: docs/superpowers/plans/2026-07-17-suggestion-verifier-loop.md) · Spec author: Claude
 
 ## Problem
 

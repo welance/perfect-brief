@@ -9,14 +9,12 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import logging
 
 from perfect_brief import aggregate, judge_all, llm, load_bundled, loader
 from perfect_brief.judge import MockJudge
-from perfect_brief.score import Finding, Status, Verdict
-
-import logging
-
 from perfect_brief.llm import FIXHINT
+from perfect_brief.score import Finding, Status, Verdict
 
 from . import cache, llm_client
 from .models import (
