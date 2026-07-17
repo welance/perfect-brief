@@ -1,0 +1,34 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Extract this version's section from CHANGELOG.md (## [X.Y.Z] - date
+      # up to the next ## heading) and publish it as the GitHub Release body,
+      # keeping GitHub Releases in lockstep with the GitLab release_job,
+      # which publishes the same file. See RELEASING.md.
+      - name: Extract changelog section
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" {grab=1; next}
+            grab && /^## / {exit}
+            grab {print}
+          ' CHANGELOG.md > /tmp/notes.md
+          if ! [ -s /tmp/notes.md ]; then
+            echo "No CHANGELOG section for $VERSION" >&2; exit 1
+          fi
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" --title "$TAG" --notes-file /tmp/notes.md --verify-tag
