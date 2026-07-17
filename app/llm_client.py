@@ -49,6 +49,41 @@ def default_model() -> str:
     return available_models()[0]
 
 
+# Models that reject non-default sampling params (Claude 4.7+/5 family):
+# for these, omit temperature entirely instead of pinning 0.
+_NO_TEMP_MARKERS = ("claude-sonnet-5", "claude-opus-4.7", "claude-opus-4.8", "claude-fable")
+
+
+def _sampling_kwargs(model: str) -> dict:
+    if any(m in model for m in _NO_TEMP_MARKERS):
+        return {}
+    return {"temperature": 0}
+
+
+def _vendor(slug: str) -> str:
+    return slug.split("/", 1)[0]
+
+
+def resolve_verifier_model(judge_model: str) -> str:
+    """The model that reviews suggestions (the verifier of the verifier).
+
+    Explicit PB_VERIFIER_MODEL wins; "auto" prefers a different vendor from the
+    allowlist, then a different same-vendor model, then the judge itself.
+    Never raises.
+    """
+    cfg = settings()
+    if cfg.verifier_model and cfg.verifier_model != "auto":
+        return cfg.verifier_model
+    allowed = available_models()
+    for m in allowed:
+        if _vendor(m) != _vendor(judge_model):
+            return m
+    for m in allowed:
+        if m != judge_model:
+            return m
+    return judge_model
+
+
 def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     """Validate a per-request model against the server's allowlist.
 
@@ -94,7 +129,7 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
                 json={
                     "model": use,
                     "max_tokens": cfg.llm_max_tokens,
-                    "temperature": 0,
+                    **_sampling_kwargs(use),
                     "messages": [{"role": "user", "content": prompt}],
                 },
             )
@@ -108,7 +143,7 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
     msg = await _anthropic().messages.create(
         model=use,
         max_tokens=cfg.llm_max_tokens,
-        temperature=0,
+        **_sampling_kwargs(use),
         messages=[{"role": "user", "content": prompt}],
     )
     return "".join(block.text for block in msg.content if getattr(block, "type", None) == "text")
