@@ -109,7 +109,8 @@
   .opt{padding:9px 11px;border-bottom:1px solid var(--rule);cursor:pointer;transition:.1s}
   .opt:hover{background:var(--accent-bg)} .opt:last-child{border-bottom:0}
   .opt .lab{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
-  .opt .ai{font-family:var(--mono);font-size:9px;color:var(--accent);border:1px solid var(--accent);padding:0 4px;letter-spacing:.05em;font-weight:600}
+  .opt .vbadge{font-size:.68rem;margin-left:.35rem}.vbadge.ok{color:var(--pass,#1a7f37)}.vbadge.no{color:var(--fail,#b3392e)}
+.ai{font-family:var(--mono);font-size:9px;color:var(--accent);border:1px solid var(--accent);padding:0 4px;letter-spacing:.05em;font-weight:600}
   .opt .prev{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
   .fixmenu-foot{padding:8px 11px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--paper-2);border-top:1px solid var(--rule)}
   .aibtn{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink);background:none;border:1px solid var(--ink);padding:4px 9px;cursor:pointer}
@@ -411,7 +412,7 @@ function renderMenu(id){
  if(!aiCache[id]&&!aiFailed[id]){ el.innerHTML=head+`<div class="opt" style="cursor:default"><div class="lab">${esc(t("aiThinking"))}</div><div class="prev">${esc(t("aiHint"))}</div></div>`; return; }
  const ai=!!aiCache[id], opts=menuOpts(id);
  el.innerHTML=head+
-  opts.map((o,i)=>`<div class="opt" data-pick="${id}" data-idx="${i}"><div class="lab">${ai?'<span class="ai">AI</span>':''}${esc(o.label)}</div><div class="prev">${esc(o.text)}</div></div>`).join("")+
+  opts.map((o,i)=>{const b=o.review?(o.review.accepted?`<span class="vbadge ok" title="${esc(o.review.reason||"")} — ${esc(o.verifier||"reviewer")}">✓</span>`:`<span class="vbadge no" title="${esc(o.review.reason||"")}">✗</span>`):"";return `<div class="opt" data-pick="${id}" data-idx="${i}"><div class="lab">${ai?'<span class="ai">AI</span>':''}${esc(o.label)}${b}</div><div class="prev">${esc(o.text)}</div></div>`;}).join("")+
   `<div class="fixmenu-foot">`+(ai?`<button class="aibtn" data-regen="${id}">↻</button><span class="aihint">${esc(t("aiHint"))}</span>`:`<span class="aihint" style="color:var(--fail)">${esc(t("aiFail"))}</span>`)+`</div>`;
 }
 function render(verdicts,res,text){
@@ -529,7 +530,7 @@ async function aiSuggest(id){
  const resp=await fetch(API+"/v1/suggest",{method:"POST",headers:authHeaders(),body:JSON.stringify({brief,rule_id:id,locale:LOCALE,model:MODEL||undefined})});
  if(!resp.ok) throw new Error("api "+resp.status);
  const data=await resp.json();
- return (Array.isArray(data)?data:[]).filter(o=>o&&o.label&&o.text).slice(0,4).map(o=>({label:String(o.label),text:String(o.text),ai:true}));
+ return (Array.isArray(data)?data:[]).filter(o=>o&&o.label&&o.text).slice(0,4).map(o=>({label:String(o.label),text:String(o.text),ai:true,review:o.review||null,verifier:o.verifier_model||null}));
 }
 async function fetchFixes(id){
  setAIWork(true,t("aiThinking"));
