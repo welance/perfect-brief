@@ -64,10 +64,18 @@ class ScoreResponse(BaseModel):
     cached: bool
 
 
+class ReviewOut(BaseModel):
+    accepted: bool
+    reason: str = ""
+
+
 class Suggestion(BaseModel):
     rule_id: str
     label: str
     text: str
+    # Verifier-loop verdict (None = review unavailable, e.g. verifier down)
+    review: ReviewOut | None = None
+    verifier_model: str | None = None
 
 
 class ReferenceOut(BaseModel):
