@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
@@ -158,13 +158,24 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
         raise HTTPException(status_code=502, detail=f"judge error: {exc}") from exc
 
 
+
+
+def _screening_headers(response: Response, meta: dict) -> None:
+    response.headers["X-PB-Screened"] = "true" if meta["screened"] else "false"
+    response.headers["X-PB-Iterations"] = str(meta["iterations"])
+    response.headers["X-PB-Verifier-Model"] = meta["verifier_model"] or "none"
+
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
-async def post_suggest(req: SuggestRequest, x_llm_key: ByokHeader = None) -> list[Suggestion]:
+async def post_suggest(
+    req: SuggestRequest, response: Response, x_llm_key: ByokHeader = None
+) -> list[Suggestion]:
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest(req.brief, req.rule_id, req.locale, req.model, x_llm_key)
+        suggestions, meta = await scorer.suggest(req.brief, req.rule_id, req.locale, req.model, x_llm_key)
+        _screening_headers(response, meta)
+        return suggestions
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown rule: {req.rule_id}") from None
     except ModelNotAllowed as exc:
@@ -176,12 +187,16 @@ async def post_suggest(req: SuggestRequest, x_llm_key: ByokHeader = None) -> lis
 @app.post(
     "/v1/suggest/all", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)]
 )
-async def post_suggest_all(req: SuggestAllRequest, x_llm_key: ByokHeader = None) -> list[Suggestion]:
+async def post_suggest_all(
+    req: SuggestAllRequest, response: Response, x_llm_key: ByokHeader = None
+) -> list[Suggestion]:
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        return await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model, x_llm_key)
+        suggestions, meta = await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model, x_llm_key)
+        _screening_headers(response, meta)
+        return suggestions
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001

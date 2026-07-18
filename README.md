@@ -117,6 +117,19 @@ same endpoint server-to-server when it needs to persist a verdict.
   proposal contains, and [GOVERNANCE.md](GOVERNANCE.md) spells out the clock.
   Disagreeing with the bar is a first-class use of this repo.
 
+## Decisions
+
+Architecture decisions with real stakes are recorded as ADRs in
+[`docs/decisions/`](docs/decisions/):
+
+- [0001 — cross-model verification](docs/decisions/0001-cross-model-verification.md):
+  why a second model reviews every AI suggestion (self-preference bias), and
+  why the reviewer currently shares a lab with the generator (cost; one env
+  line restores cross-lab review).
+- [0002 — default model selection](docs/decisions/0002-default-model-selection.md):
+  the criteria, the date-stamped price snapshot behind the DeepSeek V4
+  pro/flash pairing, and when to revisit.
+
 ## Develop & test
 
 ```bash

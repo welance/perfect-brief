@@ -14,6 +14,8 @@
     --rule:#D2D3CB; --rule-strong:#B9BAB1;
     --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
     --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
+    /* welance accents (shared with welance.com / welance/Directory) — use sparingly */
+    --wl-y:#eecc5d; --wl-c:#ff7b51; --wl-p:#8856cd;
     --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
     --disp:'Space Grotesk',system-ui,sans-serif;
   }
@@ -46,18 +48,50 @@
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
   footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule-strong);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  /* welance provenance strip + GitHub mark */
+  .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
+  .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .btn.gh{display:inline-flex;align-items:center;gap:8px}
+  .btn.gh svg{width:16px;height:16px;fill:currentColor;flex:none}
+  .head-grid{display:flex;gap:28px;align-items:flex-start;justify-content:space-between}
+  .head-grid .txt{min-width:0}
+  .pb-ident{flex:none;width:120px;margin-top:8px}
+  @media(max-width:560px){.pb-ident{display:none}}
+  /* the perfect-brief ident — drawn in the same stroke-draw technique as the
+     welance/Directory illustrations (no animation library needed) */
+  .pb-ident .draw{fill:none;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;animation:pb-draw 1.1s cubic-bezier(.6,0,.3,1) forwards}
+  .pb-ident .l1{animation-delay:.15s}.pb-ident .l2{animation-delay:.35s}.pb-ident .l3{animation-delay:.55s}
+  .pb-ident .l4{animation-delay:.75s}.pb-ident .l5{animation-delay:1.0s}.pb-ident .l6{animation-delay:1.35s}
+  @keyframes pb-draw{to{stroke-dashoffset:0}}
+  @media(prefers-reduced-motion:reduce){.pb-ident .draw{animation:none;stroke-dashoffset:0}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">welance · open source</div>
-    <h1>The Perfect Brief<span class="b">_</span></h1>
-    <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
+    <div class="head-grid">
+      <div class="txt">
+        <div class="kicker">welance · open source · built for <a href="https://welance.com" style="color:inherit">welance</a>/Directory</div>
+        <h1>The Perfect Brief<span class="b">_</span></h1>
+        <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
+      </div>
+      <svg class="pb-ident" viewBox="0 0 120 140" role="img" aria-label="A brief being written and checked">
+        <path class="draw l1" d="M14 6 h78 l14 14 v114 h-92 z" stroke="var(--ink)" stroke-width="2.5"/>
+        <path class="draw l2" d="M92 6 v14 h14" stroke="var(--ink)" stroke-width="2.5"/>
+        <path class="draw l3" d="M28 40 h56 M28 56 h64 M28 72 h48" stroke="var(--ink-soft)" stroke-width="2.5"/>
+        <path class="draw l4" d="M28 90 h40" stroke="var(--wl-y)" stroke-width="7"/>
+        <circle class="draw l5" cx="86" cy="108" r="14" stroke="var(--wl-c)" stroke-width="2.5"/>
+        <path class="draw l6" d="M79 108 l5 5 l10 -11" stroke="var(--wl-p)" stroke-width="3.5"/>
+      </svg>
+    </div>
     <div class="cta">
       <a class="btn" href="console.html">Try the console</a>
       <a class="btn ghost" href="rules.html">Read the rules</a>
-      <a class="btn ghost" href="https://github.com/welance/perfect-brief">Source</a>
+      <a class="btn ghost gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
+    </div>
+    <div class="prov">
+      <span class="dot" style="background:var(--wl-y)"></span><span class="dot" style="background:var(--wl-c)"></span><span class="dot" style="background:var(--wl-p)"></span>
+      <span>made by <a href="https://welance.com">Welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
     </div>
   </header>
 
@@ -86,6 +120,7 @@
   <p>We are <a href="https://welance.com">Welance</a>, a small collective of independent senior teams, working together since 2012. We're building <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
   <p>There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
   <p>This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
+  <p>Together, this service and the Directory are the digitalised version of what Welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
 
   <div class="eyebrow"><span>governance</span></div>
   <div class="triad">

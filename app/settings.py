@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     # vendor-prefixed — e.g. "anthropic/claude-sonnet-4.5,openai/gpt-4o").
     # First entry is the default when OpenRouter is active. Empty = PB_MODEL only.
     openrouter_models: str = ""
+    # Verifier for the suggestion loop: explicit slug, or "auto" = first
+    # allowlist model whose vendor prefix differs from the judge's (falls back
+    # to a different same-vendor model, then to the judge itself).
+    verifier_model: str = "auto"
     model: str = "claude-sonnet-4-6"
     llm_max_tokens: int = 1500
 
