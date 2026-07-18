@@ -10,7 +10,7 @@ jobs:
     steps:
       # CHANGELOG comes from main, not the tag's tree: backfilled tags predate
       # the file, and main always holds the complete history.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
       # Extract this version's section from CHANGELOG.md (## [X.Y.Z] - date
