@@ -22,12 +22,19 @@ family (`p007-16-welance-website/public/animations/`).
 
 ## Visual system
 
-- **Fonts** (`site/fonts/`, copied from `r001-06-directory/fonts/`):
-  MaisonNeue-{Book,Medium,Demi,Bold}.woff2 + MaisonNeueMono-Regular.woff.
-  `@font-face` blocks identical to Directory `styles.css`. Google Fonts
-  preconnect/link removed. *Note:* Maison Neue is a commercial license already
-  served publicly by welance.com/Directory; the files now also live in this
-  MIT repo — flagged to Enrico, accepted.
+- **Fonts** — no copies (revised in-flight per Enrico, 2026-07-18). Loaded
+  cross-origin from the canonical source `https://welance.com/fonts/*.woff2`
+  (verified live: `access-control-allow-origin: *`, byte-identical to the
+  Directory files). Preconnect + `font-display: swap`, system-ui fallback.
+  Keeps the licensed binaries out of this MIT repo and gives one source of
+  truth for every welance property.
+- **Shared stylesheet** `site/welance.css` — the single home for tokens,
+  `@font-face`, welance logo animation, and button styles; all three site
+  pages link it (no duplicated inline token blocks). Exception:
+  `app/static/index.html` keeps inline tokens — the API-served console must
+  work offline with zero external requests. Follow-up idea (separate repo,
+  not this change): publish canonical `welance.com/styles/welance-tokens.css`
+  from `p007-16-welance-website` and link it everywhere.
 - **Tokens** (Directory values): `--bg:#fff`, `--fg:#0a0a0a`,
   `--muted:#4a4a4a`, `--muted-2:#6e6e6e`, `--line:#e6e6e6`,
   `--line-strong:#0a0a0a`, `--surface:#f7f7f5`, `--surface-2:#efefec`.

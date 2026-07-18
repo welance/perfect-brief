@@ -4,18 +4,134 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Brief · scorer</title>
+<link rel="preconnect" href="https://welance.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
-    --rule:#D2D3CB; --rule-strong:#B9BAB1;
-    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
-    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
-    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
-    --disp:'Space Grotesk','Noto Sans Arabic','Noto Sans SC','Noto Sans JP',system-ui,sans-serif;
-  }
+  /* --- welance.css inlined: this console must work offline --- */
+/* ============================================================
+   welance.css — the welance DNA shared by the perfect-brief pages
+   Source of truth: welance.com (fonts, served with CORS *) and
+   welance/Directory styles.css (tokens, logo, buttons). No font
+   binaries live in this repo; if welance.com ever publishes a
+   canonical tokens.css, this file shrinks to a link.
+   ============================================================ */
+
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Demi.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Directory tokens, mapped onto the token names these pages already use */
+  --paper: #ffffff;
+  --paper-2: #f7f7f5;      /* Directory --surface */
+  --ink: #0a0a0a;
+  --ink-soft: #4a4a4a;     /* Directory --muted (AA at small mono sizes) */
+  --rule: #e6e6e6;         /* Directory --line: the hairline */
+  --rule-strong: #0a0a0a;  /* Directory --line-strong: black, for emphasis only */
+  /* welance accents = the house Lottie palette */
+  --wl-y: #eecc5d;
+  --wl-c: #ff7b51;
+  --wl-p: #8856cd;
+  --wl-cy: #96dbe3;
+  /* semantic colors (functional, not brand) retuned for white */
+  --pass: #2d6a4f;    --pass-bg: #e7f3ec;
+  --partial: #9c7415; --partial-bg: #f6edd5;
+  --fail: #a8392c;    --fail-bg: #f7e4e0;
+  --accent: var(--wl-p); --accent-bg: #ede4f8;
+  /* type: Maison Neue from welance.com; the Mono cut is not published
+     there yet, so mono degrades to the system stack */
+  --disp: "Maison Neue", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --mono: "Maison Neue Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* --- brand: asterisk + wordmark, as on welance.com ------------------- */
+.brand { display: inline-flex; align-items: center; gap: 6px; line-height: 1; text-decoration: none; color: var(--ink); }
+.brand:hover { text-decoration: none; }
+.brand-slash { font-family: var(--disp); font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: #6e6e6e; line-height: 1; }
+
+.wl-logo { display: block; color: var(--ink); overflow: visible; }
+.wl-logo .wl-stroke { stroke-dasharray: 260; stroke-dashoffset: 0; }
+.wl-logo .wl-glyph { opacity: 1; }
+@keyframes wl-stroke-draw { from { stroke-dashoffset: 260; } to { stroke-dashoffset: 0; } }
+@keyframes wl-glyph-in { from { opacity: 0; } to { opacity: 1; } }
+.wl-logo.animated .wl-stroke {
+  stroke-dashoffset: 260;
+  animation: wl-stroke-draw 380ms cubic-bezier(.55, 0, .2, 1) forwards;
+}
+.wl-logo.animated .wl-s1 { animation-delay: 0ms; }
+.wl-logo.animated .wl-s2 { animation-delay: 90ms; }
+.wl-logo.animated .wl-s3 { animation-delay: 180ms; }
+.wl-logo.animated .wl-s4 { animation-delay: 270ms; }
+.wl-logo.animated .wl-glyph { opacity: 0; animation: wl-glyph-in 220ms ease-out forwards; }
+.wl-logo.animated .wl-g1 { animation-delay: 520ms; }
+.wl-logo.animated .wl-g2 { animation-delay: 580ms; }
+.wl-logo.animated .wl-g3 { animation-delay: 640ms; }
+.wl-logo.animated .wl-g4 { animation-delay: 700ms; }
+.wl-logo.animated .wl-g5 { animation-delay: 760ms; }
+.wl-logo.animated .wl-g6 { animation-delay: 820ms; }
+.wl-logo.animated .wl-g7 { animation-delay: 880ms; }
+@media (prefers-reduced-motion: reduce) {
+  .wl-logo.animated .wl-stroke,
+  .wl-logo.animated .wl-glyph { animation: none; stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* --- buttons: Directory style ---------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--disp);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: transparent; color: var(--ink); }
+.btn.sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { background: var(--paper-2); color: var(--ink); }
+
+  /* tokens/fonts/logo from welance.css (welance/Directory DNA);
+     --disp re-declared here to keep the Noto fallbacks for ar/zh/ja */
+  :root{--disp:'Maison Neue','Noto Sans Arabic','Noto Sans SC','Noto Sans JP',system-ui,sans-serif}
+  .brand{margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;font-family:var(--disp);font-size:16px;font-weight:500;color:var(--ink);text-decoration:none}
+  .brand .brand-slash{font-size:16px}
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.5}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
@@ -28,27 +144,27 @@
   .langsel{margin-left:auto;display:flex;align-items:center;gap:7px}
   html[dir=rtl] .langsel{margin-left:0;margin-right:auto}
   .langsel label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-  .langsel select{font-family:var(--mono);font-size:12.5px;padding:5px 8px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink);cursor:pointer}
-  h1{font-family:var(--mono);font-weight:600;font-size:clamp(26px,4.6vw,40px);margin:10px 0 4px;letter-spacing:-.01em}
+  .langsel select{font-family:var(--mono);font-size:12.5px;padding:5px 8px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4.6vw,40px);margin:10px 0 4px;letter-spacing:-.01em}
   h1 .b{color:var(--accent)}
   .thesis{font-size:clamp(16px,2.2vw,19px);max-width:64ch;margin:8px 0 8px}
   .invariant{font-size:clamp(15px,2vw,18px);max-width:64ch;margin:0 0 16px;font-weight:600}
-  .readout{display:flex;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;border:1px solid var(--rule-strong);background:var(--paper-2)}
-  .readout span{padding:6px 12px;border-right:1px solid var(--rule-strong);color:var(--ink-soft)}
+  .readout{display:flex;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;border:1px solid var(--rule);background:var(--paper-2)}
+  .readout span{padding:6px 12px;border-right:1px solid var(--rule);color:var(--ink-soft)}
   .readout span:last-child{border-right:0} .readout b{color:var(--ink);font-weight:600}
   .navlink{font-family:var(--mono);font-size:12px;margin-top:12px;display:inline-block}
   .grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:30px}
   @media(min-width:900px){.grid{grid-template-columns:1.1fr .9fr;gap:42px}}
   section.block{min-width:0}
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin:0 0 14px}
-  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
-  textarea{width:100%;min-height:160px;resize:vertical;background:var(--paper-2);border:1px solid var(--rule-strong);padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.6;color:var(--ink)}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+  textarea{width:100%;min-height:160px;resize:vertical;background:var(--paper-2);border:1px solid var(--rule);padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.6;color:var(--ink)}
   textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
   textarea.flash{animation:fl 1s ease}
   @keyframes fl{0%{background:var(--accent-bg)}100%{background:var(--paper-2)}}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{font-family:var(--mono);font-size:12px;padding:5px 10px;border:1px solid var(--rule-strong);background:var(--paper);cursor:pointer;color:var(--ink-soft);transition:.12s}
+  .chip{font-family:var(--mono);font-size:12px;padding:5px 10px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;color:var(--ink-soft);transition:.12s}
   .chip:hover{border-color:var(--ink);color:var(--ink)}
   .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:9px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:.12s}
@@ -76,16 +192,16 @@
   .vmeta{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);padding:0 16px 12px;line-height:1.6}
   .track-wrap{padding:0 16px 16px}
   .track2{position:relative;height:30px;border:1px solid var(--ink);background:linear-gradient(90deg,var(--fail-bg) 0 45%,var(--partial-bg) 45% 68%,var(--accent-bg) 68% 85%,var(--pass-bg) 85% 100%)}
-  .bline{position:absolute;top:0;bottom:0;width:1px;background:var(--rule-strong)}
+  .bline{position:absolute;top:0;bottom:0;width:1px;background:var(--rule)}
   .bline.accept{width:2px;background:var(--ink)}
   .needle{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--ink);transition:left .5s cubic-bezier(.2,.7,.2,1);z-index:3}
   .needle::after{content:attr(data-s);position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;font-weight:600;background:var(--ink);color:var(--paper);padding:1px 5px;white-space:nowrap}
   .ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-top:8px}
   .group-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:20px 0 4px}
   .group-hint{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin:0 0 8px}
-  .find{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:8px;padding:11px 13px}
+  .find{border:1px solid var(--rule);background:var(--paper-2);margin-bottom:8px;padding:11px 13px}
   .find.pass{border-left:3px solid var(--pass)} .find.partial{border-left:3px solid var(--partial)} .find.fail{border-left:3px solid var(--fail)}
-  html[dir=rtl] .find{border-left:1px solid var(--rule-strong)}
+  html[dir=rtl] .find{border-left:1px solid var(--rule)}
   html[dir=rtl] .find.pass{border-right:3px solid var(--pass)} html[dir=rtl] .find.partial{border-right:3px solid var(--partial)} html[dir=rtl] .find.fail{border-right:3px solid var(--fail)}
   .find-top{display:flex;align-items:baseline;gap:8px}
   .find-mark{font-family:var(--mono);font-weight:600}
@@ -123,7 +239,7 @@
   .knob .kv{min-width:42px;text-align:right;color:var(--ink)}
   .reset{font-family:var(--mono);font-size:11px;color:var(--accent);background:none;border:0;cursor:pointer;padding:0;margin-top:12px}
   .reset:hover{text-decoration:underline}
-  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule-strong);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .modebtn{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink);background:none;border:0;border-bottom:1px dashed var(--ink-soft);padding:0 0 1px;cursor:pointer}
   .modebtn:hover{color:var(--accent);border-color:var(--accent)}
   .modebtn.live{color:var(--accent-bg);background:var(--accent);border:1px solid var(--accent);padding:2px 8px}
@@ -150,6 +266,15 @@
 <body>
 <div class="wrap">
   <header>
+    <a class="brand" href="https://welance.com" aria-label="welance">
+      <svg class="wl-logo" viewBox="26.5 69.5 24 24" width="20" height="20" aria-hidden="true">
+        <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)"><g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
+          <path d="M-374.25,22 L-622.25,22"/><path d="M-498.25,-102 L-498.25,146"/>
+          <path d="M-410.5,109.75 L-586,-65.75"/><path d="M-586,109.75 L-410.5,-65.75"/>
+        </g></g>
+      </svg>
+      welance<span class="brand-slash">/ perfect brief</span>
+    </a>
     <div class="htop">
       <div class="kicker">welance/directory · open ruleset</div>
       <div class="langsel"><label for="lang" data-i18n="langLabel">language</label><select id="lang" aria-label="language"></select></div>
@@ -209,7 +334,7 @@
       <button class="reset" id="reset" data-i18n="reset">reset</button>
     </section>
   </div>
-  <footer><span>The Perfect Brief · scorer</span><span data-i18n="footerB"></span></footer>
+  <footer><span>The Perfect Brief · scorer · <a href="https://github.com/welance/perfect-brief">github</a></span><span data-i18n="footerB"></span></footer>
 </div>
 <script>
 const REPO="https://github.com/welance/perfect-brief/blob/main/perfect_brief/rules";

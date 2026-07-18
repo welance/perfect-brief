@@ -5,49 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://welance.com" crossorigin>
+<link rel="stylesheet" href="welance.css">
 <style>
-  :root{
-    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
-    --rule:#D2D3CB; --rule-strong:#B9BAB1;
-    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
-    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
-    /* welance accents (shared with welance.com / welance/Directory) — use sparingly */
-    --wl-y:#eecc5d; --wl-c:#ff7b51; --wl-p:#8856cd;
-    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
-    --disp:'Space Grotesk',system-ui,sans-serif;
-  }
+  /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6}
   .wrap{max-width:760px;margin:0 auto;padding:0 24px 96px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:40px 0 18px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
-  h1{font-family:var(--mono);font-weight:600;font-size:clamp(28px,5vw,44px);margin:12px 0 6px;letter-spacing:-.01em}
+  .brand{margin-bottom:18px}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5vw,46px);margin:14px 0 6px;letter-spacing:-.02em}
   h1 .b{color:var(--accent)}
   .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin:44px 0 14px}
-  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
   p{max-width:66ch;margin:0 0 14px}
   .cta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
-  .btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:10px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);display:inline-block}
-  .btn:hover{background:var(--accent);border-color:var(--accent);text-decoration:none}
-  .btn.ghost{background:none;color:var(--ink)}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
-  pre{background:var(--paper-2);border:1px solid var(--rule-strong);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 14px}
+  pre{background:var(--paper-2);border:1px solid var(--rule);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 14px}
   pre b{color:var(--accent);font-weight:600}
   .two{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 14px}
   @media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
-  .card{border:1px solid var(--rule-strong);background:var(--paper-2);padding:14px 16px}
+  .card{border:1px solid var(--rule);background:var(--paper-2);padding:14px 16px}
   .card h3{font-family:var(--mono);font-size:13px;margin:0 0 6px}
   .card p{font-size:14.5px;margin:0;color:var(--ink-soft)}
   .card .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block;margin-bottom:2px}
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
-  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule-strong);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   /* welance provenance strip + GitHub mark */
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
@@ -55,7 +42,9 @@
   .btn.gh svg{width:16px;height:16px;fill:currentColor;flex:none}
   .head-grid{display:flex;gap:28px;align-items:flex-start;justify-content:space-between}
   .head-grid .txt{min-width:0}
-  .pb-ident{flex:none;width:120px;margin-top:8px}
+  .pb-ident{flex:none;width:140px;margin-top:4px}
+  .pb-ident svg{display:block;width:100%}
+  .pb-ident.lottie{height:140px}
   @media(max-width:560px){.pb-ident{display:none}}
   /* the perfect-brief ident — drawn in the same stroke-draw technique as the
      welance/Directory illustrations (no animation library needed) */
@@ -71,11 +60,33 @@
   <header>
     <div class="head-grid">
       <div class="txt">
-        <div class="kicker">welance · open source · built for <a href="https://welance.com" style="color:inherit">welance</a>/Directory</div>
+        <a class="brand" href="https://welance.com" aria-label="welance — back to welance.com">
+          <!-- welance asterisk + wordmark, paths verbatim from welance.com / Directory -->
+          <svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" width="116" height="28" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">
+            <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)">
+              <g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
+                <path class="wl-stroke wl-s1" d="M-374.25,22 L-622.25,22"/>
+                <path class="wl-stroke wl-s2" d="M-498.25,-102 L-498.25,146"/>
+                <path class="wl-stroke wl-s3" d="M-410.5,109.75 L-586,-65.75"/>
+                <path class="wl-stroke wl-s4" d="M-586,109.75 L-410.5,-65.75"/>
+              </g>
+            </g>
+            <g class="wl-glyph wl-g1" transform="matrix(0.0833,0,0,0.0833,61.3753,82.5643)"><path fill="currentColor" d="M-60.793,67.637 L-36.475,67.637 L-0.384,-37.519 L0.128,-37.519 L36.475,67.637 L60.793,67.637 L92.788,-67.637 L67.96,-67.637 L45.691,31.65 L45.178,31.65 L11.134,-67.637 L-11.134,-67.637 L-45.178,31.65 L-45.69,31.65 L-67.96,-67.637 L-92.788,-67.637 Z"/></g>
+            <g class="wl-glyph wl-g2" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M-119.854,30.837 C-119.854,73.461 -94.257,102.303 -56.63,102.303 C-30.777,102.303 -10.811,90.817 1.219,68.357 L-18.234,55.339 C-29.497,73.461 -39.736,80.097 -56.885,80.097 C-67.892,80.097 -76.851,76.269 -83.762,68.357 C-90.673,60.444 -94.257,50.235 -94.513,38.239 L4.547,38.239 L4.547,27.774 C4.547,-12.809 -20.026,-40.63 -56.885,-40.63 C-94.001,-40.63 -119.854,-11.277 -119.854,30.837 Z M-94.001,19.096 C-93.489,-1.323 -77.363,-18.424 -56.885,-18.424 C-35.384,-18.424 -21.306,-3.11 -20.282,19.096 Z"/></g>
+            <g class="wl-glyph wl-g3" transform="matrix(0.0833,0,0,0.0833,83.6117,80.4382)"><path fill="currentColor" d="M-12.541,93.161 L12.541,93.161 L12.541,-93.161 L-12.541,-93.161 Z"/></g>
+            <g class="wl-glyph wl-g4" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M82.13,63.252 C82.13,86.989 99.8,102.303 126.67,102.303 C143.31,102.303 157.39,95.922 164.81,85.457 L165.32,85.457 L165.32,98.474 L188.36,98.474 L188.36,5.568 C188.36,-23.018 168.91,-40.63 137.42,-40.63 C122.83,-40.63 110.29,-36.546 100.05,-28.634 C90.07,-20.721 83.93,-10.256 81.62,3.016 L105.94,8.121 C109.27,-8.98 120.78,-18.679 137.42,-18.679 C152.78,-18.679 162.25,-11.533 162.25,-0.557 C162.25,9.397 154.57,14.246 130,20.372 C95.44,28.54 82.13,40.536 82.13,63.252 Z M163.53,52.787 C163.53,68.357 149.45,79.842 129.74,79.842 C114.64,79.842 106.71,73.206 106.71,61.72 C106.71,51.511 114.9,45.64 136.4,40.28 C152.78,35.941 160.72,31.858 163.02,25.987 L163.53,25.987 Z"/></g>
+            <g class="wl-glyph wl-g5" transform="matrix(0.0833,0,0,0.0833,102.9065,82.4049)"><path fill="currentColor" d="M-56.7,69.552 L-31.61,69.552 L-31.61,-13.91 C-31.61,-33.308 -18.81,-46.325 0.64,-46.325 C20.1,-46.325 31.61,-34.074 31.61,-13.91 L31.61,69.552 L56.7,69.552 L56.7,-17.739 C56.7,-49.388 36.48,-69.552 5.5,-69.552 C-8.83,-69.552 -23.93,-63.171 -32.12,-53.727 L-32.63,-53.727 L-32.63,-65.723 L-56.7,-65.723 Z"/></g>
+            <g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>
+            <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
+          </svg>
+          <span class="brand-slash">/ perfect brief</span>
+        </a>
+        <div class="kicker">open source · built for <a href="https://welance.com/directory" style="color:inherit">welance/Directory</a></div>
         <h1>The Perfect Brief<span class="b">_</span></h1>
         <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
       </div>
-      <svg class="pb-ident" viewBox="0 0 120 140" role="img" aria-label="A brief being written and checked">
+      <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
+      <svg viewBox="0 0 120 140" aria-hidden="true">
         <path class="draw l1" d="M14 6 h78 l14 14 v114 h-92 z" stroke="var(--ink)" stroke-width="2.5"/>
         <path class="draw l2" d="M92 6 v14 h14" stroke="var(--ink)" stroke-width="2.5"/>
         <path class="draw l3" d="M28 40 h56 M28 56 h64 M28 72 h48" stroke="var(--ink-soft)" stroke-width="2.5"/>
@@ -83,14 +94,15 @@
         <circle class="draw l5" cx="86" cy="108" r="14" stroke="var(--wl-c)" stroke-width="2.5"/>
         <path class="draw l6" d="M79 108 l5 5 l10 -11" stroke="var(--wl-p)" stroke-width="3.5"/>
       </svg>
+      </div>
     </div>
     <div class="cta">
+      <a class="btn primary gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
       <a class="btn" href="console.html">Try the console</a>
       <a class="btn ghost" href="rules.html">Read the rules</a>
-      <a class="btn ghost gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
     </div>
     <div class="prov">
-      <span class="dot" style="background:var(--wl-y)"></span><span class="dot" style="background:var(--wl-c)"></span><span class="dot" style="background:var(--wl-p)"></span>
+      <span class="dot" style="background:var(--wl-y)"></span><span class="dot" style="background:var(--wl-c)"></span><span class="dot" style="background:var(--wl-p)"></span><span class="dot" style="background:var(--wl-cy)"></span>
       <span>made by <a href="https://welance.com">Welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
     </div>
   </header>
@@ -135,5 +147,25 @@
     <span><a href="console.html">console</a> · <a href="rules.html">rules</a> · <a href="https://briefs.welance.com/docs">API docs</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
   </footer>
 </div>
+<script>
+/* the perfect-brief ident: hand-authored Lottie in the welance house style
+   (same palette/format as welance.com's directory animations). The inline
+   CSS stroke-draw SVG above stays as the no-JS / reduced-motion fallback. */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js';
+  s.async = true;
+  s.onload = function () {
+    var el = document.getElementById('pbIdent');
+    if (!el || !window.lottie) return;
+    el.innerHTML = '';
+    el.classList.add('lottie');
+    lottie.loadAnimation({ container: el, renderer: 'svg', loop: true,
+      autoplay: true, path: 'animations/the-perfect-brief.json' });
+  };
+  document.head.appendChild(s);
+})();
+</script>
 </body>
 </html>

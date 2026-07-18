@@ -1,0 +1,116 @@
+/* ============================================================
+   welance.css — the welance DNA shared by the perfect-brief pages
+   Source of truth: welance.com (fonts, served with CORS *) and
+   welance/Directory styles.css (tokens, logo, buttons). No font
+   binaries live in this repo; if welance.com ever publishes a
+   canonical tokens.css, this file shrinks to a link.
+   ============================================================ */
+
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Demi.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maison Neue";
+  src: url("https://welance.com/fonts/MaisonNeue-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Directory tokens, mapped onto the token names these pages already use */
+  --paper: #ffffff;
+  --paper-2: #f7f7f5;      /* Directory --surface */
+  --ink: #0a0a0a;
+  --ink-soft: #4a4a4a;     /* Directory --muted (AA at small mono sizes) */
+  --rule: #e6e6e6;         /* Directory --line: the hairline */
+  --rule-strong: #0a0a0a;  /* Directory --line-strong: black, for emphasis only */
+  /* welance accents = the house Lottie palette */
+  --wl-y: #eecc5d;
+  --wl-c: #ff7b51;
+  --wl-p: #8856cd;
+  --wl-cy: #96dbe3;
+  /* semantic colors (functional, not brand) retuned for white */
+  --pass: #2d6a4f;    --pass-bg: #e7f3ec;
+  --partial: #9c7415; --partial-bg: #f6edd5;
+  --fail: #a8392c;    --fail-bg: #f7e4e0;
+  --accent: var(--wl-p); --accent-bg: #ede4f8;
+  /* type: Maison Neue from welance.com; the Mono cut is not published
+     there yet, so mono degrades to the system stack */
+  --disp: "Maison Neue", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --mono: "Maison Neue Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* --- brand: asterisk + wordmark, as on welance.com ------------------- */
+.brand { display: inline-flex; align-items: center; gap: 6px; line-height: 1; text-decoration: none; color: var(--ink); }
+.brand:hover { text-decoration: none; }
+.brand-slash { font-family: var(--disp); font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: #6e6e6e; line-height: 1; }
+
+.wl-logo { display: block; color: var(--ink); overflow: visible; }
+.wl-logo .wl-stroke { stroke-dasharray: 260; stroke-dashoffset: 0; }
+.wl-logo .wl-glyph { opacity: 1; }
+@keyframes wl-stroke-draw { from { stroke-dashoffset: 260; } to { stroke-dashoffset: 0; } }
+@keyframes wl-glyph-in { from { opacity: 0; } to { opacity: 1; } }
+.wl-logo.animated .wl-stroke {
+  stroke-dashoffset: 260;
+  animation: wl-stroke-draw 380ms cubic-bezier(.55, 0, .2, 1) forwards;
+}
+.wl-logo.animated .wl-s1 { animation-delay: 0ms; }
+.wl-logo.animated .wl-s2 { animation-delay: 90ms; }
+.wl-logo.animated .wl-s3 { animation-delay: 180ms; }
+.wl-logo.animated .wl-s4 { animation-delay: 270ms; }
+.wl-logo.animated .wl-glyph { opacity: 0; animation: wl-glyph-in 220ms ease-out forwards; }
+.wl-logo.animated .wl-g1 { animation-delay: 520ms; }
+.wl-logo.animated .wl-g2 { animation-delay: 580ms; }
+.wl-logo.animated .wl-g3 { animation-delay: 640ms; }
+.wl-logo.animated .wl-g4 { animation-delay: 700ms; }
+.wl-logo.animated .wl-g5 { animation-delay: 760ms; }
+.wl-logo.animated .wl-g6 { animation-delay: 820ms; }
+.wl-logo.animated .wl-g7 { animation-delay: 880ms; }
+@media (prefers-reduced-motion: reduce) {
+  .wl-logo.animated .wl-stroke,
+  .wl-logo.animated .wl-glyph { animation: none; stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* --- buttons: Directory style ---------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--disp);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: transparent; color: var(--ink); }
+.btn.sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.btn.ghost { border-color: transparent; }
+.btn.ghost:hover { background: var(--paper-2); color: var(--ink); }

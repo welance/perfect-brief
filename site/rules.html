@@ -4,18 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Digital Product Brief · welance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://welance.com" crossorigin>
+<link rel="stylesheet" href="welance.css">
 <style>
-  :root{
-    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
-    --rule:#D2D3CB; --rule-strong:#B9BAB1;
-    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
-    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
-    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --disp:'Space Grotesk',system-ui,sans-serif;
-  }
+  /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
+  .brand{margin-bottom:16px;gap:8px;font-family:var(--disp);font-size:17px;font-weight:500}
+  .brand .brand-slash{font-size:17px}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55}
   .wrap{max-width:880px;margin:0 auto;padding:0 24px 110px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
@@ -32,7 +27,7 @@
   .navlink{font-family:var(--mono);font-size:12.5px;margin-top:22px;display:inline-block}
 
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:12px;margin:54px 0 18px}
-  .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+  .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
 
   .pull{margin:40px 0;padding:24px 26px;border:2px solid var(--ink);background:var(--paper-2);position:relative}
   .pull .tag{position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
@@ -46,11 +41,11 @@
   .gatecap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-top:4px}
 
   /* report mini-sample */
-  .sample{border:1px solid var(--rule-strong);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
+  .sample{border:1px solid var(--rule);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
   .sample .ok{color:var(--pass)} .sample .gap{color:var(--fail)} .sample .src{color:var(--ink-soft)}
 
   /* rule cards — accordion: all visible, open only if curious */
-  .rule{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:10px}
+  .rule{border:1px solid var(--rule);background:var(--paper-2);margin-bottom:10px}
   details.rule>summary{list-style:none;cursor:pointer}
   details.rule>summary::-webkit-details-marker{display:none}
   .rule-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;background:var(--paper)}
@@ -58,7 +53,7 @@
   .rule-top:hover{background:var(--paper-2)}
   .chev{font-family:var(--mono);font-size:15px;color:var(--ink-soft);transition:transform .15s;line-height:1}
   details.rule[open] .chev{transform:rotate(45deg)}
-  .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule-strong);padding:2px 6px;background:var(--paper-2)}
+  .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule);padding:2px 6px;background:var(--paper-2)}
   .rule-num:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
   .rule-w{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);border:1px solid var(--accent);background:var(--accent-bg);padding:2px 6px}
   .rule-id{font-family:var(--mono);font-size:13.5px;font-weight:600} .rule-title{font-size:15px;color:var(--ink-soft)}
@@ -77,7 +72,7 @@
   /* governance steps */
   .gov{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
   @media(min-width:680px){.gov{grid-template-columns:repeat(3,1fr)}}
-  .gcard{border:1px solid var(--rule-strong);background:var(--paper-2);padding:15px}
+  .gcard{border:1px solid var(--rule);background:var(--paper-2);padding:15px}
   .gcard h4{font-family:var(--mono);font-size:13px;margin:0 0 8px} .gcard p{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
   .gcard.propose h4{color:var(--accent)} .gcard.merge h4{color:var(--partial)} .gcard.fork h4{color:var(--pass)}
 
@@ -94,6 +89,15 @@
 <body>
 <div class="wrap">
   <header>
+    <a class="brand" href="https://welance.com" aria-label="welance">
+      <svg class="wl-logo" viewBox="26.5 69.5 24 24" width="22" height="22" aria-hidden="true">
+        <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)"><g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
+          <path d="M-374.25,22 L-622.25,22"/><path d="M-498.25,-102 L-498.25,146"/>
+          <path d="M-410.5,109.75 L-586,-65.75"/><path d="M-586,109.75 L-410.5,-65.75"/>
+        </g></g>
+      </svg>
+      welance<span class="brand-slash">/ perfect brief</span>
+    </a>
     <div class="kicker">welance.com/articles · the open ruleset</div>
     <h1>The Perfect Digital&nbsp;Product Brief</h1>
     <p class="hero-sub">A good brief gives a product the right start. We made the standard open.</p>
@@ -163,7 +167,7 @@
     <p><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
   </div>
 
-  <footer><span>The Perfect Digital Product Brief · welance</span><a href="console.html">→ live console</a></footer>
+  <footer><span>The Perfect Digital Product Brief · a <a href="https://welance.com">Welance</a> open-source project</span><span><a href="https://github.com/welance/perfect-brief">github</a> · <a href="console.html">→ live console</a></span></footer>
 </div>
 
 <script>
