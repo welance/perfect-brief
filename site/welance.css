@@ -37,6 +37,7 @@
 
 :root {
   /* Directory tokens, mapped onto the token names these pages already use */
+  --maxw: 1200px;  /* one container width for every page: a notch above the old console (1080) */
   --paper: #ffffff;
   --paper-2: #f7f7f5;      /* Directory --surface */
   --ink: #0a0a0a;
