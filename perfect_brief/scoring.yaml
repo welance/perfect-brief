@@ -26,15 +26,18 @@ budget_floor: 10000
 #
 # An entry may carry `context: <tag>`: the requirement is instrumental to that
 # consumer rather than intrinsic to a good brief, and callers can deactivate
-# it per request (gate_contexts). Untagged entries always apply. Deactivation
-# only relaxes the gate — the rule still scores.
+# it per request (gate_contexts). Untagged entries always apply. Rules can
+# carry the same tag in their own YAML — a deactivated context removes the
+# rule from the score too (excluded + renormalised), so Directory policy
+# neither blocks nor costs points on a generic brief.
 gate:
   - {rule: clear-title,     require: not_fail}
   - {rule: problem-defined, require: not_fail}
-  - {rule: budget-floor,    require: not_fail}
-  # anonymisation is the blind-noticeboard policy of welance/Directory; a
-  # generic digital-product brief has no blindness to protect.
-  - {rule: anonymised,      require: pass, context: directory}
+  # the €10k floor and anonymisation are welance/Directory noticeboard
+  # policy; a generic digital-product brief has neither a floor nor
+  # blindness to protect.
+  - {rule: budget-floor,    require: not_fail, context: directory}
+  - {rule: anonymised,      require: pass,     context: directory}
 
 # --- Descriptive quality bands (the score's label) --------------------------
 bands:

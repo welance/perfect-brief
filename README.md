@@ -18,10 +18,10 @@ perfect_brief/     the open ruleset + deterministic engine (the OSS core)
   llm.py             batched-judge & suggestion prompts (versioned with rules)
   fixtures/*.yaml    labelled briefs = the regression corpus / CI immune system
 app/                 the FastAPI service
-  main.py            routes, rate limit, CORS, static console
+  main.py            routes, rate limit, CORS; mounts site/ at /
   scorer.py          mock/LLM orchestration + Redis verdict cache
-  static/index.html  the interactive console (the public playground)
-site/                the public pages (Pages): landing, console, rules, article
+site/                THE public pages: landing, console, rules — served both
+                     by GitHub Pages and by the service itself (one surface)
 CLAUDE.md · PLAN.md  bootstrap + phased mission for an agentic coding session
 GOVERNANCE.md · CONTRIBUTING.md · CODEOWNERS · LICENSE   the open-bar machinery (MIT)
 docker-compose.yml   api + redis (the only stateful dependency: ephemeral cache)

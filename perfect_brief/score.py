@@ -61,6 +61,7 @@ class Rule:
     severity: str
     criteria: str
     gate: str | None = None  # None | "not_fail" | "pass"
+    context: str | None = None  # e.g. "directory": rule drops out when the context is off
     applies_to: tuple[str, ...] = ()
     pass_examples: tuple[str, ...] = ()
     fail_examples: tuple[str, ...] = ()
@@ -100,6 +101,7 @@ def load_rules(rules_dir: str) -> dict[str, Rule]:
             severity=d["severity"],
             criteria=d["criteria"],
             gate=d.get("gate"),
+            context=d.get("context"),
             applies_to=tuple(d.get("applies_to") or ()),
             pass_examples=tuple(d.get("pass_examples") or ()),
             fail_examples=tuple(d.get("fail_examples") or ()),
@@ -194,9 +196,15 @@ def aggregate(
     numer = 0.0
     denom = 0.0
     by_status = {v.rule_id: v.status for v in verdicts}
+    ctx = None if contexts is None else frozenset(contexts)
 
     for v in verdicts:
         rule = rules[v.rule_id]
+        if rule.context and ctx is not None and rule.context not in ctx:
+            # the rule is consumer policy for a deactivated context: it
+            # neither scores nor gates, and the average renormalises
+            excluded.append(v.rule_id)
+            continue
         if v.confidence < cfg.confidence_threshold:
             low_conf.append(v.rule_id)
         if v.status is Status.NOT_APPLICABLE:
@@ -208,9 +216,7 @@ def aggregate(
         denom += rule.weight
         contributions.append(RuleContribution(v.rule_id, v.status, rule.weight, unit, weighted))
 
-    gate_passed, gate_missing, gate_contexts = _gate(
-        by_status, cfg, None if contexts is None else frozenset(contexts)
-    )
+    gate_passed, gate_missing, gate_contexts = _gate(by_status, cfg, ctx)
 
     if denom == 0:
         score = None if cfg.abstain_when_no_rules_apply else 100.0

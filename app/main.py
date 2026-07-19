@@ -14,7 +14,6 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 
 from . import cache, llm_client, scorer
 from .llm_client import LLMNotConfigured, ModelNotAllowed
@@ -35,7 +34,9 @@ from .settings import settings
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("perfect_brief.api")
 
-STATIC = Path(__file__).resolve().parent / "static"
+# The one public surface: the same site/ that GitHub Pages publishes.
+# Landing at /, console.html, rules.html, welance.css, animations/.
+SITE = Path(__file__).resolve().parent.parent / "site"
 
 
 @asynccontextmanager
@@ -205,21 +206,9 @@ async def post_suggest_all(
         raise HTTPException(status_code=502, detail=f"suggest error: {exc}") from exc
 
 
-# ---- static console (the playground) --------------------------------------
+# ---- the public pages (same files GitHub Pages serves) ---------------------
 
-
-@app.get("/", include_in_schema=False)
-async def index() -> FileResponse:
-    return FileResponse(STATIC / "index.html")
-
-
-@app.get("/console.html", include_in_schema=False)
-async def console() -> FileResponse:
-    # the console is index.html here; site/rules.html links it as console.html
-    return FileResponse(STATIC / "index.html")
-
-
-if STATIC.exists():
+if SITE.exists():
     from fastapi.staticfiles import StaticFiles
 
-    app.mount("/", StaticFiles(directory=str(STATIC), html=True), name="static")
+    app.mount("/", StaticFiles(directory=str(SITE), html=True), name="site")
