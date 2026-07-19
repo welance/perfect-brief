@@ -6,6 +6,35 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.3.0] - 2026-07-19
+
+### Added
+- **Gate contexts**: `anonymised` and `budget-floor` are welance/Directory
+  noticeboard policy, not properties of a good generic brief. Both rules and
+  their gate entries carry `context: directory`; a caller deactivates the
+  context per request (`gate_contexts: []`) and they drop out entirely — no
+  gate, no score weight, the average renormalised. Verdicts are never
+  changed. Additive API: `gate_contexts` on `POST /v1/score`,
+  `gate.contexts` in the response (audit trail). The console grows a
+  Directory-context toggle under the publish gate (all locales); fixture
+  0006 pins the behavior.
+- **The perfect-brief Lottie** (`site/animations/the-perfect-brief.json`):
+  hand-authored ident in the welance house animation format, played on the
+  landing with the CSS stroke-draw SVG as no-JS / reduced-motion fallback.
+
+### Changed
+- **welance/Directory visual DNA** across all public pages: shared
+  `site/welance.css` (Directory tokens, buttons, animated asterisk
+  wordmark), Maison Neue loaded from welance.com (no font binaries in the
+  repo), breadcrumb navigation, one 1200px container, GitHub repo button
+  first in the hero.
+- **One public surface**: the FastAPI service now mounts `site/` at `/` —
+  the same pages GitHub Pages publishes (landing, console, rules).
+
+### Removed
+- `app/static/index.html` console fork (its verifier badges and
+  attribute-safe escaping were ported into `site/console.html` first).
+
 ## [1.2.0] - 2026-07-17
 
 ### Added
