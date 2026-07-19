@@ -13,8 +13,10 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
    and nothing else. `perfect_brief/score.py` owns weights, gate, decision.
    Never let model output touch a number directly.
 2. **Weights sum to 100.** Gate = `clear-title`, `problem-defined`,
-   `budget-floor` (not_fail) + `anonymised` (pass). Policy lives in
-   `perfect_brief/scoring.yaml`, never hardcoded.
+   `budget-floor` (not_fail) + `anonymised` (pass, tagged `context: directory`
+   — instrumental to the blind noticeboard, deactivatable per request via
+   `gate_contexts`; deactivation relaxes the gate only, never the verdict or
+   the score). Policy lives in `perfect_brief/scoring.yaml`, never hardcoded.
 3. **Fixtures are the CI gate.** `perfect_brief/fixtures/*.yaml` must stay green
    (`make test`). A ruleset change that moves numbers must update fixtures in
    the same commit, with the reason in the message.

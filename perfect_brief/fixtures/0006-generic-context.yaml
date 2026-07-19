@@ -1,0 +1,23 @@
+id: 0006-generic-context
+input_type: brief
+# The 0004 brief again — brand + email still in it — but scored with the
+# Directory context off (gate_contexts: []): a generic digital-product brief
+# has no blind noticeboard to protect, so anonymised no longer gates. The
+# verdict is unchanged and the leak still costs the rule's score points.
+gate_contexts: []
+input: >
+  # Real-time availability for independent restaurant bookings
+
+  Problem: small restaurants lose bookings because staff can't update
+  availability in real time. Primary users: shift managers. Success: reduce
+  no-shows by 30% within two seasons. Deliverables: an auth login with sessions
+  and an availability API endpoint. Out of scope: native apps. Budget band
+  25-40k. Ship before the spring season. Needs a full-stack developer and a
+  designer. Integrates with our Stripe account; contact mara.rossi@acme.it.
+  Risk: low adoption, we validate first. Stores customer booking history; GDPR
+  lawful basis is contract; the public booking page targets WCAG 2.2 AA.
+expected: {min: 85, max: 100}
+expected_decision: accepted
+expected_verdicts:
+  anonymised: fail
+notes: Same content as 0004; the only difference is the deactivated directory context — blocked there, accepted here.

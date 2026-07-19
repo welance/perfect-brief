@@ -16,6 +16,14 @@ class ScoreRequest(BaseModel):
     model: str | None = Field(
         None, description="LLM model for the judge; must be in GET /v1/models. Default: server default."
     )
+    gate_contexts: list[str] | None = Field(
+        None,
+        description=(
+            "Active gate contexts. Context-tagged gate requirements (anonymised -> 'directory') "
+            "apply only if listed. Default (null): all contexts active. Pass [] to score a "
+            "generic brief without the Directory's blind-noticeboard requirement."
+        ),
+    )
 
 
 class SuggestRequest(BaseModel):
@@ -46,6 +54,7 @@ class VerdictOut(BaseModel):
 class GateOut(BaseModel):
     passed: bool
     missing: list[str]
+    contexts: list[str] = []  # context tags honored for this call (audit trail)
 
 
 class ScoreResponse(BaseModel):

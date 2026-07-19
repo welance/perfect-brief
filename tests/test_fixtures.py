@@ -25,7 +25,7 @@ def _load(path):
 def test_fixture(path):
     fx = _load(path)
     verdicts = judge_all(MockJudge(), RULES, fx["input"], fx.get("input_type", "brief"))
-    res = aggregate(verdicts, RULES, CFG)
+    res = aggregate(verdicts, RULES, CFG, contexts=fx.get("gate_contexts"))
 
     lo, hi = fx["expected"]["min"], fx["expected"]["max"]
     assert lo <= res.score <= hi, f"{fx['id']}: score {res.score} not in [{lo},{hi}]"

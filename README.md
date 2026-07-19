@@ -12,7 +12,7 @@ OSS repo and consumed here as a pinned dependency — the seam is already drawn.
 ```
 perfect_brief/     the open ruleset + deterministic engine (the OSS core)
   rules/*.yaml       14 rules, weights sum to 100, ★ = gate requirement
-  scoring.yaml       the €10k floor, the 4-requirement gate, the bands
+  scoring.yaml       the €10k floor, the 4-requirement gate (anonymised is directory-context, deactivatable), the bands
   score.py           weighted average + gate + decision (no model here)
   judge.py           MockJudge (keyword, offline) + LLMJudge protocol
   llm.py             batched-judge & suggestion prompts (versioned with rules)
