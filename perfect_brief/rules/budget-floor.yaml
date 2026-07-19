@@ -7,6 +7,10 @@ rationale: >
 weight: 11
 severity: high
 gate: not_fail
+# The €10k floor is welance/Directory marketplace policy, not a property of a
+# good generic brief — the rule (and its gate entry) deactivates with the
+# directory context.
+context: directory
 applies_to: [brief]
 criteria: >
   States a budget figure. Pass if at or above the floor with headroom. Partial

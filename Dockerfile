@@ -8,6 +8,7 @@ WORKDIR /srv
 COPY pyproject.toml ./
 COPY perfect_brief ./perfect_brief
 COPY app ./app
+COPY site ./site
 RUN pip install --upgrade pip && pip install .
 
 # non-root

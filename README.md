@@ -12,16 +12,16 @@ OSS repo and consumed here as a pinned dependency — the seam is already drawn.
 ```
 perfect_brief/     the open ruleset + deterministic engine (the OSS core)
   rules/*.yaml       14 rules, weights sum to 100, ★ = gate requirement
-  scoring.yaml       the €10k floor, the 4-requirement gate, the bands
+  scoring.yaml       the €10k floor, the 4-requirement gate (anonymised is directory-context, deactivatable), the bands
   score.py           weighted average + gate + decision (no model here)
   judge.py           MockJudge (keyword, offline) + LLMJudge protocol
   llm.py             batched-judge & suggestion prompts (versioned with rules)
   fixtures/*.yaml    labelled briefs = the regression corpus / CI immune system
 app/                 the FastAPI service
-  main.py            routes, rate limit, CORS, static console
+  main.py            routes, rate limit, CORS; mounts site/ at /
   scorer.py          mock/LLM orchestration + Redis verdict cache
-  static/index.html  the interactive console (the public playground)
-site/                the public pages (Pages): landing, console, rules, article
+site/                THE public pages: landing, console, rules — served both
+                     by GitHub Pages and by the service itself (one surface)
 CLAUDE.md · PLAN.md  bootstrap + phased mission for an agentic coding session
 GOVERNANCE.md · CONTRIBUTING.md · CODEOWNERS · LICENSE   the open-bar machinery (MIT)
 docker-compose.yml   api + redis (the only stateful dependency: ephemeral cache)

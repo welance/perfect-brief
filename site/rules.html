@@ -4,20 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Digital Product Brief · welance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://welance.com" crossorigin>
+<link rel="stylesheet" href="welance.css?v=3">
 <style>
-  :root{
-    --paper:#EDEEE8; --paper-2:#E4E5DE; --ink:#181A1B; --ink-soft:#54574F;
-    --rule:#D2D3CB; --rule-strong:#B9BAB1;
-    --pass:#2D6A4F; --pass-bg:#dfeae2; --partial:#9C7415; --partial-bg:#efe6cf;
-    --fail:#A8392C; --fail-bg:#eed9d4; --accent:#2F4DC4; --accent-bg:#dde2f6;
-    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --disp:'Space Grotesk',system-ui,sans-serif;
-  }
+  /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
+  .crumbs{margin-bottom:16px}
+  .brand{font-family:var(--disp);font-size:15px;font-weight:500}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.55}
-  .wrap{max-width:880px;margin:0 auto;padding:0 24px 110px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 110px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);padding:1px 5px;border:1px solid var(--rule)}
   p.body{max-width:64ch}
@@ -32,7 +27,7 @@
   .navlink{font-family:var(--mono);font-size:12.5px;margin-top:22px;display:inline-block}
 
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:12px;margin:54px 0 18px}
-  .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+  .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
 
   .pull{margin:40px 0;padding:24px 26px;border:2px solid var(--ink);background:var(--paper-2);position:relative}
   .pull .tag{position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
@@ -46,11 +41,11 @@
   .gatecap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-top:4px}
 
   /* report mini-sample */
-  .sample{border:1px solid var(--rule-strong);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
+  .sample{border:1px solid var(--rule);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
   .sample .ok{color:var(--pass)} .sample .gap{color:var(--fail)} .sample .src{color:var(--ink-soft)}
 
   /* rule cards — accordion: all visible, open only if curious */
-  .rule{border:1px solid var(--rule-strong);background:var(--paper-2);margin-bottom:10px}
+  .rule{border:1px solid var(--rule);background:var(--paper-2);margin-bottom:10px}
   details.rule>summary{list-style:none;cursor:pointer}
   details.rule>summary::-webkit-details-marker{display:none}
   .rule-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;background:var(--paper)}
@@ -58,7 +53,7 @@
   .rule-top:hover{background:var(--paper-2)}
   .chev{font-family:var(--mono);font-size:15px;color:var(--ink-soft);transition:transform .15s;line-height:1}
   details.rule[open] .chev{transform:rotate(45deg)}
-  .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule-strong);padding:2px 6px;background:var(--paper-2)}
+  .rule-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);border:1px solid var(--rule);padding:2px 6px;background:var(--paper-2)}
   .rule-num:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
   .rule-w{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);border:1px solid var(--accent);background:var(--accent-bg);padding:2px 6px}
   .rule-id{font-family:var(--mono);font-size:13.5px;font-weight:600} .rule-title{font-size:15px;color:var(--ink-soft)}
@@ -77,7 +72,7 @@
   /* governance steps */
   .gov{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
   @media(min-width:680px){.gov{grid-template-columns:repeat(3,1fr)}}
-  .gcard{border:1px solid var(--rule-strong);background:var(--paper-2);padding:15px}
+  .gcard{border:1px solid var(--rule);background:var(--paper-2);padding:15px}
   .gcard h4{font-family:var(--mono);font-size:13px;margin:0 0 8px} .gcard p{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
   .gcard.propose h4{color:var(--accent)} .gcard.merge h4{color:var(--partial)} .gcard.fork h4{color:var(--pass)}
 
@@ -94,7 +89,20 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">welance.com/articles · the open ruleset</div>
+    <nav class="crumbs" aria-label="breadcrumb">
+      <a class="brand" href="https://welance.com" aria-label="welance">
+        <svg class="wl-logo" viewBox="26.5 69.5 24 24" width="18" height="18" aria-hidden="true">
+          <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)"><g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
+            <path d="M-374.25,22 L-622.25,22"/><path d="M-498.25,-102 L-498.25,146"/>
+            <path d="M-410.5,109.75 L-586,-65.75"/><path d="M-586,109.75 L-410.5,-65.75"/>
+          </g></g>
+        </svg>
+        welance
+      </a>
+      <span class="sep">/</span><a href="./">perfect brief</a>
+      <span class="sep">/</span><span class="cur">rules</span>
+      <a class="gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+    </nav>
     <h1>The Perfect Digital&nbsp;Product Brief</h1>
     <p class="hero-sub">A good brief gives a product the right start. We made the standard open.</p>
     <div class="hero-ratio"><span class="s">20%</span> brief · <span class="t">80%</span> team</div>
@@ -132,7 +140,7 @@
     <div class="a"><b>85 +</b><small>Directory-ready</small></div>
   </div>
   <div class="gatecap"><span>← descriptive score bands</span><span>bands, floor &amp; gate live in scoring.yaml — contestable</span></div>
-  <p class="body" style="margin-top:16px">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely.</p>
+  <p class="body" style="margin-top:16px">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely. Two requirements are scoped rather than universal: anonymisation and the €10k floor exist for the blind noticeboard, so both rules carry a <code>context: directory</code> tag — a caller scoring a generic digital-product brief deactivates that context (<code>gate_contexts: []</code>) and they drop out entirely: no gate, no score weight, the average renormalised over the twelve rules that apply anywhere.</p>
 
   <!-- RULESET -->
   <div class="eyebrow"><span>the ruleset · 14 rules</span></div>
@@ -163,7 +171,7 @@
     <p><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
   </div>
 
-  <footer><span>The Perfect Digital Product Brief · welance</span><a href="console.html">→ live console</a></footer>
+  <footer><span>The Perfect Digital Product Brief · a <a href="https://welance.com">Welance</a> open-source project</span><span><a href="https://github.com/welance/perfect-brief">github</a> · <a href="console.html">→ live console</a></span></footer>
 </div>
 
 <script>

@@ -101,10 +101,15 @@ async def _judge(
 
 
 async def score(
-    brief: str, locale: str, judge_kind: str, model: str | None = None, api_key: str | None = None
+    brief: str,
+    locale: str,
+    judge_kind: str,
+    model: str | None = None,
+    api_key: str | None = None,
+    gate_contexts: list[str] | None = None,
 ) -> ScoreResponse:
     verdicts, cached, used_model = await _judge(brief, judge_kind, model, api_key)
-    breakdown = aggregate(verdicts, _RULES, _CFG)
+    breakdown = aggregate(verdicts, _RULES, _CFG, contexts=gate_contexts)
     vmap = {v.rule_id: v for v in verdicts}
     out_verdicts = [
         VerdictOut(
@@ -124,7 +129,11 @@ async def score(
         band=breakdown.band,
         decision=breakdown.decision,
         decision_label=breakdown.decision_label,
-        gate=GateOut(passed=breakdown.gate_passed, missing=breakdown.gate_missing),
+        gate=GateOut(
+            passed=breakdown.gate_passed,
+            missing=breakdown.gate_missing,
+            contexts=breakdown.gate_contexts,
+        ),
         verdicts=out_verdicts,
         review_required=breakdown.review_required,
         low_confidence=breakdown.low_confidence,

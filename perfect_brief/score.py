@@ -61,6 +61,7 @@ class Rule:
     severity: str
     criteria: str
     gate: str | None = None  # None | "not_fail" | "pass"
+    context: str | None = None  # e.g. "directory": rule drops out when the context is off
     applies_to: tuple[str, ...] = ()
     pass_examples: tuple[str, ...] = ()
     fail_examples: tuple[str, ...] = ()
@@ -100,6 +101,7 @@ def load_rules(rules_dir: str) -> dict[str, Rule]:
             severity=d["severity"],
             criteria=d["criteria"],
             gate=d.get("gate"),
+            context=d.get("context"),
             applies_to=tuple(d.get("applies_to") or ()),
             pass_examples=tuple(d.get("pass_examples") or ()),
             fail_examples=tuple(d.get("fail_examples") or ()),
@@ -145,7 +147,8 @@ class ScoreBreakdown:
     decision_label: str
     gate_passed: bool
     gate_missing: list[str]
-    review_required: bool
+    gate_contexts: list[str] = field(default_factory=list)  # context tags honored
+    review_required: bool = False
     contributions: list[RuleContribution] = field(default_factory=list)
     excluded: list[str] = field(default_factory=list)
     low_confidence: list[str] = field(default_factory=list)
@@ -160,26 +163,48 @@ def _band(score: float | None, cfg: ScoringConfig) -> str:
     return cfg.bands[-1]["label"] if cfg.bands else "—"
 
 
-def _gate(verdicts: dict[str, Status], cfg: ScoringConfig) -> tuple[bool, list[str]]:
+def _gate(
+    verdicts: dict[str, Status], cfg: ScoringConfig, contexts: frozenset[str] | None
+) -> tuple[bool, list[str], list[str]]:
+    """contexts=None means every context tag is active (the service default);
+    otherwise a context-tagged requirement applies only if its tag is listed.
+    Returns (passed, missing rule ids, context tags honored)."""
     missing: list[str] = []
+    active: set[str] = set()
     for req in cfg.gate:
+        tag = req.get("context")
+        if tag is not None:
+            if contexts is not None and tag not in contexts:
+                continue
+            active.add(tag)
         st = verdicts.get(req["rule"], Status.FAIL)
         ok = (st is Status.PASS) if req["require"] == "pass" else (st in (Status.PASS, Status.PARTIAL))
         if not ok:
             missing.append(req["rule"])
-    return (len(missing) == 0, missing)
+    return (len(missing) == 0, missing, sorted(active))
 
 
-def aggregate(verdicts: list[Verdict], rules: dict[str, Rule], cfg: ScoringConfig) -> ScoreBreakdown:
+def aggregate(
+    verdicts: list[Verdict],
+    rules: dict[str, Rule],
+    cfg: ScoringConfig,
+    contexts: list[str] | frozenset[str] | None = None,
+) -> ScoreBreakdown:
     contributions: list[RuleContribution] = []
     excluded: list[str] = []
     low_conf: list[str] = []
     numer = 0.0
     denom = 0.0
     by_status = {v.rule_id: v.status for v in verdicts}
+    ctx = None if contexts is None else frozenset(contexts)
 
     for v in verdicts:
         rule = rules[v.rule_id]
+        if rule.context and ctx is not None and rule.context not in ctx:
+            # the rule is consumer policy for a deactivated context: it
+            # neither scores nor gates, and the average renormalises
+            excluded.append(v.rule_id)
+            continue
         if v.confidence < cfg.confidence_threshold:
             low_conf.append(v.rule_id)
         if v.status is Status.NOT_APPLICABLE:
@@ -191,23 +216,24 @@ def aggregate(verdicts: list[Verdict], rules: dict[str, Rule], cfg: ScoringConfi
         denom += rule.weight
         contributions.append(RuleContribution(v.rule_id, v.status, rule.weight, unit, weighted))
 
-    gate_passed, gate_missing = _gate(by_status, cfg)
+    gate_passed, gate_missing, gate_contexts = _gate(by_status, cfg, ctx)
 
     if denom == 0:
         score = None if cfg.abstain_when_no_rules_apply else 100.0
         decision = "blocked" if not gate_passed else None
         label = cfg.labels.get("blocked", "") if not gate_passed else "No applicable rules"
         return ScoreBreakdown(
-            score,
-            _band(score, cfg),
-            decision,
-            label,
-            gate_passed,
-            gate_missing,
-            bool(low_conf),
-            contributions,
-            excluded,
-            low_conf,
+            score=score,
+            band=_band(score, cfg),
+            decision=decision,
+            decision_label=label,
+            gate_passed=gate_passed,
+            gate_missing=gate_missing,
+            gate_contexts=gate_contexts,
+            review_required=bool(low_conf),
+            contributions=contributions,
+            excluded=excluded,
+            low_confidence=low_conf,
         )
 
     score = round(100.0 * numer / denom, 2)
@@ -219,14 +245,15 @@ def aggregate(verdicts: list[Verdict], rules: dict[str, Rule], cfg: ScoringConfi
     else:
         decision, label = "reserved", cfg.labels["reserved"]
     return ScoreBreakdown(
-        score,
-        band,
-        decision,
-        label,
-        gate_passed,
-        gate_missing,
-        bool(low_conf),
-        contributions,
-        excluded,
-        low_conf,
+        score=score,
+        band=band,
+        decision=decision,
+        decision_label=label,
+        gate_passed=gate_passed,
+        gate_missing=gate_missing,
+        gate_contexts=gate_contexts,
+        review_required=bool(low_conf),
+        contributions=contributions,
+        excluded=excluded,
+        low_confidence=low_conf,
     )

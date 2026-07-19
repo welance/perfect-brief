@@ -8,6 +8,10 @@ rationale: >
 weight: 8
 severity: high
 gate: pass
+# Blindness is a property of the Directory noticeboard, not of briefs in
+# general — the rule (and its gate entry) deactivates with the directory
+# context.
+context: directory
 applies_to: [brief]
 criteria: >
   The brief contains no company/brand names, no named individuals, no contact

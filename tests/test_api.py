@@ -61,6 +61,30 @@ def test_high_score_but_gate_blocked(client):
     assert body["score"] >= 85  # high quality
     assert body["decision"] == "blocked"  # but blocked
     assert "anonymised" in body["gate"]["missing"]
+    assert body["gate"]["contexts"] == ["directory"]
+
+
+def test_gate_contexts_off_scores_generic_brief(client):
+    """Same brand-leaking brief, but scored outside the Directory context:
+    anonymised no longer gates (it still costs its score points)."""
+    brief = (
+        "# Real-time availability for restaurant bookings\n\n"
+        "Problem: restaurants lose bookings because staff can't update availability. "
+        "Primary users: shift managers. Success: reduce no-shows by 30% within two seasons. "
+        "Deliverables: an auth login with sessions and an availability API endpoint. Out of scope: native apps. "
+        "Budget band 25-40k. Ship before the spring season. Needs a full-stack developer and a designer. "
+        "Integrates with our Stripe account; contact mara.rossi@acme.it. "
+        "Risk: low adoption, we validate first. Stores customer booking history; GDPR lawful basis is contract. "
+        "The public booking page targets WCAG 2.2 AA."
+    )
+    r = client.post("/v1/score", json={"brief": brief, "judge": "mock", "gate_contexts": []})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["gate"]["passed"] is True
+    assert body["gate"]["contexts"] == []
+    assert body["decision"] in ("accepted", "reserved")
+    anon = next(v for v in body["verdicts"] if v["rule_id"] == "anonymised")
+    assert anon["status"] == "fail"  # the verdict itself is unchanged
 
 
 def test_empty_brief_422(client):
