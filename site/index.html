@@ -6,7 +6,7 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=2">
+<link rel="stylesheet" href="welance.css?v=3">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -15,7 +15,7 @@
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:40px 0 18px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
-  .brand{margin-bottom:18px}
+  .crumbs{margin-bottom:20px}
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5vw,46px);margin:14px 0 6px;letter-spacing:-.02em}
   h1 .b{color:var(--accent)}
   .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
@@ -60,6 +60,7 @@
   <header>
     <div class="head-grid">
       <div class="txt">
+        <nav class="crumbs" aria-label="breadcrumb">
         <a class="brand" href="https://welance.com" aria-label="welance — back to welance.com">
           <!-- welance asterisk + wordmark, paths verbatim from welance.com / Directory -->
           <svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" width="116" height="28" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">
@@ -79,9 +80,9 @@
             <g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>
             <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
           </svg>
-          <span class="brand-slash">/ perfect brief</span>
         </a>
-        <div class="kicker">open source · built for <a href="https://welance.com/directory" style="color:inherit">welance/Directory</a></div>
+        <span class="sep">/</span><span class="cur">perfect brief</span>
+        </nav>
         <h1>The Perfect Brief<span class="b">_</span></h1>
         <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
       </div>

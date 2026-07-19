@@ -60,6 +60,16 @@
   --mono: "Maison Neue Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
+/* --- breadcrumbs: ✳ welance / perfect brief / <page> ------------------ */
+.crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+.crumbs a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.crumbs a:hover { color: var(--accent); text-decoration: none; }
+.crumbs .sep { color: var(--ink-soft); opacity: .5; }
+.crumbs .cur { color: var(--ink-soft); }
+.crumbs .gh { margin-left: auto; color: var(--ink-soft); }
+.crumbs .gh:hover { color: var(--accent); }
+.crumbs .gh svg { width: 15px; height: 15px; fill: currentColor; display: block; }
+
 /* --- brand: asterisk + wordmark, as on welance.com ------------------- */
 .brand { display: inline-flex; align-items: center; gap: 6px; line-height: 1; text-decoration: none; color: var(--ink); }
 .brand:hover { text-decoration: none; }
