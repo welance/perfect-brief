@@ -1,4 +1,4 @@
-.PHONY: up down logs build test lint fmt typecheck dev score rules health
+.PHONY: up down logs build test test-site lint fmt typecheck dev score rules health
 COMPOSE ?= docker compose
 
 up:            ## build + start the service and redis
@@ -15,6 +15,8 @@ dev:           ## run locally with autoreload (needs local redis or none)
 
 test:          ## fixture corpus (CI gate) + API tests, all on the mock judge
 	pytest
+test-site:     ## engine tests for site/pricing.js (dev-only, needs node)
+	node --test tests/site/pricing.test.mjs
 lint:
 	ruff check .
 fmt:
