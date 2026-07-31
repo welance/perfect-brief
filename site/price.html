@@ -1,0 +1,1081 @@
+<title>Freelancer Share Calculator — Welance</title>
+<style>
+  :root {
+    --bg: #f4f6f6; --surface: #ffffff; --surface-2: #eceff0;
+    --ink: #16201f; --ink-2: #4a5a5a; --ink-3: #7b8a8a;
+    --line: #d8dfdf; --line-strong: #b9c5c5;
+    --person: #c07338; --person-soft: #f2e2d3;
+    --company: #1f5f6b; --company-soft: #d5e5e7;
+    --geo: #7a5c86; --geo-soft: #ece2f0;
+    --full: #2f7a63; --partial: #a8791f; --none: #8a7476; --focus: #1f5f6b;
+    --shadow: 0 1px 2px rgba(22,32,31,.06), 0 8px 24px -12px rgba(22,32,31,.18);
+    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101615; --surface: #182120; --surface-2: #1f2a29;
+      --ink: #e7eeec; --ink-2: #a8b8b6; --ink-3: #7d8f8d;
+      --line: #2b3937; --line-strong: #3d4e4c;
+      --person: #dc9257; --person-soft: #3a2b1e;
+      --company: #58a8b4; --company-soft: #1b3236;
+      --geo: #ab8ab6; --geo-soft: #2e2635;
+      --full: #4fa287; --partial: #caa049; --none: #a2898b; --focus: #58a8b4;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101615; --surface: #182120; --surface-2: #1f2a29;
+    --ink: #e7eeec; --ink-2: #a8b8b6; --ink-3: #7d8f8d;
+    --line: #2b3937; --line-strong: #3d4e4c;
+    --person: #dc9257; --person-soft: #3a2b1e;
+    --company: #58a8b4; --company-soft: #1b3236;
+    --geo: #ab8ab6; --geo-soft: #2e2635;
+    --full: #4fa287; --partial: #caa049; --none: #a2898b; --focus: #58a8b4;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f6f6; --surface: #ffffff; --surface-2: #eceff0;
+    --ink: #16201f; --ink-2: #4a5a5a; --ink-3: #7b8a8a;
+    --line: #d8dfdf; --line-strong: #b9c5c5;
+    --person: #c07338; --person-soft: #f2e2d3;
+    --company: #1f5f6b; --company-soft: #d5e5e7;
+    --geo: #7a5c86; --geo-soft: #ece2f0;
+    --full: #2f7a63; --partial: #a8791f; --none: #8a7476; --focus: #1f5f6b;
+    --shadow: 0 1px 2px rgba(22,32,31,.06), 0 8px 24px -12px rgba(22,32,31,.18);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 30px 22px 72px; }
+
+  .topbar { display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .lang.reset { border-style: dashed; }
+  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+  .langs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .lang { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+    background: var(--surface); color: var(--ink-2);
+    border: 1px solid var(--line-strong); border-radius: 999px; }
+  .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
+
+  .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(29px, 4.4vw, 42px);
+    line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  .lede { margin: 0 0 28px; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
+
+  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
+  @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 22px; box-shadow: var(--shadow); }
+  .card + .card { margin-top: 20px; }
+  .card h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+  .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
+  .card.quiet { background: transparent; box-shadow: none; border-style: dashed; }
+  summary { font-family: var(--serif); font-size: 16.5px; font-weight: 600; cursor: pointer;
+    list-style: none; display: flex; align-items: center; gap: 9px; color: var(--ink-2); }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "+"; font-family: var(--mono); font-size: 15px;
+    color: var(--ink-3); width: 14px; text-align: center; }
+  details[open] summary::before { content: "\2212"; }
+  details[open] summary { color: var(--ink); margin-bottom: 4px; }
+  details > .hint { margin-top: 10px; }
+  .sticky { position: sticky; top: 18px; }
+  @media (max-width: 920px) { .sticky { position: static; } }
+
+  .rolebar { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .subnote { font-size: 12px; color: var(--ink-3); }
+  .field label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; }
+  input[type="text"], input[type="number"], select {
+    font: inherit; color: var(--ink); background: var(--surface-2);
+    border: 1px solid var(--line-strong); border-radius: 7px; padding: 8px 10px; }
+  input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .grow { flex: 1 1 200px; }
+  .w-rate { width: 124px; }
+  :is(input, select, button, [tabindex]):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .comp-head, .comp { display: grid;
+    grid-template-columns: minmax(0,1fr) 44px 90px 90px 58px 26px; gap: 8px; align-items: center; }
+  .comp-head { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; padding: 0 0 8px; border-bottom: 1px solid var(--line); }
+  .comp { padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .comp:last-of-type { border-bottom: 0; }
+  .comp input[type="text"] { width: 100%; }
+  .comp input[type="number"] { width: 100%; text-align: center; }
+  .comp select { width: 100%; font-size: 13px; padding: 7px 6px; }
+  .comp input[type="number"] { padding: 7px 4px; }
+  @media (max-width: 620px) {
+    .comp-head { display: none; }
+    .comp { grid-template-columns: 42px minmax(0,1fr) minmax(0,1fr) 52px 26px;
+      gap: 6px; padding: 9px 0; }
+    .comp > :first-child { grid-column: 1 / -1; }
+    .comp select { font-size: 12.5px; padding: 6px 4px; }
+    .comp input[type="text"] { padding: 7px 9px; }
+    .comp input[type="number"] { padding: 6px 2px; font-size: 13.5px; }
+    .cov { font-size: 12.5px; gap: 4px; }
+    .wrap { padding: 20px 13px 48px; }
+    .card { padding: 16px 14px; }
+    .card + .card { margin-top: 14px; }
+    .cols { gap: 16px; }
+    .rolebar { gap: 10px; margin-bottom: 15px; }
+    .subnote { font-size: 12px; color: var(--ink-3); }
+  .field label { font-size: 10px; letter-spacing: .07em; }
+    .w-rate { width: 100px; }
+    .grow { flex: 1 1 140px; }
+    .lede { font-size: 15.5px; margin-bottom: 20px; }
+    .figures { grid-template-columns: 1fr 1fr; }
+    .fig { padding: 11px 12px; }
+    .fig .v { font-size: 18px; }
+    .mode { font-size: 12.5px; padding: 6px 11px; }
+    .lang { font-size: 11.5px; padding: 5px 9px; }
+  }
+
+  .cov { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13.5px;
+    font-weight: 600; display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .dot.f { background: var(--full); } .dot.p { background: var(--partial); } .dot.n { background: var(--none); }
+
+  .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
+    border-radius: 6px; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
+  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--partial); }
+  .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
+    color: var(--ink-2); border-radius: 7px; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
+  .addbtn:hover { border-color: var(--person); color: var(--person); }
+
+  .levelbadge { display: flex; align-items: center; gap: 9px; font-family: var(--serif);
+    font-size: 24px; font-weight: 600; margin: 0 0 3px; }
+  .levelbadge .chip { width: 11px; height: 31px; border-radius: 3px; background: var(--person); flex: none; }
+  .levelsub { color: var(--ink-3); font-size: 13.5px; margin: 0 0 20px; }
+  .coverline { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+  .coverline .k { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .coverline .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; }
+  .ladder { display: flex; gap: 3px; margin-bottom: 22px; }
+  .rung { flex: 1; height: 5px; border-radius: 2px; background: var(--surface-2); }
+  .rung.on { background: var(--person); }
+
+  .splitbar { display: flex; height: 42px; border-radius: 7px; overflow: hidden; border: 1px solid var(--line-strong); }
+  .splitbar > div { display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+    font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
+  .sb-person { background: var(--person); } .sb-geo { background: var(--geo); } .sb-company { background: var(--company); }
+  .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+  .splitkey span { display: flex; align-items: center; gap: 5px; }
+  .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+
+  .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
+    border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 20px; }
+  .fig { background: var(--surface); padding: 13px 14px; }
+  .fig .k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px; }
+  .fig .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
+  .fig .v small { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+  .fig.geo .v { color: var(--geo); }
+
+  .formula { margin-top: 18px; background: var(--surface-2); border-radius: 8px; padding: 13px 15px;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink-2); overflow-x: auto; }
+  .formula b { color: var(--ink); font-weight: 600; }
+
+  .growth { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .growth li { display: flex; gap: 11px; align-items: baseline; padding: 11px 13px;
+    background: var(--surface-2); border-radius: 7px; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
+  .growth .gain { margin-inline-start: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-weight: 600; color: var(--person); white-space: nowrap; }
+  .allset { color: var(--full); font-size: 14.5px; margin: 0; }
+
+  .modes { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .mode { font: inherit; font-size: 13.5px; padding: 7px 13px; cursor: pointer;
+    background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 999px; }
+  .mode[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
+
+  .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; font-size: 14.5px; }
+  .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
+  .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .switch { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 14.5px; }
+  .switch input { width: 17px; height: 17px; accent-color: var(--geo); }
+
+  .warn { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; background: var(--geo-soft);
+    font-size: 13.5px; color: var(--ink); border-inline-start: 3px solid var(--geo); }
+  .warn b { font-weight: 600; }
+
+  .levels-ref { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .levels-ref th, .levels-ref td { text-align: start; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  .levels-ref th { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .levels-ref td:nth-child(n+2) { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: end; }
+  .levels-ref tr.here td { background: var(--surface-2); font-weight: 600; }
+  .levels-ref tr:last-child td { border-bottom: 0; }
+  .tablewrap { overflow-x: auto; }
+
+  footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  footer p { margin: 0 0 9px; }
+  footer b { color: var(--ink-2); }
+
+  [dir="rtl"] .growth li { border-inline-start: 3px solid var(--person); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <button class="lang reset" id="reset" type="button"></button>
+    <div class="langs" id="langs" role="group" aria-label="Language"></div>
+  </div>
+
+  <header>
+    <p class="eyebrow" id="t-eyebrow"></p>
+    <h1 id="t-title"></h1>
+    <p class="lede" id="t-lede"></p>
+  </header>
+
+  <div class="cols">
+    <div>
+      <section class="card">
+        <h2 id="t-roleh"></h2>
+        <p class="hint" id="t-rolehint"></p>
+        <div class="rolebar">
+          <div class="field grow"><label id="t-l-role" for="rolename"></label>
+            <input type="text" id="rolename">
+            <span class="subnote" id="t-providersub"></span></div>
+          <div class="field" id="fld-rate"><label id="t-l-rate" for="rate"></label>
+            <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
+          <div class="field" id="fld-cap"><label id="t-l-cap" for="capr"></label>
+            <input type="number" id="capr" class="w-rate" value="50" min="0" step="0.5"></div>
+        </div>
+        <div class="modes" style="margin-bottom:18px">
+          <button class="mode" id="w-client" type="button" aria-pressed="true"></button>
+          <button class="mode" id="w-internal" type="button" aria-pressed="false"></button>
+        </div>
+        <div class="comp-head">
+          <div id="t-h-comp"></div><div id="t-h-weight"></div><div id="t-h-self"></div>
+          <div id="t-h-eval"></div><div id="t-h-cov"></div><div></div>
+        </div>
+        <div id="rows"></div>
+        <button class="addbtn" id="add" type="button"></button>
+      </section>
+
+      <section class="card">
+        <h2 id="t-geoh"></h2>
+        <p class="hint" id="t-geohint"></p>
+        <label class="switch"><input type="checkbox" id="usegeo"><span id="t-usegeo"></span></label>
+        <div class="rolebar">
+          <div class="field grow"><label id="t-l-country" for="country"></label>
+            <select id="country"></select></div>
+          <div class="field"><label id="t-l-coef" for="coef"></label>
+            <input type="number" id="coef" class="w-rate" min="0.1" max="2" step="0.01"></div>
+          <div class="field"><label id="t-l-floor" for="floorc"></label>
+            <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0.5"></div>
+        </div>
+        <div id="geonote"></div>
+      </section>
+
+      <section class="card quiet">
+        <details>
+          <summary id="t-checkh"></summary>
+          <p class="hint" id="t-checkhint"></p>
+          <div class="rolebar">
+            <div class="field"><label id="t-l-payout" for="payout"></label>
+              <input type="number" id="payout" class="w-rate" value="50" min="0" step="0.5"></div>
+          </div>
+          <div id="verdict"></div>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2 id="t-growthh"></h2>
+        <p class="hint" id="t-growthhint"></p>
+        <div id="growth"></div>
+      </section>
+    </div>
+
+    <div class="sticky">
+      <section class="card">
+        <h2 id="t-resulth" style="margin-bottom:14px"></h2>
+        <div class="levelbadge"><span class="chip"></span><span id="levelname">—</span></div>
+        <p class="levelsub" id="levelsub">—</p>
+        <div class="coverline"><span class="k" id="t-coverk"></span><span class="v" id="covpct">—</span></div>
+        <div class="ladder" id="ladder"></div>
+        <div class="splitbar">
+          <div class="sb-person" id="barPerson"></div>
+          <div class="sb-geo" id="barGeo"></div>
+          <div class="sb-company" id="barCompany"></div>
+        </div>
+        <div class="splitkey" id="splitkey"></div>
+        <div class="figures">
+          <div class="fig"><div class="k" id="t-f-share"></div><div class="v" id="figShare">—</div></div>
+          <div class="fig"><div class="k" id="t-f-margin"></div><div class="v" id="figMargin">—</div></div>
+          <div class="fig"><div class="k" id="t-f-pay"></div><div class="v" id="figPay">—</div></div>
+          <div class="fig"><div class="k" id="t-f-rate"></div><div class="v" id="figRate">—</div></div>
+        </div>
+        <div class="formula" id="formula"></div>
+      </section>
+
+      <section class="card">
+        <h2 id="t-levelsh"></h2>
+        <p class="hint" id="t-levelshint"></p>
+        <div class="tablewrap">
+          <table class="levels-ref">
+            <thead><tr><th id="t-c-level"></th><th id="t-c-cov"></th><th id="t-c-share"></th><th id="t-c-margin"></th></tr></thead>
+            <tbody id="levelsref"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var T = {
+    en: {
+      dir: "ltr", locale: "en-GB", name: "English",
+      workh: "Type of work", wtClient: "Client work", wtInternal: "Internal work", capLbl: "Internal cap \u20ac/h", fCap: "Level ceiling", internalNote: "Internal work has no client rate \u2014 there is nothing to take a share of. The ceiling is {cap}/h at the top level, scaled down by level.",
+      askLbl: "Their asking rate \u20ac/h",
+      provider: "provider", providerSub: "Independent — a freelancer or a small studio, up to about 25 people.",
+      reset: "Reset to defaults",
+      eyebrow: "Welance · split rule",
+      title: "How much of the client rate goes to the independent",
+      lede: "The share depends on how much of the role the independent covers on its own — not on how much the client pays, and never on a judgement about who they are. List the parts of the role, mark who covers what, and the share follows. The independent may be one freelancer or a studio of up to about 25 people; the model does not care which.",
+      roleh: "The role, part by part",
+      rolehint: "For each part: the person's own view and the view of the most role-adjacent senior colleague. If the two are two steps apart, the calculation stops and it needs a conversation.",
+      role: "Role", person: "Person",
+      hComp: "Part", hWeight: "Weight", hSelf: "Self", hEval: "Reviewer", hCov: "Coverage",
+      add: "+ Add part",
+      full: "Full", partial: "Partial", none: "None",
+      flag: "The two views are two steps apart: this is not averaged, it is discussed.",
+      geoh: "Cost of living",
+      geohint: "An optional coefficient for people living in a very different cost base. It is contested ground — the panel below always shows what the role alone would pay, so the difference stays visible and arguable.",
+      usegeo: "Apply the cost-of-living coefficient",
+      country: "Country", coef: "Coefficient", floorc: "Floor",
+      checkh: "Check the deal",
+      checkhint: "The client rate is a negotiated fact and never moves. Coverage and the coefficient change what the person gets — the field below is only their asking rate, for the no-deal check.",
+      mPayout: "Start from the person's rate", mRate: "Start from the client rate",
+      payout: "Person rate €/h", rate: "Client rate €/h",
+      growthh: "How to move up",
+      growthhint: "The level is not a label, it is a map. Every uncovered part has a value per hour.",
+      resulth: "Result", coverk: "Role coverage",
+      fShare: "Person share", fMargin: "Welance margin", fPay: "To the person", fRate: "Client rate",
+      levelsh: "The three levels",
+      levelshint: "They describe how the role is delivered, not who delivers it.",
+      cLevel: "Level", cCov: "Coverage", cShare: "Share", cMargin: "Margin",
+      lv: ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"],
+      lvSub: ["the person covers the whole role", "the role is delivered with a colleague's review", "the role is delivered with support on one part"],
+      keyPerson: "provider", keyGeo: "geographic differential", keyCompany: "Welance",
+      okPayout: "At {pay}/h for {who}, this level needs at least {need}/h from the client. You are charging {rate}: the deal holds.",
+      noPayout: "At {pay}/h for {who}, this level would need {need}/h from the client, but you are charging {rate}. Either the client rate rises, or the engagement does not happen.",
+      okRate: "With the client at {rate}/h, this level gives {who} up to {max}/h. The agreed rate is {pay}: the deal holds.",
+      noRate: "With the client at {rate}/h, this level gives {who} at most {max}/h, but their rate is {pay}. Either the client rate rises, or the engagement does not happen.",
+      cover: "Cover “{name}” fully → {cov} coverage, level {lv}",
+      sameLevel: "same level", allset: "The role is fully covered: this is already the maximum share.",
+      geoOff: "Coefficient off: the share depends on role coverage alone, wherever the person lives.",
+      geoOn: "Role-only pay would be <b>{full}</b>/h. With the coefficient it is <b>{local}</b>/h — a geographic differential of <b>{diff}</b>/h, {pctdiff} of what the role alone earns.",
+      geoFloor: "The floor is binding: without it the coefficient would give {raw}/h.",
+      f1: "<b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.",
+      f2: "<b>No-deal rule.</b> If the person's rate exceeds what the level allows and the client will not pay the minimum, the engagement does not happen. Nobody is squeezed below their rate to make the margin work.",
+      f3: "<b>Rounding.</b> Where the two views differ by one step, coverage rounds toward the person. A two-step gap is not averaged: it is discussed.",
+      f4: "<b>The level belongs to the person-and-role pair</b>, not the person. The same person can be autonomous in one role and work with support in another. Reviewed at each renewal.",
+      f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers."
+    },
+    de: {
+      dir: "ltr", locale: "de-DE", name: "Deutsch",
+      workh: "Art der Arbeit", wtClient: "Kundenarbeit", wtInternal: "Interne Arbeit", capLbl: "Interne Obergrenze \u20ac/h", fCap: "Obergrenze der Stufe", internalNote: "Interne Arbeit hat keinen Kundensatz \u2014 es gibt nichts, wovon ein Anteil genommen werden k\u00f6nnte. Die Obergrenze ist {cap}/h auf der h\u00f6chsten Stufe, nach Stufe abgestuft.",
+      askLbl: "Ihr Wunschsatz \u20ac/h",
+      provider: "Auftragnehmer", providerSub: "Unabhängig — freiberuflich oder ein kleines Studio, bis etwa 25 Personen.",
+      reset: "Auf Standard zurücksetzen",
+      eyebrow: "Welance · Aufteilungsregel",
+      title: "Wie viel vom Kundensatz an den Auftragnehmer geht",
+      lede: "Der Anteil hängt davon ab, wie viel der Rolle der Auftragnehmer eigenständig abdeckt — nicht davon, wie viel der Kunde zahlt, und nie von einem Urteil darüber, wer er ist. Die Bestandteile der Rolle auflisten, markieren wer was abdeckt, und der Anteil ergibt sich. Der Auftragnehmer kann eine freiberufliche Person sein oder ein Studio mit bis zu etwa 25 Personen; dem Modell ist das gleich.",
+      roleh: "Die Rolle, Bestandteil für Bestandteil",
+      rolehint: "Für jeden Bestandteil: die Selbsteinschätzung und die Sicht der rollennächsten erfahreneren Person. Liegen beide zwei Stufen auseinander, stoppt die Rechnung und es braucht ein Gespräch.",
+      role: "Rolle", person: "Person",
+      hComp: "Bestandteil", hWeight: "Gewicht", hSelf: "Selbst", hEval: "Prüfend", hCov: "Abdeckung",
+      add: "+ Bestandteil hinzufügen",
+      full: "Voll", partial: "Teilweise", none: "Keine",
+      flag: "Die Sichtweisen liegen zwei Stufen auseinander: hier wird nicht gemittelt, sondern gesprochen.",
+      geoh: "Lebenshaltungskosten",
+      geohint: "Ein optionaler Koeffizient für Personen in einem sehr anderen Kostenumfeld. Umstritten — die Anzeige zeigt immer auch, was die Rolle allein zahlen würde, damit die Differenz sichtbar bleibt.",
+      usegeo: "Lebenshaltungskosten-Koeffizient anwenden",
+      country: "Land", coef: "Koeffizient", floorc: "Untergrenze",
+      checkh: "Vereinbarung prüfen",
+      checkhint: "Der Kundensatz ist eine ausgehandelte Tatsache und bewegt sich nie. Abdeckung und Koeffizient ändern, was die Person bekommt — das Feld unten ist nur ihr Wunschsatz, für die Kein-Deal-Prüfung.",
+      mPayout: "Vom Satz der Person ausgehen", mRate: "Vom Kundensatz ausgehen",
+      payout: "Satz Person €/h", rate: "Kundensatz €/h",
+      growthh: "Wie man aufsteigt",
+      growthhint: "Die Stufe ist kein Etikett, sondern eine Karte. Jeder nicht abgedeckte Bestandteil hat einen Stundenwert.",
+      resulth: "Ergebnis", coverk: "Rollenabdeckung",
+      fShare: "Anteil Person", fMargin: "Marge Welance", fPay: "An die Person", fRate: "Kundensatz",
+      levelsh: "Die drei Stufen",
+      levelshint: "Sie beschreiben, wie die Rolle geliefert wird, nicht wer sie liefert.",
+      cLevel: "Stufe", cCov: "Abdeckung", cShare: "Anteil", cMargin: "Marge",
+      lv: ["EIGENSTÄNDIG", "MIT PRÜFUNG", "MIT UNTERSTÜTZUNG"],
+      lvSub: ["die Person deckt die ganze Rolle ab", "die Rolle wird mit Prüfung durch Kolleg:innen geliefert", "die Rolle wird mit Unterstützung bei einem Teil geliefert"],
+      keyPerson: "Auftragnehmer", keyGeo: "geografische Differenz", keyCompany: "Welance",
+      okPayout: "Bei {pay}/h für {who} braucht diese Stufe mindestens {need}/h vom Kunden. Ihr verlangt {rate}: die Vereinbarung trägt.",
+      noPayout: "Bei {pay}/h für {who} bräuchte diese Stufe {need}/h vom Kunden, ihr verlangt aber {rate}. Entweder steigt der Kundensatz, oder das Engagement kommt nicht zustande.",
+      okRate: "Bei {rate}/h vom Kunden gibt diese Stufe {who} bis zu {max}/h. Vereinbart sind {pay}: die Vereinbarung trägt.",
+      noRate: "Bei {rate}/h vom Kunden gibt diese Stufe {who} höchstens {max}/h, ihr Satz ist aber {pay}. Entweder steigt der Kundensatz, oder das Engagement kommt nicht zustande.",
+      cover: "„{name}“ voll abdecken → {cov} Abdeckung, Stufe {lv}",
+      sameLevel: "gleiche Stufe", allset: "Die Rolle ist voll abgedeckt: das ist bereits der höchste Anteil.",
+      geoOff: "Koeffizient aus: der Anteil hängt allein von der Rollenabdeckung ab, egal wo die Person lebt.",
+      geoOn: "Nur nach Rolle wären es <b>{full}</b>/h. Mit Koeffizient sind es <b>{local}</b>/h — eine geografische Differenz von <b>{diff}</b>/h, {pctdiff} dessen, was die Rolle allein einbringt.",
+      geoFloor: "Die Untergrenze greift: ohne sie ergäbe der Koeffizient {raw}/h.",
+      f1: "<b>Wohin die Differenz fließt, ist entscheidend.</b> Wird sie stillschweigend zur Marge, profitiert das Kollektiv davon, wo jemand lebt. Ihr Ziel benennen — Rücklage, Solidartopf, Reinvestition — damit darüber gestritten werden kann statt es anzunehmen.",
+      f2: "<b>Kein-Deal-Regel.</b> Übersteigt der Satz der Person das von der Stufe Erlaubte und zahlt der Kunde das Minimum nicht, kommt das Engagement nicht zustande. Niemand wird unter seinen Satz gedrückt, damit die Marge aufgeht.",
+      f3: "<b>Rundung.</b> Unterscheiden sich die Sichtweisen um eine Stufe, wird zugunsten der Person gerundet. Zwei Stufen werden nicht gemittelt, sondern besprochen.",
+      f4: "<b>Die Stufe gehört dem Paar Person-und-Rolle</b>, nicht der Person. Dieselbe Person kann in einer Rolle eigenständig sein und in einer anderen mit Unterstützung arbeiten. Überprüfung bei jeder Verlängerung.",
+      f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden."
+    },
+    it: {
+      dir: "ltr", locale: "it-IT", name: "Italiano",
+      workh: "Tipo di lavoro", wtClient: "Lavoro cliente", wtInternal: "Lavoro interno", capLbl: "Tetto interno \u20ac/h", fCap: "Tetto del livello", internalNote: "Il lavoro interno non ha una tariffa cliente \u2014 non c'\u00e8 nulla di cui prendere una quota. Il tetto \u00e8 {cap}/h al livello massimo, scalato per livello.",
+      askLbl: "La sua tariffa richiesta \u20ac/h",
+      provider: "collaboratore", providerSub: "Indipendente — freelance o piccolo studio, fino a circa 25 persone.",
+      reset: "Ripristina i valori iniziali",
+      eyebrow: "Welance · regola di ripartizione",
+      title: "Quanto della tariffa cliente va al collaboratore",
+      lede: "La quota dipende da quanta parte del ruolo il collaboratore copre da solo — non da quanto paga il cliente, e mai da un giudizio su chi è. Si elencano le componenti del ruolo, si segna chi copre cosa, e la quota esce da sé. Il collaboratore può essere un freelance o uno studio fino a circa 25 persone: al modello non cambia nulla.",
+      roleh: "Il ruolo, componente per componente",
+      rolehint: "Per ogni componente: autovalutazione della persona e valutazione di chi ha il ruolo affine più senior. Se le due distano due gradini, il calcolo si ferma e serve parlarne.",
+      role: "Ruolo", person: "Persona",
+      hComp: "Componente", hWeight: "Peso", hSelf: "Autoval.", hEval: "Valutatore", hCov: "Copertura",
+      add: "+ Aggiungi componente",
+      full: "Piena", partial: "Parziale", none: "Nulla",
+      flag: "Le due viste differiscono di due gradini: qui non si media, se ne parla.",
+      geoh: "Costo della vita",
+      geohint: "Un coefficiente opzionale per chi vive in un contesto di costi molto diverso. È terreno discusso — il pannello mostra sempre anche quanto pagherebbe il solo ruolo, così la differenza resta visibile e discutibile.",
+      usegeo: "Applica il coefficiente di costo della vita",
+      country: "Paese", coef: "Coefficiente", floorc: "Pavimento",
+      checkh: "Verifica dell'accordo",
+      checkhint: "La tariffa cliente è un fatto negoziato e non si muove mai. Copertura e coefficiente cambiano quanto prende la persona — il campo sotto è solo la sua tariffa richiesta, per la verifica di non-accordo.",
+      mPayout: "Parto dalla tariffa della persona", mRate: "Parto dalla tariffa cliente",
+      payout: "Tariffa persona €/h", rate: "Tariffa cliente €/h",
+      growthh: "Come si sale",
+      growthhint: "Il livello non è un'etichetta: è una mappa. Ogni componente non coperta ha un valore in euro l'ora.",
+      resulth: "Risultato", coverk: "Copertura del ruolo",
+      fShare: "Quota persona", fMargin: "Margine Welance", fPay: "Alla persona", fRate: "Tariffa cliente",
+      levelsh: "I tre livelli",
+      levelshint: "Descrivono come il ruolo viene consegnato, non chi lo consegna.",
+      cLevel: "Livello", cCov: "Copertura", cShare: "Quota", cMargin: "Margine",
+      lv: ["AUTONOMO", "CON VERIFICA", "CON SUPPORTO"],
+      lvSub: ["la persona copre il ruolo per intero", "il ruolo è consegnato con verifica di un collega", "il ruolo è consegnato con supporto su una parte"],
+      keyPerson: "collaboratore", keyGeo: "differenziale geografico", keyCompany: "Welance",
+      okPayout: "A {pay}/h per {who}, su questo livello serve almeno {need}/h dal cliente. Ne chiedete {rate}: l'accordo regge.",
+      noPayout: "A {pay}/h per {who}, su questo livello servirebbero {need}/h dal cliente, ma ne chiedete {rate}. O sale la tariffa cliente, o l'ingaggio non si fa.",
+      okRate: "Con il cliente a {rate}/h, questo livello dà a {who} fino a {max}/h. La tariffa concordata è {pay}: l'accordo regge.",
+      noRate: "Con il cliente a {rate}/h, questo livello dà a {who} al massimo {max}/h, ma la sua tariffa è {pay}. O sale la tariffa cliente, o l'ingaggio non si fa.",
+      cover: "Coprire «{name}» per intero → {cov} di copertura, livello {lv}",
+      sameLevel: "stesso livello", allset: "Ruolo coperto per intero: questa è già la quota massima.",
+      geoOff: "Coefficiente disattivato: la quota dipende solo dalla copertura del ruolo, ovunque la persona viva.",
+      geoOn: "Solo in base al ruolo sarebbero <b>{full}</b>/h. Col coefficiente sono <b>{local}</b>/h — un differenziale geografico di <b>{diff}</b>/h, il {pctdiff} di quanto rende il solo ruolo.",
+      geoFloor: "Il pavimento è vincolante: senza, il coefficiente darebbe {raw}/h.",
+      f1: "<b>Dove finisce il differenziale è la cosa che conta.</b> Se diventa margine in silenzio, il collettivo guadagna da dove una persona vive. Dategli una destinazione dichiarata — riserva, fondo di solidarietà, reinvestimento — così è discutibile invece che implicito.",
+      f2: "<b>Regola di non-accordo.</b> Se la tariffa della persona supera quanto il livello consente e il cliente non accetta il minimo, l'ingaggio non si fa. Nessuno viene compresso sotto la propria tariffa per far quadrare il margine.",
+      f3: "<b>Arrotondamenti.</b> Dove le due viste differiscono di un gradino, la copertura si arrotonda verso la persona. Uno scarto di due gradini non si media: si discute.",
+      f4: "<b>Il livello appartiene alla coppia persona-ruolo</b>, non alla persona. La stessa persona può essere autonoma su un ruolo e lavorare con supporto su un altro. Si rivede a ogni rinnovo.",
+      f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua."
+    },
+    ur: {
+      dir: "rtl", locale: "ur-PK", name: "اردو",
+      workh: "\u06a9\u0627\u0645 \u06a9\u06cc \u0642\u0633\u0645", wtClient: "\u06a9\u0644\u0627\u0626\u0646\u0679 \u06a9\u0627 \u06a9\u0627\u0645", wtInternal: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645", capLbl: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u062d\u062f \u20ac/\u06af\u06be\u0646\u0679\u06c1", fCap: "\u062f\u0631\u062c\u06d2 \u06a9\u06cc \u062d\u062f", internalNote: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645 \u06a9\u0627 \u06a9\u0648\u0626\u06cc \u06a9\u0644\u0627\u0626\u0646\u0679 \u0631\u06cc\u0679 \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627 \u2014 \u062d\u0635\u06c1 \u0644\u06cc\u0646\u06d2 \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0686\u06be \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627\u06d4 \u0633\u0628 \u0633\u06d2 \u0627\u0648\u067e\u0631 \u062f\u0631\u062c\u06d2 \u067e\u0631 \u062d\u062f {cap}/\u06af\u06be\u0646\u0679\u06c1 \u06c1\u06d2\u060c \u062f\u0631\u062c\u06d2 \u06a9\u06d2 \u062d\u0633\u0627\u0628 \u0633\u06d2 \u06a9\u0645 \u06c1\u0648\u062a\u06cc \u06c1\u06d2\u06d4",
+      askLbl: "\u0627\u0646 \u06a9\u0627 \u0645\u0637\u0644\u0648\u0628\u06c1 \u0631\u06cc\u0679 \u20ac/\u06af\u06be\u0646\u0679\u06c1",
+      provider: "فراہم کنندہ", providerSub: "خودمختار — فری لانسر یا چھوٹا اسٹوڈیو، تقریباً 25 افراد تک۔",
+      reset: "ابتدائی حالت پر واپس",
+      eyebrow: "ویلانس · تقسیم کا اصول",
+      title: "کلائنٹ ریٹ کا کتنا حصہ فراہم کنندہ کو ملتا ہے",
+      lede: "حصہ اس بات پر منحصر ہے کہ فراہم کنندہ کردار کا کتنا حصہ خود سنبھالتا ہے — اس پر نہیں کہ کلائنٹ کتنا دیتا ہے، اور کبھی بھی اس فیصلے پر نہیں کہ وہ کون ہے۔ کردار کے اجزاء لکھیں، نشان لگائیں کون کیا سنبھالتا ہے، اور حصہ خود نکل آئے گا۔ فراہم کنندہ ایک فری لانسر ہو سکتا ہے یا تقریباً 25 افراد تک کا اسٹوڈیو؛ ماڈل کے لیے دونوں برابر ہیں۔",
+      roleh: "کردار، جزو بہ جزو",
+      rolehint: "ہر جزو کے لیے: فرد کی اپنی رائے اور اسی کردار کے قریب ترین تجربہ کار ساتھی کی رائے۔ اگر دونوں میں دو درجے کا فرق ہو تو حساب رک جاتا ہے اور بات چیت درکار ہے۔",
+      role: "کردار", person: "فرد",
+      hComp: "جزو", hWeight: "وزن", hSelf: "خود", hEval: "جائزہ کار", hCov: "کوریج",
+      add: "+ جزو شامل کریں",
+      full: "مکمل", partial: "جزوی", none: "کوئی نہیں",
+      flag: "دونوں آراء میں دو درجے کا فرق ہے: یہاں اوسط نہیں لیا جاتا، بات کی جاتی ہے۔",
+      geoh: "گزر بسر کی لاگت",
+      geohint: "ان افراد کے لیے اختیاری عددی عامل جو بہت مختلف لاگت والے ماحول میں رہتے ہیں۔ یہ متنازعہ معاملہ ہے — پینل ہمیشہ یہ بھی دکھاتا ہے کہ صرف کردار کے حساب سے کتنا بنتا، تاکہ فرق سامنے رہے۔",
+      usegeo: "گزر بسر کی لاگت کا عامل لاگو کریں",
+      country: "ملک", coef: "عامل", floorc: "کم سے کم حد",
+      checkh: "معاہدے کی جانچ",
+      checkhint: "کلائنٹ ریٹ ایک طے شدہ حقیقت ہے اور کبھی نہیں بدلتا۔ کوریج اور عامل صرف یہ بدلتے ہیں کہ فرد کو کیا ملتا ہے۔",
+      mPayout: "فرد کے ریٹ سے شروع کریں", mRate: "کلائنٹ ریٹ سے شروع کریں",
+      payout: "فرد کا ریٹ €/گھنٹہ", rate: "کلائنٹ ریٹ €/گھنٹہ",
+      growthh: "آگے کیسے بڑھیں",
+      growthhint: "درجہ ایک لیبل نہیں، ایک نقشہ ہے۔ ہر غیر محیط جزو کی فی گھنٹہ قیمت ہے۔",
+      resulth: "نتیجہ", coverk: "کردار کی کوریج",
+      fShare: "فرد کا حصہ", fMargin: "ویلانس کا مارجن", fPay: "فرد کو", fRate: "کلائنٹ ریٹ",
+      levelsh: "تین درجے",
+      levelshint: "یہ بتاتے ہیں کہ کردار کیسے ادا ہوتا ہے، یہ نہیں کہ کون ادا کرتا ہے۔",
+      cLevel: "درجہ", cCov: "کوریج", cShare: "حصہ", cMargin: "مارجن",
+      lv: ["خود مختار", "تصدیق کے ساتھ", "معاونت کے ساتھ"],
+      lvSub: ["فرد پورا کردار سنبھالتا ہے", "کردار ساتھی کی تصدیق کے ساتھ ادا ہوتا ہے", "کردار ایک حصے میں معاونت کے ساتھ ادا ہوتا ہے"],
+      keyPerson: "فراہم کنندہ", keyGeo: "جغرافیائی فرق", keyCompany: "ویلانس",
+      okPayout: "{who} کے لیے {pay}/گھنٹہ پر، اس درجے کو کلائنٹ سے کم از کم {need}/گھنٹہ درکار ہے۔ آپ {rate} لے رہے ہیں: معاہدہ درست ہے۔",
+      noPayout: "{who} کے لیے {pay}/گھنٹہ پر، اس درجے کو کلائنٹ سے {need}/گھنٹہ درکار ہوں گے، مگر آپ {rate} لے رہے ہیں۔ یا کلائنٹ ریٹ بڑھے، یا یہ کام نہ لیا جائے۔",
+      okRate: "کلائنٹ {rate}/گھنٹہ پر، یہ درجہ {who} کو زیادہ سے زیادہ {max}/گھنٹہ دیتا ہے۔ طے شدہ ریٹ {pay} ہے: معاہدہ درست ہے۔",
+      noRate: "کلائنٹ {rate}/گھنٹہ پر، یہ درجہ {who} کو زیادہ سے زیادہ {max}/گھنٹہ دیتا ہے، مگر ان کا ریٹ {pay} ہے۔ یا کلائنٹ ریٹ بڑھے، یا یہ کام نہ لیا جائے۔",
+      cover: "«{name}» مکمل سنبھالیں → {cov} کوریج، درجہ {lv}",
+      sameLevel: "وہی درجہ", allset: "کردار مکمل طور پر محیط ہے: یہ پہلے ہی سب سے بڑا حصہ ہے۔",
+      geoOff: "عامل بند ہے: حصہ صرف کردار کی کوریج پر منحصر ہے، فرد چاہے کہیں بھی رہتا ہو۔",
+      geoOn: "صرف کردار کے حساب سے <b>{full}</b>/گھنٹہ بنتے۔ عامل کے ساتھ <b>{local}</b>/گھنٹہ ہیں — یعنی <b>{diff}</b>/گھنٹہ کا جغرافیائی فرق، جو صرف کردار کی کمائی کا {pctdiff} ہے۔",
+      geoFloor: "کم سے کم حد لاگو ہے: اس کے بغیر عامل {raw}/گھنٹہ دیتا۔",
+      f1: "<b>یہ فرق کہاں جاتا ہے، یہی اصل سوال ہے۔</b> اگر یہ خاموشی سے مارجن بن جائے تو اجتماع اس بات سے کما رہا ہے کہ کوئی کہاں رہتا ہے۔ اس کی منزل کا اعلان کریں — ذخیرہ، یکجہتی فنڈ، دوبارہ سرمایہ کاری — تاکہ اس پر بحث ہو سکے۔",
+      f2: "<b>معاہدہ نہ کرنے کا اصول۔</b> اگر فرد کا ریٹ اس درجے کی حد سے زیادہ ہو اور کلائنٹ کم سے کم رقم نہ دے، تو کام نہیں لیا جاتا۔ مارجن پورا کرنے کے لیے کسی کو اس کے ریٹ سے نیچے نہیں دبایا جاتا۔",
+      f3: "<b>گول کرنا۔</b> جہاں دونوں آراء میں ایک درجے کا فرق ہو، کوریج فرد کے حق میں گول ہوتی ہے۔ دو درجے کے فرق کا اوسط نہیں لیا جاتا: اس پر بات ہوتی ہے۔",
+      f4: "<b>درجہ فرد اور کردار کے جوڑے کا ہے</b>، صرف فرد کا نہیں۔ ایک ہی شخص ایک کردار میں خود مختار اور دوسرے میں معاونت کے ساتھ ہو سکتا ہے۔ ہر تجدید پر نظرثانی۔",
+      f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔"
+    },
+    pt: {
+      dir: "ltr", locale: "pt-BR", name: "Português (BR)",
+      workh: "Tipo de trabalho", wtClient: "Trabalho de cliente", wtInternal: "Trabalho interno", capLbl: "Teto interno \u20ac/h", fCap: "Teto do n\u00edvel", internalNote: "Trabalho interno n\u00e3o tem taxa de cliente \u2014 n\u00e3o h\u00e1 do que tirar uma parte. O teto \u00e9 {cap}/h no n\u00edvel mais alto, reduzido conforme o n\u00edvel.",
+      askLbl: "A taxa pedida por ela \u20ac/h",
+      provider: "prestador", providerSub: "Independente — freelancer ou um pequeno estúdio, até cerca de 25 pessoas.",
+      reset: "Restaurar padrões",
+      eyebrow: "Welance · regra de divisão",
+      title: "Quanto da taxa do cliente vai para o prestador",
+      lede: "A parte depende de quanto do papel o prestador cobre sozinho — não de quanto o cliente paga, e nunca de um julgamento sobre quem ele é. Liste os componentes do papel, marque quem cobre o quê, e a parte sai sozinha. O prestador pode ser um freelancer ou um estúdio de até cerca de 25 pessoas; para o modelo dá no mesmo.",
+      roleh: "O papel, componente por componente",
+      rolehint: "Para cada componente: a visão da própria pessoa e a de quem tem o papel mais próximo e mais experiência. Se as duas estiverem a dois degraus de distância, o cálculo para e é preciso conversar.",
+      role: "Papel", person: "Pessoa",
+      hComp: "Componente", hWeight: "Peso", hSelf: "Autoaval.", hEval: "Avaliador", hCov: "Cobertura",
+      add: "+ Adicionar componente",
+      full: "Plena", partial: "Parcial", none: "Nenhuma",
+      flag: "As duas visões estão a dois degraus: aqui não se tira média, se conversa.",
+      geoh: "Custo de vida",
+      geohint: "Um coeficiente opcional para quem vive num contexto de custos muito diferente. É terreno discutível — o painel sempre mostra também quanto o papel sozinho pagaria, para que a diferença fique visível.",
+      usegeo: "Aplicar o coeficiente de custo de vida",
+      country: "País", coef: "Coeficiente", floorc: "Piso",
+      checkh: "Verificar o acordo",
+      checkhint: "A taxa do cliente é um fato negociado e nunca se move. A cobertura e o coeficiente mudam o que a pessoa recebe — o campo abaixo é só a taxa pedida por ela, para a checagem de não-acordo.",
+      mPayout: "Partir da taxa da pessoa", mRate: "Partir da taxa do cliente",
+      payout: "Taxa da pessoa €/h", rate: "Taxa do cliente €/h",
+      growthh: "Como subir",
+      growthhint: "O nível não é um rótulo, é um mapa. Cada componente não coberto tem um valor por hora.",
+      resulth: "Resultado", coverk: "Cobertura do papel",
+      fShare: "Parte da pessoa", fMargin: "Margem Welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
+      levelsh: "Os três níveis",
+      levelshint: "Descrevem como o papel é entregue, não quem o entrega.",
+      cLevel: "Nível", cCov: "Cobertura", cShare: "Parte", cMargin: "Margem",
+      lv: ["AUTÔNOMO", "COM VERIFICAÇÃO", "COM APOIO"],
+      lvSub: ["a pessoa cobre o papel inteiro", "o papel é entregue com verificação de um colega", "o papel é entregue com apoio em uma parte"],
+      keyPerson: "prestador", keyGeo: "diferencial geográfico", keyCompany: "Welance",
+      okPayout: "A {pay}/h para {who}, este nível exige ao menos {need}/h do cliente. Vocês cobram {rate}: o acordo se sustenta.",
+      noPayout: "A {pay}/h para {who}, este nível exigiria {need}/h do cliente, mas vocês cobram {rate}. Ou a taxa do cliente sobe, ou o trabalho não é feito.",
+      okRate: "Com o cliente a {rate}/h, este nível dá a {who} até {max}/h. A taxa combinada é {pay}: o acordo se sustenta.",
+      noRate: "Com o cliente a {rate}/h, este nível dá a {who} no máximo {max}/h, mas a taxa dela é {pay}. Ou a taxa do cliente sobe, ou o trabalho não é feito.",
+      cover: "Cobrir “{name}” por inteiro → {cov} de cobertura, nível {lv}",
+      sameLevel: "mesmo nível", allset: "Papel totalmente coberto: esta já é a parte máxima.",
+      geoOff: "Coeficiente desligado: a parte depende só da cobertura do papel, onde quer que a pessoa viva.",
+      geoOn: "Só pelo papel seriam <b>{full}</b>/h. Com o coeficiente são <b>{local}</b>/h — um diferencial geográfico de <b>{diff}</b>/h, {pctdiff} do que o papel sozinho rende.",
+      geoFloor: "O piso está valendo: sem ele o coeficiente daria {raw}/h.",
+      f1: "<b>Para onde vai o diferencial é o que importa.</b> Se virar margem em silêncio, o coletivo lucra com o lugar onde alguém mora. Declare o destino — reserva, fundo solidário, reinvestimento — para que seja discutível e não presumido.",
+      f2: "<b>Regra de não-acordo.</b> Se a taxa da pessoa passa do que o nível permite e o cliente não paga o mínimo, o trabalho não é feito. Ninguém é espremido abaixo da própria taxa para fechar a margem.",
+      f3: "<b>Arredondamento.</b> Onde as duas visões diferem em um degrau, a cobertura arredonda a favor da pessoa. Dois degraus não se mediam: se conversa.",
+      f4: "<b>O nível pertence ao par pessoa-e-papel</b>, não à pessoa. A mesma pessoa pode ser autônoma num papel e trabalhar com apoio em outro. Revisto a cada renovação.",
+      f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos."
+    }
+  };
+
+  // Rough cost-of-living ratios against Germany = 1.00. EDITABLE DEFAULTS ONLY —
+  // they must be replaced from a real source (OECD PPP / World Bank ICP / Numbeo)
+  // before anyone's pay depends on them.
+  var COUNTRIES = [
+    { code: "CH", coef: 1.35, en: "Switzerland", de: "Schweiz", it: "Svizzera", ur: "سوئٹزرلینڈ", pt: "Suíça" },
+    { code: "DE", coef: 1.00, en: "Germany", de: "Deutschland", it: "Germania", ur: "جرمنی", pt: "Alemanha" },
+    { code: "AT", coef: 0.95, en: "Austria", de: "Österreich", it: "Austria", ur: "آسٹریا", pt: "Áustria" },
+    { code: "IT", coef: 0.82, en: "Italy", de: "Italien", it: "Italia", ur: "اٹلی", pt: "Itália" },
+    { code: "ES", coef: 0.75, en: "Spain", de: "Spanien", it: "Spagna", ur: "اسپین", pt: "Espanha" },
+    { code: "PT", coef: 0.68, en: "Portugal", de: "Portugal", it: "Portogallo", ur: "پرتگال", pt: "Portugal" },
+    { code: "PL", coef: 0.55, en: "Poland", de: "Polen", it: "Polonia", ur: "پولینڈ", pt: "Polônia" },
+    { code: "BR", coef: 0.42, en: "Brazil", de: "Brasilien", it: "Brasile", ur: "برازیل", pt: "Brasil" },
+    { code: "AR", coef: 0.38, en: "Argentina", de: "Argentinien", it: "Argentina", ur: "ارجنٹینا", pt: "Argentina" },
+    { code: "UA", coef: 0.38, en: "Ukraine", de: "Ukraine", it: "Ucraina", ur: "یوکرین", pt: "Ucrânia" },
+    { code: "VN", coef: 0.32, en: "Vietnam", de: "Vietnam", it: "Vietnam", ur: "ویتنام", pt: "Vietnã" },
+    { code: "IN", coef: 0.30, en: "India", de: "Indien", it: "India", ur: "بھارت", pt: "Índia" },
+    { code: "PK", coef: 0.28, en: "Pakistan", de: "Pakistan", it: "Pakistan", ur: "پاکستان", pt: "Paquistão" }
+  ];
+
+  var LEVELS = [
+    { cover: 1.00, share: 0.70 },
+    { cover: 0.75, share: 0.60 },
+    { cover: 0.50, share: 0.50 }
+  ];
+  var STEPS = [1, 0.5, 0];
+  // Internal work has no client, so no share can be taken. Administrators and
+  // internal contributors are capped at this rate (Enrico 2026-07-31).
+  var INTERNAL_MAX = 50;
+
+  var STORE_KEY = "welance-share-calc-v1";
+
+  // One starting set per kind of work. Client work is a real (anonymised) case:
+  // CMS covered fully, client relationship needs verification, infra needs
+  // support → 50% coverage → WITH SUPPORT → €50/h on a €100/h client rate.
+  // Internal work is a single fully-covered part → AUTONOMOUS → the €50 cap.
+  //
+  // These are ONLY defaults. The moment a part is edited, the set for that work
+  // type becomes the user's: it is kept in localStorage, survives switching work
+  // type, changing language and reloading, and is never overwritten by a default
+  // again until the reset button is pressed.
+  var DEF = {
+    client: {
+      role: "FullstackDev & Web Projects Maintainer @welance",
+      comps: [
+        { name: { en: "CraftCMS", de: "CraftCMS", it: "CraftCMS", ur: "CraftCMS", pt: "CraftCMS" },
+          weight: 1, self: 1, evalr: 1 },
+        { name: { en: "Client relationship", de: "Kundenbeziehung", it: "Rapporto cliente",
+                   ur: "کلائنٹ سے تعلق", pt: "Relação com o cliente" },
+          weight: 1, self: 0.5, evalr: 0.5 },
+        { name: { en: "Infrastructure & pipelines", de: "Infrastruktur & Pipelines",
+                   it: "Infrastruttura e pipeline", ur: "انفراسٹرکچر اور پائپ لائنز",
+                   pt: "Infraestrutura e pipelines" },
+          weight: 1, self: 0, evalr: 0 }
+      ]
+    },
+    internal: {
+      role: "Internal — knowledge base",
+      comps: [
+        { name: { en: "Maintain internal knowledge base", de: "Interne Wissensdatenbank pflegen",
+                   it: "Manutenzione della knowledge base interna",
+                   ur: "اندرونی نالج بیس کی دیکھ بھال",
+                   pt: "Manter a base de conhecimento interna" },
+          weight: 1, self: 1, evalr: 1 }
+      ]
+    }
+  };
+
+  function blankState() {
+    return { dirty: { client: false, internal: false }, sets: {}, role: {}, io: {} };
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return blankState();
+      var v = JSON.parse(raw);
+      return (v && v.dirty) ? v : blankState();
+    } catch (e) { return blankState(); }
+  }
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var state = load();
+  var lang = state.io && state.io.lang && T[state.io.lang] ? state.io.lang : "en";
+  var work = state.io && state.io.work === "internal" ? "internal" : "client";
+  var comps = [];
+
+  // Defaults are language-aware, so an untouched set follows the UI language.
+  function defaultComps(w) {
+    return DEF[w].comps.map(function (c) {
+      return { name: c.name[lang] || c.name.en, weight: c.weight, self: c.self, evalr: c.evalr };
+    });
+  }
+  function loadSet(w) {
+    if (state.dirty[w] && state.sets[w] && state.sets[w].length) {
+      comps = state.sets[w].map(function (c) {
+        return { name: c.name, weight: c.weight, self: c.self, evalr: c.evalr };
+      });
+      $("rolename").value = state.role[w] || DEF[w].role;
+    } else {
+      comps = defaultComps(w);
+      $("rolename").value = DEF[w].role;
+    }
+  }
+  function markDirty() {
+    state.dirty[work] = true;
+    state.sets[work] = comps.map(function (c) {
+      return { name: c.name, weight: c.weight, self: c.self, evalr: c.evalr };
+    });
+    state.role[work] = $("rolename").value;
+    save();
+  }
+  function saveIO() {
+    state.io = {
+      lang: lang, work: work,
+      rate: $("rate").value, capr: $("capr").value, payout: $("payout").value,
+      coef: $("coef").value, floorc: $("floorc").value,
+      country: $("country").value, usegeo: $("usegeo").checked
+    };
+    save();
+  }
+  function applyIO() {
+    var io = state.io || {};
+    ["rate", "capr", "payout", "coef", "floorc"].forEach(function (k) {
+      if (io[k] !== undefined && io[k] !== "") $(k).value = io[k];
+    });
+    if (io.country) $("country").value = io.country;
+    $("usegeo").checked = !!io.usegeo;
+  }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var t = function () { return T[lang]; };
+  function eur(n) {
+    try { return new Intl.NumberFormat(t().locale, { style: "currency", currency: "EUR" }).format(n); }
+    catch (e) { return "€" + n.toFixed(2); }
+  }
+  function pct(n) {
+    try { return new Intl.NumberFormat(t().locale, { style: "percent", maximumFractionDigits: 0 }).format(n); }
+    catch (e) { return Math.round(n * 100) + "%"; }
+  }
+  function fill(s, o) {
+    return s.replace(/\{(\w+)\}/g, function (_, k) { return o[k] !== undefined ? o[k] : ""; });
+  }
+
+  function agreed(c) {
+    var m = (c.self + c.evalr) / 2;
+    if (m === 0.75) return 1;
+    if (m === 0.25) return 0.5;
+    return m;
+  }
+  function coverageOf(list) {
+    var w = 0, s = 0;
+    list.forEach(function (c) {
+      var wt = Number(c.weight) > 0 ? Number(c.weight) : 0;
+      w += wt; s += wt * agreed(c);
+    });
+    return w > 0 ? s / w : 0;
+  }
+  function levelFor(cov) { return cov >= 0.875 ? LEVELS[0] : cov >= 0.625 ? LEVELS[1] : LEVELS[2]; }
+  function lvIndex(lv) { return LEVELS.indexOf(lv); }
+
+  function geoCoef() {
+    if (!$("usegeo").checked) return 1;
+    var c = Number($("coef").value);
+    var floor = Number($("floorc").value);
+    if (!(c > 0)) c = 1;
+    return Math.max(c, floor > 0 ? floor : 0);
+  }
+
+  function renderStatic() {
+    var d = t();
+    document.documentElement.setAttribute("dir", d.dir);
+    document.documentElement.setAttribute("lang", lang);
+    var map = {
+      "t-eyebrow": d.eyebrow, "t-title": d.title, "t-lede": d.lede,
+      "t-roleh": d.roleh, "t-rolehint": d.rolehint,
+      "t-l-role": d.role, "t-providersub": d.providerSub,
+      "t-h-comp": d.hComp, "t-h-weight": d.hWeight, "t-h-self": d.hSelf,
+      "t-h-eval": d.hEval, "t-h-cov": d.hCov, "add": d.add,
+      "t-geoh": d.geoh, "t-geohint": d.geohint, "t-usegeo": d.usegeo,
+      "t-l-country": d.country, "t-l-coef": d.coef, "t-l-floor": d.floorc,
+      "t-checkh": d.checkh, "t-checkhint": d.checkhint,
+      "w-client": d.wtClient, "w-internal": d.wtInternal, "t-l-cap": d.capLbl,
+      "t-l-payout": d.askLbl, "t-l-rate": d.rate,
+      "t-growthh": d.growthh, "t-growthhint": d.growthhint,
+      "t-resulth": d.resulth, "t-coverk": d.coverk,
+      "t-f-share": d.fShare, "t-f-margin": d.fMargin, "t-f-pay": d.fPay, "t-f-rate": d.fRate,
+      "t-levelsh": d.levelsh, "t-levelshint": d.levelshint,
+      "reset": d.reset,
+      "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin
+    };
+    Object.keys(map).forEach(function (k) { $(k).textContent = map[k]; });
+
+    var f = $("footer");
+    f.textContent = "";
+    [d.f1, d.f2, d.f3, d.f4, d.f5].forEach(function (h) {
+      var p = document.createElement("p"); p.innerHTML = h; f.appendChild(p);
+    });
+
+    var langs = $("langs");
+    langs.textContent = "";
+    Object.keys(T).forEach(function (code) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "lang"; b.textContent = T[code].name;
+      b.setAttribute("aria-pressed", code === lang ? "true" : "false");
+      b.addEventListener("click", function () {
+        lang = code;
+        if (!state.dirty[work]) loadSet(work);   // untouched defaults follow the language
+        saveIO(); renderStatic(); render();
+      });
+      langs.appendChild(b);
+    });
+
+    var sel = $("country"), keep = sel.value;
+    sel.textContent = "";
+    COUNTRIES.forEach(function (c) {
+      var o = document.createElement("option");
+      o.value = c.code; o.textContent = c[lang] + " · " + c.coef.toFixed(2);
+      sel.appendChild(o);
+    });
+    sel.value = keep || "PK";
+    if (!$("coef").value) $("coef").value = "0.28";
+  }
+
+  function stepSelect(val, onChange) {
+    var d = t(), labels = [d.full, d.partial, d.none];
+    var sel = document.createElement("select");
+    STEPS.forEach(function (v, i) {
+      var o = document.createElement("option");
+      o.value = String(v); o.textContent = labels[i];
+      if (v === val) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", function () { onChange(Number(sel.value)); });
+    return sel;
+  }
+
+  function renderRows() {
+    var host = $("rows");
+    host.textContent = "";
+    comps.forEach(function (c, i) {
+      var row = document.createElement("div");
+      row.className = "comp";
+
+      var name = document.createElement("input");
+      name.type = "text"; name.value = c.name; name.setAttribute("aria-label", t().hComp);
+      name.addEventListener("input", function () { c.name = name.value; markDirty(); });
+      row.appendChild(name);
+
+      var w = document.createElement("input");
+      w.type = "number"; w.min = "0"; w.step = "0.5"; w.value = String(c.weight);
+      w.setAttribute("aria-label", t().hWeight);
+      w.addEventListener("input", function () { c.weight = w.value; markDirty(); render(); });
+      row.appendChild(w);
+
+      row.appendChild(stepSelect(c.self, function (v) { c.self = v; markDirty(); render(); }));
+      row.appendChild(stepSelect(c.evalr, function (v) { c.evalr = v; markDirty(); render(); }));
+
+      var a = agreed(c);
+      var cov = document.createElement("div");
+      cov.className = "cov";
+      var dot = document.createElement("span");
+      dot.className = "dot " + (a === 1 ? "f" : a === 0.5 ? "p" : "n");
+      cov.appendChild(dot);
+      cov.appendChild(document.createTextNode(pct(a)));
+      row.appendChild(cov);
+
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
+      del.setAttribute("aria-label", "remove");
+      del.addEventListener("click", function () { comps.splice(i, 1); markDirty(); render(); });
+      row.appendChild(del);
+
+      if (Math.abs(c.self - c.evalr) === 1) {
+        var fl = document.createElement("p");
+        fl.className = "rowflag"; fl.textContent = t().flag;
+        row.appendChild(fl);
+      }
+      host.appendChild(row);
+    });
+  }
+
+  function renderResult(cov, lv) {
+    var d = t(), idx = lvIndex(lv), g = geoCoef();
+    $("levelname").textContent = d.lv[idx];
+    $("levelsub").textContent = d.lvSub[idx];
+    $("covpct").textContent = pct(cov);
+
+    var lad = $("ladder");
+    lad.textContent = "";
+    for (var i = 0; i < 8; i++) {
+      var r = document.createElement("div");
+      r.className = "rung" + (cov >= (i + 1) / 8 ? " on" : "");
+      lad.appendChild(r);
+    }
+
+    var rate, pay, roleOnly;
+    if (work === "internal") {
+      // No client, so no share: the ceiling is the internal cap, scaled by level.
+      var cap = Number($("capr").value) || INTERNAL_MAX;
+      roleOnly = cap * (lv.share / LEVELS[0].share);
+      pay = roleOnly * g;
+      rate = 0;
+    } else {
+      rate = Number($("rate").value) || 0;
+      roleOnly = rate * lv.share;
+      pay = roleOnly * g;
+    }
+    var diff = roleOnly - pay;
+
+    // For internal work the denominator is the level ceiling, not a client rate.
+    var base = work === "internal" ? roleOnly : rate;
+    var pShare = base > 0 ? pay / base : 0;
+    var gShare = base > 0 ? diff / base : 0;
+    $("barPerson").style.flexBasis = (pShare * 100) + "%";
+    $("barGeo").style.flexBasis = (gShare * 100) + "%";
+    $("barCompany").style.flexBasis = (work === "internal" ? 0 : (1 - pShare - gShare) * 100) + "%";
+    $("barPerson").textContent = pct(pShare);
+    $("barGeo").textContent = gShare > 0.06 ? pct(gShare) : "";
+    $("barCompany").textContent = pct(Math.max(0, 1 - pShare - gShare));
+
+    var key = $("splitkey");
+    key.textContent = "";
+    [[ "var(--person)", d.provider ],
+     [ "var(--geo)", d.keyGeo ],
+     [ "var(--company)", d.keyCompany ]].forEach(function (pair, i) {
+      if (i === 1 && gShare <= 0.0001) return;
+      if (i === 2 && work === "internal") return;
+      var s = document.createElement("span");
+      var sw = document.createElement("span");
+      sw.className = "sw"; sw.style.background = pair[0];
+      s.appendChild(sw); s.appendChild(document.createTextNode(pair[1]));
+      key.appendChild(s);
+    });
+
+    $("figShare").textContent = pct(lv.share);
+    $("figMargin").textContent = work === "internal" ? "—" : pct(1 - lv.share);
+    $("figPay").innerHTML = eur(pay) + " <small>/h</small>";
+    $("t-f-rate").textContent = work === "internal" ? d.fCap : d.fRate;
+    $("figRate").innerHTML = work === "internal"
+      ? eur(roleOnly) + " <small>/h</small>"
+      : eur(rate) + " <small>/h</small>";
+
+    $("formula").innerHTML =
+      d.coverk + " = <b>" + pct(cov) + "</b> → " + d.cLevel + " <b>" + d.lv[idx] +
+      "</b> → " + d.cShare + " <b>" + pct(lv.share) + "</b><br>" +
+      (work === "internal"
+        ? d.fCap + " = " + eur(Number($("capr").value) || INTERNAL_MAX) + " × " +
+          pct(lv.share / LEVELS[0].share) + " = <b>" + eur(roleOnly) + "</b>"
+        : d.fPay + " ≤ " + eur(rate) + " × " + pct(lv.share) + " = <b>" + eur(roleOnly) + "</b>") +
+      (g !== 1 ? "<br>× " + g.toFixed(2) + " → <b>" + eur(pay) + "</b>" : "");
+
+    var ref = $("levelsref");
+    ref.textContent = "";
+    LEVELS.forEach(function (L, i2) {
+      var tr = document.createElement("tr");
+      if (i2 === idx) tr.className = "here";
+      [d.lv[i2], pct(L.cover), pct(L.share), pct(1 - L.share)].forEach(function (txt) {
+        var td = document.createElement("td"); td.textContent = txt; tr.appendChild(td);
+      });
+      ref.appendChild(tr);
+    });
+
+    return { rate: rate, pay: pay, roleOnly: roleOnly, diff: diff };
+  }
+
+  function renderGeoNote(v) {
+    var d = t(), host = $("geonote");
+    host.textContent = "";
+    var p = document.createElement("p");
+    p.className = "warn";
+    if (!$("usegeo").checked) {
+      p.textContent = d.geoOff;
+    } else {
+      var raw = Number($("coef").value) || 1;
+      var floor = Number($("floorc").value) || 0;
+      p.innerHTML = fill(d.geoOn, {
+        full: eur(v.roleOnly), local: eur(v.pay), diff: eur(v.diff),
+        pctdiff: v.roleOnly > 0 ? pct(v.diff / v.roleOnly) : "—"
+      });
+      if (raw < floor) {
+        var s = document.createElement("div");
+        s.style.marginTop = "7px";
+        s.textContent = fill(d.geoFloor, { raw: eur(v.roleOnly * raw) });
+        p.appendChild(s);
+      }
+    }
+    host.appendChild(p);
+  }
+
+  function renderVerdict(lv, v) {
+    var d = t(), host = $("verdict"), who = d.provider;
+    host.textContent = "";
+    var p = document.createElement("p"), ok;
+    if (work === "internal") {
+      var paid = Number($("payout").value) || 0;
+      ok = paid <= v.pay + 0.005;
+      p.className = "verdict " + (ok ? "ok" : "no");
+      p.innerHTML = fill(d.internalNote, { cap: eur(Number($("capr").value) || INTERNAL_MAX) }) +
+        " " + fill(ok ? d.okRate : d.noRate,
+          { rate: eur(v.roleOnly), who: who, max: eur(v.pay), pay: eur(paid) });
+      host.appendChild(p);
+      return;
+    }
+    var asked = Number($("payout").value) || 0;
+    ok = asked <= v.pay + 0.005;
+    p.innerHTML = fill(ok ? d.okRate : d.noRate,
+      { rate: eur(v.rate), who: who, max: eur(v.pay), pay: eur(asked) });
+    p.className = "verdict " + (ok ? "ok" : "no");
+    host.appendChild(p);
+  }
+
+  function renderGrowth(cov, lv, v) {
+    var d = t(), host = $("growth");
+    host.textContent = "";
+    var gaps = comps.filter(function (c) { return agreed(c) < 1; });
+    if (!gaps.length) {
+      var done = document.createElement("p");
+      done.className = "allset"; done.textContent = d.allset;
+      host.appendChild(done);
+      return;
+    }
+    var ul = document.createElement("ul");
+    ul.className = "growth";
+    gaps.forEach(function (c) {
+      var trial = comps.map(function (x) {
+        return x === c ? { weight: x.weight, self: 1, evalr: 1 } : x;
+      });
+      var nc = coverageOf(trial), nl = levelFor(nc);
+      var gain = (nl.share - lv.share) * v.rate * geoCoef();
+      var li = document.createElement("li");
+      var txt = document.createElement("span");
+      txt.textContent = fill(d.cover, {
+        name: c.name || d.hComp, cov: pct(nc), lv: d.lv[lvIndex(nl)]
+      });
+      li.appendChild(txt);
+      var g = document.createElement("span");
+      g.className = "gain";
+      g.textContent = gain > 0.005 ? "+" + eur(gain) + "/h" : d.sameLevel;
+      li.appendChild(g);
+      ul.appendChild(li);
+    });
+    host.appendChild(ul);
+  }
+
+  function render() {
+    $("fld-rate").style.display = work === "internal" ? "none" : "";
+    $("fld-cap").style.display = work === "internal" ? "" : "none";
+    var cov = coverageOf(comps), lv = levelFor(cov);
+    renderRows();
+    var v = renderResult(cov, lv);
+    renderGeoNote(v);
+    renderVerdict(lv, v);
+    renderGrowth(cov, lv, v);
+  }
+
+  $("add").addEventListener("click", function () {
+    comps.push({ name: "", weight: 1, self: 1, evalr: 1 });
+    markDirty(); render();
+  });
+  $("rolename").addEventListener("input", markDirty);
+  ["rate", "payout", "coef", "floorc", "capr"].forEach(function (id) {
+    $(id).addEventListener("input", function () { saveIO(); render(); });
+  });
+  $("usegeo").addEventListener("change", function () { saveIO(); render(); });
+  $("country").addEventListener("change", function () {
+    var c = COUNTRIES.filter(function (x) { return x.code === $("country").value; })[0];
+    if (c) $("coef").value = String(c.coef);
+    saveIO(); render();
+  });
+  function setWork(w) {
+    work = w;
+    $("w-client").setAttribute("aria-pressed", w === "client" ? "true" : "false");
+    $("w-internal").setAttribute("aria-pressed", w === "internal" ? "true" : "false");
+    loadSet(w); saveIO(); render();
+  }
+  $("w-client").addEventListener("click", function () { setWork("client"); });
+  $("w-internal").addEventListener("click", function () { setWork("internal"); });
+  $("reset").addEventListener("click", function () {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    state = blankState();
+    $("rate").value = "100"; $("capr").value = "50"; $("payout").value = "50";
+    $("floorc").value = "0.5"; $("usegeo").checked = false;
+    $("country").value = "PK"; $("coef").value = "0.28";
+    setWork("client");
+  });
+
+  $("country").value = "PK";
+  $("coef").value = "0.28";
+  applyIO();
+  $("w-client").setAttribute("aria-pressed", work === "client" ? "true" : "false");
+  $("w-internal").setAttribute("aria-pressed", work === "internal" ? "true" : "false");
+  loadSet(work);
+  renderStatic();
+  render();
+})();
+</script>

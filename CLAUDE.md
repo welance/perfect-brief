@@ -8,6 +8,15 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
 
 **Your mission for this session is in `PLAN.md`. Read it first, then Phase 0.**
 
+**Second workstream: Perfect Price** — see `PLAN-PERFECT-PRICE.md`. Where Perfect
+Brief is about being clear on *what the work is*, Perfect Price is about *what
+it is worth and who gets what part*: how Welance prices collaborations, stated
+so anyone can compute and check the split. Concept in
+`docs/perfect-price/PERFECT-PRICE.md`, calculator in `site/price.html` (working,
+not yet on `welance.css`). Independent of `PLAN.md` — neither blocks the other.
+Everything in it is anonymised by design; `site/` is public and no individual
+compensation data belongs there.
+
 ## Invariants — do not violate
 1. **The seam.** The judge returns per-rule verdicts (status/confidence/quote)
    and nothing else. `perfect_brief/score.py` owns weights, gate, decision.
