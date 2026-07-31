@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfect Team · one team, one rate — Welance</title>
+<meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named welance margin out.">
+<link rel="stylesheet" href="welance.css?v=3">
+<script src="pricing.js?v=1"></script>
+<style>
+  /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
+     Component vocabulary shared with price.html: same names, same look.
+     The fourth band — headroom — gets the house yellow: margin beyond the
+     target never hides, exactly like the geographic differential. */
+  :root {
+    --bg: var(--paper); --surface: var(--paper); --surface-2: var(--paper-2);
+    --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
+    --line: var(--rule); --line-strong: var(--rule);
+    --person: var(--wl-c); --person-soft: var(--fail-bg);
+    --company: var(--rule-strong); --company-soft: var(--pass-bg);
+    --geo: var(--wl-p); --geo-soft: var(--accent-bg);
+    --head: var(--wl-y);
+    --full: var(--pass); --none: #8a8a8a; --focus: var(--accent);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--disp); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
+  .crumbs { margin: 28px 0 0; }
+  .wrap > header { padding: 14px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
+  .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(29px, 4.4vw, 42px);
+    line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
+
+  .topbar { display: flex; justify-content: flex-start; margin: 14px 0 20px; }
+  .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+    background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
+  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+
+  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
+  @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
+  .sticky { position: sticky; top: 18px; }
+  @media (max-width: 920px) { .sticky { position: static; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line); padding: 22px; }
+  .card + .card { margin-top: 20px; }
+  .card h2 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+  .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
+
+  .rolebar { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; }
+  .subnote { font-size: 12px; color: var(--ink-3); }
+  input[type="text"], input[type="number"], select {
+    font: inherit; color: var(--ink); background: var(--surface-2);
+    border: 1px solid var(--line-strong); padding: 8px 10px; }
+  input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .grow { flex: 1 1 200px; }
+  .w-rate { width: 124px; }
+  :is(input, select, button, [tabindex]):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* one role per row: name · weight% · level · country · coeff · own rate · ceiling · × */
+  .role-head, .role { display: grid;
+    grid-template-columns: minmax(0,1fr) 54px 122px 132px 66px 76px 88px 26px;
+    gap: 8px; align-items: center; }
+  .role-head { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; padding: 0 0 8px; border-bottom: 1px solid var(--line); }
+  .role { padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .role:last-of-type { border-bottom: 0; }
+  .role input, .role select { width: 100%; }
+  .role select { font-size: 13px; padding: 7px 6px; }
+  .role input[type="number"] { padding: 7px 4px; text-align: center; }
+  .ceil { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px;
+    font-weight: 600; text-align: end; white-space: nowrap; }
+  .ceil.bad { color: var(--fail); }
+  .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--fail); }
+  @media (max-width: 720px) {
+    .role-head { display: none; }
+    .role { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 26px;
+      gap: 6px; padding: 9px 0; }
+    .role > :nth-child(1) { grid-column: 1 / 4; grid-row: 1; } /* name */
+    .role > :nth-child(8) { grid-column: 4; grid-row: 1; }     /* × */
+    .role > :nth-child(2) { grid-column: 1; grid-row: 2; }     /* weight */
+    .role > :nth-child(3) { grid-column: 2 / 5; grid-row: 2; } /* level */
+    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* country */
+    .role > :nth-child(5) { grid-column: 3 / 5; grid-row: 3; } /* coeff */
+    .role > :nth-child(6) { grid-column: 1; grid-row: 4; }     /* own rate */
+    .role > :nth-child(7) { grid-column: 2 / 5; grid-row: 4; text-align: start; } /* ceiling */
+    .role select { font-size: 12.5px; padding: 6px 4px; }
+  }
+  .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
+    cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
+  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
+    color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
+  .addbtn:hover { border-color: var(--person); color: var(--person); }
+  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--partial); }
+
+  .splitbar { display: flex; height: 42px; overflow: hidden; border: 1px solid var(--line-strong); }
+  .splitbar > div { display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+    font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
+  .sb-people { background: var(--person); }
+  .sb-head { background: var(--head); color: var(--ink); }
+  .sb-geo { background: var(--geo); }
+  .sb-company { background: var(--company); }
+  .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+  .splitkey span { display: flex; align-items: center; gap: 5px; }
+  .sw { width: 9px; height: 9px; flex: none; }
+
+  .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
+    border: 1px solid var(--line); overflow: hidden; margin-top: 20px; }
+  .fig { background: var(--surface); padding: 13px 14px; }
+  .fig .k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px; }
+  .fig .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
+  .fig .v small { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+
+  .formula { margin-top: 18px; background: var(--surface-2); padding: 13px 15px;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink-2); overflow-x: auto; }
+  .formula b { color: var(--ink); font-weight: 600; }
+
+  .verdict { margin: 16px 0 0; padding: 13px 15px; font-size: 14.5px; }
+  .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
+  .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .check { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+  .checknote { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-2); max-width: 66ch; }
+
+  footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  footer p { margin: 0 0 9px; }
+  footer b { color: var(--ink-2); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="breadcrumb">
+    <a class="brand" href="https://welance.com" aria-label="welance — back to welance.com">
+      <!-- welance asterisk + wordmark, paths verbatim from welance.com / Directory -->
+      <svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" width="116" height="28" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">
+        <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)">
+          <g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
+            <path class="wl-stroke wl-s1" d="M-374.25,22 L-622.25,22"/>
+            <path class="wl-stroke wl-s2" d="M-498.25,-102 L-498.25,146"/>
+            <path class="wl-stroke wl-s3" d="M-410.5,109.75 L-586,-65.75"/>
+            <path class="wl-stroke wl-s4" d="M-586,109.75 L-410.5,-65.75"/>
+          </g>
+        </g>
+        <g class="wl-glyph wl-g1" transform="matrix(0.0833,0,0,0.0833,61.3753,82.5643)"><path fill="currentColor" d="M-60.793,67.637 L-36.475,67.637 L-0.384,-37.519 L0.128,-37.519 L36.475,67.637 L60.793,67.637 L92.788,-67.637 L67.96,-67.637 L45.691,31.65 L45.178,31.65 L11.134,-67.637 L-11.134,-67.637 L-45.178,31.65 L-45.69,31.65 L-67.96,-67.637 L-92.788,-67.637 Z"/></g>
+        <g class="wl-glyph wl-g2" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M-119.854,30.837 C-119.854,73.461 -94.257,102.303 -56.63,102.303 C-30.777,102.303 -10.811,90.817 1.219,68.357 L-18.234,55.339 C-29.497,73.461 -39.736,80.097 -56.885,80.097 C-67.892,80.097 -76.851,76.269 -83.762,68.357 C-90.673,60.444 -94.257,50.235 -94.513,38.239 L4.547,38.239 L4.547,27.774 C4.547,-12.809 -20.026,-40.63 -56.885,-40.63 C-94.001,-40.63 -119.854,-11.277 -119.854,30.837 Z M-94.001,19.096 C-93.489,-1.323 -77.363,-18.424 -56.885,-18.424 C-35.384,-18.424 -21.306,-3.11 -20.282,19.096 Z"/></g>
+        <g class="wl-glyph wl-g3" transform="matrix(0.0833,0,0,0.0833,83.6117,80.4382)"><path fill="currentColor" d="M-12.541,93.161 L12.541,93.161 L12.541,-93.161 L-12.541,-93.161 Z"/></g>
+        <g class="wl-glyph wl-g4" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M82.13,63.252 C82.13,86.989 99.8,102.303 126.67,102.303 C143.31,102.303 157.39,95.922 164.81,85.457 L165.32,85.457 L165.32,98.474 L188.36,98.474 L188.36,5.568 C188.36,-23.018 168.91,-40.63 137.42,-40.63 C122.83,-40.63 110.29,-36.546 100.05,-28.634 C90.07,-20.721 83.93,-10.256 81.62,3.016 L105.94,8.121 C109.27,-8.98 120.78,-18.679 137.42,-18.679 C152.78,-18.679 162.25,-11.533 162.25,-0.557 C162.25,9.397 154.57,14.246 130,20.372 C95.44,28.54 82.13,40.536 82.13,63.252 Z M163.53,52.787 C163.53,68.357 149.45,79.842 129.74,79.842 C114.64,79.842 106.71,73.206 106.71,61.72 C106.71,51.511 114.9,45.64 136.4,40.28 C152.78,35.941 160.72,31.858 163.02,25.987 L163.53,25.987 Z"/></g>
+        <g class="wl-glyph wl-g5" transform="matrix(0.0833,0,0,0.0833,102.9065,82.4049)"><path fill="currentColor" d="M-56.7,69.552 L-31.61,69.552 L-31.61,-13.91 C-31.61,-33.308 -18.81,-46.325 0.64,-46.325 C20.1,-46.325 31.61,-34.074 31.61,-13.91 L31.61,69.552 L56.7,69.552 L56.7,-17.739 C56.7,-49.388 36.48,-69.552 5.5,-69.552 C-8.83,-69.552 -23.93,-63.171 -32.12,-53.727 L-32.63,-53.727 L-32.63,-65.723 L-56.7,-65.723 Z"/></g>
+        <g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>
+        <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
+      </svg>
+    </a>
+    <span class="sep">/</span><span class="cur">perfect team</span>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Welance · one team, one rate</p>
+    <h1>Perfect Team<span style="color:var(--accent)">_</span></h1>
+    <p class="lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated, named <b>welance margin</b> anyone can check.</p>
+  </header>
+
+  <div class="topbar">
+    <button class="lang reset" id="reset" type="button">Reset to defaults</button>
+  </div>
+
+  <div class="cols">
+    <div>
+      <section class="card">
+        <h2>The team, role by role</h2>
+        <p class="hint">The name is the team's, not a person's. For each role: its weight in the project, the level it is delivered at, the member's cost-of-living coefficient, and their own rate — for the no-deal check.</p>
+        <div class="rolebar">
+          <div class="field grow"><label for="teamname">Team</label>
+            <input type="text" id="teamname" value="Team — product rebuild">
+            <span class="subnote">Anonymised by design: roles, never people.</span></div>
+          <div class="field"><label for="rate">Client rate €/h</label>
+            <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
+          <div class="field"><label for="floorc">CoL floor</label>
+            <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0">
+            <span class="subnote">0 = no floor. See the note below.</span></div>
+        </div>
+        <div class="role-head">
+          <div>Role</div><div>Weight</div><div>Level</div><div>Country</div><div>Coeff</div><div>Own rate</div><div style="text-align:end">Ceiling</div><div></div>
+        </div>
+        <div id="rows"></div>
+        <p class="weightflag" id="weightflag" hidden>Weights are read as shares of their sum.</p>
+        <button class="addbtn" id="add" type="button">+ Add role</button>
+      </section>
+
+      <section class="card">
+        <h2>Si parte! — the first check</h2>
+        <p class="hint">The formulas above produce the starting team. What they cannot see — compatibility between members and with the client, kindness, availability, how someone carries stress — is learned only by working together.</p>
+        <div class="check">
+          <div class="field"><label for="projsize">Project size</label>
+            <select id="projsize">
+              <option value="s">Small — days to weeks</option>
+              <option value="m" selected>Medium — weeks to months</option>
+              <option value="l">Large — months and up</option>
+            </select></div>
+          <div class="field"><label for="firstcheck">First check after</label>
+            <select id="firstcheck">
+              <option value="3 days">3 days</option>
+              <option value="1 week">1 week</option>
+              <option value="2 weeks" selected>2 weeks</option>
+              <option value="1 month">1 month</option>
+              <option value="3 months">3 months</option>
+            </select></div>
+        </div>
+        <p class="checknote">A suggested rhythm, deliberately <b>not</b> a formula. Work starts for real, with the declared reserve to replace, remove or modify the initial choices — and it is bidirectional, always: the independent may not feel right either. Every human problem should surface at the first check, not fester. The adjustment is made on the most important asset: the people.</p>
+      </section>
+    </div>
+
+    <div class="sticky">
+      <section class="card">
+        <h2 style="margin-bottom:14px">Result</h2>
+        <div class="splitbar" aria-label="how the client rate splits">
+          <div class="sb-people" id="barPeople"></div>
+          <div class="sb-head" id="barHead"></div>
+          <div class="sb-geo" id="barGeo"></div>
+          <div class="sb-company" id="barCompany"></div>
+        </div>
+        <div class="splitkey">
+          <span><span class="sw" style="background:var(--person)"></span>to the people</span>
+          <span><span class="sw" style="background:var(--head)"></span>headroom</span>
+          <span><span class="sw" style="background:var(--geo)"></span>geographic differential</span>
+          <span><span class="sw" style="background:var(--company)"></span>welance margin</span>
+        </div>
+        <div class="figures">
+          <div class="fig"><div class="k">To the people</div><div class="v" id="figPeople">—</div></div>
+          <div class="fig"><div class="k">Welance margin · target</div><div class="v" id="figMargin">—</div></div>
+          <div class="fig"><div class="k">Minimum viable rate</div><div class="v" id="figMinR">—</div></div>
+          <div class="fig"><div class="k">Client rate</div><div class="v" id="figRate">—</div></div>
+        </div>
+        <div class="formula" id="formula"></div>
+        <div id="verdict"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>The four bands must sum to the client rate — that is the equation.</b> Margin the people leave on the table (headroom) and margin that comes from where somebody lives (the geographic differential) are shown in their own colours, because margin that cannot be seen cannot be argued with.</p>
+    <p><b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.</p>
+    <p><b>No-deal rule.</b> If a member's rate exceeds what their level allows at the agreed client rate, the engagement does not happen. Nobody is squeezed below their rate to make the margin work.</p>
+    <p><b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them.</p>
+  </footer>
+</div>
+<script>
+(function () {
+  "use strict";
+
+  // All policy and math come from the shared engine — this file is only UI.
+  var P = window.WelancePricing;
+  var LEVEL_NAMES = ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"];
+  var STORE_KEY = "welance-team-calc-v1";
+  var SIZE_CHECK = { s: "3 days", m: "2 weeks", l: "1 month" };
+
+  // The default team mirrors the engine's pinned test — role names only.
+  var DEF = {
+    name: "Team — product rebuild",
+    rate: 100, floor: 0, size: "m", check: "2 weeks",
+    rows: [
+      { role: "Design lead",        weight: 30, level: 0, country: "DE", coef: 1.00, own: 55 },
+      { role: "Full-stack developer", weight: 45, level: 1, country: "IT", coef: 0.82, own: 40 },
+      { role: "QA engineer",        weight: 25, level: 2, country: "VN", coef: 0.32, own: 12 }
+    ]
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  function eur(n) {
+    try { return new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR" }).format(n); }
+    catch (e) { return "€" + n.toFixed(2); }
+  }
+  function pct(n) { return Math.round(n * 100) + "%"; }
+
+  // formula tooltips: "formula N of M — ..." derived from the registry.
+  function ftip(id) {
+    var f = P.FORMULAS.filter(function (x) { return x.id === id; })[0];
+    return "formula " + f.n + " of " + P.FORMULAS.length + " — " + f.formula;
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) { var v = JSON.parse(raw); if (v && v.rows && v.rows.length) return v; }
+    } catch (e) {}
+    return JSON.parse(JSON.stringify(DEF));
+  }
+  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+  var state = load();
+
+  function renderRows() {
+    var host = $("rows");
+    host.textContent = "";
+    state.rows.forEach(function (r, i) {
+      var row = document.createElement("div");
+      row.className = "role";
+
+      var name = document.createElement("input");
+      name.type = "text"; name.value = r.role; name.setAttribute("aria-label", "Role");
+      name.addEventListener("input", function () { r.role = name.value; save(); });
+      row.appendChild(name);
+
+      var w = document.createElement("input");
+      w.type = "number"; w.min = "0"; w.step = "5"; w.value = String(r.weight);
+      w.setAttribute("aria-label", "Weight");
+      w.title = "share of the project's effort — read as part of the sum";
+      w.addEventListener("input", function () { r.weight = Number(w.value) || 0; save(); render(); });
+      row.appendChild(w);
+
+      var lv = document.createElement("select");
+      lv.setAttribute("aria-label", "Level");
+      lv.title = ftip("share");
+      LEVEL_NAMES.forEach(function (n, li) {
+        var o = document.createElement("option");
+        o.value = String(li); o.textContent = n; if (li === r.level) o.selected = true;
+        lv.appendChild(o);
+      });
+      lv.addEventListener("change", function () { r.level = Number(lv.value); save(); render(); });
+      row.appendChild(lv);
+
+      var co = document.createElement("select");
+      co.setAttribute("aria-label", "Country");
+      co.title = ftip("col");
+      P.COUNTRIES.forEach(function (c) {
+        var o = document.createElement("option");
+        o.value = c.code; o.textContent = c.en + " · " + c.coef.toFixed(2);
+        if (c.code === r.country) o.selected = true;
+        co.appendChild(o);
+      });
+      co.addEventListener("change", function () {
+        var c = P.COUNTRIES.filter(function (x) { return x.code === co.value; })[0];
+        r.country = co.value; if (c) r.coef = c.coef;
+        save(); render();
+      });
+      row.appendChild(co);
+
+      var cf = document.createElement("input");
+      cf.type = "number"; cf.min = "0.1"; cf.max = "2"; cf.step = "0.01"; cf.value = String(r.coef);
+      cf.setAttribute("aria-label", "Coefficient");
+      cf.title = ftip("col");
+      cf.addEventListener("input", function () { r.coef = Number(cf.value) || 1; save(); render(); });
+      row.appendChild(cf);
+
+      var own = document.createElement("input");
+      own.type = "number"; own.min = "0"; own.step = "0.5"; own.value = String(r.own);
+      own.setAttribute("aria-label", "Own rate €/h");
+      own.title = ftip("nodeal");
+      own.addEventListener("input", function () { r.own = Number(own.value) || 0; save(); render(); });
+      row.appendChild(own);
+
+      // ceiling cell — filled in by render() from the engine's result
+      var ceil = document.createElement("div");
+      ceil.className = "ceil";
+      ceil.title = ftip("margin");
+      row.appendChild(ceil);
+
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
+      del.setAttribute("aria-label", "remove role");
+      del.addEventListener("click", function () { state.rows.splice(i, 1); save(); render(); });
+      row.appendChild(del);
+
+      host.appendChild(row);
+    });
+  }
+
+  function computeInput() {
+    var floor = Number($("floorc").value) || 0;
+    return state.rows.map(function (r) {
+      return { weight: r.weight, levelIndex: r.level, coef: r.coef, floor: floor, ownRate: r.own };
+    });
+  }
+
+  function render() {
+    renderRows();
+    var R = Number($("rate").value) || 0;
+    var res = P.computeTeam(R, computeInput());
+
+    // per-row ceiling + no-deal flags
+    var rowEls = $("rows").children;
+    res.rows.forEach(function (r, i) {
+      var el = rowEls[i];
+      if (!el) return;
+      var ceil = el.querySelector(".ceil");
+      ceil.className = "ceil" + (r.ok ? "" : " bad");
+      ceil.textContent = "≤ " + eur(r.ceiling) + "/h";
+      var old = el.querySelector(".rowflag");
+      if (old) el.removeChild(old);
+      if (!r.ok) {
+        var fl = document.createElement("p");
+        fl.className = "rowflag";
+        fl.textContent = "At " + eur(R) + "/h the ceiling for this role is " +
+          eur(r.ceiling) + "/h — below their " + eur(r.ownRate) +
+          "/h. Either the client rate rises, or this team does not happen.";
+        el.appendChild(fl);
+      }
+    });
+
+    // the four bands, in % of R
+    var bp = R > 0 ? res.payouts / R : 0;
+    var bh = R > 0 ? res.headroom / R : 0;
+    var bg = R > 0 ? res.geoBand / R : 0;
+    var bc = Math.max(0, 1 - bp - bh - bg);
+    $("barPeople").style.flexBasis = (bp * 100) + "%";
+    $("barHead").style.flexBasis = (bh * 100) + "%";
+    $("barGeo").style.flexBasis = (bg * 100) + "%";
+    $("barCompany").style.flexBasis = (bc * 100) + "%";
+    $("barPeople").textContent = bp > 0.07 ? pct(bp) : "";
+    $("barHead").textContent = bh > 0.07 ? pct(bh) : "";
+    $("barGeo").textContent = bg > 0.07 ? pct(bg) : "";
+    $("barCompany").textContent = bc > 0.07 ? pct(bc) : "";
+    document.querySelector(".splitbar").title = ftip("team");
+
+    $("figPeople").innerHTML = eur(res.payouts) + " <small>/h blended</small>";
+    $("figPeople").title = ftip("team");
+    // the welance margin is ONLY its own band — headroom and the geo
+    // differential are never counted into it (PERFECT-PRICE.md §7, spec §5a)
+    $("figMargin").innerHTML = pct(R > 0 ? res.welanceMargin / R : 0) +
+      " <small>· target " + pct(res.marginTarget) + "</small>";
+    $("figMargin").title = ftip("margin");
+    $("figMinR").innerHTML = eur(res.minViableR) + " <small>/h</small>";
+    $("figMinR").title = ftip("nodeal");
+    $("figRate").innerHTML = eur(R) + " <small>/h</small>";
+
+    // the equation only holds when every row clears its ceiling — in a
+    // no-deal state there is no honest equation to show.
+    $("formula").innerHTML = res.ok
+      ? "R = people + headroom + geo + margin<br>" +
+        eur(R) + " = <b>" + eur(res.payouts) + "</b> + " + eur(res.headroom) +
+        " + " + eur(res.geoBand) + " + <b>" + eur(res.welanceMargin) + "</b>"
+      : "no equation at this rate — no-deal (see the flagged role)";
+
+    var v = $("verdict");
+    v.textContent = "";
+    var p = document.createElement("p");
+    p.className = "verdict " + (res.ok ? "ok" : "no");
+    p.innerHTML = res.ok
+      ? "Every role clears its ceiling at " + eur(R) + "/h. The smallest client rate this team works at is <b>" + eur(res.minViableR) + "</b>/h."
+      : "This team does not work at " + eur(R) + "/h — the flagged role would be squeezed below its own rate, and that is a no-deal. The smallest rate that works is <b>" + eur(res.minViableR) + "</b>/h.";
+    v.appendChild(p);
+
+    $("weightflag").hidden = false;
+    var tw = state.rows.reduce(function (s, r) { return s + r.weight; }, 0);
+    $("weightflag").textContent = "Weights sum to " + tw + " — read as shares of that sum.";
+  }
+
+  $("teamname").value = state.name;
+  $("rate").value = String(state.rate);
+  $("floorc").value = String(state.floor);
+  $("projsize").value = state.size;
+  $("firstcheck").value = state.check;
+
+  $("teamname").addEventListener("input", function () { state.name = $("teamname").value; save(); });
+  $("rate").addEventListener("input", function () { state.rate = Number($("rate").value) || 0; save(); render(); });
+  $("floorc").addEventListener("input", function () { state.floor = Number($("floorc").value) || 0; save(); render(); });
+  $("projsize").addEventListener("change", function () {
+    state.size = $("projsize").value;
+    state.check = SIZE_CHECK[state.size];
+    $("firstcheck").value = state.check;
+    save();
+  });
+  $("firstcheck").addEventListener("change", function () { state.check = $("firstcheck").value; save(); });
+  $("add").addEventListener("click", function () {
+    state.rows.push({ role: "", weight: 10, level: 1, country: "DE", coef: 1.00, own: 40 });
+    save(); render();
+  });
+  $("reset").addEventListener("click", function () {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    state = JSON.parse(JSON.stringify(DEF));
+    $("teamname").value = state.name; $("rate").value = String(state.rate);
+    $("floorc").value = String(state.floor); $("projsize").value = state.size;
+    $("firstcheck").value = state.check;
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
