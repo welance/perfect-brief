@@ -79,6 +79,7 @@
   input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
   .grow { flex: 1 1 200px; }
   .w-rate { width: 124px; }
+  .w-floor { max-width: 300px; }
   :is(input, select, button, [tabindex]):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
   /* each role: the name gets a full-width line of its own, the parameters
@@ -205,8 +206,13 @@
           <div class="field"><label for="rate" data-i18n="team.l.rate">Client rate €/h</label>
             <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
           <div class="field"><label for="floorc" data-i18n="team.l.floor">Cost-of-living floor</label>
-            <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0">
-            <span class="subnote" data-i18n="team.l.floornote">Caps how far a coefficient can cut pay: max(coeff, floor). 0 = no floor.</span></div>
+            <select id="floorc" class="w-floor">
+              <option value="0" data-i18n="team.fl0">no floor — pay follows local cost fully</option>
+              <option value="0.5" data-i18n="team.fl5">at least half the role's pay</option>
+              <option value="0.75" data-i18n="team.fl75">at least three quarters</option>
+              <option value="1" data-i18n="team.fl100">full role pay — geography off</option>
+            </select>
+            <span class="subnote" data-i18n="team.l.floornote">A guarantee: wherever someone lives, pay never drops below this.</span></div>
         </div>
         <div class="role-head">
           <div data-i18n="team.th2">Weight</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
@@ -488,7 +494,7 @@
 
     var ck = SIZE_CHECK[state.size] || SIZE_CHECK.m;
     $("checkval").textContent = tt(ck.key, ck.en);
-    $("floorc").title = tt("team.l.floornote", "Caps how far a coefficient can cut pay: max(coeff, floor). 0 = no floor.");
+    $("floorc").title = tt("team.l.floornote", "A guarantee: wherever someone lives, pay never drops below this.");
   }
 
   $("teamname").value = state.name;
