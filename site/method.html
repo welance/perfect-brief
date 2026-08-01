@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Welance Method — brief, price, team</title>
 <meta name="description" content="The process Welance has run in person since 2012 — an honest brief, a transparent price, a team assembled for the goal — digitalised end to end and opened as a blueprint.">
-<link rel="stylesheet" href="welance.css?v=3">
+<link rel="stylesheet" href="welance.css?v=4">
 <script src="pricing.js?v=1"></script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   * { box-sizing: border-box; }
@@ -45,6 +53,7 @@
   .d4 { animation-delay: .75s; } .d5 { animation-delay: 1.0s; } .d6 { animation-delay: 1.25s; }
   @keyframes m-draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) { .draw { animation: none; stroke-dashoffset: 0; } }
+  [dir="rtl"] .fx-close { border-left: 0; border-right: 2px solid var(--accent); padding: 4px 14px 4px 0; }
 
   /* the formulas */
   .formulas { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 0 14px; }
@@ -90,17 +99,18 @@
           <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
         </svg>
       </a>
-      <span class="sep">/</span><span class="cur">the method</span>
+      <span class="sep">/</span><span class="cur" data-i18n="method.crumb">the method</span>
+      <nav id="langswitch" aria-label="language"></nav>
     </nav>
-    <h1>The Welance Method<span class="b">_</span></h1>
-    <p class="thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end, and opened as a blueprint anyone can read, check, and fork.</p>
+    <h1><span data-i18n="method.h1">The Welance Method</span><span class="b">_</span></h1>
+    <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end, and opened as a blueprint anyone can read, check, and fork.</p>
   </header>
 
-  <div class="eyebrow"><span>the problem, honestly</span></div>
-  <p>A rigid business unit cannot change shape for a specific goal. It adapts itself to the goal — rigidly, because that is all a fixed structure can do — and the result is worse work and wasted budget. We experience this as software consultants on both sides of the table, and it is the generalist problem behind most of the specific ones we are hired to fix.</p>
-  <p>A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements. The method below is how we make such teams routine instead of lucky.</p>
+  <div class="eyebrow"><span data-i18n="method.eb1">the problem, honestly</span></div>
+  <p data-i18n="method.p1">A rigid business unit cannot change shape for a specific goal. It adapts itself to the goal — rigidly, because that is all a fixed structure can do — and the result is worse work and wasted budget. We experience this as software consultants on both sides of the table, and it is the generalist problem behind most of the specific ones we are hired to fix.</p>
+  <p data-i18n-html="method.p2">A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements. The method below is how we make such teams routine instead of lucky.</p>
 
-  <div class="eyebrow"><span>the method — three steps</span></div>
+  <div class="eyebrow"><span data-i18n="method.eb2">the method — three steps</span></div>
   <div class="steps">
     <a class="step" href="index.html" style="color:inherit;text-decoration:none">
       <div class="ident" role="img" aria-label="A brief being written and checked">
@@ -113,10 +123,10 @@
           <path class="draw d6" d="M79 108 l5 5 l10 -11" stroke="var(--wl-p)" stroke-width="3.5"/>
         </svg>
       </div>
-      <span class="n">step 1</span>
-      <h3>Perfect Brief</h3>
-      <p>What the work is. A great product is 20% brief and 80% team — but the brief is the 20% that decides whether a good team can even start well. Scored against public rules, gated before it publishes.</p>
-      <span class="go">→ score a brief</span>
+      <span class="n" data-i18n="method.s1.n">step 1</span>
+      <h3 data-i18n="method.s1.h">Perfect Brief</h3>
+      <p data-i18n="method.s1.p">What the work is. A great product is 20% brief and 80% team — but the brief is the 20% that decides whether a good team can even start well. Scored against public rules, gated before it publishes.</p>
+      <span class="go" data-i18n="method.s1.go">→ score a brief</span>
     </a>
     <a class="step" href="price.html" style="color:inherit;text-decoration:none">
       <div class="ident" role="img" aria-label="A rate split into visible parts">
@@ -129,10 +139,10 @@
           <path class="draw d6" d="M10 106 h34 M10 120 h46" stroke="var(--ink-soft)" stroke-width="2.5"/>
         </svg>
       </div>
-      <span class="n">step 2</span>
-      <h3>Perfect Price</h3>
-      <p>What it is worth, and who gets what part. The share follows from how much of the role someone covers — never from a judgement about who they are. Stated so anyone can compute and check the split.</p>
-      <span class="go">→ compute a split</span>
+      <span class="n" data-i18n="method.s2.n">step 2</span>
+      <h3 data-i18n="method.s2.h">Perfect Price</h3>
+      <p data-i18n="method.s2.p">What it is worth, and who gets what part. The share follows from how much of the role someone covers — never from a judgement about who they are. Stated so anyone can compute and check the split.</p>
+      <span class="go" data-i18n="method.s2.go">→ compute a split</span>
     </a>
     <a class="step" href="team.html" style="color:inherit;text-decoration:none">
       <div class="ident" role="img" aria-label="Three people joined into one team">
@@ -145,58 +155,75 @@
           <path class="draw d6" d="M20 128 h80" stroke="var(--wl-y)" stroke-width="7"/>
         </svg>
       </div>
-      <span class="n">step 3</span>
-      <h3>Perfect Team</h3>
-      <p>Who does it, where in the world, at one blended rate the client can actually reason about. Margins vary inside the team by level; the project clears a stated welance margin; nobody is squeezed below their rate.</p>
-      <span class="go">→ assemble a team</span>
+      <span class="n" data-i18n="method.s3.n">step 3</span>
+      <h3 data-i18n="method.s3.h">Perfect Team</h3>
+      <p data-i18n="method.s3.p">Who does it, where in the world, at one blended rate the client can actually reason about. Margins vary inside the team by level; the project clears a stated welance margin; nobody is squeezed below their rate.</p>
+      <span class="go" data-i18n="method.s3.go">→ assemble a team</span>
     </a>
   </div>
-  <p>Each step needs the one before it. The price needs the brief's scope to know what a role even is; the team needs the price's arithmetic to give three people one honest rate. Information cascades — that is why they are steps and not features, and why the brief stays the principal concept: nothing downstream survives a dishonest one.</p>
+  <p data-i18n="method.p3">Each step needs the one before it. The price needs the brief's scope to know what a role even is; the team needs the price's arithmetic to give three people one honest rate. Information cascades — that is why they are steps and not features, and why the brief stays the principal concept: nothing downstream survives a dishonest one.</p>
 
   <div class="eyebrow"><span id="fxHead">the formulas, all of them</span></div>
-  <p>Everything the method computes, in one list — derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>), so this page cannot drift from the code. If you disagree with a constant, it is in one readable file, with the reason next to it.</p>
+  <p data-i18n-html="method.fxintro">Everything the method computes, in one list — derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>), so this page cannot drift from the code. If you disagree with a constant, it is in one readable file, with the reason next to it.</p>
   <div class="formulas" id="formulas"></div>
-  <p class="fx-close">These <b id="fxCount">—</b> formulas help make the decision. Everything else is human capital — and it does not compute.</p>
+  <p class="fx-close">These <b>8</b> formulas help make the decision. Everything else is human capital — and it does not compute.</p>
 
-  <div class="eyebrow"><span>what the formulas cannot see</span></div>
-  <p><b>Si parte!</b> The formulas produce the <em>starting</em> team, and then work begins for real — not a trial, not a pilot: the actual work. What no formula can see is learned only by collaborating: cultural compatibility between members and with the client, kindness, humanity, availability, how someone carries stress, the whole mass of soft skills that only show up when the pressure is real.</p>
-  <p>So the start carries a declared reserve: scheduled checks at one to three days, weeks, or months — scaled to the project's size and complexity — where either side may say it is not working, and the initial choices can be replaced, removed, or modified. Bidirectional, always: the independent may not feel right either, and every human problem should surface at the first check rather than fester. That early surfacing is what prevents resentment, bad vibes, and ugly projects.</p>
-  <p>In white-collar work, ideas, intuition and mental elasticity need room to convert into success. When something is off, the adjustment is made on the most important asset: the people.</p>
+  <div class="eyebrow"><span data-i18n="method.eb3">what the formulas cannot see</span></div>
+  <p data-i18n-html="method.p4"><b>Si parte!</b> The formulas produce the <em>starting</em> team, and then work begins for real — not a trial, not a pilot: the actual work. What no formula can see is learned only by collaborating: cultural compatibility between members and with the client, kindness, humanity, availability, how someone carries stress, the whole mass of soft skills that only show up when the pressure is real.</p>
+  <p data-i18n="method.p5">So the start carries a declared reserve: scheduled checks at one to three days, weeks, or months — scaled to the project's size and complexity — where either side may say it is not working, and the initial choices can be replaced, removed, or modified. Bidirectional, always: the independent may not feel right either, and every human problem should surface at the first check rather than fester. That early surfacing is what prevents resentment, bad vibes, and ugly projects.</p>
+  <p data-i18n="method.p6">In white-collar work, ideas, intuition and mental elasticity need room to convert into success. When something is off, the adjustment is made on the most important asset: the people.</p>
 
-  <div class="eyebrow"><span>why open</span></div>
-  <p>This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT-licensed like the rest, so a collective that disagrees with our numbers can fork the method and run its own.</p>
-  <p>The claim is small and true: a brief you can score, a split you can compute, a team you can reason about — and an honest check, early, where the humans decide what the formulas cannot.</p>
+  <div class="eyebrow"><span data-i18n="method.eb4">why open</span></div>
+  <p data-i18n="method.p7">This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT-licensed like the rest, so a collective that disagrees with our numbers can fork the method and run its own.</p>
+  <p data-i18n="method.p8">The claim is small and true: a brief you can score, a split you can compute, a team you can reason about — and an honest check, early, where the humans decide what the formulas cannot.</p>
   <div class="cta">
-    <a class="btn primary" href="index.html">Start with the brief</a>
-    <a class="btn" href="price.html">Compute a split</a>
-    <a class="btn ghost" href="team.html">Assemble a team</a>
+    <a class="btn primary" href="index.html" data-i18n="method.cta1">Start with the brief</a>
+    <a class="btn" href="price.html" data-i18n="method.cta2">Compute a split</a>
+    <a class="btn ghost" href="team.html" data-i18n="method.cta3">Assemble a team</a>
   </div>
 
   <footer>
-    <span>The Welance Method · a Welance open-source project</span>
+    <span data-i18n="method.foot">The Welance Method · a Welance open-source project</span>
     <span><a href="index.html">brief</a> · <a href="price.html">price</a> · <a href="team.html">team</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
   </footer>
 </div>
 <script>
 /* The formula blocks are rendered from the registry in pricing.js — the
-   heading and the closing line derive the count, so "N" is always exact. */
+   heading and the closing line derive the count, so "N" is always exact.
+   Names and plain-language lines translate via the site dictionaries
+   (fx.<id>.name / fx.<id>.plain); the formula itself stays canonical. */
 (function () {
   var P = window.WelancePricing;
-  var host = document.getElementById("formulas");
-  P.FORMULAS.forEach(function (f) {
-    var d = document.createElement("div");
-    d.className = "fx";
-    var fn = document.createElement("div"); fn.className = "fn";
-    fn.textContent = "formula " + f.n + " of " + P.FORMULAS.length;
-    var h = document.createElement("h4"); h.textContent = f.name;
-    var c = document.createElement("code"); c.textContent = f.formula;
-    var p = document.createElement("p"); p.textContent = f.plain;
-    var s = document.createElement("div"); s.className = "src"; s.textContent = f.source;
-    d.appendChild(fn); d.appendChild(h); d.appendChild(c); d.appendChild(p); d.appendChild(s);
-    host.appendChild(d);
-  });
-  document.getElementById("fxHead").textContent = "the " + P.FORMULAS.length + " formulas, all of them";
-  document.getElementById("fxCount").textContent = String(P.FORMULAS.length);
+  var I = window.WelanceI18n;
+  function tt(key, en) {
+    var v = I ? I.t(key) : null;
+    return v === null || v === undefined ? en : v;
+  }
+  function render() {
+    var n = P.FORMULAS.length;
+    var host = document.getElementById("formulas");
+    host.textContent = "";
+    P.FORMULAS.forEach(function (f) {
+      var d = document.createElement("div");
+      d.className = "fx";
+      var fn = document.createElement("div"); fn.className = "fn";
+      fn.textContent = tt("method.fxn", "formula {n} of {m}")
+        .replace("{n}", f.n).replace("{m}", n);
+      var h = document.createElement("h4"); h.textContent = tt("fx." + f.id + ".name", f.name);
+      var c = document.createElement("code"); c.textContent = f.formula;
+      var p = document.createElement("p"); p.textContent = tt("fx." + f.id + ".plain", f.plain);
+      var s = document.createElement("div"); s.className = "src"; s.textContent = f.source;
+      d.appendChild(fn); d.appendChild(h); d.appendChild(c); d.appendChild(p); d.appendChild(s);
+      host.appendChild(d);
+    });
+    document.getElementById("fxHead").textContent =
+      tt("method.fxhead", "the {n} formulas, all of them").replace("{n}", n);
+    document.querySelector(".fx-close").innerHTML =
+      tt("method.fxclose", "These <b>{n}</b> formulas help make the decision. Everything else is human capital — and it does not compute.")
+        .replace("{n}", n);
+  }
+  render();
+  document.addEventListener("welance:lang", render);
 })();
 </script>
 </body>

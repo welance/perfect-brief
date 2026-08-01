@@ -125,3 +125,12 @@
 .btn.sm { height: 34px; padding: 0 14px; font-size: 13px; }
 .btn.ghost { border-color: transparent; }
 .btn.ghost:hover { background: var(--paper-2); color: var(--ink); }
+
+/* --- language switcher (site-wide, rendered by i18n.js) ---------------- */
+#langswitch { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.wl-lang { font-family: var(--mono); font-size: 11.5px; padding: 5px 9px; cursor: pointer;
+  background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
+.wl-lang:hover { color: var(--ink); border-color: var(--ink); }
+.wl-lang[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.wl-draft { font-size: 8px; margin-left: 4px; opacity: .7; letter-spacing: .05em; text-transform: uppercase; }
+html[dir=rtl] .wl-draft { margin-left: 0; margin-right: 4px; }

@@ -6,7 +6,7 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=3">
+<link rel="stylesheet" href="welance.css?v=4">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -34,6 +34,7 @@
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
+  [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   /* welance provenance strip + GitHub mark */
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
@@ -81,10 +82,11 @@
             <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
           </svg>
         </a>
-        <span class="sep">/</span><span class="cur">perfect brief</span>
+        <span class="sep">/</span><span class="cur" data-i18n="index.crumb">perfect brief</span>
+        <nav id="langswitch" aria-label="language"></nav>
         </nav>
-        <h1>The Perfect Brief<span class="b">_</span></h1>
-        <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
+        <h1><span data-i18n="index.h1">The Perfect Brief</span><span class="b">_</span></h1>
+        <p class="thesis" data-i18n-html="index.thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
       <svg viewBox="0 0 120 140" aria-hidden="true">
@@ -99,28 +101,28 @@
     </div>
     <div class="cta">
       <a class="btn primary gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
-      <a class="btn" href="console.html">Try the console</a>
-      <a class="btn ghost" href="rules.html">Read the rules</a>
-      <a class="btn ghost" href="method.html">The method</a>
+      <a class="btn" href="console.html" data-i18n="index.cta.console">Try the console</a>
+      <a class="btn ghost" href="rules.html" data-i18n="index.cta.rules">Read the rules</a>
+      <a class="btn ghost" href="method.html" data-i18n="index.cta.method">The method</a>
     </div>
     <div class="prov">
       <span class="dot" style="background:var(--wl-y)"></span><span class="dot" style="background:var(--wl-c)"></span><span class="dot" style="background:var(--wl-p)"></span><span class="dot" style="background:var(--wl-cy)"></span>
-      <span>made by <a href="https://welance.com">Welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
+      <span data-i18n-html="index.prov">made by <a href="https://welance.com">Welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
     </div>
   </header>
 
-  <div class="eyebrow"><span>what it does</span></div>
-  <p>It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
-  <p>Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <p style="font-size:14px;color:var(--ink-soft)">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
+  <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
+  <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
+  <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
   <div class="two">
-    <div class="card"><span class="n g">92 / 100</span><h3>Directory-ready</h3><p>High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
-    <div class="card"><span class="n f">blocked</span><h3>…and still not published</h3><p>The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
+    <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
+    <div class="card"><span class="n f">blocked</span><h3 data-i18n="index.card2.h">…and still not published</h3><p data-i18n="index.card2.p">The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
   </div>
 
-  <div class="eyebrow"><span>how it works</span></div>
-  <p>There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
-  <p>The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p>
+  <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
+  <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
+  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p>
   <pre>curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
   -d '{"brief":"…","judge":"llm"}'
@@ -129,24 +131,24 @@
   "gate": { "passed": false, "missing": ["anonymised"] },
   "verdicts": [ … per-rule status + verbatim evidence … ],
   "ruleset_version": "1.0.0+83107baec655" }</pre>
-  <p style="font-size:14px;color:var(--ink-soft)">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
-  <div class="eyebrow"><span>why we built it, honestly</span></div>
-  <p>We are <a href="https://welance.com">Welance</a>, a small collective of independent senior teams, working together since 2012. We're building <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
-  <p>There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
-  <p>This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
-  <p>Together, this service and the Directory are the digitalised version of what Welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
+  <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
+  <p data-i18n-html="index.p7">We are <a href="https://welance.com">Welance</a>, a small collective of independent senior teams, working together since 2012. We're building <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
+  <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
+  <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
+  <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what Welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
 
-  <div class="eyebrow"><span>governance</span></div>
-  <div class="triad">
+  <div class="eyebrow"><span data-i18n="index.eb4">governance</span></div>
+  <div class="triad" data-i18n-html="index.triad">
     <b>anyone proposes</b> — every rule is a file; open a PR, no gatekeeping<br>
     <b>evidence merges</b> — the public fixture corpus in CI decides, not taste<br>
     <b>anyone forks</b> — MIT; the exit right is the real anti-capture guarantee
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.govnote">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
 
   <footer>
-    <span>The Perfect Brief · a Welance open-source project</span>
+    <span data-i18n="index.foot">The Perfect Brief · a Welance open-source project</span>
     <span><a href="method.html">method</a> · <a href="console.html">console</a> · <a href="rules.html">rules</a> · <a href="https://briefs.welance.com/docs">API docs</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
   </footer>
 </div>
@@ -170,5 +172,13 @@
   document.head.appendChild(s);
 })();
 </script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
 </body>
 </html>

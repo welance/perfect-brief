@@ -33,19 +33,19 @@
   // EDITABLE DEFAULTS ONLY: replace from a real source (OECD PPP,
   // World Bank ICP, Numbeo) before anyone's pay depends on them.
   var COUNTRIES = [
-    { code: "CH", coef: 1.35, en: "Switzerland", de: "Schweiz", it: "Svizzera", ur: "سوئٹزرلینڈ", pt: "Suíça" },
-    { code: "DE", coef: 1.00, en: "Germany", de: "Deutschland", it: "Germania", ur: "جرمنی", pt: "Alemanha" },
-    { code: "AT", coef: 0.95, en: "Austria", de: "Österreich", it: "Austria", ur: "آسٹریا", pt: "Áustria" },
-    { code: "IT", coef: 0.82, en: "Italy", de: "Italien", it: "Italia", ur: "اٹلی", pt: "Itália" },
-    { code: "ES", coef: 0.75, en: "Spain", de: "Spanien", it: "Spagna", ur: "اسپین", pt: "Espanha" },
-    { code: "PT", coef: 0.68, en: "Portugal", de: "Portugal", it: "Portogallo", ur: "پرتگال", pt: "Portugal" },
-    { code: "PL", coef: 0.55, en: "Poland", de: "Polen", it: "Polonia", ur: "پولینڈ", pt: "Polônia" },
-    { code: "BR", coef: 0.42, en: "Brazil", de: "Brasilien", it: "Brasile", ur: "برازیل", pt: "Brasil" },
-    { code: "AR", coef: 0.38, en: "Argentina", de: "Argentinien", it: "Argentina", ur: "ارجنٹینا", pt: "Argentina" },
-    { code: "UA", coef: 0.38, en: "Ukraine", de: "Ukraine", it: "Ucraina", ur: "یوکرین", pt: "Ucrânia" },
-    { code: "VN", coef: 0.32, en: "Vietnam", de: "Vietnam", it: "Vietnam", ur: "ویتنام", pt: "Vietnã" },
-    { code: "IN", coef: 0.30, en: "India", de: "Indien", it: "India", ur: "بھارت", pt: "Índia" },
-    { code: "PK", coef: 0.28, en: "Pakistan", de: "Pakistan", it: "Pakistan", ur: "پاکستان", pt: "Paquistão" }
+    { code: "CH", coef: 1.35, en: "Switzerland", de: "Schweiz", it: "Svizzera", ur: "سوئٹزرلینڈ", pt: "Suíça", es: "Suiza", vi: "Thụy Sĩ", ar: "سويسرا" },
+    { code: "DE", coef: 1.00, en: "Germany", de: "Deutschland", it: "Germania", ur: "جرمنی", pt: "Alemanha", es: "Alemania", vi: "Đức", ar: "ألمانيا" },
+    { code: "AT", coef: 0.95, en: "Austria", de: "Österreich", it: "Austria", ur: "آسٹریا", pt: "Áustria", es: "Austria", vi: "Áo", ar: "النمسا" },
+    { code: "IT", coef: 0.82, en: "Italy", de: "Italien", it: "Italia", ur: "اٹلی", pt: "Itália", es: "Italia", vi: "Ý", ar: "إيطاليا" },
+    { code: "ES", coef: 0.75, en: "Spain", de: "Spanien", it: "Spagna", ur: "اسپین", pt: "Espanha", es: "España", vi: "Tây Ban Nha", ar: "إسبانيا" },
+    { code: "PT", coef: 0.68, en: "Portugal", de: "Portugal", it: "Portogallo", ur: "پرتگال", pt: "Portugal", es: "Portugal", vi: "Bồ Đào Nha", ar: "البرتغال" },
+    { code: "PL", coef: 0.55, en: "Poland", de: "Polen", it: "Polonia", ur: "پولینڈ", pt: "Polônia", es: "Polonia", vi: "Ba Lan", ar: "بولندا" },
+    { code: "BR", coef: 0.42, en: "Brazil", de: "Brasilien", it: "Brasile", ur: "برازیل", pt: "Brasil", es: "Brasil", vi: "Brazil", ar: "البرازيل" },
+    { code: "AR", coef: 0.38, en: "Argentina", de: "Argentinien", it: "Argentina", ur: "ارجنٹینا", pt: "Argentina", es: "Argentina", vi: "Argentina", ar: "الأرجنتين" },
+    { code: "UA", coef: 0.38, en: "Ukraine", de: "Ukraine", it: "Ucraina", ur: "یوکرین", pt: "Ucrânia", es: "Ucrania", vi: "Ukraina", ar: "أوكرانيا" },
+    { code: "VN", coef: 0.32, en: "Vietnam", de: "Vietnam", it: "Vietnam", ur: "ویتنام", pt: "Vietnã", es: "Vietnam", vi: "Việt Nam", ar: "فيتنام" },
+    { code: "IN", coef: 0.30, en: "India", de: "Indien", it: "India", ur: "بھارت", pt: "Índia", es: "India", vi: "Ấn Độ", ar: "الهند" },
+    { code: "PK", coef: 0.28, en: "Pakistan", de: "Pakistan", it: "Pakistan", ur: "پاکستان", pt: "Paquistão", es: "Pakistán", vi: "Pakistan", ar: "باكستان" }
   ];
 
   // §4 Where the two views differ by one step, coverage rounds toward the
