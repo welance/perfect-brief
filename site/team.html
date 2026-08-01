@@ -137,7 +137,9 @@
   .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
   .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-  .check { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+  .check { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; }
+  .checkval { font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: 20px; font-weight: 600; padding: 4px 0 6px; color: var(--person); }
   .checknote { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-2); max-width: 66ch; }
 
   footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
@@ -195,14 +197,8 @@
               <option value="m" selected data-i18n="team.size.m">Medium — weeks to months</option>
               <option value="l" data-i18n="team.size.l">Large — months and up</option>
             </select></div>
-          <div class="field"><label for="firstcheck" data-i18n="team.l.first">First check after</label>
-            <select id="firstcheck">
-              <option value="3 days" data-i18n="team.ck1">3 days</option>
-              <option value="1 week" data-i18n="team.ck2">1 week</option>
-              <option value="2 weeks" selected data-i18n="team.ck3">2 weeks</option>
-              <option value="1 month" data-i18n="team.ck4">1 month</option>
-              <option value="3 months" data-i18n="team.ck5">3 months</option>
-            </select></div>
+          <div class="field"><label data-i18n="team.l.first">First check after</label>
+            <div class="checkval" id="checkval">2 weeks</div></div>
         </div>
         <p class="checknote" data-i18n-html="team.checknote">A suggested rhythm, deliberately <b>not</b> a formula. Work starts for real, with the declared reserve to replace, remove or modify the initial choices — and it is bidirectional, always: the independent may not feel right either. Every human problem should surface at the first check, not fester. The adjustment is made on the most important asset: the people.</p>
       </section>
@@ -266,12 +262,18 @@
   var LEVEL_EN = ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"];
   function levelName(i) { return tt("team.lv" + i, LEVEL_EN[i]); }
   var STORE_KEY = "welance-team-calc-v1";
-  var SIZE_CHECK = { s: "3 days", m: "2 weeks", l: "1 month" };
+  // the first check is DERIVED from the project size — a suggestion the
+  // humans overrule at kick-off, never a second knob to tune
+  var SIZE_CHECK = {
+    s: { key: "team.ck1", en: "3 days" },
+    m: { key: "team.ck3", en: "2 weeks" },
+    l: { key: "team.ck4", en: "1 month" }
+  };
 
   // The default team mirrors the engine's pinned test — role names only.
   var DEF = {
     name: "Team — product rebuild",
-    rate: 100, floor: 0, size: "m", check: "2 weeks",
+    rate: 100, floor: 0, size: "m",
     rows: [
       { role: "Design lead",        weight: 30, level: 0, country: "DE", coef: 1.00, own: 55 },
       { role: "Full-stack developer", weight: 45, level: 1, country: "IT", coef: 0.82, own: 40 },
@@ -458,24 +460,23 @@
     var tw = state.rows.reduce(function (s, r) { return s + r.weight; }, 0);
     $("weightflag").textContent = fillT(
       tt("team.d.wsum", "Weights sum to {w} — read as shares of that sum."), { w: tw });
+
+    var ck = SIZE_CHECK[state.size] || SIZE_CHECK.m;
+    $("checkval").textContent = tt(ck.key, ck.en);
   }
 
   $("teamname").value = state.name;
   $("rate").value = String(state.rate);
   $("floorc").value = String(state.floor);
-  $("projsize").value = state.size;
-  $("firstcheck").value = state.check;
+  $("projsize").value = state.size || "m";
 
   $("teamname").addEventListener("input", function () { state.name = $("teamname").value; save(); });
   $("rate").addEventListener("input", function () { state.rate = Number($("rate").value) || 0; save(); render(); });
   $("floorc").addEventListener("input", function () { state.floor = Number($("floorc").value) || 0; save(); render(); });
   $("projsize").addEventListener("change", function () {
     state.size = $("projsize").value;
-    state.check = SIZE_CHECK[state.size];
-    $("firstcheck").value = state.check;
-    save();
+    save(); render();
   });
-  $("firstcheck").addEventListener("change", function () { state.check = $("firstcheck").value; save(); });
   $("add").addEventListener("click", function () {
     state.rows.push({ role: "", weight: 10, level: 1, country: "DE", coef: 1.00, own: 40 });
     save(); render();
@@ -485,7 +486,6 @@
     state = JSON.parse(JSON.stringify(DEF));
     $("teamname").value = state.name; $("rate").value = String(state.rate);
     $("floorc").value = String(state.floor); $("projsize").value = state.size;
-    $("firstcheck").value = state.check;
     render();
   });
 
