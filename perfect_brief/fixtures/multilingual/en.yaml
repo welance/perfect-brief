@@ -1,0 +1,21 @@
+id: ml-en
+lang: en
+input_type: brief
+input: '# Real-time availability for independent restaurant bookings
+
+
+  Problem: small restaurants lose bookings because staff can''t update availability
+  across channels in real time. Primary users: shift managers at independent restaurants,
+  updating on mobile during service. Success: reduce no-show bookings by 30% within
+  two seasons. Deliverables: an auth login with email and SPID, sessions persisted
+  in Postgres, and an availability API endpoint with p95 under 200ms. Out of scope:
+  native apps and payments in v1. Budget band 25-40k. Timeline: ship the MVP before
+  the spring season. Needs a full-stack developer and a product designer for about
+  eight weeks. Built on the existing Next.js and Postgres stack; integrates with
+  the existing payment provider. Risk: restaurants may not keep availability current,
+  so we validate that first. Stores customer booking history; GDPR lawful basis
+  is contract; a DPA is required. The public booking page targets WCAG 2.2 AA, tested
+  with keyboard and screen reader.'
+notes: 'Reference: fixture 0003-accepted''s brief, verbatim. Every translation below
+  must reach the same gate decision and a score within the declared tolerance of
+  this one, judged live.'

@@ -1,4 +1,4 @@
-.PHONY: up down logs build test test-site lint fmt typecheck dev score rules health
+.PHONY: up down logs build test test-site test-llm-multilingual lint fmt typecheck dev score rules health
 COMPOSE ?= docker compose
 
 up:            ## build + start the service and redis
@@ -17,6 +17,8 @@ test:          ## fixture corpus (CI gate) + API tests, all on the mock judge
 	pytest
 test-site:     ## engine tests for site/pricing.js (dev-only, needs node)
 	node --test tests/site/pricing.test.mjs
+test-llm-multilingual: ## the judge's language guarantee (needs PB_ANTHROPIC_API_KEY; not in offline CI)
+	pytest tests/test_multilingual_llm.py -v
 lint:
 	ruff check .
 fmt:
