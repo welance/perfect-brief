@@ -70,7 +70,7 @@
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
-      '<a class="wl-pill" href="https://welance.com">welance.com</a>' +
+      '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Assemble a team") + '</a>' +
       "</div></div></div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
   }
@@ -82,7 +82,12 @@
       return '<a href="' + p.href + '">' + tt(p.key, p.en) + "</a>";
     }).join("");
     host.innerHTML =
-      '<footer class="wl-foot"><div class="wl-foot-in">' +
+      '<footer class="wl-foot">' +
+      '<div class="wl-foot-cta"><div class="wl-foot-cta-in">' +
+      '<h2>' + tt("chrome.ctaHead", "A team, assembled for your goal") + '<span class="b">_</span></h2>' +
+      '<a class="wl-cta-btn" href="https://welance.com/directory">' + tt("chrome.cta", "Assemble a team") + ' →</a>' +
+      '</div></div>' +
+      '<div class="wl-foot-in">' +
       '<div class="wl-foot-top">' +
       '<div class="wl-foot-mark">' + ASTERISK + "</div>" +
       '<div class="wl-foot-offices">' +

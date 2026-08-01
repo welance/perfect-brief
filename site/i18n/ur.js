@@ -196,6 +196,8 @@ WelanceI18n.register("ur", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.ctaHead": "ایک ٹیم، آپ کے مقصد کے لیے بنائی گئی",
+    "chrome.cta": "ٹیم بنائیں",
     "chrome.console": "کنسول",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

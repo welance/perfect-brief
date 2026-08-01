@@ -196,6 +196,8 @@ WelanceI18n.register("ar", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.ctaHead": "فريق مجمّع من أجل هدفكم",
+    "chrome.cta": "جمّع فريقًا",
     "chrome.console": "الكونسول",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

@@ -197,6 +197,8 @@ WelanceI18n.register("de", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.ctaHead": "Ein Team, aufgestellt für euer Ziel",
+    "chrome.cta": "Ein Team aufstellen",
     "chrome.console": "Konsole",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

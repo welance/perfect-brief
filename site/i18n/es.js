@@ -196,6 +196,8 @@ WelanceI18n.register("es", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.ctaHead": "Un equipo, montado para tu objetivo",
+    "chrome.cta": "Monta un equipo",
     "chrome.console": "Consola",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

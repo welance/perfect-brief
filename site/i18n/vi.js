@@ -196,6 +196,8 @@ WelanceI18n.register("vi", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.ctaHead": "Một đội ngũ, dựng cho mục tiêu của bạn",
+    "chrome.cta": "Dựng một đội ngũ",
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
