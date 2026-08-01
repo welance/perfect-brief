@@ -29,6 +29,14 @@
     margin: 14px 0 6px; letter-spacing: -.02em; }
   h1 .b { color: var(--accent); }
   .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 62ch; margin: 10px 0 0; }
+  .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+  .head-grid .txt { min-width: 0; }
+  .m-ident { flex: none; width: 300px; margin-top: 6px; }
+  .m-ident svg { display: block; width: 100%; }
+  .m-ident .ml { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); letter-spacing: .06em; }
+  .m-ident .ml.accent { fill: var(--accent); }
+  .d7 { animation-delay: 1.45s; } .d8 { animation-delay: 1.7s; }
+  @media (max-width: 700px) { .m-ident { display: none; } }
   .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
     text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center;
     gap: 10px; margin: 44px 0 14px; }
@@ -56,17 +64,28 @@
   @media (prefers-reduced-motion: reduce) { .draw { animation: none; stroke-dashoffset: 0; } }
   [dir="rtl"] .fx-close { border-left: 0; border-right: 2px solid var(--accent); padding: 4px 14px 4px 0; }
 
-  /* the formulas */
-  .formulas { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 0 14px; }
-  @media (min-width: 760px) { .formulas { grid-template-columns: 1fr 1fr; } }
-  .fx { border: 1px solid var(--rule); background: var(--paper-2); padding: 14px 16px; }
-  .fx .fn { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
-    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
-  .fx h4 { font-family: var(--disp); font-size: 15.5px; font-weight: 600; margin: 0 0 6px; }
-  .fx code { display: block; font-family: var(--mono); font-size: 12.5px; color: var(--accent);
-    margin: 0 0 8px; overflow-x: auto; white-space: nowrap; }
-  .fx p { font-size: 13.5px; color: var(--ink-soft); margin: 0; }
-  .fx .src { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 8px; }
+  /* the formulas — a counted ledger, one line each, detail one click away */
+  .formulas { border: 1px solid var(--rule); background: var(--paper-2); margin: 0 0 14px; }
+  .fxrow { border-bottom: 1px solid var(--rule); }
+  .fxrow:last-child { border-bottom: 0; }
+  .fxrow summary { list-style: none; cursor: pointer; display: grid;
+    grid-template-columns: 30px minmax(0, 190px) 1fr 16px; gap: 12px;
+    align-items: baseline; padding: 11px 14px; }
+  .fxrow summary::-webkit-details-marker { display: none; }
+  .fxrow summary:hover { background: var(--paper); }
+  .fxrow .n2 { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+  .fxrow .nm { font-weight: 600; font-size: 14.5px; }
+  .fxrow .f { font-family: var(--mono); font-size: 12px; color: var(--accent);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fxrow .chev2 { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); }
+  .fxrow[open] .chev2 { color: var(--accent); }
+  .fxrow .fxbody { padding: 0 14px 12px 56px; font-size: 13.5px; color: var(--ink-soft); max-width: 66ch; }
+  .fxrow .src { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+  @media (max-width: 680px) {
+    .fxrow summary { grid-template-columns: 26px 1fr 16px; }
+    .fxrow .f { display: none; }
+    .fxrow .fxbody { padding-left: 14px; }
+  }
   .fx-close { border-left: 2px solid var(--accent); padding: 4px 0 4px 14px;
     font-size: 16.5px; margin: 18px 0 0; max-width: 62ch; }
 
@@ -82,7 +101,8 @@
   .door h3 { font-family: var(--disp); font-size: 18px; font-weight: 600; margin: 0; }
   .door p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
   .door .go { font-family: var(--mono); font-size: 13px; }
-  .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 22px 0 0; }
+  .cta { display: flex; gap: 10px 22px; flex-wrap: wrap; align-items: center; margin: 22px 0 0; }
+  .golink { font-family: var(--mono); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -90,9 +110,41 @@
 <p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="method.crumb">the method</span></p>
 <div class="wrap">
   <header>
-    
+    <div class="head-grid">
+      <div class="txt">
     <h1><span data-i18n="method.h1">The welance method</span><span class="b">_</span></h1>
     <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end and opened as a blueprint. In an era when AI makes producing ever cheaper, what decides is composition: who you put together, and how fast you learn whether it works.</p>
+      </div>
+      <div class="m-ident" role="img" aria-label="The method: brief, price, team — then the human check loop">
+        <svg viewBox="0 0 300 190" aria-hidden="true">
+          <!-- brief: the document -->
+          <path class="draw d1" d="M14 18 h40 l12 12 v40 h-52 z" stroke="var(--ink)" stroke-width="3"/>
+          <path class="draw d1" d="M54 18 v12 h12" stroke="var(--ink)" stroke-width="3"/>
+          <path class="draw d2" d="M24 40 h26 M24 50 h32" stroke="var(--ink-soft)" stroke-width="2.5"/>
+          <path class="draw d2" d="M76 44 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2.5"/>
+          <!-- price: the split bar -->
+          <path class="draw d3" d="M104 30 h72 v28 h-72 z" stroke="var(--ink)" stroke-width="3"/>
+          <path class="draw d3" d="M154 30 v28" stroke="var(--ink)" stroke-width="3"/>
+          <path class="draw d4" d="M111 44 h36" stroke="var(--wl-c)" stroke-width="9"/>
+          <path class="draw d4" d="M184 44 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2.5"/>
+          <!-- team: three people -->
+          <circle class="draw d5" cx="224" cy="36" r="11" stroke="var(--wl-c)" stroke-width="3"/>
+          <circle class="draw d5" cx="256" cy="36" r="11" stroke="var(--wl-p)" stroke-width="3"/>
+          <circle class="draw d5" cx="240" cy="64" r="11" stroke="var(--wl-cy)" stroke-width="3"/>
+          <!-- si parte! down to the human check, and back -->
+          <path class="draw d6" d="M240 79 v29 a12 12 0 0 1 -12 12 h-74" stroke="var(--ink)" stroke-width="3"/>
+          <circle class="draw d7" cx="136" cy="120" r="16" stroke="var(--wl-y)" stroke-width="3.5"/>
+          <path class="draw d7" d="M127 120 l7 7 l13 -14" stroke="var(--ink)" stroke-width="3.5"/>
+          <path class="draw d8" d="M118 120 h-70 a12 12 0 0 1 -12 -12 v-14 m0 0 l-5 7 m5 -7 l5 7" stroke="var(--ink-soft)" stroke-width="2.5" stroke-dasharray="5 5"/>
+          <!-- labels -->
+          <text class="ml" x="40" y="88" text-anchor="middle" data-i18n="method.map.b">brief</text>
+          <text class="ml" x="140" y="76" text-anchor="middle" data-i18n="method.map.p">price</text>
+          <text class="ml" x="240" y="100" text-anchor="middle" data-i18n="method.map.t">team</text>
+          <text class="ml" x="136" y="156" text-anchor="middle" data-i18n="method.map.c">the check</text>
+          <text class="ml accent" x="255" y="120" text-anchor="middle">si parte!</text>
+        </svg>
+      </div>
+    </div>
   </header>
 
   <div class="eyebrow"><span data-i18n="method.eb1">the problem, honestly</span></div>
@@ -193,8 +245,8 @@
 
   <div class="cta">
     <a class="btn primary" href="index.html" data-i18n="method.cta1">Start with the brief</a>
-    <a class="btn" href="price.html" data-i18n="method.cta2">Compute a split</a>
-    <a class="btn ghost" href="team.html" data-i18n="method.cta3">Assemble a team</a>
+    <a class="golink" href="price.html" data-i18n="method.cta2">Compute a split</a>
+    <a class="golink" href="team.html" data-i18n="method.cta3">Assemble a team</a>
   </div>
 
 </div>
@@ -216,16 +268,19 @@
     var host = document.getElementById("formulas");
     host.textContent = "";
     P.FORMULAS.forEach(function (f) {
-      var d = document.createElement("div");
-      d.className = "fx";
-      var fn = document.createElement("div"); fn.className = "fn";
-      fn.textContent = tt("method.fxn", "formula {n} of {m}")
-        .replace("{n}", f.n).replace("{m}", n);
-      var h = document.createElement("h4"); h.textContent = tt("fx." + f.id + ".name", f.name);
-      var c = document.createElement("code"); c.textContent = f.formula;
-      var p = document.createElement("p"); p.textContent = tt("fx." + f.id + ".plain", f.plain);
-      var s = document.createElement("div"); s.className = "src"; s.textContent = f.source;
-      d.appendChild(fn); d.appendChild(h); d.appendChild(c); d.appendChild(p); d.appendChild(s);
+      var d = document.createElement("details");
+      d.className = "fxrow";
+      var su = document.createElement("summary");
+      var n2 = document.createElement("span"); n2.className = "n2"; n2.textContent = f.n + "/" + n;
+      var nm = document.createElement("span"); nm.className = "nm"; nm.textContent = tt("fx." + f.id + ".name", f.name);
+      var fo = document.createElement("span"); fo.className = "f"; fo.textContent = f.formula;
+      var ch = document.createElement("span"); ch.className = "chev2"; ch.textContent = "+";
+      su.appendChild(n2); su.appendChild(nm); su.appendChild(fo); su.appendChild(ch);
+      var body = document.createElement("div"); body.className = "fxbody";
+      body.textContent = tt("fx." + f.id + ".plain", f.plain);
+      var src = document.createElement("div"); src.className = "src"; src.textContent = f.source;
+      body.appendChild(src);
+      d.appendChild(su); d.appendChild(body);
       host.appendChild(d);
     });
     document.getElementById("fxHead").textContent =

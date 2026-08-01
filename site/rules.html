@@ -41,6 +41,12 @@
   .gate .r{width:40%;background:var(--fail-bg);color:var(--fail)} .gate .s{width:35%;background:var(--partial-bg);color:var(--partial);border-left:1px solid var(--ink);border-right:1px solid var(--ink)} .gate .a{width:25%;background:var(--pass-bg);color:var(--pass)}
   .gate b{font-size:13px} .gate small{color:var(--ink-soft)}
   .gatecap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-top:4px}
+  .quad{margin:26px 0 6px;max-width:560px}
+  .quad svg{display:block;width:100%}
+  .quad .qa{font-family:var(--mono);font-size:10.5px;fill:var(--ink-soft);letter-spacing:.06em}
+  .quad .ql{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em}
+  .quad .ql.pass{fill:var(--pass)} .quad .ql.fail{fill:var(--fail)} .quad .ql.partial{fill:var(--partial)}
+  .quad .qe{font-family:var(--mono);font-size:10.5px;fill:var(--fail)}
 
   /* report mini-sample */
   .sample{border:1px solid var(--rule);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
@@ -130,6 +136,24 @@
     <div class="a"><b>85 +</b><small data-i18n="rules.g3">Directory-ready</small></div>
   </div>
   <div class="gatecap"><span data-i18n="rules.gc1">← descriptive score bands</span><span data-i18n="rules.gc2">bands, floor &amp; gate live in scoring.yaml — contestable</span></div>
+  
+  <figure class="quad" style="direction:ltr">
+    <svg viewBox="0 0 540 300" aria-label="Two axes: score is quality, the gate is admissibility — a brilliant brief can still be blocked">
+      <!-- axes -->
+      <path d="M40 150 H508 m0 0 l-8 -5 m8 5 l-8 5" stroke="var(--ink)" stroke-width="2" fill="none"/>
+      <path d="M274 284 V24 m0 0 l-5 8 m5 -8 l5 8" stroke="var(--ink)" stroke-width="2" fill="none"/>
+      <text class="qa" x="283" y="30" data-i18n="rules.q.score">score · quality</text>
+      <text class="qa" x="504" y="140" text-anchor="end" data-i18n="rules.q.gate">gate · admissibility</text>
+      <!-- quadrants -->
+      <text class="ql fail" x="157" y="78" text-anchor="middle" data-i18n="rules.q.blk">blocked</text>
+      <text class="ql pass" x="391" y="78" text-anchor="middle" data-i18n="rules.q.pub">published</text>
+      <text class="ql fail" x="157" y="222" text-anchor="middle" data-i18n="rules.q.blk2">blocked</text>
+      <text class="ql partial" x="391" y="222" text-anchor="middle" data-i18n="rules.q.res">with reservation</text>
+      <!-- the example that makes the point: high score, gate failed -->
+      <circle cx="157" cy="52" r="6" fill="var(--fail)"/>
+      <text class="qe" x="157" y="102" text-anchor="middle" data-i18n="rules.q.ex">92/100 — names the brand</text>
+    </svg>
+  </figure>
   <p class="body" style="margin-top:16px" data-i18n-html="rules.p6">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely. Two requirements are scoped rather than universal: anonymisation and the €10k floor exist for the blind noticeboard, so both rules carry a <code>context: directory</code> tag — a caller scoring a generic digital-product brief deactivates that context (<code>gate_contexts: []</code>) and they drop out entirely: no gate, no score weight, the average renormalised over the twelve rules that apply anywhere.</p>
 
   <!-- RULESET -->
