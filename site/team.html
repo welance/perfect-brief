@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfect Team · one team, one rate — welance</title>
 <meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named welance margin out.">
-<link rel="stylesheet" href="welance.css?v=7">
+<link rel="stylesheet" href="welance.css?v=8">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -43,6 +43,17 @@
   .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
   .topbar { display: flex; justify-content: flex-start; margin: 14px 0 20px; }
+  .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+  .head-grid .txt { min-width: 0; }
+  .t-ident { flex: none; width: 210px; margin-top: 30px; }
+  .t-ident svg { display: block; width: 100%; }
+  .pd { fill: none; stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300;
+    animation: p-draw 1s cubic-bezier(.6,0,.3,1) forwards; }
+  .pd.d1 { animation-delay: .1s; } .pd.d2 { animation-delay: .25s; } .pd.d3 { animation-delay: .45s; }
+  .pd.d4 { animation-delay: .65s; } .pd.d5 { animation-delay: .85s; } .pd.d6 { animation-delay: 1.05s; }
+  @keyframes p-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
+  @media (max-width: 700px) { .t-ident { display: none; } }
   .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
   .lang.reset:hover { color: var(--person); border-color: var(--person); }
@@ -154,9 +165,28 @@
   
 
   <header>
+    <div class="head-grid">
+      <div class="txt">
     <p class="eyebrow" data-i18n="team.eyebrow">welance · one team, one rate</p>
     <h1><span data-i18n="team.h1">Perfect Team</span><span style="color:var(--accent)">_</span></h1>
     <p class="lede" data-i18n-html="team.lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated, named <b>welance margin</b> anyone can check.</p>
+      </div>
+      <div class="t-ident" role="img" aria-label="Three roles, one blended rate, four visible bands">
+        <svg viewBox="0 0 220 130" aria-hidden="true">
+          <circle class="pd d1" cx="52" cy="26" r="12" stroke="var(--person)" stroke-width="3" fill="none"/>
+          <circle class="pd d1" cx="110" cy="20" r="12" stroke="var(--geo)" stroke-width="3" fill="none"/>
+          <circle class="pd d2" cx="168" cy="26" r="12" stroke="var(--head)" stroke-width="3" fill="none"/>
+          <path class="pd d3" d="M52 42 v18 M110 36 v24 M168 42 v18" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+          <path class="pd d4" d="M52 62 h116" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d4" d="M110 62 v18" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d5" d="M12 92 h196 v26 h-196 z" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d6" d="M19 105 h72" stroke="var(--person)" stroke-width="9"/>
+          <path class="pd d6" d="M97 105 h20" stroke="var(--head)" stroke-width="9"/>
+          <path class="pd d6" d="M123 105 h26" stroke="var(--geo)" stroke-width="9"/>
+          <path class="pd d6" d="M155 105 h46" stroke="var(--company)" stroke-width="9"/>
+        </svg>
+      </div>
+    </div>
   </header>
 
   <div class="topbar">
@@ -174,7 +204,7 @@
             <span class="subnote" data-i18n="team.l.sub">Anonymised by design: roles, never people.</span></div>
           <div class="field"><label for="rate" data-i18n="team.l.rate">Client rate €/h</label>
             <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
-          <div class="field"><label for="floorc" data-i18n="team.l.floor">CoL floor</label>
+          <div class="field"><label for="floorc" data-i18n="team.l.floor">Cost-of-living floor</label>
             <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0">
             <span class="subnote" data-i18n="team.l.floornote">Caps how far a coefficient can cut pay: max(coeff, floor). 0 = no floor.</span></div>
         </div>
@@ -230,6 +260,7 @@
     </div>
   </div>
 
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <footer>
     <p data-i18n-html="team.foot1"><b>The four bands must sum to the client rate — that is the equation.</b> Margin the people leave on the table (headroom) and margin that comes from where somebody lives (the geographic differential) are shown in their own colours, because margin that cannot be seen cannot be argued with.</p>
     <p data-i18n-html="team.foot2"><b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.</p>
@@ -237,6 +268,7 @@
     <p data-i18n-html="team.foot4"><b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them.</p>
     <p data-i18n-html="team.foot5"><b>The rate prices the person; the share prices the delivery risk.</b> When the numbers do not close, the fix is never to compress a person — it is to raise the client rate, or not to do the deal. This full-service split is welance’s own; on <a href="https://welance.com/directory">Directory</a> the platform takes no share at all — meeting a team costs a fixed, symbolic token.</p>
   </footer>
+  </details>
 </div>
 <div id="site-footer"></div>
 <script>

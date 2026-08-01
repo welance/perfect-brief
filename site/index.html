@@ -6,7 +6,7 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=7">
+<link rel="stylesheet" href="welance.css?v=8">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -34,6 +34,11 @@
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
+  .seam{margin:18px 0 14px;max-width:600px}
+  .seam svg{display:block;width:100%}
+  .seam .sl{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.05em}
+  .seam .sl.b{font-size:13px;font-weight:600;fill:var(--ink)}
+  .seam .sl.accent{fill:var(--accent)}
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
@@ -92,7 +97,8 @@
   <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
   <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
   <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
   <div class="two">
     <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
     <div class="card"><span class="n f">blocked</span><h3 data-i18n="index.card2.h">…and still not published</h3><p data-i18n="index.card2.p">The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
@@ -100,7 +106,29 @@
 
   <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
   <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
-  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p>
+  
+  <figure class="seam" style="direction:ltr">
+    <svg viewBox="0 0 560 128" aria-label="The LLM only judges; code owns weights, gate and decision">
+      <rect x="10" y="34" width="92" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M28 52 h56 M28 64 h44 M28 76 h50" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <text class="sl" x="56" y="112" text-anchor="middle" data-i18n="idx.seam.b">brief</text>
+      <path d="M104 64 h28 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <rect x="136" y="24" width="140" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="206" y="58" text-anchor="middle" data-i18n="idx.seam.judge1">LLM judge</text>
+      <text class="sl" x="206" y="78" text-anchor="middle" data-i18n="idx.seam.judge2">verdicts only</text>
+      <path d="M278 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <path d="M310 14 v100 M318 14 v100" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
+      <text class="sl accent" x="314" y="10" text-anchor="middle" data-i18n="idx.seam.seam">the seam</text>
+      <path d="M330 64 h18 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <rect x="360" y="24" width="150" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="435" y="58" text-anchor="middle" data-i18n="idx.seam.code1">code</text>
+      <text class="sl" x="435" y="78" text-anchor="middle" data-i18n="idx.seam.code2">weights · gate · decision</text>
+      <path d="M512 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <text class="sl b" x="536" y="46" text-anchor="end" data-i18n="idx.seam.out">score + gate</text>
+    </svg>
+  </figure>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
   <pre>curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
   -d '{"brief":"…","judge":"llm"}'
@@ -113,9 +141,11 @@
 
   <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
   <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a small collective of independent senior teams, working together since 2012. We run <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. The platform maximises connections, not margin: meeting a team costs a fixed, symbolic token, never a percentage of the relationship. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
   <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
   <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
+  </details>
 
   <div class="eyebrow"><span data-i18n="index.eb4">governance</span></div>
   <div class="triad" data-i18n-html="index.triad">

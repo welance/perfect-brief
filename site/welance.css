@@ -202,3 +202,15 @@
 .wl-foot-bottom nav { display: flex; gap: 8px; }
 .wl-foot-bottom a { color: var(--ink); text-decoration: none; }
 .wl-foot-bottom a:hover { color: var(--accent); }
+
+/* --- the fine print: depth one click away --------------------------------- */
+details.fineprint { border-left: 2px solid var(--rule); margin: 6px 0 18px; padding-left: 14px; }
+html[dir=rtl] details.fineprint { border-left: 0; border-right: 2px solid var(--rule);
+  padding-left: 0; padding-right: 14px; }
+details.fineprint > summary { list-style: none; cursor: pointer; font-family: var(--mono);
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+details.fineprint > summary::-webkit-details-marker { display: none; }
+details.fineprint > summary::before { content: "+ "; }
+details.fineprint[open] > summary::before { content: "− "; }
+details.fineprint > summary:hover { color: var(--accent); }
+details.fineprint[open] > summary { margin-bottom: 10px; }

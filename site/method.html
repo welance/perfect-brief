@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The welance method — brief, price, team</title>
 <meta name="description" content="The process welance has run in person since 2012 — an honest brief, a transparent price, a team assembled for the goal — digitalised end to end and opened as a blueprint.">
-<link rel="stylesheet" href="welance.css?v=7">
+<link rel="stylesheet" href="welance.css?v=8">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -101,6 +101,11 @@
   .door h3 { font-family: var(--disp); font-size: 18px; font-weight: 600; margin: 0; }
   .door p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
   .door .go { font-family: var(--mono); font-size: 13px; }
+  .bloop { margin: 16px 0 6px; max-width: 360px; }
+  .bloop svg { display: block; width: 100%; }
+  .bloop .ml { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); letter-spacing: .05em; }
+  .bloop .ml.accent { fill: var(--accent); }
+  .bloop .ml.pass { fill: var(--pass); }
   .cta { display: flex; gap: 10px 22px; flex-wrap: wrap; align-items: center; margin: 22px 0 0; }
   .golink { font-family: var(--mono); font-size: 13px; }
 </style>
@@ -230,8 +235,27 @@
 
   <div class="eyebrow"><span data-i18n="method.eb3">what the formulas cannot see</span></div>
   <p data-i18n-html="method.p4"><b>Si parte!</b> The formulas produce the <em>starting</em> team, and then work begins for real — not a trial, not a pilot: the actual work. What no formula can see is learned only by collaborating: cultural compatibility between members and with the client, kindness, humanity, availability, how someone carries stress, the whole mass of soft skills that only show up when the pressure is real.</p>
+  <figure class="bloop" style="direction:ltr">
+    <svg viewBox="0 0 340 158" aria-label="Work starts for real; at the check either side may continue or adjust the people">
+      <text class="ml accent" x="6" y="68">si parte!</text>
+      <path class="draw d1" d="M68 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+      <rect class="draw d2" x="96" y="42" width="72" height="44" fill="none" stroke="var(--ink)" stroke-width="3"/>
+      <text class="ml" x="132" y="102" text-anchor="middle" data-i18n="method.loop.work">the work</text>
+      <path class="draw d3" d="M174 64 h22 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+      <circle class="draw d4" cx="226" cy="64" r="17" stroke="var(--wl-y)" stroke-width="3.5" fill="none"/>
+      <path class="draw d4" d="M217 64 l7 7 l13 -14" stroke="var(--ink)" stroke-width="3.5" fill="none"/>
+      <text class="ml" x="250" y="68" data-i18n="method.map.c">the check</text>
+      <path class="draw d5" d="M226 43 C 214 12, 150 8, 130 36 m0 0 l0 -9 m0 9 l9 -1" stroke="var(--pass)" stroke-width="2.5" fill="none"/>
+      <text class="ml pass" x="178" y="14" text-anchor="middle" data-i18n="method.loop.cont">continue</text>
+      <path class="draw d6" d="M222 88 C 210 126, 178 130, 160 94 m0 0 l-2 9 m2 -9 l8 3" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-dasharray="5 5"/>
+      <text class="ml accent" x="196" y="148" text-anchor="middle" data-i18n="method.loop.adj">adjust the people</text>
+    </svg>
+  </figure>
+
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="method.p5">So the start carries a declared reserve: scheduled checks at one to three days, weeks, or months — scaled to the project's size and complexity — where either side may say it is not working, and the initial choices can be replaced, removed, or modified. Bidirectional, always: the independent may not feel right either, and every human problem should surface at the first check rather than fester. That early surfacing is what prevents resentment, bad vibes, and ugly projects.</p>
   <p data-i18n="method.p6">In white-collar work, ideas, intuition and mental elasticity need room to convert into success. When something is off, the adjustment is made on the most important asset: the people.</p>
+  </details>
 
   <div class="eyebrow"><span data-i18n="method.eb4">why open</span></div>
   <p data-i18n="method.p7">This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT like the rest, so a collective that disagrees with our numbers can fork the method and run its own. We open the model; we curate the membership. That curation is the service, and saying so plainly is part of the transparency.</p>

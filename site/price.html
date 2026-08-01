@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfect Price · the split calculator — welance</title>
 <meta name="description" content="How much of the client rate goes to the independent — welance's split rule as a calculator anyone can use and check.">
-<link rel="stylesheet" href="welance.css?v=7">
+<link rel="stylesheet" href="welance.css?v=8">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -47,12 +47,23 @@
 
   .topbar { display: flex; justify-content: space-between; align-items: center;
     gap: 12px; flex-wrap: wrap; margin: 14px 0 20px; }
+  .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+  .head-grid .txt { min-width: 0; }
+  .p-ident { flex: none; width: 210px; margin-top: 26px; }
+  .p-ident svg { display: block; width: 100%; }
+  .pd { fill: none; stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300;
+    animation: p-draw 1s cubic-bezier(.6,0,.3,1) forwards; }
+  .pd.d1 { animation-delay: .1s; } .pd.d2 { animation-delay: .3s; } .pd.d3 { animation-delay: .5s; }
+  .pd.d4 { animation-delay: .7s; } .pd.d5 { animation-delay: .85s; } .pd.d6 { animation-delay: 1.05s; }
+  @keyframes p-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
+  @media (max-width: 700px) { .p-ident { display: none; } }
   .lang.reset { border-style: dashed; }
   .lang.reset:hover { color: var(--person); border-color: var(--person); }
   .langs { display: flex; gap: 4px; flex-wrap: wrap; }
   .lang { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
     background: var(--surface); color: var(--ink-2);
-    border: 1px solid var(--line-strong); border-radius: 999px; }
+    border: 1px solid var(--line-strong); border-radius: 0; }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -65,7 +76,7 @@
   @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
 
   .card { background: var(--surface); border: 1px solid var(--line);
-    border-radius: 10px; padding: 22px; box-shadow: var(--shadow); }
+    border-radius: 0; padding: 22px; box-shadow: var(--shadow); }
   .card + .card { margin-top: 20px; }
   .card h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
   .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
@@ -88,7 +99,7 @@
     color: var(--ink-3); font-weight: 600; }
   input[type="text"], input[type="number"], select {
     font: inherit; color: var(--ink); background: var(--surface-2);
-    border: 1px solid var(--line-strong); border-radius: 7px; padding: 8px 10px; }
+    border: 1px solid var(--line-strong); border-radius: 0; padding: 8px 10px; }
   input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
   .grow { flex: 1 1 200px; }
   .w-rate { width: 124px; }
@@ -136,65 +147,65 @@
   .dot.f { background: var(--full); } .dot.p { background: var(--partial); } .dot.n { background: var(--none); }
 
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
-    border-radius: 6px; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
+    border-radius: 0; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
   .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
   .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--partial); }
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
-    color: var(--ink-2); border-radius: 7px; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
+    color: var(--ink-2); border-radius: 0; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
   .addbtn:hover { border-color: var(--person); color: var(--person); }
 
   .levelbadge { display: flex; align-items: center; gap: 9px; font-family: var(--serif);
     font-size: 24px; font-weight: 600; margin: 0 0 3px; }
-  .levelbadge .chip { width: 11px; height: 31px; border-radius: 3px; background: var(--person); flex: none; }
+  .levelbadge .chip { width: 11px; height: 31px; border-radius: 0; background: var(--person); flex: none; }
   .levelsub { color: var(--ink-3); font-size: 13.5px; margin: 0 0 20px; }
   .coverline { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
   .coverline .k { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
   .coverline .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; }
   .ladder { display: flex; gap: 3px; margin-bottom: 22px; }
-  .rung { flex: 1; height: 5px; border-radius: 2px; background: var(--surface-2); }
+  .rung { flex: 1; height: 5px; border-radius: 0; background: var(--surface-2); }
   .rung.on { background: var(--person); }
 
-  .splitbar { display: flex; height: 42px; border-radius: 7px; overflow: hidden; border: 1px solid var(--line-strong); }
+  .splitbar { display: flex; height: 42px; border-radius: 0; overflow: hidden; border: 1px solid var(--line-strong); }
   .splitbar > div { display: flex; align-items: center; justify-content: center;
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
     font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
   .sb-person { background: var(--person); } .sb-geo { background: var(--geo); } .sb-company { background: var(--company); }
   .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
   .splitkey span { display: flex; align-items: center; gap: 5px; }
-  .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .sw { width: 9px; height: 9px; border-radius: 0; flex: none; }
 
   .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
-    border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 20px; }
+    border: 1px solid var(--line); border-radius: 0; overflow: hidden; margin-top: 20px; }
   .fig { background: var(--surface); padding: 13px 14px; }
   .fig .k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px; }
   .fig .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
   .fig .v small { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
   .fig.geo .v { color: var(--geo); }
 
-  .formula { margin-top: 18px; background: var(--surface-2); border-radius: 8px; padding: 13px 15px;
+  .formula { margin-top: 18px; background: var(--surface-2); border-radius: 0; padding: 13px 15px;
     font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink-2); overflow-x: auto; }
   .formula b { color: var(--ink); font-weight: 600; }
 
   .growth { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
   .growth li { display: flex; gap: 11px; align-items: baseline; padding: 11px 13px;
-    background: var(--surface-2); border-radius: 7px; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
+    background: var(--surface-2); border-radius: 0; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
   .growth .gain { margin-inline-start: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
     font-weight: 600; color: var(--person); white-space: nowrap; }
   .allset { color: var(--full); font-size: 14.5px; margin: 0; }
 
   .modes { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .mode { font: inherit; font-size: 13.5px; padding: 7px 13px; cursor: pointer;
-    background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 999px; }
+    background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 0; }
   .mode[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
-  .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; font-size: 14.5px; }
+  .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; font-size: 14.5px; }
   .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
   .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
   .switch { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 14.5px; }
   .switch input { width: 17px; height: 17px; accent-color: var(--geo); }
 
-  .warn { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; background: var(--geo-soft);
+  .warn { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; background: var(--geo-soft);
     font-size: 13.5px; color: var(--ink); border-inline-start: 3px solid var(--geo); }
   .warn b { font-weight: 600; }
 
@@ -221,9 +232,25 @@
   
 
   <header>
-    <p class="eyebrow" id="t-eyebrow"></p>
-    <h1 id="t-title"></h1>
-    <p class="lede" id="t-lede" style="margin-bottom:0"></p>
+    <div class="head-grid">
+      <div class="txt">
+        <p class="eyebrow" id="t-eyebrow"></p>
+        <h1 id="t-title"></h1>
+        <p class="lede" id="t-lede" style="margin-bottom:0"></p>
+      </div>
+      <div class="p-ident" role="img" aria-label="A client rate split into visible bands">
+        <svg viewBox="0 0 220 120" aria-hidden="true">
+          <path class="pd d1" d="M10 34 h200 v34 h-200 z" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d2" d="M132 34 v34 M164 34 v34" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d3" d="M18 51 h104" stroke="var(--person)" stroke-width="10"/>
+          <path class="pd d4" d="M139 51 h18" stroke="var(--geo)" stroke-width="10"/>
+          <path class="pd d5" d="M171 51 h32" stroke="var(--company)" stroke-width="10"/>
+          <circle class="pd d6" cx="196" cy="18" r="11" stroke="var(--wl-y)" stroke-width="3" fill="none"/>
+          <path class="pd d6" d="M196 12 v12 M191 15 h10 M191 21 h10" stroke="var(--ink)" stroke-width="2" fill="none"/>
+          <path class="pd d6" d="M10 86 h60 M10 98 h44" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+        </svg>
+      </div>
+    </div>
   </header>
 
   <div class="topbar">
@@ -325,7 +352,9 @@
     </div>
   </div>
 
-  <footer id="footer"></footer>
+  <details class="fineprint"><summary id="t-fineprint">the fine print</summary>
+    <footer id="footer"></footer>
+  </details>
 </div>
 
 <script>
@@ -381,7 +410,8 @@
       f3: "<b>Rounding.</b> Where the two views differ by one step, coverage rounds toward the person. A two-step gap is not averaged: it is discussed.",
       f4: "<b>The level belongs to the person-and-role pair</b>, not the person. The same person can be autonomous in one role and work with support in another. Reviewed at each renewal.",
       f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers.",
-      f6: "<b>This split is welance’s full-service price</b> — for finding, assembling and answering for the team. On <a href='https://welance.com/directory'>Directory</a> the platform takes no share at all: meeting a team costs a fixed, symbolic token, and the relationship belongs to the people in it. The rate prices the person; the share prices the delivery risk — compression is never the fix, the client rate is."
+      f6: "<b>This split is welance’s full-service price</b> — for finding, assembling and answering for the team. On <a href='https://welance.com/directory'>Directory</a> the platform takes no share at all: meeting a team costs a fixed, symbolic token, and the relationship belongs to the people in it. The rate prices the person; the share prices the delivery risk — compression is never the fix, the client rate is.",
+      finePrint: "the fine print"
     },
     de: {
       dir: "ltr", locale: "de-DE", name: "Deutsch",
@@ -431,7 +461,8 @@
       f3: "<b>Rundung.</b> Unterscheiden sich die Sichtweisen um eine Stufe, wird zugunsten der Person gerundet. Zwei Stufen werden nicht gemittelt, sondern besprochen.",
       f4: "<b>Die Stufe gehört dem Paar Person-und-Rolle</b>, nicht der Person. Dieselbe Person kann in einer Rolle eigenständig sein und in einer anderen mit Unterstützung arbeiten. Überprüfung bei jeder Verlängerung.",
       f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden.",
-      f6: "<b>Diese Aufteilung ist welances Full-Service-Preis</b> — für das Finden, Aufstellen und Einstehen für das Team. Auf <a href='https://welance.com/directory'>Directory</a> nimmt die Plattform gar keinen Anteil: ein Team zu treffen kostet einen festen, symbolischen Token, und die Beziehung gehört den Menschen darin. Der Satz bepreist die Person; der Anteil bepreist das Lieferrisiko — Kompression ist nie die Lösung, der Kundensatz ist es."
+      f6: "<b>Diese Aufteilung ist welances Full-Service-Preis</b> — für das Finden, Aufstellen und Einstehen für das Team. Auf <a href='https://welance.com/directory'>Directory</a> nimmt die Plattform gar keinen Anteil: ein Team zu treffen kostet einen festen, symbolischen Token, und die Beziehung gehört den Menschen darin. Der Satz bepreist die Person; der Anteil bepreist das Lieferrisiko — Kompression ist nie die Lösung, der Kundensatz ist es.",
+      finePrint: "das Kleingedruckte"
     },
     it: {
       dir: "ltr", locale: "it-IT", name: "Italiano",
@@ -481,7 +512,8 @@
       f3: "<b>Arrotondamenti.</b> Dove le due viste differiscono di un gradino, la copertura si arrotonda verso la persona. Uno scarto di due gradini non si media: si discute.",
       f4: "<b>Il livello appartiene alla coppia persona-ruolo</b>, non alla persona. La stessa persona può essere autonoma su un ruolo e lavorare con supporto su un altro. Si rivede a ogni rinnovo.",
       f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua.",
-      f6: "<b>Questa ripartizione è il prezzo full-service di welance</b> — per trovare, assemblare e rispondere del team. Su <a href='https://welance.com/directory'>Directory</a> la piattaforma non prende alcuna quota: incontrare un team costa un token fisso e simbolico, e la relazione appartiene alle persone che la compongono. La tariffa prezza la persona; la quota prezza il rischio di delivery — comprimere non è mai la soluzione, alzare la tariffa cliente sì."
+      f6: "<b>Questa ripartizione è il prezzo full-service di welance</b> — per trovare, assemblare e rispondere del team. Su <a href='https://welance.com/directory'>Directory</a> la piattaforma non prende alcuna quota: incontrare un team costa un token fisso e simbolico, e la relazione appartiene alle persone che la compongono. La tariffa prezza la persona; la quota prezza il rischio di delivery — comprimere non è mai la soluzione, alzare la tariffa cliente sì.",
+      finePrint: "per esteso"
     },
     ur: {
       dir: "rtl", locale: "ur-PK", name: "اردو",
@@ -531,7 +563,8 @@
       f3: "<b>گول کرنا۔</b> جہاں دونوں آراء میں ایک درجے کا فرق ہو، کوریج فرد کے حق میں گول ہوتی ہے۔ دو درجے کے فرق کا اوسط نہیں لیا جاتا: اس پر بات ہوتی ہے۔",
       f4: "<b>درجہ فرد اور کردار کے جوڑے کا ہے</b>، صرف فرد کا نہیں۔ ایک ہی شخص ایک کردار میں خود مختار اور دوسرے میں معاونت کے ساتھ ہو سکتا ہے۔ ہر تجدید پر نظرثانی۔",
       f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔",
-      f6: "<b>یہ تقسیم ویلانس کی فل سروس قیمت ہے</b> — ٹیم کو ڈھونڈنے، جوڑنے اور اس کی ذمہ داری اٹھانے کی۔ <a href='https://welance.com/directory'>Directory</a> پر پلیٹ فارم کوئی حصہ نہیں لیتا: ٹیم سے ملاقات کی قیمت ایک مقررہ، علامتی ٹوکن ہے، اور رشتہ ان لوگوں کا ہوتا ہے جو اس میں ہیں۔ ریٹ فرد کی قیمت ہے؛ حصہ ڈیلیوری کے خطرے کی — دبانا کبھی حل نہیں، کلائنٹ ریٹ بڑھانا حل ہے۔"
+      f6: "<b>یہ تقسیم ویلانس کی فل سروس قیمت ہے</b> — ٹیم کو ڈھونڈنے، جوڑنے اور اس کی ذمہ داری اٹھانے کی۔ <a href='https://welance.com/directory'>Directory</a> پر پلیٹ فارم کوئی حصہ نہیں لیتا: ٹیم سے ملاقات کی قیمت ایک مقررہ، علامتی ٹوکن ہے، اور رشتہ ان لوگوں کا ہوتا ہے جو اس میں ہیں۔ ریٹ فرد کی قیمت ہے؛ حصہ ڈیلیوری کے خطرے کی — دبانا کبھی حل نہیں، کلائنٹ ریٹ بڑھانا حل ہے۔",
+      finePrint: "تفصیل"
     },
     pt: {
       dir: "ltr", locale: "pt-BR", name: "Português (BR)",
@@ -581,7 +614,8 @@
       f3: "<b>Arredondamento.</b> Onde as duas visões diferem em um degrau, a cobertura arredonda a favor da pessoa. Dois degraus não se mediam: se conversa.",
       f4: "<b>O nível pertence ao par pessoa-e-papel</b>, não à pessoa. A mesma pessoa pode ser autônoma num papel e trabalhar com apoio em outro. Revisto a cada renovação.",
       f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos.",
-      f6: "<b>Esta divisão é o preço full-service da welance</b> — por encontrar, montar e responder pelo time. No <a href='https://welance.com/directory'>Directory</a> a plataforma não fica com parte nenhuma: conhecer um time custa um token fixo e simbólico, e a relação pertence às pessoas que a compõem. A taxa precifica a pessoa; a cota precifica o risco de entrega — espremer nunca é a solução, subir a taxa do cliente é."
+      f6: "<b>Esta divisão é o preço full-service da welance</b> — por encontrar, montar e responder pelo time. No <a href='https://welance.com/directory'>Directory</a> a plataforma não fica com parte nenhuma: conhecer um time custa um token fixo e simbólico, e a relação pertence às pessoas que a compõem. A taxa precifica a pessoa; a cota precifica o risco de entrega — espremer nunca é a solução, subir a taxa do cliente é.",
+      finePrint: "as letras miúdas"
     },
     es: {
       dir: "ltr", locale: "es-ES", name: "Español",
@@ -631,7 +665,8 @@
       f3: "<b>Redondeos.</b> Donde las dos miradas difieren un escalón, la cobertura se redondea a favor de la persona. Una brecha de dos escalones no se promedia: se conversa.",
       f4: "<b>El nivel pertenece al par persona-rol</b>, no a la persona. La misma persona puede ser autónoma en un rol y trabajar con apoyo en otro. Se revisa en cada renovación.",
       f5: "<b>Los coeficientes son valores por defecto editables y necesitan una fuente real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar a alguien con ellos. Las traducciones deben revisarlas hablantes nativos.",
-      f6: "<b>Este reparto es el precio full-service de welance</b> — por encontrar, montar y responder por el equipo. En <a href='https://welance.com/directory'>Directory</a> la plataforma no toma parte alguna: conocer a un equipo cuesta un token fijo y simbólico, y la relación pertenece a las personas que la componen. La tarifa tasa a la persona; la cuota tasa el riesgo de entrega — comprimir nunca es la solución, subir la tarifa del cliente sí."
+      f6: "<b>Este reparto es el precio full-service de welance</b> — por encontrar, montar y responder por el equipo. En <a href='https://welance.com/directory'>Directory</a> la plataforma no toma parte alguna: conocer a un equipo cuesta un token fijo y simbólico, y la relación pertenece a las personas que la componen. La tarifa tasa a la persona; la cuota tasa el riesgo de entrega — comprimir nunca es la solución, subir la tarifa del cliente sí.",
+      finePrint: "la letra pequeña"
     },
     vi: {
       dir: "ltr", locale: "vi-VN", name: "Tiếng Việt",
@@ -681,7 +716,8 @@
       f3: "<b>Làm tròn.</b> Khi hai góc nhìn lệch nhau một bậc, bao phủ làm tròn có lợi cho người đó. Lệch hai bậc không lấy trung bình: phải trao đổi.",
       f4: "<b>Cấp độ thuộc về cặp người-và-vai-trò</b>, không thuộc về người. Cùng một người có thể tự chủ ở vai trò này và cần hỗ trợ ở vai trò khác. Xem lại ở mỗi lần gia hạn.",
       f5: "<b>Các hệ số là mặc định chỉnh sửa được và cần nguồn thật</b> (OECD PPP, World Bank ICP, Numbeo) trước khi trả lương ai đó theo chúng. Bản dịch nên được người bản ngữ kiểm tra.",
-      f6: "<b>Phần chia này là giá full-service của welance</b> — cho việc tìm, dựng và chịu trách nhiệm về đội ngũ. Trên <a href='https://welance.com/directory'>Directory</a> nền tảng không lấy phần nào: gặp một đội ngũ chỉ tốn một token cố định, tượng trưng, và mối quan hệ thuộc về những người trong đó. Mức giá định giá con người; phần chia định giá rủi ro bàn giao — ép giá không bao giờ là lời giải, nâng giá khách hàng mới là."
+      f6: "<b>Phần chia này là giá full-service của welance</b> — cho việc tìm, dựng và chịu trách nhiệm về đội ngũ. Trên <a href='https://welance.com/directory'>Directory</a> nền tảng không lấy phần nào: gặp một đội ngũ chỉ tốn một token cố định, tượng trưng, và mối quan hệ thuộc về những người trong đó. Mức giá định giá con người; phần chia định giá rủi ro bàn giao — ép giá không bao giờ là lời giải, nâng giá khách hàng mới là.",
+      finePrint: "phần chi tiết"
     },
     ar: {
       dir: "rtl", locale: "ar", name: "عربي",
@@ -731,7 +767,8 @@
       f3: "<b>التقريب.</b> حيث تختلف النظرتان درجة واحدة، تُقرَّب التغطية لصالح الشخص. تباعد الدرجتين لا يُؤخذ متوسطه: يُناقش.",
       f4: "<b>المستوى للثنائي شخص-ودور</b>، لا للشخص. الشخص نفسه قد يكون مستقلًا في دور ويعمل بدعم في آخر. يراجَع عند كل تجديد.",
       f5: "<b>المعاملات قيم افتراضية قابلة للتحرير وتحتاج مصدرًا حقيقيًا</b> (OECD PPP، البنك الدولي ICP، Numbeo) قبل أن يُدفع لأحد بناءً عليها. وينبغي أن يراجع الترجمات ناطقون أصليون.",
-      f6: "<b>هذه القسمة هي سعر الخدمة الكاملة لدى ويلانس</b> — مقابل إيجاد الفريق وتجميعه وتحمّل مسؤوليته. على <a href='https://welance.com/directory'>Directory</a> لا تأخذ المنصة أي حصة: لقاء فريق يكلف رمزًا ثابتًا رمزيًا، والعلاقة ملك لمن فيها. السعر يقيّم الشخص؛ والحصة تقيّم مخاطرة التسليم — الضغط ليس الحل أبدًا، رفع سعر العميل هو الحل."
+      f6: "<b>هذه القسمة هي سعر الخدمة الكاملة لدى ويلانس</b> — مقابل إيجاد الفريق وتجميعه وتحمّل مسؤوليته. على <a href='https://welance.com/directory'>Directory</a> لا تأخذ المنصة أي حصة: لقاء فريق يكلف رمزًا ثابتًا رمزيًا، والعلاقة ملك لمن فيها. السعر يقيّم الشخص؛ والحصة تقيّم مخاطرة التسليم — الضغط ليس الحل أبدًا، رفع سعر العميل هو الحل.",
+      finePrint: "التفاصيل الدقيقة"
     }
   };
 
@@ -906,7 +943,8 @@
       "t-f-share": d.fShare, "t-f-margin": d.fMargin, "t-f-pay": d.fPay, "t-f-rate": d.fRate,
       "t-levelsh": d.levelsh, "t-levelshint": d.levelshint,
       "reset": d.reset,
-      "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin
+      "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin,
+      "t-fineprint": d.finePrint || "the fine print"
     };
     Object.keys(map).forEach(function (k) { $(k).textContent = map[k]; });
 
