@@ -271,10 +271,11 @@
           <div class="field" id="fld-cap"><label id="t-l-cap" for="capr"></label>
             <input type="number" id="capr" class="w-rate" value="50" min="0" step="0.5"></div>
         </div>
-        <div class="modes" style="margin-bottom:18px">
+        <div class="modes" style="margin-bottom:10px">
           <button class="mode" id="w-client" type="button" aria-pressed="true"></button>
           <button class="mode" id="w-internal" type="button" aria-pressed="false"></button>
         </div>
+        <p class="subnote" id="t-ratesnote" style="max-width:66ch;margin:0 0 18px"></p>
         <div class="comp-head">
           <div id="t-h-comp"></div><div id="t-h-weight"></div><div id="t-h-self"></div>
           <div id="t-h-eval"></div><div id="t-h-cov"></div><div></div>
@@ -365,6 +366,7 @@
     en: {
       dir: "ltr", locale: "en-GB", name: "English",
       workh: "Type of work", wtClient: "Client work", wtInternal: "Internal work", capLbl: "Internal cap \u20ac/h", fCap: "Level ceiling", internalNote: "Internal work has no client rate \u2014 there is nothing to take a share of. The ceiling is {cap}/h at the top level, scaled down by level.",
+      ratesNote: "The default rates are welance's own — every firm will set theirs. Stated honestly: we believe these are fair EU rates for today's digital professionals, whose roles are flattening into something more fluid and generalist — one role, really: the AI-powered digital professional.",
       askLbl: "Their asking rate \u20ac/h",
       provider: "provider", providerSub: "Independent — a freelancer or a small studio, up to about 25 people.",
       reset: "Reset to defaults",
@@ -416,6 +418,7 @@
     de: {
       dir: "ltr", locale: "de-DE", name: "Deutsch",
       workh: "Art der Arbeit", wtClient: "Kundenarbeit", wtInternal: "Interne Arbeit", capLbl: "Interne Obergrenze \u20ac/h", fCap: "Obergrenze der Stufe", internalNote: "Interne Arbeit hat keinen Kundensatz \u2014 es gibt nichts, wovon ein Anteil genommen werden k\u00f6nnte. Die Obergrenze ist {cap}/h auf der h\u00f6chsten Stufe, nach Stufe abgestuft.",
+      ratesNote: "Die Standardsätze sind die von welance — jede Firma setzt ihre eigenen. Ehrlich gesagt: wir halten sie für faire EU-Sätze für die digitalen Profis von heute, deren Rollen flacher und fließender werden und mehr generalistischen Zugriff verlangen — im Grunde eine Rolle: der KI-gestützte Digital-Profi.",
       askLbl: "Ihr Wunschsatz \u20ac/h",
       provider: "Auftragnehmer", providerSub: "Unabhängig — freiberuflich oder ein kleines Studio, bis etwa 25 Personen.",
       reset: "Auf Standard zurücksetzen",
@@ -467,6 +470,7 @@
     it: {
       dir: "ltr", locale: "it-IT", name: "Italiano",
       workh: "Tipo di lavoro", wtClient: "Lavoro cliente", wtInternal: "Lavoro interno", capLbl: "Tetto interno \u20ac/h", fCap: "Tetto del livello", internalNote: "Il lavoro interno non ha una tariffa cliente \u2014 non c'\u00e8 nulla di cui prendere una quota. Il tetto \u00e8 {cap}/h al livello massimo, scalato per livello.",
+      ratesNote: "Le tariffe di default sono quelle di welance — ogni realtà fisserà le sue. Detto onestamente: crediamo siano tariffe EU eque per i professionisti digitali di oggi, i cui ruoli si stanno appiattendo in qualcosa di più fluido e generalista — in fondo un ruolo solo: il professionista digitale potenziato dall'AI.",
       askLbl: "La sua tariffa richiesta \u20ac/h",
       provider: "collaboratore", providerSub: "Indipendente — freelance o piccolo studio, fino a circa 25 persone.",
       reset: "Ripristina i valori iniziali",
@@ -518,6 +522,7 @@
     ur: {
       dir: "rtl", locale: "ur-PK", name: "اردو",
       workh: "\u06a9\u0627\u0645 \u06a9\u06cc \u0642\u0633\u0645", wtClient: "\u06a9\u0644\u0627\u0626\u0646\u0679 \u06a9\u0627 \u06a9\u0627\u0645", wtInternal: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645", capLbl: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u062d\u062f \u20ac/\u06af\u06be\u0646\u0679\u06c1", fCap: "\u062f\u0631\u062c\u06d2 \u06a9\u06cc \u062d\u062f", internalNote: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645 \u06a9\u0627 \u06a9\u0648\u0626\u06cc \u06a9\u0644\u0627\u0626\u0646\u0679 \u0631\u06cc\u0679 \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627 \u2014 \u062d\u0635\u06c1 \u0644\u06cc\u0646\u06d2 \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0686\u06be \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627\u06d4 \u0633\u0628 \u0633\u06d2 \u0627\u0648\u067e\u0631 \u062f\u0631\u062c\u06d2 \u067e\u0631 \u062d\u062f {cap}/\u06af\u06be\u0646\u0679\u06c1 \u06c1\u06d2\u060c \u062f\u0631\u062c\u06d2 \u06a9\u06d2 \u062d\u0633\u0627\u0628 \u0633\u06d2 \u06a9\u0645 \u06c1\u0648\u062a\u06cc \u06c1\u06d2\u06d4",
+      ratesNote: "طے شدہ ریٹ welance کے اپنے ہیں — ہر ادارہ اپنے مقرر کرے گا۔ ایمانداری سے: ہم انہیں آج کے ڈیجیٹل پیشہ ور افراد کے لیے منصفانہ یورپی ریٹ سمجھتے ہیں، جن کے کردار ہموار اور سیال ہو کر زیادہ ہمہ جہت انداز مانگ رہے ہیں — درحقیقت ایک ہی کردار: AI سے لیس ڈیجیٹل پیشہ ور۔",
       askLbl: "\u0627\u0646 \u06a9\u0627 \u0645\u0637\u0644\u0648\u0628\u06c1 \u0631\u06cc\u0679 \u20ac/\u06af\u06be\u0646\u0679\u06c1",
       provider: "فراہم کنندہ", providerSub: "خودمختار — فری لانسر یا چھوٹا اسٹوڈیو، تقریباً 25 افراد تک۔",
       reset: "ابتدائی حالت پر واپس",
@@ -569,6 +574,7 @@
     pt: {
       dir: "ltr", locale: "pt-BR", name: "Português (BR)",
       workh: "Tipo de trabalho", wtClient: "Trabalho de cliente", wtInternal: "Trabalho interno", capLbl: "Teto interno \u20ac/h", fCap: "Teto do n\u00edvel", internalNote: "Trabalho interno n\u00e3o tem taxa de cliente \u2014 n\u00e3o h\u00e1 do que tirar uma parte. O teto \u00e9 {cap}/h no n\u00edvel mais alto, reduzido conforme o n\u00edvel.",
+      ratesNote: "As taxas padrão são as da welance — cada firma definirá as suas. Com honestidade: acreditamos que são taxas UE justas para os profissionais digitais de hoje, cujos papéis estão se achatando em algo mais fluido e generalista — no fundo um papel só: o profissional digital potencializado por IA.",
       askLbl: "A taxa pedida por ela \u20ac/h",
       provider: "prestador", providerSub: "Independente — freelancer ou um pequeno estúdio, até cerca de 25 pessoas.",
       reset: "Restaurar padrões",
@@ -620,6 +626,7 @@
     es: {
       dir: "ltr", locale: "es-ES", name: "Español",
       workh: "Tipo de trabajo", wtClient: "Trabajo de cliente", wtInternal: "Trabajo interno", capLbl: "Tope interno \u20ac/h", fCap: "Tope del nivel", internalNote: "El trabajo interno no tiene tarifa de cliente \u2014 no hay de qué tomar una parte. El tope es {cap}/h en el nivel máximo, escalado por nivel.",
+      ratesNote: "Las tarifas por defecto son las de welance — cada firma fijará las suyas. Dicho con honestidad: creemos que son tarifas UE justas para los profesionales digitales de hoy, cuyos roles se aplanan y se vuelven fluidos, pidiendo un enfoque más generalista — en el fondo un solo rol: el profesional digital potenciado por IA.",
       askLbl: "Su tarifa pedida \u20ac/h",
       provider: "colaborador", providerSub: "Independiente — freelance o un estudio pequeño, hasta unas 25 personas.",
       reset: "Restaurar valores iniciales",
@@ -671,6 +678,7 @@
     vi: {
       dir: "ltr", locale: "vi-VN", name: "Tiếng Việt",
       workh: "Loại công việc", wtClient: "Việc cho khách hàng", wtInternal: "Việc nội bộ", capLbl: "Trần nội bộ \u20ac/h", fCap: "Trần của cấp độ", internalNote: "Việc nội bộ không có giá khách hàng \u2014 không có gì để chia phần. Trần là {cap}/h ở cấp cao nhất, giảm dần theo cấp độ.",
+      ratesNote: "Mức giá mặc định là của welance — mỗi công ty sẽ đặt mức riêng. Nói thật lòng: chúng tôi tin đây là mức giá EU công bằng cho người làm nghề số hôm nay, khi các vai trò đang phẳng ra, trở nên linh hoạt và đòi hỏi cách tiếp cận toàn diện hơn — thực chất là một vai trò: người làm nghề số được AI tiếp sức.",
       askLbl: "Mức giá họ đề nghị \u20ac/h",
       provider: "người cộng tác", providerSub: "Độc lập — freelancer hoặc một studio nhỏ, tới khoảng 25 người.",
       reset: "Khôi phục mặc định",
@@ -722,6 +730,7 @@
     ar: {
       dir: "rtl", locale: "ar", name: "عربي",
       workh: "نوع العمل", wtClient: "عمل لعميل", wtInternal: "عمل داخلي", capLbl: "السقف الداخلي \u20ac/س", fCap: "سقف المستوى", internalNote: "العمل الداخلي لا سعر عميل له \u2014 لا شيء تُؤخذ منه حصة. السقف {cap}/س في أعلى مستوى، متدرجًا نزولًا حسب المستوى.",
+      ratesNote: "الأسعار الافتراضية هي أسعار welance — وكل جهة تضع أسعارها. بصراحة: نراها أسعارًا أوروبية عادلة لمحترفي الرقمية اليوم، الذين تتسطح أدوارهم وتصير أكثر سيولة وتتطلب نهجًا أعمّ — دور واحد في الحقيقة: المحترف الرقمي المعزّز بالذكاء الاصطناعي.",
       askLbl: "سعره المطلوب \u20ac/س",
       provider: "المتعاون", providerSub: "مستقل — فريلانسر أو استوديو صغير، حتى نحو 25 شخصًا.",
       reset: "إعادة الضبط إلى الافتراضي",
@@ -944,6 +953,7 @@
       "t-levelsh": d.levelsh, "t-levelshint": d.levelshint,
       "reset": d.reset,
       "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin,
+      "t-ratesnote": d.ratesNote || "",
       "t-fineprint": d.finePrint || "the fine print"
     };
     Object.keys(map).forEach(function (k) { $(k).textContent = map[k]; });
