@@ -1,0 +1,12 @@
+{
+  "name": "perfect-brief-site",
+  "private": true,
+  "description": "Dev tooling for the public site: engine unit tests (node --test) and end-to-end tests (Playwright). The site itself has no build step and no runtime dependencies.",
+  "scripts": {
+    "test:site": "node --test tests/site/pricing.test.mjs",
+    "test:e2e": "playwright test -c tests/e2e/playwright.config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}

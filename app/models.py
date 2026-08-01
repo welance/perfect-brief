@@ -82,7 +82,7 @@ class VerdictOut(BaseModel):
     weight: float = Field(description="This rule's share of the score (all weights sum to 100).")
     severity: str = Field(description="high · medium — editorial urgency, not score math.")
     gate: str | None = Field(
-        None, description="If set, this rule is also a publish gate: 'pass' or 'not-fail' required."
+        None, description="If set, this rule is also a publish gate: 'pass' or 'not_fail' required."
     )
 
 

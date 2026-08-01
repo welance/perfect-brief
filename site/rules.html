@@ -191,11 +191,11 @@
 
 <script>
 const RULES=[
- {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not-fail",
+ {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not_fail",
   rationale:"A titled brief is findable, scannable, and signals that the author knows what the thing is. On a noticeboard, a missing title is the first failure of communication.",
   criteria:"The brief opens with a short, specific title naming the product or problem. Partial if a title exists but is generic.",
   refs:[["practice", "Design brief — names itself up front", "a brief leads with a clear subject", "https://en.wikipedia.org/wiki/Design_brief"]]},
- {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not-fail",
+ {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not_fail",
   rationale:"A solution with no stated problem can't be validated, prioritised, or measured. Starting from a problem is the first grip on reality.",
   criteria:"Names the user problem the product addresses, distinct from the proposed solution. Partial if the problem is only implied.",
   refs:[["practice", "Jobs to be Done", "frame the need before the solution", "https://en.wikipedia.org/wiki/Outcome-Driven_Innovation"]]},
@@ -203,7 +203,7 @@ const RULES=[
   rationale:"Most overruns come from the gap between assumed-included and assumed-excluded. Naming exclusions up front is cheap.",
   criteria:"Explicitly names at least one thing out of scope, or states a clear boundary. Partial if only implied.",
   refs:[["practice", "Scope statement", "in-scope vs out-of-scope is stated", "https://en.wikipedia.org/wiki/Scope_(project_management)"], ["encyclopedic", "Scope creep", "the failure this prevents", "https://en.wikipedia.org/wiki/Scope_creep"]]},
- {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not-fail",
+ {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not_fail",
   rationale:"A brief with no budget, or one below the engagement floor, can't be matched to a senior team. The floor is marketplace policy.",
   criteria:"States a budget figure. Pass at/above the floor with headroom; warn if it only just clears; fail if absent or below. Floor is policy in scoring.yaml.",
   refs:[["practice", "Statement of work — budget", "engagement is sized before it starts", "https://en.wikipedia.org/wiki/Statement_of_work"]]},

@@ -68,3 +68,58 @@ test("formula registry is the count", () => {
     for (const k of ["id", "name", "formula", "plain", "source"])
       assert.ok(f[k], `${f.id ?? "?"} missing ${k}`);
 });
+
+/* ---------- edge cases: the equation must never lie ---------- */
+
+test("weights normalise: 30/45/25 and 0.30/0.45/0.25 are the same team", () => {
+  const a = P.computeTeam(100, rows);
+  const b = P.computeTeam(100, rows.map(r => ({ ...r, weight: r.weight * 100 })));
+  for (const k of ["payouts", "headroom", "geoBand", "welanceMargin", "minViableR"])
+    assert.ok(Math.abs(a[k] - b[k]) < 1e-9, k);
+});
+
+test("a single row still sums exactly", () => {
+  const r = P.computeTeam(80, [{ weight: 1, levelIndex: 1, coef: 0.82, floor: 0, ownRate: 30 }]);
+  const total = r.payouts + r.headroom + r.geoBand + r.welanceMargin;
+  assert.ok(Math.abs(total - 80) < 1e-9);
+});
+
+test("empty team: zeros, no crash", () => {
+  const r = P.computeTeam(100, []);
+  assert.equal(r.ok, true);
+  assert.equal(r.payouts + r.headroom + r.geoBand + r.welanceMargin, 0);
+  assert.equal(r.minViableR, 0);
+});
+
+test("coefficient above 1 (Switzerland): identity holds, geo band goes negative", () => {
+  const r = P.computeTeam(100, [{ weight: 1, levelIndex: 0, coef: 1.35, floor: 0, ownRate: 70 }]);
+  const total = r.payouts + r.headroom + r.geoBand + r.welanceMargin;
+  assert.ok(Math.abs(total - 100) < 1e-9);
+  assert.ok(r.geoBand < 0); // ceiling above role-only: the band flips sign, it never hides
+});
+
+test("floor binds inside the team equation too", () => {
+  const low = P.computeTeam(100, [{ weight: 1, levelIndex: 2, coef: 0.32, floor: 0.5, ownRate: 12 }]);
+  assert.equal(Number(low.rows[0].ceiling.toFixed(2)), 25); // 100 × 0.5 × max(0.32, 0.5)
+  const full = P.computeTeam(100, [{ weight: 1, levelIndex: 2, coef: 0.32, floor: 1, ownRate: 12 }]);
+  assert.equal(Number(full.geoBand.toFixed(10)), 0); // floor 1 = geography off
+});
+
+test("no-deal boundary: own rate exactly at the ceiling is a deal", () => {
+  const r = P.computeTeam(100, [{ weight: 1, levelIndex: 0, coef: 1, floor: 0, ownRate: 70 }]);
+  assert.equal(r.ok, true);
+  assert.equal(Number(r.headroom.toFixed(10)), 0);
+});
+
+test("zero-weight rows carry nothing", () => {
+  const r = P.computeTeam(100, [
+    { weight: 0, levelIndex: 0, coef: 1, floor: 0, ownRate: 999 },
+    { weight: 1, levelIndex: 0, coef: 1, floor: 0, ownRate: 70 },
+  ]);
+  assert.equal(Number(r.payouts.toFixed(2)), 70);
+});
+
+test("formula ids are unique", () => {
+  const ids = P.FORMULAS.map(f => f.id);
+  assert.equal(new Set(ids).size, ids.length);
+});
