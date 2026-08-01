@@ -70,6 +70,17 @@
   .fx-close { border-left: 2px solid var(--accent); padding: 4px 0 4px 14px;
     font-size: 16.5px; margin: 18px 0 0; max-width: 62ch; }
 
+  .conway { border-left: 2px solid var(--ink); padding: 6px 0 6px 16px; margin: 20px 0 8px;
+    font-size: clamp(17px, 2.3vw, 21px); line-height: 1.5; max-width: 58ch; font-weight: 500; }
+  [dir="rtl"] .conway { border-left: 0; border-right: 2px solid var(--ink); padding: 6px 16px 6px 0; }
+  .conway-src { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; }
+  .doors { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 0 0 14px; }
+  @media (min-width: 760px) { .doors { grid-template-columns: 1fr 1fr; } }
+  .door { border: 1px solid var(--rule); background: var(--paper-2); padding: 18px;
+    display: flex; flex-direction: column; gap: 10px; }
+  .door h3 { font-family: var(--disp); font-size: 18px; font-weight: 600; margin: 0; }
+  .door p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
+  .door .go { font-family: var(--mono); font-size: 13px; }
   .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 22px 0 0; }
   footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--rule);
     font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft);
@@ -83,12 +94,16 @@
   <header>
     
     <h1><span data-i18n="method.h1">The welance method</span><span class="b">_</span></h1>
-    <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end, and opened as a blueprint anyone can read, check, and fork.</p>
+    <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end and opened as a blueprint. In an era when AI makes producing ever cheaper, what decides is composition: who you put together, and how fast you learn whether it works.</p>
   </header>
 
   <div class="eyebrow"><span data-i18n="method.eb1">the problem, honestly</span></div>
-  <p data-i18n="method.p1">A rigid business unit cannot change shape for a specific goal. It adapts itself to the goal — rigidly, because that is all a fixed structure can do — and the result is worse work and wasted budget. We experience this as software consultants on both sides of the table, and it is the generalist problem behind most of the specific ones we are hired to fix.</p>
-  <p data-i18n-html="method.p2">A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements. The method below is how we make such teams routine instead of lucky.</p>
+  <p data-i18n="method.p1">The big consulting firms sell teams by the day, at full list price, staffed by whoever was on the bench — a model that lives off utilisation, not fit. It optimises economic capital and structurally ignores the human and relational kind: the people doing the work are interchangeable by design, and the client relationship is kept proprietary to the firm — hidden behind it — instead of belonging to the humans who actually build together. It is an old model, and an unsustainable one; the wasted budget is priced in.</p>
+  <p data-i18n-html="method.p2">A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements in the segment we serve: bounded, product-shaped work, where fit beats scale.</p>
+  <blockquote class="conway" data-i18n="method.quote">Organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations.</blockquote>
+  <p class="conway-src" data-i18n-html="method.quotesrc">Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — made famous by Fred Brooks in <em>The Mythical Man-Month</em> as “Conway’s Law”.</p>
+  <p data-i18n="method.p2b">You ship your team’s communication structure. Composing the team is not staffing, it is product design — which is why who works with whom is the decision we treat as the most important one.</p>
+
 
   <div class="eyebrow"><span data-i18n="method.eb2">the method — three steps</span></div>
   <div class="steps">
@@ -143,6 +158,21 @@
   </div>
   <p data-i18n="method.p3">Each step needs the one before it. The price needs the brief's scope to know what a role even is; the team needs the price's arithmetic to give three people one honest rate. Information cascades — that is why they are steps and not features, and why the brief stays the principal concept: nothing downstream survives a dishonest one.</p>
 
+
+  <div class="eyebrow"><span data-i18n="method.eb5">two doors, one method</span></div>
+  <div class="doors">
+    <div class="door">
+      <h3 data-i18n="method.d1.h">welance/Directory — do it yourselves</h3>
+      <p data-i18n="method.d1.p">A curated, blind noticeboard where cross-functional teams pick up briefs on substance, not brand. The platform maximises connections, not margin: never a percentage of the relationship — meeting a team costs a fixed, symbolic token, and from there the group belongs to the people in it. Client and team run the method’s checks themselves.</p>
+      <a class="go" href="https://welance.com/directory" data-i18n="method.d1.go">→ welance.com/directory</a>
+    </div>
+    <div class="door">
+      <h3 data-i18n="method.d2.h">welance — we do it with you</h3>
+      <p data-i18n="method.d2.p">Given an engagement, welance finds, contacts and assembles the team, and answers for the delivery. That work is priced by the split you can read on this site — 70/30 at full autonomy — and guarded by the no-deal rule: we would rather lose an engagement than compress a person below their rate. The opposite of a day rate for whoever was available.</p>
+      <a class="go" href="price.html" data-i18n="method.d2.go">→ compute the split</a>
+    </div>
+  </div>
+
   <div class="eyebrow"><span id="fxHead">the formulas, all of them</span></div>
   <p data-i18n-html="method.fxintro">Everything the method computes, in one list — derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>), so this page cannot drift from the code. If you disagree with a constant, it is in one readable file, with the reason next to it.</p>
   <div class="formulas" id="formulas"></div>
@@ -154,8 +184,8 @@
   <p data-i18n="method.p6">In white-collar work, ideas, intuition and mental elasticity need room to convert into success. When something is off, the adjustment is made on the most important asset: the people.</p>
 
   <div class="eyebrow"><span data-i18n="method.eb4">why open</span></div>
-  <p data-i18n="method.p7">This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT-licensed like the rest, so a collective that disagrees with our numbers can fork the method and run its own.</p>
-  <p data-i18n="method.p8">The claim is small and true: a brief you can score, a split you can compute, a team you can reason about — and an honest check, early, where the humans decide what the formulas cannot.</p>
+  <p data-i18n="method.p7">This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT like the rest, so a collective that disagrees with our numbers can fork the method and run its own. We open the model; we curate the membership. That curation is the service, and saying so plainly is part of the transparency.</p>
+  <p data-i18n="method.p8">A collective priced this way is resilient the way a network is resilient: no bench to feed, no fixed shape to break, a declared reserve instead of a hidden one. The claim stays small and true: a brief you can score, a split you can compute, a team you can reason about — and an honest check, early, where the humans decide what the formulas cannot.</p>
   <div class="cta">
     <a class="btn primary" href="index.html" data-i18n="method.cta1">Start with the brief</a>
     <a class="btn" href="price.html" data-i18n="method.cta2">Compute a split</a>
