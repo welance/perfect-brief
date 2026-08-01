@@ -12,7 +12,7 @@ WelanceI18n.register("vi", {
     "index.cta.console": "Dùng thử console",
     "index.cta.rules": "Đọc các quy tắc",
     "index.cta.method": "Phương pháp",
-    "index.prov": "làm bởi <a href=\"https://welance.com\">Welance</a> · vận hành thước đo brief của <b>welance/Directory</b> · MIT",
+    "index.prov": "làm bởi <a href=\"https://welance.com\">welance</a> · vận hành thước đo brief của <b>welance/Directory</b> · MIT",
     "index.eb1": "nó làm gì",
     "index.p1": "Nó đọc một brief và trả về hai thứ tách biệt. Một <b>điểm số</b> — trung bình có trọng số trên mười bốn quy tắc công khai (có vấn đề thực sự không? người dùng được nêu tên? kết quả đo lường được? definition of done?) kèm một nhãn rõ ràng. Và một <b>cổng</b> (gate) — bốn yêu cầu bắt buộc phải đạt trước khi brief được phép công bố: tiêu đề rõ ràng, vấn đề được nêu, ngân sách trên mức sàn hợp tác, và ẩn danh hoàn toàn.",
     "index.p2": "Giữ chúng tách biệt chính là điểm mấu chốt. Một brief xuất sắc nhưng lộ tên khách hàng thì không được lên bảng tin ẩn danh — và không mức trung bình nào được phép che đậy điều đó.",
@@ -26,18 +26,18 @@ WelanceI18n.register("vi", {
     "index.p5": "Trình chấm chạy ở nhiệt độ 0, nên cùng một brief trên cùng phiên bản quy tắc cho cùng một điểm, có thể tái lập. Một kho brief mẫu đã gán nhãn chạy trong CI: thay đổi quy tắc làm xê dịch con số thì phải xê dịch cả các fixture đó, công khai, trong cùng một commit.",
     "index.p6": "<span style=\"font-family:var(--mono)\">ruleset_version</span> ghim chính xác thước đo nào đã chấm một brief — một dấu vết kiểm toán có thể chạy lại. <a href=\"console.html\">Console</a> cũng hoạt động ngoại tuyến, trên bản mock theo từ khóa của trình chấm, để bạn thử cơ chế mà không cần API key.",
     "index.eb3": "vì sao chúng tôi xây nó, nói thật",
-    "index.p7": "Chúng tôi là <a href=\"https://welance.com\">Welance</a>, một tập thể nhỏ gồm các đội ngũ senior độc lập, làm việc cùng nhau từ 2012. Chúng tôi đang xây <b>welance/Directory</b> — một bảng tin ẩn danh, được tuyển chọn, nơi các đội ngũ đa chức năng nhận brief sản phẩm dựa trên sức mạnh của brief, không phải thương hiệu đứng sau. Để điều đó hoạt động, brief cần một thước đo: dễ đọc, nhất quán, an toàn cho đánh giá ẩn danh.",
+    "index.p7": "Chúng tôi là <a href=\"https://welance.com\">welance</a>, một tập thể nhỏ gồm các đội ngũ senior độc lập, làm việc cùng nhau từ 2012. Chúng tôi đang xây <b>welance/Directory</b> — một bảng tin ẩn danh, được tuyển chọn, nơi các đội ngũ đa chức năng nhận brief sản phẩm dựa trên sức mạnh của brief, không phải thương hiệu đứng sau. Để điều đó hoạt động, brief cần một thước đo: dễ đọc, nhất quán, an toàn cho đánh giá ẩn danh.",
     "index.p8": "Có một xung đột rõ ràng khi một công ty vận hành cả bảng tin lẫn thước đo. Câu trả lời của chúng tôi là mở thước đo ra. Các quy tắc là tệp công khai với trọng số công khai; mức sàn €10k là chính sách được tuyên bố, không phải bộ lọc ẩn; kho kiểm thử bảo vệ các thay đổi là công khai; và toàn bộ theo giấy phép MIT — nếu bạn không đồng ý với thước đo của chúng tôi, bạn có thể fork và chạy thước đo của riêng mình. Chúng tôi nghĩ đó là cách trung thực duy nhất để vận hành một thước đo.",
     "index.p9": "Công cụ này là phiên bản chưng cất từ mười lăm năm bàn giao dự án: những sản phẩm thành công không phải những sản phẩm có bộ slide bóng bẩy nhất — mà là những nơi một đội ngũ nhỏ, senior, đa chức năng nhận được một brief đủ trung thực để bắt đầu. Chúng tôi không thể mở mã nguồn các đội ngũ. Chúng tôi có thể mở mã nguồn thước đo.",
-    "index.p10": "Cùng nhau, dịch vụ này và Directory là phiên bản số hóa của điều Welance vẫn luôn làm trực tiếp — ghép brief trung thực với đội ngũ senior — xây lại bằng những cách tiếp cận chúng tôi tin tưởng hôm nay: quy tắc mở thay vì ý kiến, điểm số tái lập được thay vì cảm tính. Hai niềm tin dẫn dắt nó. Viết một <em>brief kỹ thuật tốt</em> cho sản phẩm phần mềm nên là việc dễ — thước đo phải giúp bạn vượt qua, không chỉ đo bạn. Và không ai phải cam kết với đội ngũ đầu tiên mình gặp: một brief đáng xây dựng xứng đáng gặp nhiều đội, để sự phù hợp — kỹ thuật <em>và</em> văn hóa — được lựa chọn, không phải mặc định.",
+    "index.p10": "Cùng nhau, dịch vụ này và Directory là phiên bản số hóa của điều welance vẫn luôn làm trực tiếp — ghép brief trung thực với đội ngũ senior — xây lại bằng những cách tiếp cận chúng tôi tin tưởng hôm nay: quy tắc mở thay vì ý kiến, điểm số tái lập được thay vì cảm tính. Hai niềm tin dẫn dắt nó. Viết một <em>brief kỹ thuật tốt</em> cho sản phẩm phần mềm nên là việc dễ — thước đo phải giúp bạn vượt qua, không chỉ đo bạn. Và không ai phải cam kết với đội ngũ đầu tiên mình gặp: một brief đáng xây dựng xứng đáng gặp nhiều đội, để sự phù hợp — kỹ thuật <em>và</em> văn hóa — được lựa chọn, không phải mặc định.",
     "index.eb4": "quản trị",
     "index.triad": "<b>ai cũng đề xuất được</b> — mỗi quy tắc là một tệp; mở PR, không gác cổng<br><b>bằng chứng quyết định merge</b> — kho fixture công khai trong CI quyết định, không phải khẩu vị<br><b>ai cũng fork được</b> — MIT; quyền rời đi là bảo đảm chống thâu tóm thật sự",
     "index.govnote": "Chi tiết trong <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> và <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. Lập luận đầy đủ nằm trong <a href=\"rules.html\">bài viết</a>.",
-    "index.foot": "The Perfect Brief · một dự án mã nguồn mở của Welance",
+    "index.foot": "The Perfect Brief · một dự án mã nguồn mở của welance",
 
     /* ---------- method.html ---------- */
     "method.crumb": "phương pháp",
-    "method.h1": "Phương Pháp Welance",
+    "method.h1": "Phương Pháp welance",
     "method.thesis": "Quy trình chúng tôi vận hành trực tiếp từ 2012 — nhận một brief trung thực, định giá minh bạch, dựng đội ngũ xung quanh nó — được số hóa từ đầu đến cuối và mở ra như một bản thiết kế ai cũng có thể đọc, kiểm tra và fork.",
     "method.eb1": "vấn đề, nói thật",
     "method.p1": "Một đơn vị kinh doanh cứng nhắc không thể đổi hình dạng cho một mục tiêu cụ thể. Nó tự thích nghi với mục tiêu — một cách cứng nhắc, vì cấu trúc cố định chỉ làm được vậy — và kết quả là công việc kém hơn cùng ngân sách lãng phí. Chúng tôi trải nghiệm điều này với tư cách tư vấn phần mềm ở cả hai phía bàn đàm phán, và đó là vấn đề tổng quát đứng sau hầu hết các vấn đề cụ thể mà người ta thuê chúng tôi xử lý.",
@@ -70,7 +70,7 @@ WelanceI18n.register("vi", {
     "method.cta1": "Bắt đầu từ brief",
     "method.cta2": "Tính một phần chia",
     "method.cta3": "Dựng một đội ngũ",
-    "method.foot": "Phương Pháp Welance · một dự án mã nguồn mở của Welance",
+    "method.foot": "Phương Pháp welance · một dự án mã nguồn mở của welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "Điểm số",
@@ -132,11 +132,11 @@ WelanceI18n.register("vi", {
     "rules.p10": "Các fixture là hệ miễn dịch: một kho brief đã gán nhãn với điểm kỳ vọng. Thử âm thầm hạ thước đo để lọt một brief yếu là bạn phá kho — CI từ chối bạn. Muốn lách, bạn phải xóa fixture, và đó là một diff lộ liễu, đáng ngờ.",
     "rules.invh": "Một quy tắc chúng tôi rất mong có PR",
     "rules.invp": "<code>decision-owner</code> — brief có nêu tên một người duy nhất chịu trách nhiệm quyết định không? Đó là \"80% đội ngũ\" thuần túy: brief không có chủ thì giậm chân. Chúng tôi cố ý để ngỏ. Hãy thêm nó.",
-    "rules.foot": "Bản Brief Hoàn Hảo cho Sản Phẩm Số · một dự án mã nguồn mở của <a href=\"https://welance.com\">Welance</a>",
+    "rules.foot": "Bản Brief Hoàn Hảo cho Sản Phẩm Số · một dự án mã nguồn mở của <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "Welance · một đội ngũ, một mức giá",
+    "team.eyebrow": "welance · một đội ngũ, một mức giá",
     "team.h1": "Perfect Team",
     "team.lede": "Một đội ngũ đa chức năng, được định giá như định giá một người độc lập. Các vai trò và trọng số mô tả dự án; mỗi vai trò mang cấp độ và nền chi phí riêng. Khách hàng thấy <b>một mức giá gộp duy nhất</b> — không phải một trăm mức khác nhau — biên lợi nhuận thay đổi trong đội theo cấp độ, và toàn dự án đạt một <b>welance margin</b> được tuyên bố, có tên, ai cũng kiểm tra được.",
     "team.reset": "Khôi phục mặc định",
@@ -162,7 +162,7 @@ WelanceI18n.register("vi", {
     "team.checknote": "Một nhịp gợi ý, chủ ý <b>không phải</b> công thức. Công việc bắt đầu thật sự, với điều khoản dự phòng công khai để thay thế, gỡ bỏ hoặc điều chỉnh các lựa chọn ban đầu — và luôn hai chiều: người độc lập cũng có thể thấy không thoải mái. Mọi vấn đề con người nên nổi lên ở lần kiểm tra đầu, đừng để âm ỉ. Sự điều chỉnh thực hiện trên tài sản quan trọng nhất: con người.",
     "team.resh": "Kết quả",
     "team.key1": "cho mọi người", "team.key2": "headroom", "team.key3": "chênh lệch địa lý", "team.key4": "welance margin",
-    "team.fig1": "Cho mọi người", "team.fig2": "Welance margin · mục tiêu", "team.fig3": "Giá tối thiểu khả thi", "team.fig4": "Giá khách hàng",
+    "team.fig1": "Cho mọi người", "team.fig2": "welance margin · mục tiêu", "team.fig3": "Giá tối thiểu khả thi", "team.fig4": "Giá khách hàng",
     "team.foot1": "<b>Bốn dải phải cộng đúng bằng giá khách hàng — đó là phương trình.</b> Biên mà mọi người để lại trên bàn (headroom) và biên đến từ nơi ai đó sống (chênh lệch địa lý) có màu riêng, vì biên không nhìn thấy được thì không tranh luận được.",
     "team.foot2": "<b>Chênh lệch đi về đâu mới là điều quan trọng.</b> Nếu nó âm thầm thành biên lợi nhuận, tập thể kiếm lời từ nơi một người sống. Đặt tên đích đến — quỹ dự trữ, quỹ đoàn kết, tái đầu tư — để nó tranh luận được thay vì mặc định.",
     "team.foot3": "<b>Quy tắc không-thỏa-thuận.</b> Nếu giá của một thành viên vượt mức cấp độ của họ cho phép ở giá khách hàng đã chốt, hợp tác không diễn ra. Không ai bị ép xuống dưới giá của mình để làm tròn biên.",
@@ -175,6 +175,18 @@ WelanceI18n.register("vi", {
     "team.d.vok": "Mọi vai trò đều nằm trong trần ở {R}/h. Giá khách hàng thấp nhất mà đội ngũ này vận hành được là <b>{min}</b>/h.",
     "team.d.vno": "Đội ngũ này không vận hành được ở {R}/h — vai trò bị đánh dấu sẽ bị ép xuống dưới giá của chính họ, và đó là không-thỏa-thuận. Giá thấp nhất vận hành được là <b>{min}</b>/h.",
     "team.d.blended": "/h gộp",
-    "team.d.target": "mục tiêu"
+    "team.d.target": "mục tiêu",
+
+    /* ---------- site chrome (header/footer, chrome.js) ---------- */
+    "chrome.brief": "Perfect Brief",
+    "chrome.console": "Console",
+    "chrome.github": "GitHub",
+    "chrome.imprint": "Imprint",
+    "chrome.links": "Phương pháp, mở",
+    "chrome.login": "Login",
+    "chrome.method": "Phương pháp",
+    "chrome.price": "Perfect Price",
+    "chrome.rules": "Quy tắc",
+    "chrome.team": "Perfect Team"
   }
 });

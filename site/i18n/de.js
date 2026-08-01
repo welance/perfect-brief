@@ -13,7 +13,7 @@ WelanceI18n.register("de", {
     "index.cta.console": "Konsole ausprobieren",
     "index.cta.rules": "Die Regeln lesen",
     "index.cta.method": "Die Methode",
-    "index.prov": "gemacht von <a href=\"https://welance.com\">Welance</a> · treibt die Briefing-Messlatte von <b>welance/Directory</b> an · MIT",
+    "index.prov": "gemacht von <a href=\"https://welance.com\">welance</a> · treibt die Briefing-Messlatte von <b>welance/Directory</b> an · MIT",
     "index.eb1": "was es tut",
     "index.p1": "Es liest ein Briefing und liefert zwei getrennte Dinge zurück. Eine <b>Punktzahl</b> — ein gewichteter Durchschnitt über vierzehn öffentliche Regeln (gibt es ein echtes Problem? benannte Nutzer? ein messbares Ergebnis? eine Definition of Done?) mit einem klaren Label. Und ein <b>Gate</b> — vier harte Anforderungen, die gelten müssen, bevor ein Briefing überhaupt veröffentlichen darf: ein klarer Titel, ein benanntes Problem, ein Budget über der Engagement-Schwelle und vollständige Anonymisierung.",
     "index.p2": "Sie getrennt zu halten ist der Punkt. Ein brillantes Briefing, das den Namen des Kunden verrät, gehört nicht auf ein blindes Schwarzes Brett — und kein Durchschnitt darf das übertünchen können.",
@@ -27,18 +27,18 @@ WelanceI18n.register("de", {
     "index.p5": "Der Prüfer läuft bei Temperatur null, also ergibt dasselbe Briefing auf derselben Regelwerk-Version dieselbe Punktzahl, reproduzierbar. Ein Korpus gelabelter Beispiel-Briefings läuft in der CI: eine Regeländerung, die die Zahlen bewegt, muss auch diese Fixtures bewegen, offen, im selben Commit.",
     "index.p6": "Die <span style=\"font-family:var(--mono)\">ruleset_version</span> hält fest, welche Messlatte ein Briefing beurteilt hat — eine nachprüfbare Audit-Spur. Die <a href=\"console.html\">Konsole</a> funktioniert auch offline, auf einem Keyword-Mock des Prüfers, damit du die Mechanik ohne API-Key ausprobieren kannst.",
     "index.eb3": "warum wir es gebaut haben, ehrlich",
-    "index.p7": "Wir sind <a href=\"https://welance.com\">Welance</a>, ein kleines Kollektiv unabhängiger Senior-Teams, zusammen seit 2012. Wir bauen <b>welance/Directory</b> — ein kuratiertes, blindes Schwarzes Brett, auf dem cross-funktionale Teams Produkt-Briefings nach der Stärke des Briefings übernehmen, nicht nach der Marke dahinter. Damit das funktioniert, brauchen Briefings eine Messlatte: lesbar, konsistent, blind-sicher.",
+    "index.p7": "Wir sind <a href=\"https://welance.com\">welance</a>, ein kleines Kollektiv unabhängiger Senior-Teams, zusammen seit 2012. Wir bauen <b>welance/Directory</b> — ein kuratiertes, blindes Schwarzes Brett, auf dem cross-funktionale Teams Produkt-Briefings nach der Stärke des Briefings übernehmen, nicht nach der Marke dahinter. Damit das funktioniert, brauchen Briefings eine Messlatte: lesbar, konsistent, blind-sicher.",
     "index.p8": "Dass eine Firma sowohl das Brett als auch die Messlatte betreibt, ist ein offensichtlicher Konflikt. Unsere Antwort ist, die Messlatte offen zu machen. Die Regeln sind öffentliche Dateien mit öffentlichen Gewichten; die €10k-Schwelle ist erklärte Policy, kein versteckter Filter; der Test-Korpus, der Änderungen bewacht, ist öffentlich; und alles ist MIT-lizenziert — wenn du mit unserer Messlatte nicht einverstanden bist, kannst du sie forken und deine eigene betreiben. Wir halten das für die einzige ehrliche Art, eine zu betreiben.",
     "index.p9": "Dieses Werkzeug ist die destillierte Version dessen, was uns fünfzehn Jahre Übergaben gelehrt haben: die Produkte, die gut laufen, sind nicht die mit den poliertesten Decks — sondern die, bei denen ein kleines, erfahrenes, cross-funktionales Team ein Briefing bekam, das ehrlich genug war, um davon zu starten. Die Teams können wir nicht open-sourcen. Die Messlatte schon.",
-    "index.p10": "Zusammen sind dieser Dienst und die Directory die digitalisierte Version dessen, was Welance immer persönlich getan hat — ehrliche Briefings mit Senior-Teams zusammenzubringen — neu gebaut mit den Ansätzen, an die wir heute glauben: offene Regeln statt Meinungen, reproduzierbare Punktzahlen statt Bauchgefühl. Zwei Überzeugungen treiben es. Ein <em>gutes technisches Briefing</em> für ein Softwareprodukt zu schreiben sollte leicht sein — die Messlatte soll dir helfen, sie zu nehmen, nicht nur messen. Und niemand sollte sich an das erste Team binden müssen, das er trifft: ein Briefing, das es wert ist, gebaut zu werden, verdient es, mehrere zu treffen, damit der Fit — technisch <em>und</em> kulturell — gewählt wird statt hingenommen.",
+    "index.p10": "Zusammen sind dieser Dienst und die Directory die digitalisierte Version dessen, was welance immer persönlich getan hat — ehrliche Briefings mit Senior-Teams zusammenzubringen — neu gebaut mit den Ansätzen, an die wir heute glauben: offene Regeln statt Meinungen, reproduzierbare Punktzahlen statt Bauchgefühl. Zwei Überzeugungen treiben es. Ein <em>gutes technisches Briefing</em> für ein Softwareprodukt zu schreiben sollte leicht sein — die Messlatte soll dir helfen, sie zu nehmen, nicht nur messen. Und niemand sollte sich an das erste Team binden müssen, das er trifft: ein Briefing, das es wert ist, gebaut zu werden, verdient es, mehrere zu treffen, damit der Fit — technisch <em>und</em> kulturell — gewählt wird statt hingenommen.",
     "index.eb4": "Governance",
     "index.triad": "<b>alle schlagen vor</b> — jede Regel ist eine Datei; öffne eine PR, kein Gatekeeping<br><b>Belege mergen</b> — der öffentliche Fixture-Korpus in der CI entscheidet, nicht Geschmack<br><b>alle forken</b> — MIT; das Austrittsrecht ist die echte Anti-Vereinnahmungs-Garantie",
     "index.govnote": "Details in <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> und <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. Die ausführliche Begründung steht <a href=\"rules.html\">im Artikel</a>.",
-    "index.foot": "The Perfect Brief · ein Open-Source-Projekt von Welance",
+    "index.foot": "The Perfect Brief · ein Open-Source-Projekt von welance",
 
-    /* ---------- method.html — The Welance Method ---------- */
+    /* ---------- method.html — The welance Method ---------- */
     "method.crumb": "die Methode",
-    "method.h1": "Die Welance-Methode",
+    "method.h1": "Die welance-Methode",
     "method.thesis": "Der Prozess, den wir seit 2012 persönlich betreiben — ein ehrliches Briefing nehmen, es transparent bepreisen, das Team darum herum aufstellen — Ende zu Ende digitalisiert und als Blaupause geöffnet, die jeder lesen, prüfen und forken kann.",
     "method.eb1": "das Problem, ehrlich",
     "method.p1": "Eine starre Business-Unit kann ihre Form nicht für ein bestimmtes Ziel ändern. Sie passt sich dem Ziel an — starr, weil eine feste Struktur nichts anderes kann — und das Ergebnis ist schlechtere Arbeit und verschwendetes Budget. Wir erleben das als Software-Berater auf beiden Seiten des Tisches, und es ist das generalistische Problem hinter den meisten spezifischen, für die man uns holt.",
@@ -54,7 +54,7 @@ WelanceI18n.register("de", {
     "method.s2.go": "→ eine Aufteilung berechnen",
     "method.s3.n": "Schritt 3",
     "method.s3.h": "Perfect Team",
-    "method.s3.p": "Wer es macht, wo auf der Welt, zu einem gemischten Satz, mit dem der Kunde wirklich rechnen kann. Margen variieren im Team nach Stufe; das Projekt hält eine erklärte Welance-Marge; niemand wird unter seinen Satz gedrückt.",
+    "method.s3.p": "Wer es macht, wo auf der Welt, zu einem gemischten Satz, mit dem der Kunde wirklich rechnen kann. Margen variieren im Team nach Stufe; das Projekt hält eine erklärte welance-Marge; niemand wird unter seinen Satz gedrückt.",
     "method.s3.go": "→ ein Team aufstellen",
     "method.p3": "Jeder Schritt braucht den davor. Der Preis braucht den Umfang des Briefings, um zu wissen, was eine Rolle überhaupt ist; das Team braucht die Arithmetik des Preises, um drei Menschen einen ehrlichen Satz zu geben. Information fällt kaskadenförmig — deshalb sind es Schritte und keine Features, und deshalb bleibt das Briefing das Hauptkonzept: nichts stromabwärts überlebt ein unehrliches.",
     "method.fxintro": "Alles, was die Methode berechnet, in einer Liste — abgeleitet aus derselben Datei, auf der die Rechner laufen (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>), sodass diese Seite nicht vom Code abdriften kann. Wenn du mit einer Konstante nicht einverstanden bist: sie steht in einer lesbaren Datei, mit der Begründung daneben.",
@@ -71,7 +71,7 @@ WelanceI18n.register("de", {
     "method.cta1": "Mit dem Briefing anfangen",
     "method.cta2": "Eine Aufteilung berechnen",
     "method.cta3": "Ein Team aufstellen",
-    "method.foot": "Die Welance-Methode · ein Open-Source-Projekt von Welance",
+    "method.foot": "Die welance-Methode · ein Open-Source-Projekt von welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "Die Punktzahl",
@@ -133,13 +133,13 @@ WelanceI18n.register("de", {
     "rules.p10": "Die Fixtures sind das Immunsystem: ein Korpus gelabelter Briefings mit erwarteten Punktzahlen. Versuche, die Messlatte heimlich zu senken, um ein schwaches Briefing durchzuschleusen, und du brichst den Korpus — die CI weist dich ab. Um daran vorbeizukommen, müsstest du Fixtures löschen, und das ist ein sichtbarer, verdächtiger Diff.",
     "rules.invh": "Eine Regel, für die wir uns eine PR wünschen",
     "rules.invp": "<code>decision-owner</code> — nennt das Briefing eine einzige entscheidungsbefugte Person? Das ist pures \"80% Team\": ein Briefing ohne Owner bleibt stecken. Wir haben sie absichtlich weggelassen. Füge sie hinzu.",
-    "rules.foot": "Das perfekte Briefing für ein digitales Produkt · ein Open-Source-Projekt von <a href=\"https://welance.com\">Welance</a>",
+    "rules.foot": "Das perfekte Briefing für ein digitales Produkt · ein Open-Source-Projekt von <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "Welance · ein Team, ein Satz",
+    "team.eyebrow": "welance · ein Team, ein Satz",
     "team.h1": "Perfect Team",
-    "team.lede": "Ein cross-funktionales Team, bepreist wie eine einzelne unabhängige Person. Die Rollen und ihre Gewichte beschreiben das Projekt; jede Rolle trägt ihre eigene Stufe und Kostenbasis. Der Kunde sieht <b>einen gemischten Satz</b> — nicht hundert verschiedene — Margen variieren im Team nach Stufe, und das Projekt als Ganzes hält eine erklärte, benannte <b>Welance-Marge</b>, die jeder prüfen kann.",
+    "team.lede": "Ein cross-funktionales Team, bepreist wie eine einzelne unabhängige Person. Die Rollen und ihre Gewichte beschreiben das Projekt; jede Rolle trägt ihre eigene Stufe und Kostenbasis. Der Kunde sieht <b>einen gemischten Satz</b> — nicht hundert verschiedene — Margen variieren im Team nach Stufe, und das Projekt als Ganzes hält eine erklärte, benannte <b>welance-Marge</b>, die jeder prüfen kann.",
     "team.reset": "Auf Standard zurücksetzen",
     "team.c1h": "Das Team, Rolle für Rolle",
     "team.c1hint": "Der Name gehört dem Team, nicht einer Person. Für jede Rolle: ihr Gewicht im Projekt, die Stufe, auf der sie geliefert wird, der Lebenshaltungskosten-Koeffizient des Mitglieds und dessen eigener Satz — für die Kein-Deal-Prüfung.",
@@ -162,8 +162,8 @@ WelanceI18n.register("de", {
     "team.ck4": "1 Monat", "team.ck5": "3 Monaten",
     "team.checknote": "Ein vorgeschlagener Rhythmus, absichtlich <b>keine</b> Formel. Die Arbeit beginnt wirklich, mit dem erklärten Vorbehalt, die ursprünglichen Entscheidungen zu ersetzen, zu entfernen oder zu ändern — und das beidseitig, immer: auch die unabhängige Person kann sich unwohl fühlen. Jedes menschliche Problem sollte beim ersten Check auftauchen, nicht schwelen. Justiert wird am wichtigsten Asset: den Menschen.",
     "team.resh": "Ergebnis",
-    "team.key1": "an die Menschen", "team.key2": "Headroom", "team.key3": "geografische Differenz", "team.key4": "Welance-Marge",
-    "team.fig1": "An die Menschen", "team.fig2": "Welance-Marge · Ziel", "team.fig3": "Kleinster tragfähiger Satz", "team.fig4": "Kundensatz",
+    "team.key1": "an die Menschen", "team.key2": "Headroom", "team.key3": "geografische Differenz", "team.key4": "welance-Marge",
+    "team.fig1": "An die Menschen", "team.fig2": "welance-Marge · Ziel", "team.fig3": "Kleinster tragfähiger Satz", "team.fig4": "Kundensatz",
     "team.foot1": "<b>Die vier Bänder müssen den Kundensatz ergeben — das ist die Gleichung.</b> Marge, die die Menschen liegen lassen (Headroom), und Marge, die daher kommt, wo jemand lebt (die geografische Differenz), haben eigene Farben — denn Marge, die man nicht sieht, kann man nicht diskutieren.",
     "team.foot2": "<b>Wohin die Differenz fließt, ist entscheidend.</b> Wird sie stillschweigend zur Marge, profitiert das Kollektiv davon, wo jemand lebt. Benenne ihr Ziel — Rücklage, Solidartopf, Reinvestition — damit es diskutierbar ist statt angenommen.",
     "team.foot3": "<b>Kein-Deal-Regel.</b> Übersteigt der Satz eines Mitglieds das, was seine Stufe beim vereinbarten Kundensatz erlaubt, kommt das Engagement nicht zustande. Niemand wird unter seinen Satz gedrückt, damit die Marge aufgeht.",
@@ -176,6 +176,18 @@ WelanceI18n.register("de", {
     "team.d.vok": "Jede Rolle bleibt bei {R}/h unter ihrer Obergrenze. Der kleinste Kundensatz, bei dem dieses Team funktioniert, ist <b>{min}</b>/h.",
     "team.d.vno": "Dieses Team funktioniert bei {R}/h nicht — die markierte Rolle würde unter ihren eigenen Satz gedrückt, und das ist ein Kein-Deal. Der kleinste Satz, der funktioniert, ist <b>{min}</b>/h.",
     "team.d.blended": "/h gemischt",
-    "team.d.target": "Ziel"
+    "team.d.target": "Ziel",
+
+    /* ---------- site chrome (header/footer, chrome.js) ---------- */
+    "chrome.brief": "Perfect Brief",
+    "chrome.console": "Konsole",
+    "chrome.github": "GitHub",
+    "chrome.imprint": "Imprint",
+    "chrome.links": "Die Methode, offen",
+    "chrome.login": "Login",
+    "chrome.method": "Die Methode",
+    "chrome.price": "Perfect Price",
+    "chrome.rules": "Die Regeln",
+    "chrome.team": "Perfect Team"
   }
 });

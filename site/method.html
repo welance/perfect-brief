@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Welance Method — brief, price, team</title>
-<meta name="description" content="The process Welance has run in person since 2012 — an honest brief, a transparent price, a team assembled for the goal — digitalised end to end and opened as a blueprint.">
-<link rel="stylesheet" href="welance.css?v=4">
+<title>The welance method — brief, price, team</title>
+<meta name="description" content="The process welance has run in person since 2012 — an honest brief, a transparent price, a team assembled for the goal — digitalised end to end and opened as a blueprint.">
+<link rel="stylesheet" href="welance.css?v=5">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -15,6 +15,7 @@
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=1"></script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   * { box-sizing: border-box; }
@@ -22,7 +23,7 @@
     font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 96px; }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
-  header { padding: 40px 0 18px; border-bottom: 2px solid var(--ink); }
+  header { padding: 18px 0 18px; border-bottom: 2px solid var(--ink); }
   .crumbs { margin-bottom: 20px; }
   h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(30px, 5vw, 46px);
     margin: 14px 0 6px; letter-spacing: -.02em; }
@@ -76,33 +77,12 @@
 </style>
 </head>
 <body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="method.crumb">the method</span></p>
 <div class="wrap">
   <header>
-    <nav class="crumbs" aria-label="breadcrumb">
-      <a class="brand" href="https://welance.com" aria-label="welance — back to welance.com">
-        <!-- welance asterisk + wordmark, paths verbatim from welance.com / Directory -->
-        <svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" width="116" height="28" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">
-          <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)">
-            <g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
-              <path class="wl-stroke wl-s1" d="M-374.25,22 L-622.25,22"/>
-              <path class="wl-stroke wl-s2" d="M-498.25,-102 L-498.25,146"/>
-              <path class="wl-stroke wl-s3" d="M-410.5,109.75 L-586,-65.75"/>
-              <path class="wl-stroke wl-s4" d="M-586,109.75 L-410.5,-65.75"/>
-            </g>
-          </g>
-          <g class="wl-glyph wl-g1" transform="matrix(0.0833,0,0,0.0833,61.3753,82.5643)"><path fill="currentColor" d="M-60.793,67.637 L-36.475,67.637 L-0.384,-37.519 L0.128,-37.519 L36.475,67.637 L60.793,67.637 L92.788,-67.637 L67.96,-67.637 L45.691,31.65 L45.178,31.65 L11.134,-67.637 L-11.134,-67.637 L-45.178,31.65 L-45.69,31.65 L-67.96,-67.637 L-92.788,-67.637 Z"/></g>
-          <g class="wl-glyph wl-g2" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M-119.854,30.837 C-119.854,73.461 -94.257,102.303 -56.63,102.303 C-30.777,102.303 -10.811,90.817 1.219,68.357 L-18.234,55.339 C-29.497,73.461 -39.736,80.097 -56.885,80.097 C-67.892,80.097 -76.851,76.269 -83.762,68.357 C-90.673,60.444 -94.257,50.235 -94.513,38.239 L4.547,38.239 L4.547,27.774 C4.547,-12.809 -20.026,-40.63 -56.885,-40.63 C-94.001,-40.63 -119.854,-11.277 -119.854,30.837 Z M-94.001,19.096 C-93.489,-1.323 -77.363,-18.424 -56.885,-18.424 C-35.384,-18.424 -21.306,-3.11 -20.282,19.096 Z"/></g>
-          <g class="wl-glyph wl-g3" transform="matrix(0.0833,0,0,0.0833,83.6117,80.4382)"><path fill="currentColor" d="M-12.541,93.161 L12.541,93.161 L12.541,-93.161 L-12.541,-93.161 Z"/></g>
-          <g class="wl-glyph wl-g4" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M82.13,63.252 C82.13,86.989 99.8,102.303 126.67,102.303 C143.31,102.303 157.39,95.922 164.81,85.457 L165.32,85.457 L165.32,98.474 L188.36,98.474 L188.36,5.568 C188.36,-23.018 168.91,-40.63 137.42,-40.63 C122.83,-40.63 110.29,-36.546 100.05,-28.634 C90.07,-20.721 83.93,-10.256 81.62,3.016 L105.94,8.121 C109.27,-8.98 120.78,-18.679 137.42,-18.679 C152.78,-18.679 162.25,-11.533 162.25,-0.557 C162.25,9.397 154.57,14.246 130,20.372 C95.44,28.54 82.13,40.536 82.13,63.252 Z M163.53,52.787 C163.53,68.357 149.45,79.842 129.74,79.842 C114.64,79.842 106.71,73.206 106.71,61.72 C106.71,51.511 114.9,45.64 136.4,40.28 C152.78,35.941 160.72,31.858 163.02,25.987 L163.53,25.987 Z"/></g>
-          <g class="wl-glyph wl-g5" transform="matrix(0.0833,0,0,0.0833,102.9065,82.4049)"><path fill="currentColor" d="M-56.7,69.552 L-31.61,69.552 L-31.61,-13.91 C-31.61,-33.308 -18.81,-46.325 0.64,-46.325 C20.1,-46.325 31.61,-34.074 31.61,-13.91 L31.61,69.552 L56.7,69.552 L56.7,-17.739 C56.7,-49.388 36.48,-69.552 5.5,-69.552 C-8.83,-69.552 -23.93,-63.171 -32.12,-53.727 L-32.63,-53.727 L-32.63,-65.723 L-56.7,-65.723 Z"/></g>
-          <g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>
-          <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
-        </svg>
-      </a>
-      <span class="sep">/</span><span class="cur" data-i18n="method.crumb">the method</span>
-      <nav id="langswitch" aria-label="language"></nav>
-    </nav>
-    <h1><span data-i18n="method.h1">The Welance Method</span><span class="b">_</span></h1>
+    
+    <h1><span data-i18n="method.h1">The welance method</span><span class="b">_</span></h1>
     <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2012 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end, and opened as a blueprint anyone can read, check, and fork.</p>
   </header>
 
@@ -182,11 +162,8 @@
     <a class="btn ghost" href="team.html" data-i18n="method.cta3">Assemble a team</a>
   </div>
 
-  <footer>
-    <span data-i18n="method.foot">The Welance Method · a Welance open-source project</span>
-    <span><a href="index.html">brief</a> · <a href="price.html">price</a> · <a href="team.html">team</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
-  </footer>
 </div>
+<div id="site-footer"></div>
 <script>
 /* The formula blocks are rendered from the registry in pricing.js — the
    heading and the closing line derive the count, so "N" is always exact.

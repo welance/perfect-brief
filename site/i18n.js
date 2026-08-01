@@ -1,4 +1,4 @@
-/* Welance site i18n — one language, everywhere.
+/* welance site i18n — one language, everywhere.
  *
  * How it works, in one read:
  *   - English lives in the markup and is the content of record.
@@ -22,14 +22,14 @@
   "use strict";
 
   var LANGS = [
-    { code: "en",    name: "English",        dir: "ltr" },
-    { code: "de",    name: "Deutsch",        dir: "ltr" },
-    { code: "it",    name: "Italiano",       dir: "ltr" },
-    { code: "ur",    name: "اردو",           dir: "rtl" },
-    { code: "pt-BR", name: "Português (BR)", dir: "ltr" },
-    { code: "vi",    name: "Tiếng Việt",     dir: "ltr" },
-    { code: "ar",    name: "عربي",           dir: "rtl" },
-    { code: "es",    name: "Español",        dir: "ltr" }
+    { code: "en",    name: "English",        dir: "ltr", flag: "🇬🇧" },
+    { code: "de",    name: "Deutsch",        dir: "ltr", flag: "🇩🇪" },
+    { code: "it",    name: "Italiano",       dir: "ltr", flag: "🇮🇹" },
+    { code: "ur",    name: "اردو",           dir: "rtl", flag: "🇵🇰" },
+    { code: "pt-BR", name: "Português (BR)", dir: "ltr", flag: "🇧🇷" },
+    { code: "vi",    name: "Tiếng Việt",     dir: "ltr", flag: "🇻🇳" },
+    { code: "ar",    name: "عربي",           dir: "rtl", flag: "🇵🇸" },
+    { code: "es",    name: "Español",        dir: "ltr", flag: "🇪🇸" }
   ];
   var STORE = "welance-lang";
   var dicts = {};
@@ -73,23 +73,21 @@
     var host = document.getElementById("langswitch");
     if (!host) return;
     host.textContent = "";
+    var sel = document.createElement("select");
+    sel.className = "wl-lang-select";
+    sel.setAttribute("aria-label", "language");
     LANGS.forEach(function (l) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "wl-lang";
-      b.textContent = l.name;
-      b.setAttribute("aria-pressed", l.code === current ? "true" : "false");
+      var o = document.createElement("option");
+      o.value = l.code;
       var d = dicts[l.code];
-      if (l.code !== "en" && d && d.reviewed === false) {
-        var s = document.createElement("sup");
-        s.className = "wl-draft";
-        s.textContent = "draft";
-        s.title = "machine-drafted — awaiting native-speaker review";
-        b.appendChild(s);
-      }
-      b.addEventListener("click", function () { set(l.code); });
-      host.appendChild(b);
+      var draft = l.code !== "en" && d && d.reviewed === false;
+      o.textContent = l.flag + " " + l.name + (draft ? " · draft" : "");
+      if (draft) o.title = "machine-drafted — awaiting native-speaker review";
+      if (l.code === current) o.selected = true;
+      sel.appendChild(o);
     });
+    sel.addEventListener("change", function () { set(sel.value); });
+    host.appendChild(sel);
   }
 
   function set(code) {
@@ -117,6 +115,7 @@
   root.WelanceI18n = {
     LANGS: LANGS, STORE: STORE,
     register: register, t: t, set: set,
+    mountSwitcher: renderSwitcher, // chrome.js re-mounts after re-rendering the header
     get lang() { return current; },
     get dir() { return (meta(current) || LANGS[0]).dir; }
   };

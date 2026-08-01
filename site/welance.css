@@ -126,11 +126,67 @@
 .btn.ghost { border-color: transparent; }
 .btn.ghost:hover { background: var(--paper-2); color: var(--ink); }
 
-/* --- language switcher (site-wide, rendered by i18n.js) ---------------- */
-#langswitch { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-.wl-lang { font-family: var(--mono); font-size: 11.5px; padding: 5px 9px; cursor: pointer;
-  background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
-.wl-lang:hover { color: var(--ink); border-color: var(--ink); }
-.wl-lang[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.wl-draft { font-size: 8px; margin-left: 4px; opacity: .7; letter-spacing: .05em; text-transform: uppercase; }
-html[dir=rtl] .wl-draft { margin-left: 0; margin-right: 4px; }
+/* --- language switcher: one dropdown with flags (rendered by i18n.js) --- */
+#langswitch { display: flex; align-items: center; }
+.wl-lang-select { font-family: var(--disp); font-size: 14px; font-weight: 500;
+  padding: 8px 10px; cursor: pointer; background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); max-width: 190px; }
+.wl-lang-select:hover { border-color: var(--ink); }
+.wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* --- site header, copied from welance.com's (chrome.js) ----------------- */
+.wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
+  border-bottom: 1px solid var(--rule); }
+.wl-head-in { max-width: var(--maxw); margin: 0 auto; height: 76px; padding: 0 24px;
+  display: flex; align-items: center; gap: 16px; }
+.wl-head-logo { display: flex; align-items: center; color: var(--ink); flex: none; }
+.wl-head-logo .wl-logo { width: 140px; height: 34px; }
+.wl-nav { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
+.wl-nav-item { font-family: var(--disp); font-size: 16px; font-weight: 600;
+  line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
+.wl-nav-item:hover { color: var(--accent); text-decoration: none; }
+.wl-nav-item[aria-current="page"] { box-shadow: 0 2px 0 0 var(--ink); }
+.wl-head-right { display: flex; align-items: center; gap: 12px; margin-inline-start: 8px; }
+.wl-pill { font-family: var(--disp); font-size: 15px; font-weight: 600; line-height: 1;
+  border: 2px solid var(--ink); border-radius: 999px; padding: 11px 20px;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease; }
+.wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
+@media (max-width: 900px) { .wl-nav { display: none; } .wl-head-right { margin-inline-start: auto; } }
+@media (max-width: 560px) { .wl-pill { display: none; } }
+
+/* --- breadcrumb line under the header ---------------------------------- */
+.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px 0;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-soft);
+  display: flex; align-items: center; gap: 8px; }
+.wl-crumb a { color: var(--ink-soft); text-decoration: none; }
+.wl-crumb a:hover { color: var(--accent); }
+.wl-crumb .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+.wl-crumb .sep { opacity: .5; }
+.wl-crumb .cur { color: var(--ink); }
+
+/* --- site footer, copied from welance.com's (chrome.js) ----------------- */
+.wl-foot { margin-top: 72px; border-top: 1px solid var(--rule); background: var(--paper); }
+.wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 44px 24px 28px; }
+.wl-foot-top { display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start; }
+.wl-foot-mark { flex: none; color: var(--ink); }
+.wl-asterisk { width: 96px; height: 96px; display: block; }
+.wl-foot-offices { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 640px) { .wl-foot-offices { grid-template-columns: 1fr 1fr; gap: 12px 48px; } }
+.wl-office { display: flex; flex-direction: column; gap: 2px; }
+.wl-office p { margin: 0; font-size: 15.5px; line-height: 1.45; }
+.wl-office-h { font-weight: 600; font-size: 17px !important; margin-bottom: 4px !important; }
+.wl-office a { color: var(--ink); font-size: 15.5px; text-decoration: underline;
+  text-underline-offset: .125em; }
+.wl-office a:hover { color: var(--accent); }
+.wl-foot-links { display: flex; flex-direction: column; gap: 4px; margin-inline-start: auto; }
+.wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
+.wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
+@media (max-width: 900px) { .wl-foot-links { margin-inline-start: 0; } }
+.wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
+.wl-foot-bottom p { margin: 0; }
+.wl-foot-bottom nav { display: flex; gap: 8px; }
+.wl-foot-bottom a { color: var(--ink); text-decoration: none; }
+.wl-foot-bottom a:hover { color: var(--accent); }

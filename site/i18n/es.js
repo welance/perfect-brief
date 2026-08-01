@@ -12,7 +12,7 @@ WelanceI18n.register("es", {
     "index.cta.console": "Prueba la consola",
     "index.cta.rules": "Lee las reglas",
     "index.cta.method": "El método",
-    "index.prov": "hecho por <a href=\"https://welance.com\">Welance</a> · impulsa el listón de briefs de <b>welance/Directory</b> · MIT",
+    "index.prov": "hecho por <a href=\"https://welance.com\">welance</a> · impulsa el listón de briefs de <b>welance/Directory</b> · MIT",
     "index.eb1": "qué hace",
     "index.p1": "Lee un brief y devuelve dos cosas separadas. Una <b>puntuación</b> — una media ponderada sobre catorce reglas públicas (¿hay un problema real? ¿usuarios nombrados? ¿un resultado medible? ¿una definition of done?) con una etiqueta clara. Y un <b>gate</b> — cuatro requisitos obligatorios que deben cumplirse para que un brief pueda publicarse: un título claro, un problema planteado, un presupuesto por encima del mínimo de contratación, y anonimización completa.",
     "index.p2": "Mantenerlos separados es la clave. Un brief brillante que filtra el nombre del cliente no debe ir a un tablón ciego — y ninguna media debe poder taparlo.",
@@ -26,18 +26,18 @@ WelanceI18n.register("es", {
     "index.p5": "El juez corre a temperatura cero, así que el mismo brief sobre la misma versión de reglas da la misma puntuación, de forma reproducible. Un corpus de briefs de ejemplo etiquetados corre en CI: un cambio de reglas que mueva los números tiene que mover también esas fixtures, a la vista, en el mismo commit.",
     "index.p6": "La <span style=\"font-family:var(--mono)\">ruleset_version</span> fija exactamente qué listón juzgó un brief — un rastro de auditoría que puedes re-ejecutar. La <a href=\"console.html\">consola</a> funciona también sin conexión, sobre un mock por palabras clave del juez, para probar la mecánica sin una API key.",
     "index.eb3": "por qué lo construimos, honestamente",
-    "index.p7": "Somos <a href=\"https://welance.com\">Welance</a>, un pequeño colectivo de equipos senior independientes, juntos desde 2012. Estamos construyendo <b>welance/Directory</b> — un tablón curado y ciego donde equipos multifuncionales toman briefs de producto por la fuerza del brief, no por la marca detrás. Para que funcione, los briefs necesitan un listón: legible, consistente y seguro para revisión ciega.",
+    "index.p7": "Somos <a href=\"https://welance.com\">welance</a>, un pequeño colectivo de equipos senior independientes, juntos desde 2012. Estamos construyendo <b>welance/Directory</b> — un tablón curado y ciego donde equipos multifuncionales toman briefs de producto por la fuerza del brief, no por la marca detrás. Para que funcione, los briefs necesitan un listón: legible, consistente y seguro para revisión ciega.",
     "index.p8": "Hay un conflicto evidente en que una sola empresa opere el tablón y el listón. Nuestra respuesta es hacer el listón abierto. Las reglas son archivos públicos con pesos públicos; el mínimo de €10k es política declarada, no un filtro oculto; el corpus de tests que protege los cambios es público; y todo es MIT, así que si no estás de acuerdo con nuestro listón puedes forkearlo y usar el tuyo. Creemos que es la única forma honesta de operar uno.",
     "index.p9": "Esta herramienta es la versión destilada de quince años de traspasos: los productos que van bien no son los de los decks más pulidos — son aquellos donde un equipo pequeño, senior y multifuncional recibió un brief lo bastante honesto para empezar. No podemos liberar los equipos. Sí podemos liberar el listón.",
-    "index.p10": "Juntos, este servicio y la Directory son la versión digitalizada de lo que Welance siempre ha hecho en persona — emparejar briefs honestos con equipos senior — reconstruida con los enfoques en los que hoy creemos: reglas abiertas en vez de opiniones, puntuaciones reproducibles en vez de intuición. La mueven dos convicciones. Escribir un <em>buen brief técnico</em> para un producto de software debería ser fácil — el listón debe ayudarte a superarlo, no solo medirte. Y nadie debería tener que comprometerse con el primer equipo que conoce: un brief que merece construirse merece conocer varios, para que el encaje — técnico <em>y</em> cultural — se elija, no se acepte por defecto.",
+    "index.p10": "Juntos, este servicio y la Directory son la versión digitalizada de lo que welance siempre ha hecho en persona — emparejar briefs honestos con equipos senior — reconstruida con los enfoques en los que hoy creemos: reglas abiertas en vez de opiniones, puntuaciones reproducibles en vez de intuición. La mueven dos convicciones. Escribir un <em>buen brief técnico</em> para un producto de software debería ser fácil — el listón debe ayudarte a superarlo, no solo medirte. Y nadie debería tener que comprometerse con el primer equipo que conoce: un brief que merece construirse merece conocer varios, para que el encaje — técnico <em>y</em> cultural — se elija, no se acepte por defecto.",
     "index.eb4": "gobernanza",
     "index.triad": "<b>cualquiera propone</b> — cada regla es un archivo; abre una PR, cero gatekeeping<br><b>la evidencia mergea</b> — decide el corpus público de fixtures en CI, no el gusto<br><b>cualquiera forkea</b> — MIT; el derecho de salida es la verdadera garantía anti-captura",
     "index.govnote": "Detalles en <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> y <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. El razonamiento extenso está en <a href=\"rules.html\">el artículo</a>.",
-    "index.foot": "The Perfect Brief · un proyecto open source de Welance",
+    "index.foot": "The Perfect Brief · un proyecto open source de welance",
 
     /* ---------- method.html ---------- */
     "method.crumb": "el método",
-    "method.h1": "El Método Welance",
+    "method.h1": "El método welance",
     "method.thesis": "El proceso que llevamos en persona desde 2012 — tomar un brief honesto, ponerle precio con transparencia, montar el equipo alrededor — digitalizado de punta a punta y abierto como un blueprint que cualquiera puede leer, verificar y forkear.",
     "method.eb1": "el problema, honestamente",
     "method.p1": "Una unidad de negocio rígida no puede cambiar de forma para un objetivo específico. Se adapta al objetivo — rígidamente, porque una estructura fija no sabe hacer otra cosa — y el resultado es peor trabajo y presupuesto desperdiciado. Lo vivimos como consultores de software a ambos lados de la mesa, y es el problema generalista detrás de la mayoría de los específicos por los que nos contratan.",
@@ -70,7 +70,7 @@ WelanceI18n.register("es", {
     "method.cta1": "Empieza por el brief",
     "method.cta2": "Calcula un reparto",
     "method.cta3": "Monta un equipo",
-    "method.foot": "El Método Welance · un proyecto open source de Welance",
+    "method.foot": "El método welance · un proyecto open source de welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "La puntuación",
@@ -132,11 +132,11 @@ WelanceI18n.register("es", {
     "rules.p10": "Las fixtures son el sistema inmune: un corpus de briefs etiquetados con puntuaciones esperadas. Intenta bajar el listón a escondidas para colar un brief flojo y rompes el corpus — la CI te rechaza. Para esquivarla tendrías que borrar fixtures, y ese es un diff visible y sospechoso.",
     "rules.invh": "Una regla para la que nos encantaría una PR",
     "rules.invp": "<code>decision-owner</code> — ¿el brief nombra a una única persona responsable de decidir? Es puro \"80% equipo\": un brief sin owner se estanca. La dejamos fuera a propósito. Añádela tú.",
-    "rules.foot": "El Brief Perfecto para un Producto Digital · un proyecto open source de <a href=\"https://welance.com\">Welance</a>",
+    "rules.foot": "El Brief Perfecto para un Producto Digital · un proyecto open source de <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "Welance · un equipo, una tarifa",
+    "team.eyebrow": "welance · un equipo, una tarifa",
     "team.h1": "Perfect Team",
     "team.lede": "Un equipo multifuncional, tasado como se tasa a una persona independiente. Los roles y sus pesos describen el proyecto; cada rol lleva su propio nivel y base de costos. El cliente ve <b>una tarifa combinada</b> — no cien distintas — los márgenes varían dentro del equipo por nivel, y el proyecto en su conjunto supera un <b>welance margin</b> declarado y con nombre, que cualquiera puede verificar.",
     "team.reset": "Restaurar los valores iniciales",
@@ -162,7 +162,7 @@ WelanceI18n.register("es", {
     "team.checknote": "Un ritmo sugerido, deliberadamente <b>no</b> una fórmula. El trabajo empieza de verdad, con la reserva declarada de sustituir, quitar o modificar las decisiones iniciales — y es bidireccional, siempre: la persona independiente también puede no sentirse a gusto. Cada problema humano debería salir en el primer check, no enquistarse. El ajuste se hace sobre el activo más importante: las personas.",
     "team.resh": "Resultado",
     "team.key1": "a las personas", "team.key2": "headroom", "team.key3": "diferencial geográfico", "team.key4": "welance margin",
-    "team.fig1": "A las personas", "team.fig2": "Welance margin · objetivo", "team.fig3": "Tarifa mínima viable", "team.fig4": "Tarifa cliente",
+    "team.fig1": "A las personas", "team.fig2": "welance margin · objetivo", "team.fig3": "Tarifa mínima viable", "team.fig4": "Tarifa cliente",
     "team.foot1": "<b>Las cuatro bandas deben sumar la tarifa del cliente — esa es la ecuación.</b> El margen que las personas dejan sobre la mesa (headroom) y el margen que viene de dónde vive alguien (el diferencial geográfico) tienen sus propios colores, porque un margen que no se ve no se puede discutir.",
     "team.foot2": "<b>A dónde va el diferencial es lo que importa.</b> Si se vuelve margen en silencio, el colectivo lucra con el lugar donde alguien vive. Declárale un destino — reserva, fondo solidario, reinversión — para que sea discutible en vez de presumido.",
     "team.foot3": "<b>Regla de no-acuerdo.</b> Si la tarifa de un miembro supera lo que su nivel permite a la tarifa acordada con el cliente, el trabajo no se hace. Nadie es comprimido por debajo de su tarifa para cuadrar el margen.",
@@ -175,6 +175,18 @@ WelanceI18n.register("es", {
     "team.d.vok": "Cada rol cabe en su techo a {R}/h. La tarifa de cliente más baja a la que este equipo funciona es <b>{min}</b>/h.",
     "team.d.vno": "Este equipo no funciona a {R}/h — el rol señalado quedaría comprimido por debajo de su propia tarifa, y eso es un no-acuerdo. La tarifa más baja que funciona es <b>{min}</b>/h.",
     "team.d.blended": "/h combinada",
-    "team.d.target": "objetivo"
+    "team.d.target": "objetivo",
+
+    /* ---------- site chrome (header/footer, chrome.js) ---------- */
+    "chrome.brief": "Perfect Brief",
+    "chrome.console": "Consola",
+    "chrome.github": "GitHub",
+    "chrome.imprint": "Imprint",
+    "chrome.links": "El método, abierto",
+    "chrome.login": "Login",
+    "chrome.method": "El método",
+    "chrome.price": "Perfect Price",
+    "chrome.rules": "Las reglas",
+    "chrome.team": "Perfect Team"
   }
 });

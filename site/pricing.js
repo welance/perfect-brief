@@ -1,4 +1,4 @@
-/* Welance pricing — the whole model in one readable file.
+/* welance pricing — the whole model in one readable file.
  *
  * Every constant here has a reason, recorded in
  * docs/perfect-price/PERFECT-PRICE.md; the section is cited next to each.
