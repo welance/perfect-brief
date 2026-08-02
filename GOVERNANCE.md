@@ -46,9 +46,9 @@ stewardship of the corpus and the review bar, not ownership of "good."
 See `CODEOWNERS` for the current review surface and `CONTRIBUTING.md` for what a
 mergeable PR contains.
 
-## Why open, when Welance runs both sides
+## Why open, when welance runs both sides
 
-Welance operates the Directory *and* the bar that gates entry to it. That is a
+welance operates the Directory *and* the bar that gates entry to it. That is a
 genuine conflict of interest, and pretending otherwise would be the dishonest
 move. Open-sourcing the bar is the structural answer: a metric you can read,
 contest, test against public examples, and fork cannot be quietly rigged in the

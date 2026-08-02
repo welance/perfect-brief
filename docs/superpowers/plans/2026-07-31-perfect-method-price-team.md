@@ -1,4 +1,4 @@
-# The Welance Method Digitalised — Implementation Plan
+# The welance Method Digitalised — Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -172,7 +172,7 @@ Expected: FAIL — `Cannot find module '../../site/pricing.js'`
 Structure (readable top-to-bottom like the concept doc — spec §8b):
 
 ```js
-/* Welance pricing — the whole model in one readable file.
+/* welance pricing — the whole model in one readable file.
  * Every constant has a reason, recorded in docs/perfect-price/PERFECT-PRICE.md;
  * the section is cited next to each. If you disagree with a number: find it,
  * read its section, open a PR against it. That is the point of this file.
@@ -420,7 +420,7 @@ beats, in this order:
 
 1. **The problem** (eyebrow: "the problem, honestly"): a rigid business unit
    cannot change shape for a specific goal; it adapts itself, rigidly, and
-   the result is worse and the budget wasted. Welance experiences and solves
+   the result is worse and the budget wasted. welance experiences and solves
    this as consultants — it is the generalist problem behind every other one.
    A cross-functional team assembled *for* the goal — personally and
    professionally inclined to it, not adapted to it — does better work.
@@ -453,7 +453,7 @@ beats, in this order:
    prevents resentment, bad vibes and ugly projects. In white-collar work,
    ideas, intuition and mental elasticity need room to convert into
    success. The adjustment is made on the most important asset: the people.
-5. **The blueprint** (eyebrow: "why open"): this is the process Welance has
+5. **The blueprint** (eyebrow: "why open"): this is the process welance has
    run in person since 2012 — take an honest brief, price it transparently,
    assemble the team around it — digitalised end to end and opened as a
    blueprint. MIT like the rest; if you disagree with a constant, it is in

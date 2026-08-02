@@ -1,5 +1,12 @@
 # CLAUDE.md — perfect-brief
 
+> ## ⚠️ **welance is ALWAYS lowercase. Always.**
+> Never "Welance", never "WELANCE" — not at the start of a sentence, not in a
+> title, not in a heading, not in code comments, not in commit messages, not on
+> a public page. It is a wordmark, not a proper noun that gets capitalised. If a
+> sentence would start with it, the sentence still starts with **welance**.
+> This applies to every file, every session, every output.
+
 Scoring service + open ruleset for digital product briefs. The **score** (0–100,
 weighted average over 14 YAML rules) says how good a brief is; a separate
 **gate** (4 hard requirements) says whether it may publish. An LLM only
@@ -8,7 +15,7 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
 
 **Your mission for this session is in `PLAN.md`. Read it first, then Phase 0.**
 
-**Second workstream: the Welance Method** — brief → price → team, the agency
+**Second workstream: the welance Method** — brief → price → team, the agency
 process digitalised and opened as a blueprint. Concept in
 `docs/perfect-price/PERFECT-PRICE.md`; engine + formula registry in
 `site/pricing.js` (shared by `price.html` and `team.html`, tested by
@@ -63,15 +70,15 @@ site/            THE public pages (landing, console, rules, welance.css,
 tests/           the CI gate. docker-compose.yml = api + redis (cache only).
 ```
 
-## Environment facts (this machine / Welance)
-- The **`wegitlab`** project on this machine documents Welance infrastructure
-  and the mandatory rules for deploying new software to the Welance cloud
+## Environment facts (this machine / welance)
+- The **`wegitlab`** project on this machine documents welance infrastructure
+  and the mandatory rules for deploying new software to the welance cloud
   (OVH-based Kubernetes). **Read it before writing any deploy config.**
-- Check existing Welance platform repos for an adequate stack/CI/deploy pattern
+- Check existing welance platform repos for an adequate stack/CI/deploy pattern
   **before inventing one**; reuse what fits.
 - Targets: public repo **github.com/welance/perfect-brief** · service at
   **briefs.welance.com** · public pages from `site/` (GitHub Pages or the
-  Welance-standard equivalent per wegitlab).
+  welance-standard equivalent per wegitlab).
 - Consumers: `welance.com/directory` (Nuxt/TS, pure API consumer) and
   `otto.welance.com` (backend, server-to-server persist of verdicts +
   `ruleset_version`).

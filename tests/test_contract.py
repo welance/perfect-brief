@@ -13,9 +13,19 @@ import pytest
 # --- the shapes consumers destructure ------------------------------------
 
 SCORE_KEYS = {
-    "score", "band", "decision", "decision_label", "gate", "verdicts",
-    "review_required", "low_confidence", "ruleset_version", "engine",
-    "judge", "model", "cached",
+    "score",
+    "band",
+    "decision",
+    "decision_label",
+    "gate",
+    "verdicts",
+    "review_required",
+    "low_confidence",
+    "ruleset_version",
+    "engine",
+    "judge",
+    "model",
+    "cached",
 }
 VERDICT_KEYS = {"rule_id", "status", "confidence", "quote", "note", "weight", "severity", "gate"}
 GATE_KEYS = {"passed", "missing", "contexts"}
@@ -139,6 +149,52 @@ def test_the_model_never_sets_a_number(client):
     for v in _score(client)["verdicts"]:
         assert "score" not in v
         assert "points" not in v
+
+
+# --- a release must actually reach people --------------------------------
+
+
+def test_pages_and_assets_always_revalidate(client):
+    """1.5.0 shipped and a CDN served the previous JavaScript for an hour.
+
+    Query-string versioning (?v=N) is not honoured by every CDN, so freshness
+    has to come from the response, not from a number we remember to bump.
+    """
+    for path in ["/", "/method.html", "/chrome.js", "/welance.css", "/llms.txt"]:
+        r = client.get(path)
+        assert r.status_code == 200, path
+        assert r.headers.get("cache-control") == "no-cache", f"{path} may go stale"
+        assert r.headers.get("etag"), f"{path} needs an ETag for revalidation to be cheap"
+
+
+def test_no_page_versions_its_assets_by_query_string(client):
+    """The bump is gone; nothing should quietly bring it back."""
+    import re
+
+    for page in ["/", "/method.html", "/price.html", "/team.html", "/integrate.html", "/data.html"]:
+        html = client.get(page).text
+        assert not re.search(r'(?:href|src)="[\w./-]+\.(?:css|js)\?v=', html), page
+
+
+def test_the_brand_is_never_capitalised(client):
+    """welance is all-lowercase. Always — including as a sentence's first word.
+
+    Identifiers are exempt only because JavaScript demands them
+    (WelanceI18n, WelancePricing); prose never is.
+    """
+    import pathlib
+    import re
+
+    brand = re.compile(r"Welance(?![A-Za-z0-9])")
+    site = pathlib.Path(__file__).resolve().parent.parent / "site"
+    offenders = [
+        f"{p.name}:{n}"
+        for p in sorted(site.rglob("*"))
+        if p.suffix in {".html", ".js", ".css", ".txt"}
+        for n, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1)
+        if brand.search(line)
+    ]
+    assert not offenders, "welance is written all-lowercase: " + ", ".join(offenders)
 
 
 # --- the ruleset catalogue is the published bar ---------------------------

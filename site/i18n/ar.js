@@ -101,7 +101,7 @@ WelanceI18n.register("ar", {
     "method.map.b": "الموجز",
     "method.traces": "الآثار أقدم من هذا الموقع: ساعدنا في أول مسح عالمي للرحّل الرقميين، من برلين؛ ودعمنا <a href=\"https://coconat-space.com/about/team/\">Coconat</a> ومشاريع تنمية ريفية مثل <a href=\"https://rural-pop-up.com\">rural-pop-up.com</a> و<a href=\"https://piazzainfesta.it\">piazzainfesta.it</a> و<a href=\"https://zukunftsorte.land\">zukunftsorte.land</a> و<a href=\"https://brandenburgconnect.de\">brandenburgconnect.de</a>؛ ونمّينا تعاقدات هندسية متعددة التخصصات حتى صارت شراكات تدوم الآن أكثر من عقد — من لا شيء. النموذج نفسه يخدم اليوم عالمًا أسرع وأصغر: شركات نامية ومؤسسات تستعين بشبه-الشموليين في عصر الذكاء الاصطناعي — أناس يرون العمل والتقنية، والاستراتيجية والتفصيل، ويستطيعون الغوص في أي من هذه الاتجاهات، والذكاء الاصطناعي في متناولهم.",
     "method.n2src": "Qonto، <a href=\"https://qonto.com/en/blog/business-creation/freelancer/unlocking-sme-growth-with-the-rise-of-freelance-collectives\">Unlocking SME growth with the rise of freelance collectives</a> (2024).",
-    "method.n2": "جلسنا مع اثنين من التجمعات الحرة الرائدة في أوروبا: La Collab وWelance.",
+    "method.n2": "جلسنا مع اثنين من التجمعات الحرة الرائدة في أوروبا: La Collab وwelance.",
     "method.n1src": "فيليب هنتشل، مؤسس welance — في <a href=\"https://www.youtube.com/watch?v=ORLOpc2G2K8\">#EconomyStories</a> من دويتشه بنك، عن مجتمع الطلب الفوري (2015).",
     "method.n1": "كل ما تحتاجه اليوم لتأسيس شركة هو حاسوب محمول واتصال بالإنترنت وجهدك الخاص وفكرة جيدة.",
     "method.eb6": "النموذج، وقد لوحظ",

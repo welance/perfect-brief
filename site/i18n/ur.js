@@ -101,7 +101,7 @@ WelanceI18n.register("ur", {
     "method.map.b": "بریف",
     "method.traces": "نشانات اس سائٹ سے پرانے ہیں: ہم نے برلن سے دنیا کے پہلے عالمی ڈیجیٹل نومیڈ سروے میں ہاتھ بٹایا؛ <a href=\"https://coconat-space.com/about/team/\">Coconat</a> اور دیہی ترقی کے منصوبوں جیسے <a href=\"https://rural-pop-up.com\">rural-pop-up.com</a>، <a href=\"https://piazzainfesta.it\">piazzainfesta.it</a>، <a href=\"https://zukunftsorte.land\">zukunftsorte.land</a> اور <a href=\"https://brandenburgconnect.de\">brandenburgconnect.de</a> کا ساتھ دیا؛ اور کراس فنکشنل انجینئرنگ معاہدوں کو ایسی شراکتوں میں بدلا جو اب ایک دہائی سے زیادہ چل رہی ہیں — صفر سے۔ وہی ماڈل اب ایک تیز تر، چھوٹی دنیا کے کام آ رہا ہے: اسکیل اپ اور بڑے ادارے AI دور کے تقریباً-ہمہ جہت لوگوں سے کام لے رہے ہیں — جو کاروبار بھی دیکھتے ہیں اور تکنیک بھی، حکمتِ عملی بھی اور تفصیل بھی، اور AI ہاتھ میں لیے ان میں سے کسی بھی سمت گہرائی میں جا سکتے ہیں۔",
     "method.n2src": "Qonto، <a href=\"https://qonto.com/en/blog/business-creation/freelancer/unlocking-sme-growth-with-the-rise-of-freelance-collectives\">Unlocking SME growth with the rise of freelance collectives</a> (2024)۔",
-    "method.n2": "ہم یورپ کے دو علمبردار فری لانس اجتماعوں کے ساتھ بیٹھے: La Collab اور Welance۔",
+    "method.n2": "ہم یورپ کے دو علمبردار فری لانس اجتماعوں کے ساتھ بیٹھے: La Collab اور welance۔",
     "method.n1src": "فلپ ہینچل، welance کے بانی — ڈوئچے بینک کی <a href=\"https://www.youtube.com/watch?v=ORLOpc2G2K8\">#EconomyStories</a> میں، آن ڈیمانڈ معاشرے پر (2015)۔",
     "method.n1": "آج کمپنی کھڑی کرنے کے لیے بس ایک لیپ ٹاپ، انٹرنیٹ کنکشن، اپنی محنت اور ایک اچھا خیال چاہیے۔",
     "method.eb6": "ماڈل، جس پر نظر پڑی",

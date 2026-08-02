@@ -6,6 +6,29 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.5.1] - 2026-08-02
+
+A release nobody could see. 1.5.0 deployed correctly and then sat behind an
+hour of cached JavaScript, because the CDN in front of the service caches
+ignoring the query string — so the `?v=N` bump in every tag changed nothing at
+the edge. Freshness now comes from the response instead of from a number we
+remember to bump.
+
+### Fixed
+- **Pages and assets are always revalidated.** The site is served with
+  `Cache-Control: no-cache`, which does not mean "do not cache" but "cache,
+  then check". With the ETag that FastAPI already sends, a repeat visit is a
+  304 with no body, and a deploy is visible immediately, everywhere.
+- **Query-string cache-busting removed.** All `?v=N` suffixes are gone from
+  every page: they were manual, easy to forget, and — as 1.5.0 proved — not
+  honoured by every CDN. Two contract tests keep them from coming back.
+
+### Changed
+- **welance is all-lowercase, everywhere.** The brand is written in lowercase
+  in every language, including as the first word of a sentence; only the
+  JavaScript identifiers that a language forces (`WelanceI18n`,
+  `WelancePricing`) keep their capital. A test now enforces it across `site/`.
+
 ## [1.5.0] - 2026-08-02
 
 The bar becomes something you can put inside your own tools — and the project

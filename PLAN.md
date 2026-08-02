@@ -2,7 +2,7 @@
 
 **Goal.** Publish this repo as **github.com/welance/perfect-brief** (public,
 MIT), publish the explanatory + try-it pages from `site/`, and deploy the API to
-**briefs.welance.com** on the Welance cloud (OVH k8s), following the rules in
+**briefs.welance.com** on the welance cloud (OVH k8s), following the rules in
 the local **wegitlab** project. The Directory (welance.com/directory) then
 consumes the API; it holds no scoring logic.
 
@@ -15,10 +15,10 @@ Work the phases in order; each has a hard acceptance check. Commit per phase.
 ## Phase 0 — Recon (read-only, no code changes)
 1. Read the **wegitlab** project on this machine: registry, ingress + DNS
    conventions, secrets management, CI/CD pipeline norms, anything mandatory
-   for new services on the Welance OVH cloud.
-2. Scan existing Welance platform repos for a FastAPI/containerised-service
+   for new services on the welance OVH cloud.
+2. Scan existing welance platform repos for a FastAPI/containerised-service
    deploy pattern already in use. Prefer reuse over invention.
-3. Decide: GitHub Pages from `site/` vs the Welance-standard static publishing
+3. Decide: GitHub Pages from `site/` vs the welance-standard static publishing
    (whichever wegitlab norms indicate). Default: GitHub Pages, branch `main`,
    folder `/site` (rename to `/docs` only if Pages requires it).
 
@@ -48,7 +48,7 @@ else changed.
 presets offline (mock) with no key.
 
 ## Phase 3 — Deploy the service to briefs.welance.com
-1. Follow wegitlab rules **exactly**: build the image, push to the Welance
+1. Follow wegitlab rules **exactly**: build the image, push to the welance
    registry, k8s `Deployment` + `Service` + `Ingress` (or the platform-repo
    pattern found in Phase 0), liveness/readiness on `GET /v1/healthz`.
 2. Redis: small single instance or managed — it is an ephemeral cache

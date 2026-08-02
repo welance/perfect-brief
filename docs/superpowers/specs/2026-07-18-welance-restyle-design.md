@@ -1,4 +1,4 @@
-# Welance restyle of the public pages — design
+# welance restyle of the public pages — design
 
 **Date:** 2026-07-18 · **Approved by:** Enrico (chat) · **Scope:** `site/*.html`, `app/static/index.html`, new `site/fonts/`, new `site/animations/`
 
@@ -38,7 +38,7 @@ family (`p007-16-welance-website/public/animations/`).
 - **Tokens** (Directory values): `--bg:#fff`, `--fg:#0a0a0a`,
   `--muted:#4a4a4a`, `--muted-2:#6e6e6e`, `--line:#e6e6e6`,
   `--line-strong:#0a0a0a`, `--surface:#f7f7f5`, `--surface-2:#efefec`.
-  Welance accents = the Lottie palette: yellow `#eecc5d`, coral `#ff7b51`,
+  welance accents = the Lottie palette: yellow `#eecc5d`, coral `#ff7b51`,
   purple `#8856cd`, cyan `#96dbe3`.
 - **Semantic colors** (pass/partial/fail/accent-blue) stay — functional, not
   brand — retuned to sit on white.

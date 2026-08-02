@@ -150,8 +150,13 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
     kind = _judge_kind(req.judge, x_llm_key)
     try:
         return await scorer.score(
-            req.brief, req.locale, kind, req.model, x_llm_key,
-            gate_contexts=req.gate_contexts, no_cache=req.no_cache
+            req.brief,
+            req.locale,
+            kind,
+            req.model,
+            x_llm_key,
+            gate_contexts=req.gate_contexts,
+            no_cache=req.no_cache,
         )
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -162,12 +167,11 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
         raise HTTPException(status_code=502, detail=f"judge error: {exc}") from exc
 
 
-
-
 def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Screened"] = "true" if meta["screened"] else "false"
     response.headers["X-PB-Iterations"] = str(meta["iterations"])
     response.headers["X-PB-Verifier-Model"] = meta["verifier_model"] or "none"
+
 
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
 async def post_suggest(
@@ -198,7 +202,9 @@ async def post_suggest_all(
     if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
     try:
-        suggestions, meta = await scorer.suggest_all(req.brief, req.rule_ids, req.locale, req.model, x_llm_key)
+        suggestions, meta = await scorer.suggest_all(
+            req.brief, req.rule_ids, req.locale, req.model, x_llm_key
+        )
         _screening_headers(response, meta)
         return suggestions
     except ModelNotAllowed as exc:
@@ -212,4 +218,23 @@ async def post_suggest_all(
 if SITE.exists():
     from fastapi.staticfiles import StaticFiles
 
-    app.mount("/", StaticFiles(directory=str(SITE), html=True), name="site")
+    class RevalidatingStatic(StaticFiles):
+        """Always revalidate; never guess with query strings.
+
+        We used to bust caches with `?v=N` in every tag. A CDN in front of us
+        (Cloudflare, in production) may cache ignoring the query string, so the
+        bump changed nothing at the edge and a release could sit behind an hour
+        of stale JavaScript — which is exactly what happened with 1.5.0.
+
+        `no-cache` does not mean "do not cache": it means "cache, but check
+        first". StaticFiles already sends a strong ETag, so a repeat visit is a
+        304 with no body, and a deploy is visible immediately, everywhere, with
+        nothing to remember to bump.
+        """
+
+        def file_response(self, *args, **kwargs):  # type: ignore[override]
+            response = super().file_response(*args, **kwargs)
+            response.headers["Cache-Control"] = "no-cache"
+            return response
+
+    app.mount("/", RevalidatingStatic(directory=str(SITE), html=True), name="site")
