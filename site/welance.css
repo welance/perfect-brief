@@ -162,6 +162,14 @@
 .wl-mark { display: inline-flex; }
 .wl-mark .wl-logo { width: 54px; height: 13px; }
 @media (max-width: 560px) { .wl-origin { display: none; } }
+/* small screens: the machine and the name shrink together so the header
+   never widens the document (the band test catches this) */
+@media (max-width: 640px) {
+  .wl-head-in { gap: 10px; padding: 0 14px; }
+  .wl-machine { width: 58px; height: 21px; }
+  .wl-project { font-size: 15px; }
+  .wl-lang-select { max-width: 132px; font-size: 12.5px; padding: 7px 6px; }
+}
 .wl-nav { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
 .wl-nav-item { font-family: var(--disp); font-size: 16px; font-weight: 600;
   line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
