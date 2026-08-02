@@ -166,6 +166,44 @@ test.describe("the method reads at a glance", () => {
     expect(long, `too long on the surface: ${long.join(" | ")}`).toHaveLength(0);
   });
 
+  test("brand bands break the page without breaking the layout", async ({ page }) => {
+    for (const path of ["/method.html", "/"]) {
+      await page.goto(path);
+      await expect(page.locator(".band").first()).toBeVisible();
+      // the band paints past the container; it must never widen the document
+      const { scroll, client } = await page.evaluate(() => ({
+        scroll: document.documentElement.scrollWidth,
+        client: document.documentElement.clientWidth,
+      }));
+      expect(scroll, `${path} gained a horizontal scrollbar`).toBeLessThanOrEqual(client);
+    }
+  });
+
+  test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
+    await page.goto("/");
+    const blocks = page.locator(".code");
+    await expect(blocks).toHaveCount(2);
+
+    // highlighting is applied at runtime — the markup stays plain text
+    await expect(blocks.first().locator(".u")).toContainText("briefs.welance.com");
+    await expect(blocks.nth(1).locator(".k").first()).toContainText("score");
+    await expect(blocks.nth(1).locator(".n").first()).toContainText("92.0");
+
+    // the tabs switch the request language
+    await expect(page.locator('pre[data-tab="curl"]')).toBeVisible();
+    await page.locator('.code-tabs button[data-tab="py"]').click();
+    await expect(page.locator('pre[data-tab="py"]')).toBeVisible();
+    await expect(page.locator('pre[data-tab="curl"]')).toBeHidden();
+
+    // copy yields clean code, not markup
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await blocks.first().locator(".code-copy").click();
+    await expect(blocks.first().locator(".code-copy")).toHaveClass(/done/);
+    const copied = await page.evaluate(() => navigator.clipboard.readText());
+    expect(copied).toContain("import httpx");
+    expect(copied).not.toContain("<span");
+  });
+
   test("every section leads with a short claim", async ({ page }) => {
     await page.goto("/method.html");
     const claims = await page.locator(".claim").allTextContents();

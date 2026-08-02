@@ -6,7 +6,7 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=8">
+<link rel="stylesheet" href="welance.css?v=11">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -99,8 +99,10 @@
   <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
+  <div class="band">
   <div class="two">
     <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
+  </div>
     <div class="card"><span class="n f">blocked</span><h3 data-i18n="index.card2.h">…and still not published</h3><p data-i18n="index.card2.p">The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
   </div>
 
@@ -129,14 +131,40 @@
   </figure>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
-  <pre>curl -X POST https://briefs.welance.com/v1/score \
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-tabs">
+        <button data-tab="curl" aria-pressed="true">cURL</button>
+        <button data-tab="js">JavaScript</button>
+        <button data-tab="py">Python</button>
+      </div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="bash" data-tab="curl">curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
-  -d '{"brief":"…","judge":"llm"}'
+  -d '{"brief":"…","judge":"llm"}'</pre>
+<pre data-lang="js" data-tab="js" hidden>const res = await fetch("https://briefs.welance.com/v1/score", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ brief, judge: "llm" }),
+});
+const { score, decision, gate } = await res.json();</pre>
+<pre data-lang="py" data-tab="py" hidden>import httpx
 
-{ "score": 92.0, "band": "Directory-ready", <b>"decision": "blocked"</b>,
+r = httpx.post("https://briefs.welance.com/v1/score",
+               json={"brief": brief, "judge": "llm"})
+score, decision = r.json()["score"], r.json()["decision"]</pre>
+  </div>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">json · <span data-i18n="site.response">response</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="json">{ "score": 92.0, "band": "Directory-ready", "decision": "blocked",
   "gate": { "passed": false, "missing": ["anonymised"] },
   "verdicts": [ … per-rule status + verbatim evidence … ],
   "ruleset_version": "1.0.0+83107baec655" }</pre>
+  </div>
   <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
   <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
@@ -186,5 +214,6 @@
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
 <script src="chrome.js?v=2"></script>
+<script src="code.js?v=1"></script>
 </body>
 </html>

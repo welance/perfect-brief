@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The welance method — brief, price, team</title>
 <meta name="description" content="The process welance has run in person since 2011 — an honest brief, a transparent price, a team assembled for the goal — digitalised end to end and opened as a blueprint.">
-<link rel="stylesheet" href="welance.css?v=8">
+<link rel="stylesheet" href="welance.css?v=11">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -91,6 +91,8 @@
     .fxrow .f { display: none; }
     .fxrow .fxbody { padding-left: 14px; }
   }
+  .band .conway { border-color: var(--ink); }
+  .band .fx-close { border-color: var(--ink); }
   .fx-close { border-left: 2px solid var(--accent); padding: 4px 0 4px 14px;
     font-size: 16.5px; margin: 18px 0 0; max-width: 62ch; }
 
@@ -162,9 +164,11 @@
   <p data-i18n="method.p1">The big consulting firms sell teams by the day, at full list price, staffed by whoever was on the bench — a model that lives off utilisation, not fit. It optimises economic capital and structurally ignores the human and relational kind: the people doing the work are interchangeable by design, and the client relationship is kept proprietary to the firm — hidden behind it — instead of belonging to the humans who actually build together. It is an old model, and an unsustainable one; the wasted budget is priced in.</p>
   <p data-i18n-html="method.p2">A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements in the segment we serve: bounded, product-shaped work, where fit beats scale.</p>
   </details>
-  <blockquote class="conway" data-i18n="method.quote">Organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations.</blockquote>
-  <p class="conway-src" data-i18n-html="method.quotesrc">Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — made famous by Fred Brooks in <em>The Mythical Man-Month</em> as “Conway’s Law”.</p>
-  <p data-i18n="method.p2b">You ship your team’s communication structure. Composing the team is not staffing, it is product design — which is why who works with whom is the decision we treat as the most important one.</p>
+  <div class="band cy">
+    <blockquote class="conway" data-i18n="method.quote">Organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations.</blockquote>
+    <p class="conway-src" data-i18n-html="method.quotesrc">Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — made famous by Fred Brooks in <em>The Mythical Man-Month</em> as “Conway’s Law”.</p>
+    <p data-i18n="method.p2b">You ship your team’s communication structure. Composing the team is not staffing, it is product design — which is why who works with whom is the decision we treat as the most important one.</p>
+  </div>
 
 
   <div class="eyebrow"><span data-i18n="method.eb2">the method — three steps</span></div>
@@ -242,7 +246,9 @@
   <div class="eyebrow"><span id="fxHead">the formulas, all of them</span></div>
   <p data-i18n-html="method.fxintro">Everything the method computes, derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>) — this page cannot drift from the code.</p>
   <div class="formulas" id="formulas"></div>
-  <p class="fx-close">These <b>8</b> formulas help make the decision. Everything else is human capital — and it does not compute.</p>
+  <div class="band y">
+    <p class="fx-close">These <b>8</b> formulas help make the decision. Everything else is human capital — and it does not compute.</p>
+  </div>
 
   <div class="eyebrow"><span data-i18n="method.eb3">what the formulas cannot see</span></div>
   <p class="claim" data-i18n="method.c4">Work starts. Then we check.</p>

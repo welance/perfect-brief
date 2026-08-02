@@ -214,3 +214,46 @@ details.fineprint > summary::before { content: "+ "; }
 details.fineprint[open] > summary::before { content: "− "; }
 details.fineprint > summary:hover { color: var(--accent); }
 details.fineprint[open] > summary { margin-bottom: 10px; }
+
+/* --- code blocks: tabs, copy, and a two-tone dark surface ----------------
+   The modern docs pattern (tabs + copy + per-language colour), built from
+   nothing: the highlighting lives in code.js, the markup stays plain text. */
+.code { border: 1px solid var(--ink); background: var(--ink); margin: 0 0 12px; overflow: hidden; }
+.code-bar { display: flex; align-items: stretch; justify-content: space-between;
+  gap: 12px; border-bottom: 1px solid #232323; }
+.code-tabs { display: flex; }
+.code-tabs button, .code-copy { font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
+  color: #8a8a8a; padding: 10px 14px; }
+.code-tabs button:hover, .code-copy:hover { color: var(--paper); }
+.code-tabs button[aria-pressed="true"] { color: var(--paper); box-shadow: inset 0 -2px 0 var(--wl-y); }
+.code-copy { white-space: nowrap; }
+.code-copy.done { color: var(--wl-cy); }
+.code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: #8a8a8a; padding: 10px 14px; }
+.code pre { margin: 0; padding: 14px 16px 16px; background: transparent; border: 0;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
+.code .s  { color: var(--wl-y); }      /* strings */
+.code .k  { color: var(--wl-cy); }     /* json keys */
+.code .n  { color: #b18cf0; }          /* numbers, booleans */
+.code .kw { color: #ff9d78; }          /* keywords */
+.code .u  { color: var(--wl-y); text-decoration: underline; text-underline-offset: .18em; }
+.code .fl { color: #8a8a8a; }          /* -X -H -d */
+.code .cm { color: #7d7d7d; font-style: italic; }
+.code .p  { color: #6d6d6d; }          /* punctuation */
+
+/* --- full-width bands: break the scroll with brand colour ----------------
+   Paints beyond the container without touching layout width, so no page
+   ever gains a horizontal scrollbar (the vw trick does). Content keeps the
+   container's measure; only the colour runs edge to edge. */
+.band { --bandbg: var(--paper-2); background: var(--bandbg);
+  box-shadow: 0 0 0 100vmax var(--bandbg); clip-path: inset(0 -100vmax);
+  padding: 40px 0; margin: 52px 0; }
+.band > :first-child { margin-top: 0; }
+.band > :last-child { margin-bottom: 0; }
+.band.cy { --bandbg: var(--wl-cy); }
+.band.y  { --bandbg: var(--wl-y); }
+.band.c  { --bandbg: var(--wl-c); }
+.band.ink { --bandbg: var(--ink); color: var(--paper); }
+.band .eyebrow { color: var(--ink); }
+.band .eyebrow::after { background: rgba(10,10,10,.25); }
