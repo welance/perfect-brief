@@ -8,26 +8,31 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [1.5.1] - 2026-08-02
 
-A release nobody could see. 1.5.0 deployed correctly and then sat behind an
-hour of cached JavaScript, because the CDN in front of the service caches
-ignoring the query string — so the `?v=N` bump in every tag changed nothing at
-the edge. Freshness now comes from the response instead of from a number we
-remember to bump.
+A release nobody could see. 1.5.0 deployed correctly — right commit, right
+image, right tag — and then sat behind an hour of cached JavaScript. Asking a
+cache politely turned out not to be enough, so the address of an asset is now
+derived from the asset itself.
 
 ### Fixed
-- **Pages and assets are always revalidated.** The site is served with
-  `Cache-Control: no-cache`, which does not mean "do not cache" but "cache,
-  then check". With the ETag that FastAPI already sends, a repeat visit is a
-  304 with no body, and a deploy is visible immediately, everywhere.
-- **Query-string cache-busting removed.** All `?v=N` suffixes are gone from
-  every page: they were manual, easy to forget, and — as 1.5.0 proved — not
-  honoured by every CDN. Two contract tests keep them from coming back.
+- **Assets are served at an address made from their own bytes.** Every page is
+  rewritten on the way out to point at `/a/<digest>/welance.css`, cached for a
+  year and marked `immutable`. When a file changes, its address changes, and
+  the old one is simply never requested again — no cache anywhere has to be
+  told anything, and there is no configuration to get right.
+- **Pages are never cached** (`Cache-Control: no-cache`): a page is how a new
+  build announces itself, so it must always be fresh.
+- **Query-string cache-busting removed.** The `?v=N` suffixes are gone. They
+  were manual, easy to forget, and a CDN may cache ignoring the query string.
+  Headers alone would not have been enough either — staging showed our
+  `no-cache` rewritten to `max-age=14400` before it reached the browser.
+- The plain paths (`/chrome.js`) still work untouched, so the same `site/`
+  files keep working on GitHub Pages and when opened from disk.
 
 ### Changed
-- **welance is all-lowercase, everywhere.** The brand is written in lowercase
-  in every language, including as the first word of a sentence; only the
-  JavaScript identifiers that a language forces (`WelanceI18n`,
-  `WelancePricing`) keep their capital. A test now enforces it across `site/`.
+- **welance is all-lowercase, everywhere.** In every language and every
+  position, including the first word of a sentence; only the JavaScript
+  identifiers a language forces (`WelanceI18n`, `WelancePricing`) keep their
+  capital. A test enforces it across the public pages.
 
 ## [1.5.0] - 2026-08-02
 

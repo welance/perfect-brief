@@ -154,26 +154,48 @@ def test_the_model_never_sets_a_number(client):
 # --- a release must actually reach people --------------------------------
 
 
-def test_pages_and_assets_always_revalidate(client):
-    """1.5.0 shipped and a CDN served the previous JavaScript for an hour.
-
-    Query-string versioning (?v=N) is not honoured by every CDN, so freshness
-    has to come from the response, not from a number we remember to bump.
-    """
-    for path in ["/", "/method.html", "/chrome.js", "/welance.css", "/llms.txt"]:
+def test_a_page_is_never_cached(client):
+    """A page is how a new build announces itself: it must always be fresh."""
+    for path in ["/", "/method.html", "/price.html"]:
         r = client.get(path)
         assert r.status_code == 200, path
-        assert r.headers.get("cache-control") == "no-cache", f"{path} may go stale"
-        assert r.headers.get("etag"), f"{path} needs an ETag for revalidation to be cheap"
+        assert r.headers["cache-control"] == "no-cache", path
 
 
-def test_no_page_versions_its_assets_by_query_string(client):
-    """The bump is gone; nothing should quietly bring it back."""
+def test_pages_point_at_content_addressed_assets(client):
+    """1.5.0 deployed correctly and served the previous JavaScript for an hour.
+
+    `?v=N` can be collapsed by a CDN and `Cache-Control` can be rewritten
+    before it reaches a browser — staging turned our `no-cache` into
+    `max-age=14400`. An address derived from the bytes survives both.
+    """
     import re
 
-    for page in ["/", "/method.html", "/price.html", "/team.html", "/integrate.html", "/data.html"]:
-        html = client.get(page).text
-        assert not re.search(r'(?:href|src)="[\w./-]+\.(?:css|js)\?v=', html), page
+    html = client.get("/").text
+    assert not re.search(r'(?:href|src)="[\w./-]+\.(?:css|js)\?v=', html), "?v= is back"
+
+    assets = re.findall(r'(?:href|src)="(/a/[0-9a-f]{12}/[\w./-]+\.(?:css|js))"', html)
+    assert assets, "the page still links assets by a name that can go stale"
+
+    r = client.get(assets[0])
+    assert r.status_code == 200
+    assert "immutable" in r.headers["cache-control"]
+
+
+def test_the_plain_asset_path_still_works(client):
+    """The same files are published by GitHub Pages, where nothing rewrites."""
+    r = client.get("/chrome.js")
+    assert r.status_code == 200
+    assert r.headers["cache-control"] == "no-cache"
+
+
+def test_a_new_build_moves_every_asset(client):
+    """The digest is over the bytes, so a changed asset changes every URL."""
+    from app.main import BUILD
+
+    assert len(BUILD) == 12
+    assert client.get(f"/a/{BUILD}/welance.css").status_code == 200
+    assert client.get("/a/000000000000/welance.css").status_code == 404
 
 
 def test_the_brand_is_never_capitalised(client):

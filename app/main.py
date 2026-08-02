@@ -216,25 +216,74 @@ async def post_suggest_all(
 # ---- the public pages (same files GitHub Pages serves) ---------------------
 
 if SITE.exists():
+    import hashlib
+    import re
+
+    from fastapi.responses import HTMLResponse
     from fastapi.staticfiles import StaticFiles
 
-    class RevalidatingStatic(StaticFiles):
-        """Always revalidate; never guess with query strings.
+    # A URL that changes when the bytes change is the only cache-busting that
+    # nothing downstream can undo.
+    #
+    # 1.5.0 taught this the hard way. We versioned assets with `?v=N`, which a
+    # CDN may cache ignoring the query string, and the release sat behind an
+    # hour of stale JavaScript. Asking politely with `Cache-Control` is not
+    # enough either: staging showed our `no-cache` rewritten to `max-age=14400`
+    # before it reached the browser.
+    #
+    # So assets are served twice. `/chrome.js` stays exactly where it is, so
+    # the same files still work unchanged on GitHub Pages, opened from disk, or
+    # linked directly. Alongside it, `/a/<digest>/chrome.js` serves the same
+    # bytes at an address derived from them, and the pages are rewritten on the
+    # way out to point there. New bytes mean a new address, so caches never
+    # have to be told anything: the old URL is simply no longer asked for.
 
-        We used to bust caches with `?v=N` in every tag. A CDN in front of us
-        (Cloudflare, in production) may cache ignoring the query string, so the
-        bump changed nothing at the edge and a release could sit behind an hour
-        of stale JavaScript — which is exactly what happened with 1.5.0.
+    ASSET = re.compile(r'\b(href|src)="(?!https?:|//|/a/)([\w./-]+\.(?:css|js))"')
 
-        `no-cache` does not mean "do not cache": it means "cache, but check
-        first". StaticFiles already sends a strong ETag, so a repeat visit is a
-        304 with no body, and a deploy is visible immediately, everywhere, with
-        nothing to remember to bump.
+    def _digest() -> str:
+        """One short digest over every asset, recomputed at startup only."""
+        h = hashlib.sha256()
+        for path in sorted(SITE.rglob("*")):
+            if path.suffix in {".css", ".js"}:
+                h.update(path.relative_to(SITE).as_posix().encode())
+                h.update(path.read_bytes())
+        return h.hexdigest()[:12]
+
+    BUILD = _digest()
+
+    def _page(path: Path) -> str:
+        """A page with its asset links pointed at the content-addressed copy."""
+        return ASSET.sub(rf'\1="/a/{BUILD}/\2"', path.read_text(encoding="utf-8"))
+
+    PAGES = {p.relative_to(SITE).as_posix(): _page(p) for p in SITE.rglob("*.html")}
+
+    class Immutable(StaticFiles):
+        """Content-addressed: this exact URL can never mean anything else."""
+
+        def file_response(self, *args, **kwargs):  # type: ignore[override]
+            response = super().file_response(*args, **kwargs)
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            return response
+
+    class Site(StaticFiles):
+        """The pages, rewritten on the way out and never cached.
+
+        A page is how a new build announces itself — it has to be fresh, and
+        it is small. Anything else here (images, the ruleset, llms.txt) is
+        served as it is, revalidated before it is reused.
         """
+
+        async def get_response(self, path: str, scope):  # type: ignore[override]
+            name = "index.html" if path in {"", ".", "/"} else path.lstrip("/")
+            page = PAGES.get(name) or PAGES.get(f"{name.rstrip('/')}/index.html")
+            if page is not None:
+                return HTMLResponse(page, headers={"Cache-Control": "no-cache"})
+            return await super().get_response(path, scope)
 
         def file_response(self, *args, **kwargs):  # type: ignore[override]
             response = super().file_response(*args, **kwargs)
             response.headers["Cache-Control"] = "no-cache"
             return response
 
-    app.mount("/", RevalidatingStatic(directory=str(SITE), html=True), name="site")
+    app.mount(f"/a/{BUILD}", Immutable(directory=str(SITE)), name="assets")
+    app.mount("/", Site(directory=str(SITE), html=True), name="site")
