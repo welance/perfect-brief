@@ -6,7 +6,7 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=11">
+<link rel="stylesheet" href="welance.css?v=12">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -160,10 +160,18 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
       <div class="code-lang">json · <span data-i18n="site.response">response</span></div>
       <button class="code-copy">copy</button>
     </div>
-<pre data-lang="json">{ "score": 92.0, "band": "Directory-ready", "decision": "blocked",
-  "gate": { "passed": false, "missing": ["anonymised"] },
-  "verdicts": [ … per-rule status + verbatim evidence … ],
-  "ruleset_version": "1.0.0+83107baec655" }</pre>
+<pre data-lang="json">{
+  "score": 92.0,
+  "band": "Directory-ready",
+  "decision": "blocked",
+  "gate": {
+    "passed": false,
+    "missing": ["anonymised"]
+  },
+  "verdicts": [ … one per rule: status, confidence, verbatim evidence … ],
+  "review_required": false,
+  "ruleset_version": "1.0.0+83107baec655"
+}</pre>
   </div>
   <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
@@ -213,7 +221,7 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=2"></script>
+<script src="chrome.js?v=3"></script>
 <script src="code.js?v=1"></script>
 </body>
 </html>

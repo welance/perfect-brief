@@ -175,11 +175,14 @@
 .wl-foot-cta h2 { font-family: var(--disp); font-weight: 600; margin: 0;
   font-size: clamp(24px, 3.6vw, 36px); letter-spacing: -.01em; }
 .wl-foot-cta h2 .b { color: var(--wl-y); }
-.wl-cta-btn { font-family: var(--disp); font-size: 17px; font-weight: 600; line-height: 1;
-  border: 2px solid var(--paper); border-radius: 999px; padding: 15px 28px;
-  color: var(--paper); text-decoration: none; white-space: nowrap;
+.wl-cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.wl-cta-btn { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
+  border: 2px solid var(--paper); background: var(--paper); color: var(--ink);
+  padding: 14px 24px; text-decoration: none; white-space: nowrap;
   transition: background 150ms ease, color 150ms ease; }
-.wl-cta-btn:hover { background: var(--paper); color: var(--ink); text-decoration: none; }
+.wl-cta-btn:hover { background: transparent; color: var(--paper); text-decoration: none; }
+.wl-cta-btn.ghost { background: transparent; color: var(--paper); border-color: #4a4a4a; }
+.wl-cta-btn.ghost:hover { border-color: var(--paper); background: transparent; color: var(--paper); }
 .wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
 .wl-foot-top { display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start; }
 .wl-foot-mark { flex: none; color: var(--ink); }

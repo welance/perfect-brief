@@ -54,7 +54,7 @@ WelanceI18n.register("es", {
     "method.s3.n": "paso 3",
     "method.s3.h": "Perfect Team",
     "method.s3.p": "Quién lo hace, dónde en el mundo, a una única tarifa combinada sobre la que el cliente puede razonar de verdad. Los márgenes varían dentro del equipo por nivel; el proyecto supera un welance margin declarado; nadie es comprimido por debajo de su tarifa.",
-    "method.s3.go": "→ monta un equipo",
+    "method.s3.go": "→ encuentra un equipo",
     "method.p3": "Cada paso necesita el anterior. El precio necesita el alcance del brief para saber qué es un rol; el equipo necesita la aritmética del precio para dar a tres personas una tarifa honesta. La información cae en cascada — por eso son pasos y no features, y por eso el brief sigue siendo el concepto principal: nada aguas abajo sobrevive a uno deshonesto.",
     "method.fxintro": "Todo lo que el método calcula, derivado del mismo archivo sobre el que corren las calculadoras (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — esta página no puede desviarse del código.",
     "method.fxn": "fórmula {n} de {m}",
@@ -120,7 +120,7 @@ WelanceI18n.register("es", {
     "method.quote": "Las organizaciones que diseñan sistemas … están obligadas a producir diseños que son copias de las estructuras de comunicación de esas organizaciones.",
     "method.cta1": "Empieza por el brief",
     "method.cta2": "Calcula un reparto",
-    "method.cta3": "Monta un equipo",
+    "method.cta3": "Encuentra un equipo",
     "method.foot": "El método welance · un proyecto open source de welance",
 
     /* ---------- the formulas ---------- */
@@ -235,8 +235,10 @@ WelanceI18n.register("es", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
-    "chrome.ctaHead": "Un equipo, montado para tu objetivo",
-    "chrome.cta": "Monta un equipo",
+    "chrome.ctaPrice": "Calcula un reparto",
+    "chrome.ctaBrief": "Evalúa un brief",
+    "chrome.ctaHead": "El equipo que tu objetivo merece",
+    "chrome.cta": "Encuentra un equipo",
     "chrome.console": "Consola",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

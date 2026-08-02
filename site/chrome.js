@@ -70,7 +70,7 @@
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
-      '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Assemble a team") + '</a>' +
+      '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
       "</div></div></div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
   }
@@ -84,8 +84,12 @@
     host.innerHTML =
       '<footer class="wl-foot">' +
       '<div class="wl-foot-cta"><div class="wl-foot-cta-in">' +
-      '<h2>' + tt("chrome.ctaHead", "A team, assembled for your goal") + '<span class="b">_</span></h2>' +
-      '<a class="wl-cta-btn" href="https://welance.com/directory">' + tt("chrome.cta", "Assemble a team") + ' →</a>' +
+      '<h2>' + tt("chrome.ctaHead", "The team your goal deserves") + '<span class="b">_</span></h2>' +
+      '<div class="wl-cta-row">' +
+      '<a class="wl-cta-btn ghost" href="console.html">' + tt("chrome.ctaBrief", "Score a brief") + "</a>" +
+      '<a class="wl-cta-btn ghost" href="price.html">' + tt("chrome.ctaPrice", "Compute a split") + "</a>" +
+      '<a class="wl-cta-btn" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + ' →</a>' +
+      "</div>" +
       '</div></div>' +
       '<div class="wl-foot-in">' +
       '<div class="wl-foot-top">' +

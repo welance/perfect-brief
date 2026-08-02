@@ -54,7 +54,7 @@ WelanceI18n.register("ar", {
     "method.s3.n": "الخطوة 3",
     "method.s3.h": "Perfect Team",
     "method.s3.p": "من ينفّذ، وأين في العالم، وبسعر مدمج واحد يستطيع العميل فعلًا التفكير فيه. تتفاوت الهوامش داخل الفريق حسب المستوى؛ يحقق المشروع هامش welance معلنًا؛ ولا يُضغط أحد تحت سعره.",
-    "method.s3.go": "→ جمّع فريقًا",
+    "method.s3.go": "→ جد فريقًا",
     "method.p3": "كل خطوة تحتاج التي قبلها. السعر يحتاج نطاق الموجز ليعرف ما الدور أصلًا؛ والفريق يحتاج حساب السعر ليعطي ثلاثة أشخاص سعرًا واحدًا صادقًا. المعلومات تتدفق شلالًا — لهذا هي خطوات لا خصائص، ولهذا يبقى الموجز المفهوم الرئيس: لا شيء في المصبّ ينجو من موجز غير صادق.",
     "method.fxintro": "كل ما يحسبه المنهج، مشتقًا من الملف نفسه الذي تعمل عليه الحاسبات (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — لا تستطيع هذه الصفحة الانحراف عن الشيفرة.",
     "method.fxn": "المعادلة {n} من {m}",
@@ -120,7 +120,7 @@ WelanceI18n.register("ar", {
     "method.quote": "المنظمات التي تصمم الأنظمة … مقيّدة بإنتاج تصاميم هي نسخ من هياكل التواصل في تلك المنظمات.",
     "method.cta1": "ابدأ بالموجز",
     "method.cta2": "احسب قسمة",
-    "method.cta3": "جمّع فريقًا",
+    "method.cta3": "جد فريقًا",
     "method.foot": "منهج ويلانس · مشروع مفتوح المصدر من welance",
 
     /* ---------- the formulas ---------- */
@@ -235,8 +235,10 @@ WelanceI18n.register("ar", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
-    "chrome.ctaHead": "فريق مجمّع من أجل هدفكم",
-    "chrome.cta": "جمّع فريقًا",
+    "chrome.ctaPrice": "احسب قسمة",
+    "chrome.ctaBrief": "قيّم موجزًا",
+    "chrome.ctaHead": "الفريق الذي يستحقه هدفكم",
+    "chrome.cta": "جد فريقًا",
     "chrome.console": "الكونسول",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

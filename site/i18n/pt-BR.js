@@ -54,7 +54,7 @@ WelanceI18n.register("pt-BR", {
     "method.s3.n": "passo 3",
     "method.s3.h": "Perfect Team",
     "method.s3.p": "Quem faz, onde no mundo, a uma única taxa combinada sobre a qual o cliente consegue de fato raciocinar. As margens variam dentro do time por nível; o projeto cumpre um welance margin declarado; ninguém é espremido abaixo da própria taxa.",
-    "method.s3.go": "→ monte um time",
+    "method.s3.go": "→ encontre um time",
     "method.p3": "Cada passo precisa do anterior. O preço precisa do escopo do brief para saber o que é um papel; o time precisa da aritmética do preço para dar a três pessoas uma taxa honesta. A informação desce em cascata — por isso são passos e não features, e por isso o brief continua sendo o conceito principal: nada rio abaixo sobrevive a um brief desonesto.",
     "method.fxintro": "Tudo o que o método calcula, derivado do mesmo arquivo em que as calculadoras rodam (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — esta página não pode divergir do código.",
     "method.fxn": "fórmula {n} de {m}",
@@ -120,7 +120,7 @@ WelanceI18n.register("pt-BR", {
     "method.quote": "Organizações que projetam sistemas … estão fadadas a produzir projetos que são cópias das estruturas de comunicação dessas organizações.",
     "method.cta1": "Comece pelo brief",
     "method.cta2": "Calcule uma divisão",
-    "method.cta3": "Monte um time",
+    "method.cta3": "Encontre um time",
     "method.foot": "O método welance · um projeto open source da welance",
 
     /* ---------- the formulas ---------- */
@@ -235,8 +235,10 @@ WelanceI18n.register("pt-BR", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
-    "chrome.ctaHead": "Um time, montado para o seu objetivo",
-    "chrome.cta": "Monte um time",
+    "chrome.ctaPrice": "Calcule uma divisão",
+    "chrome.ctaBrief": "Avalie um brief",
+    "chrome.ctaHead": "O time que seu objetivo merece",
+    "chrome.cta": "Encontre um time",
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

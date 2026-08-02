@@ -55,7 +55,7 @@ WelanceI18n.register("de", {
     "method.s3.n": "Schritt 3",
     "method.s3.h": "Perfect Team",
     "method.s3.p": "Wer es macht, wo auf der Welt, zu einem gemischten Satz, mit dem der Kunde wirklich rechnen kann. Margen variieren im Team nach Stufe; das Projekt hält eine erklärte welance-Marge; niemand wird unter seinen Satz gedrückt.",
-    "method.s3.go": "→ ein Team aufstellen",
+    "method.s3.go": "→ Team finden",
     "method.p3": "Jeder Schritt braucht den davor. Der Preis braucht den Umfang des Briefings, um zu wissen, was eine Rolle überhaupt ist; das Team braucht die Arithmetik des Preises, um drei Menschen einen ehrlichen Satz zu geben. Information fällt kaskadenförmig — deshalb sind es Schritte und keine Features, und deshalb bleibt das Briefing das Hauptkonzept: nichts stromabwärts überlebt ein unehrliches.",
     "method.fxintro": "Alles, was die Methode berechnet, abgeleitet aus derselben Datei, auf der die Rechner laufen (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — diese Seite kann nicht vom Code abdriften.",
     "method.fxn": "Formel {n} von {m}",
@@ -121,7 +121,7 @@ WelanceI18n.register("de", {
     "method.quote": "Organisationen, die Systeme entwerfen, … sind gezwungen, Entwürfe zu produzieren, die Kopien der Kommunikationsstrukturen dieser Organisationen sind.",
     "method.cta1": "Mit dem Briefing anfangen",
     "method.cta2": "Eine Aufteilung berechnen",
-    "method.cta3": "Ein Team aufstellen",
+    "method.cta3": "Team finden",
     "method.foot": "Die welance-Methode · ein Open-Source-Projekt von welance",
 
     /* ---------- the formulas ---------- */
@@ -236,8 +236,10 @@ WelanceI18n.register("de", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
-    "chrome.ctaHead": "Ein Team, aufgestellt für euer Ziel",
-    "chrome.cta": "Ein Team aufstellen",
+    "chrome.ctaPrice": "Aufteilung berechnen",
+    "chrome.ctaBrief": "Briefing bewerten",
+    "chrome.ctaHead": "Das Team, das euer Ziel verdient",
+    "chrome.cta": "Team finden",
     "chrome.console": "Konsole",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",

@@ -36,7 +36,7 @@ test.describe("chrome and navigation", () => {
       await page.goto(path);
       await expect(page.locator(".wl-head")).toBeVisible();
       await expect(page.locator(".wl-foot")).toBeAttached();
-      await expect(page.locator(".wl-cta-btn")).toHaveAttribute("href", /welance\.com\/directory/);
+      await expect(page.locator(".wl-cta-btn").last()).toHaveAttribute("href", /welance\.com\/directory/);
       await expect(page.locator(".wl-head-logo")).toHaveAttribute("href", "./");
     });
   }

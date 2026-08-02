@@ -54,7 +54,7 @@ WelanceI18n.register("vi", {
     "method.s3.n": "bước 3",
     "method.s3.h": "Perfect Team",
     "method.s3.p": "Ai làm, ở đâu trên thế giới, với một mức giá gộp duy nhất mà khách hàng thực sự suy luận được. Biên lợi nhuận thay đổi trong đội theo cấp độ; dự án đạt một welance margin được tuyên bố; không ai bị ép xuống dưới mức giá của mình.",
-    "method.s3.go": "→ dựng một đội ngũ",
+    "method.s3.go": "→ tìm đội ngũ",
     "method.p3": "Mỗi bước cần bước trước nó. Giá cần phạm vi của brief để biết một vai trò là gì; đội ngũ cần phép tính của giá để cho ba con người một mức giá trung thực. Thông tin đổ xuống theo tầng — vì thế chúng là các bước chứ không phải tính năng, và vì thế brief vẫn là khái niệm chính: không gì ở hạ nguồn sống sót qua một brief thiếu trung thực.",
     "method.fxintro": "Mọi thứ phương pháp tính toán, sinh ra từ chính tệp mà các máy tính chạy trên đó (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — trang này không thể lệch khỏi mã nguồn.",
     "method.fxn": "công thức {n} trên {m}",
@@ -120,7 +120,7 @@ WelanceI18n.register("vi", {
     "method.quote": "Các tổ chức thiết kế hệ thống … buộc phải tạo ra những thiết kế là bản sao cấu trúc giao tiếp của chính các tổ chức ấy.",
     "method.cta1": "Bắt đầu từ brief",
     "method.cta2": "Tính một phần chia",
-    "method.cta3": "Dựng một đội ngũ",
+    "method.cta3": "Tìm đội ngũ",
     "method.foot": "Phương Pháp welance · một dự án mã nguồn mở của welance",
 
     /* ---------- the formulas ---------- */
@@ -235,8 +235,10 @@ WelanceI18n.register("vi", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
-    "chrome.ctaHead": "Một đội ngũ, dựng cho mục tiêu của bạn",
-    "chrome.cta": "Dựng một đội ngũ",
+    "chrome.ctaPrice": "Tính phần chia",
+    "chrome.ctaBrief": "Chấm một brief",
+    "chrome.ctaHead": "Đội ngũ mà mục tiêu của bạn xứng đáng",
+    "chrome.cta": "Tìm đội ngũ",
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
