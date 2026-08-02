@@ -225,6 +225,10 @@ WelanceI18n.register("ur", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.theme": "روشن یا گہرا",
+    "chrome.data": "آپ کا بریف، آپ کی چابی",
+    "chrome.api": "API دستاویزات",
+    "chrome.build": "اس کے ساتھ بنائیں",
     "chrome.ctaPrice": "تقسیم نکالیں",
     "chrome.ctaBrief": "بریف پرکھیں",
     "chrome.ctaHead": "وہ ٹیم جس کا آپ کا مقصد حق دار ہے",
@@ -232,7 +236,7 @@ WelanceI18n.register("ur", {
     "chrome.console": "کنسول",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "طریقہ، کھلا",
+    "chrome.links": "طریقہ",
     "chrome.login": "Login",
     "chrome.method": "طریقہ",
     "chrome.price": "Perfect Price",

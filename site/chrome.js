@@ -19,11 +19,15 @@
     { href: "team.html",   key: "chrome.team",   en: "Perfect Team" },
     { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
   ];
-  var EXTRA = [
-    { href: "console.html", key: "chrome.console", en: "Console" },
-    { href: "rules.html",   key: "chrome.rules",   en: "Rules" },
-    { href: "https://github.com/welance/perfect-brief", key: "chrome.github", en: "GitHub" },
-    { href: "llms.txt", key: "chrome.llms", en: "llms.txt" }
+  // the footer's second column: the things a builder looks for
+  var BUILD = [
+    { href: "integrate.html", key: "chrome.integrate", en: "Integrate" },
+    { href: "console.html",   key: "chrome.console",   en: "Console" },
+    { href: "rules.html",     key: "chrome.rules",     en: "Rules" },
+    { href: "/docs",          key: "chrome.api",       en: "API docs" },
+    { href: "llms.txt",       key: "chrome.llms",      en: "llms.txt" },
+    { href: "data.html",      key: "chrome.data",      en: "Your brief, your key" },
+    { href: "https://github.com/welance/perfect-brief", key: "chrome.github", en: "GitHub", icon: true }
   ];
 
   function tt(key, en) {
@@ -96,17 +100,44 @@
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
+      '<button class="wl-theme" type="button" aria-label="' + tt("chrome.theme", "light or dark") + '"></button>' +
       '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
       "</div></div></div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
+    wireTheme(host);
+  }
+
+  /* Light or dark, remembered. The system preference decides until someone
+     says otherwise; then their choice wins, on every page. */
+  function wireTheme(host) {
+    var btn = host.querySelector(".wl-theme");
+    if (!btn) return;
+    var SUN = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="4"/>' +
+      '<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
+      '<path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.6 3.6l1.4 1.4M15 15l1.4 1.4M16.4 3.6L15 5M5 15l-1.4 1.4"/></g></svg>';
+    var MOON = '<svg viewBox="0 0 20 20" aria-hidden="true">' +
+      '<path d="M16 12.2A7 7 0 0 1 7.8 4a7 7 0 1 0 8.2 8.2z"/></svg>';
+    var paint = function () {
+      btn.innerHTML = document.documentElement.getAttribute("data-theme") === "dark" ? SUN : MOON;
+    };
+    paint();
+    btn.addEventListener("click", function () {
+      var now = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", now);
+      try { localStorage.setItem("welance-theme", now); } catch (e) {}
+      paint();
+    });
   }
 
   function renderFooter() {
     var host = document.getElementById("site-footer");
     if (!host) return;
-    var links = PAGES.concat(EXTRA).map(function (p) {
-      return '<a href="' + p.href + '">' + tt(p.key, p.en) + "</a>";
-    }).join("");
+    var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+    var col = function (items) {
+      return items.map(function (p) {
+        return '<a href="' + p.href + '">' + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
+      }).join("");
+    };
     host.innerHTML =
       '<footer class="wl-foot">' +
       '<div class="wl-foot-cta"><div class="wl-foot-cta-in">' +
@@ -129,7 +160,8 @@
       "<p>Via San Michele 18,<br>12050 Lequio Berria (CN)</p>" +
       '<a href="tel:+393475331532">t: +39 347 533 1532</a>' +
       '<a href="mailto:ciao@welance.com">m: ciao@welance.com</a></div></div>' +
-      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The method, open") + "</p>" + links + "</div>" +
+      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The method") + "</p>" + col(PAGES) + "</div>" +
+      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.build", "Build with it") + "</p>" + col(BUILD) + "</div>" +
       "</div>" +
       '<div class="wl-foot-bottom"><p>© 2026 · MIT</p>' +
       '<nav><a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +

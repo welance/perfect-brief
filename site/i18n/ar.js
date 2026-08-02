@@ -225,6 +225,10 @@ WelanceI18n.register("ar", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.theme": "فاتح أو داكن",
+    "chrome.data": "موجزك، مفتاحك",
+    "chrome.api": "وثائق الواجهة",
+    "chrome.build": "ابنِ به",
     "chrome.ctaPrice": "احسب قسمة",
     "chrome.ctaBrief": "قيّم موجزًا",
     "chrome.ctaHead": "الفريق الذي يستحقه هدفكم",
@@ -232,7 +236,7 @@ WelanceI18n.register("ar", {
     "chrome.console": "الكونسول",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "المنهج، مفتوح",
+    "chrome.links": "المنهج",
     "chrome.login": "Login",
     "chrome.method": "المنهج",
     "chrome.price": "Perfect Price",

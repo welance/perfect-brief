@@ -60,6 +60,30 @@
   --mono: "Maison Neue Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
+:root[data-theme="dark"] {
+  --paper: #0d0d0d;
+  --paper-2: #171717;
+  --ink: #f2f2f2;
+  --ink-soft: #a2a2a2;
+  --rule: #2a2a2a;
+  --rule-strong: #f2f2f2;
+  --pass: #6fce9f;    --pass-bg: #12241a;
+  --partial: #e0b95c; --partial-bg: #2a2113;
+  --fail: #ef8a7c;    --fail-bg: #2b1614;
+  --accent: #b18cf0;  --accent-bg: #221a33;
+}
+:root[data-theme="dark"] .band.cy,
+:root[data-theme="dark"] .band.y { color: #0a0a0a; }
+:root[data-theme="dark"] .wl-foot-cta { background: #000; }
+:root[data-theme="dark"] .code { border-color: var(--rule); }
+:root[data-theme="dark"] img, :root[data-theme="dark"] .wl-asterisk { filter: none; }
+
+.wl-theme { display: inline-flex; align-items: center; cursor: pointer;
+  background: transparent; color: var(--ink-soft); border: 1px solid var(--rule);
+  padding: 8px 9px; line-height: 0; }
+.wl-theme svg { width: 15px; height: 15px; fill: currentColor; }
+.wl-theme:hover { color: var(--ink); border-color: var(--ink); }
+
 /* --- breadcrumbs: ✳ welance / perfect brief / <page> ------------------ */
 .crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
 .crumbs a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
@@ -165,10 +189,15 @@
 /* small screens: the machine and the name shrink together so the header
    never widens the document (the band test catches this) */
 @media (max-width: 640px) {
-  .wl-head-in { gap: 10px; padding: 0 14px; }
-  .wl-machine { width: 58px; height: 21px; }
-  .wl-project { font-size: 15px; }
-  .wl-lang-select { max-width: 132px; font-size: 12.5px; padding: 7px 6px; }
+  .wl-head-in { gap: 8px; padding: 0 12px; }
+  .wl-brandline { min-width: 0; column-gap: 7px; }
+  .wl-machine { width: 52px; height: 19px; }
+  .wl-project { font-size: 14.5px; }
+  .wl-head-right { gap: 6px; min-width: 0; }
+  /* the select keeps the flag and the code; the full name needs room it
+     does not have on a phone */
+  .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 4px; }
+  .wl-theme { padding: 7px; }
 }
 .wl-nav { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
 .wl-nav-item { font-family: var(--disp); font-size: 16px; font-weight: 600;
@@ -224,10 +253,13 @@
 .wl-office a { color: var(--ink); font-size: 15.5px; text-decoration: underline;
   text-underline-offset: .125em; }
 .wl-office a:hover { color: var(--accent); }
-.wl-foot-links { display: flex; flex-direction: column; gap: 4px; margin-inline-start: auto; }
+.wl-foot-links { display: flex; flex-direction: column; gap: 4px; }
+.wl-foot-links:first-of-type { margin-inline-start: auto; }
+.wl-foot-links a { display: inline-flex; align-items: center; gap: 7px; }
+.wl-gh { width: 14px; height: 14px; fill: currentColor; flex: none; }
 .wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
 .wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
-@media (max-width: 900px) { .wl-foot-links { margin-inline-start: 0; } }
+@media (max-width: 900px) { .wl-foot-links:first-of-type { margin-inline-start: 0; } }
 .wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
 .wl-foot-bottom p { margin: 0; }

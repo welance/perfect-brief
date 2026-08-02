@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Digital Product Brief · welance</title>
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=15">
+<script>/* theme before paint: no flash of the wrong one */
+(function(){try{var t=localStorage.getItem("welance-theme");
+if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="stylesheet" href="welance.css?v=18">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -270,6 +274,6 @@ document.querySelectorAll(".rule-num").forEach(a=>a.addEventListener("click",e=>
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=6"></script>
+<script src="chrome.js?v=8"></script>
 </body>
 </html>

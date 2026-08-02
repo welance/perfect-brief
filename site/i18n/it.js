@@ -112,7 +112,7 @@ WelanceI18n.register("it", {
     "method.d1.p": "Una bacheca curata e blind: i team prendono i brief sulla sostanza, non sul brand. La piattaforma massimizza le connessioni, non il margine — incontrare un team costa un token fisso e simbolico, mai una percentuale sulla relazione.",
     "method.d1.h": "welance/Directory — fate da soli",
     "method.eb5": "due porte, un metodo",
-    "method.p2b": "Spedisci la struttura di comunicazione del tuo team. Comporre il team non è staffing, è design del prodotto — ed è per questo che chi lavora con chi è la decisione che trattiamo come la più importante.",
+    "method.p2b": "Quello che consegni è la struttura di comunicazione del tuo team. Comporre il team non è staffing: è progettare il prodotto — ed è per questo che chi lavora con chi è la decisione che trattiamo come la più importante.",
     "method.quotesrc": "Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — resa celebre da Fred Brooks nel <em>Mythical Man-Month</em> come “legge di Conway”.",
     "method.quote": "Le organizzazioni che progettano sistemi … sono vincolate a produrre progetti che sono copie delle strutture di comunicazione di quelle organizzazioni.",
 
@@ -225,6 +225,10 @@ WelanceI18n.register("it", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.theme": "chiaro o scuro",
+    "chrome.data": "Il tuo brief, la tua chiave",
+    "chrome.api": "Documentazione API",
+    "chrome.build": "Costruisci con questo",
     "int.honest": "Un brief scritto benissimo per un prodotto condannato prenderà un buon voto. Quello che l'asticella ti dà è più stretto e più utile di un verdetto sulla tua idea: un numero che due persone ottengono allo stesso modo, un gate che rifiuta per policy e non per gusto, e un vocabolario comune — «success-metrics è fail, peso 10» batte «l'AI pensa si possa migliorare». Costruisci su questo, non sulla promessa del buon giudizio.",
     "int.c2": "Valuta l'articolazione, non la verità.",
     "int.eb5": "prima di costruirci sopra",
@@ -272,7 +276,7 @@ WelanceI18n.register("it", {
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "Il metodo, aperto",
+    "chrome.links": "Il metodo",
     "chrome.login": "Login",
     "chrome.method": "Il metodo",
     "chrome.price": "Perfect Price",

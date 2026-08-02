@@ -225,6 +225,10 @@ WelanceI18n.register("vi", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.theme": "sáng hoặc tối",
+    "chrome.data": "Brief của bạn, khóa của bạn",
+    "chrome.api": "Tài liệu API",
+    "chrome.build": "Xây dựng cùng nó",
     "chrome.ctaPrice": "Tính phần chia",
     "chrome.ctaBrief": "Chấm một brief",
     "chrome.ctaHead": "Đội ngũ mà mục tiêu của bạn xứng đáng",
@@ -232,7 +236,7 @@ WelanceI18n.register("vi", {
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "Phương pháp, mở",
+    "chrome.links": "Phương pháp",
     "chrome.login": "Login",
     "chrome.method": "Phương pháp",
     "chrome.price": "Perfect Price",

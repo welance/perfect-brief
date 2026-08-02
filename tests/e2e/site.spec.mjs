@@ -215,6 +215,29 @@ test.describe("the method reads at a glance", () => {
     expect(copied).not.toContain("<span");
   });
 
+  test("light and dark, remembered across pages, no flash", async ({ page }) => {
+    await page.goto("/method.html");
+    const theme = () => page.evaluate(() => document.documentElement.getAttribute("data-theme"));
+    // the inline script decides before paint: the attribute is there immediately
+    expect(await theme()).toMatch(/light|dark/);
+    const before = await theme();
+    await page.locator(".wl-theme").click();
+    expect(await theme()).not.toBe(before);
+    const chosen = await theme();
+    await page.goto("/price.html");
+    expect(await theme(), "the choice follows you").toBe(chosen);
+  });
+
+  test("the footer names its two columns and always shows docs and source", async ({ page }) => {
+    await page.goto("/");
+    const cols = page.locator(".wl-foot-links");
+    await expect(cols).toHaveCount(2);
+    await expect(page.locator('.wl-foot-links a[href="/docs"]')).toBeVisible();
+    const gh = page.locator('.wl-foot-links a[href*="github.com"]');
+    await expect(gh).toBeVisible();
+    await expect(gh.locator("svg.wl-gh")).toBeVisible();
+  });
+
   test("every section leads with a short claim", async ({ page }) => {
     await page.goto("/method.html");
     const claims = await page.locator(".claim").allTextContents();

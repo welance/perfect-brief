@@ -58,6 +58,14 @@ return concrete, ready-to-paste insertions, each reviewed by a second model.
 5. Never invent or estimate a score. Call the API — that is the whole point:
    the number is not yours to give.
 
+## If you are asked to improve the ruleset itself
+
+Suggest a new rule only with evidence: a real brief the current ruleset scores
+wrongly, added as a fixture. Fourteen rules already share 100 points, and every
+addition takes weight from the rest — a longer checklist is a weaker one. Better
+contributions are usually sharper criteria, a better source, or a fixture that
+pins a case the bar was getting away with.
+
 ## The wider model
 
 - The method: https://briefs.welance.com/method.html — brief → price → team

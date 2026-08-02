@@ -225,6 +225,10 @@ WelanceI18n.register("pt-BR", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "chrome.theme": "claro ou escuro",
+    "chrome.data": "Seu brief, sua chave",
+    "chrome.api": "Documentação da API",
+    "chrome.build": "Construa com isto",
     "chrome.ctaPrice": "Calcule uma divisão",
     "chrome.ctaBrief": "Avalie um brief",
     "chrome.ctaHead": "O time que seu objetivo merece",
@@ -232,7 +236,7 @@ WelanceI18n.register("pt-BR", {
     "chrome.console": "Console",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "O método, aberto",
+    "chrome.links": "O método",
     "chrome.login": "Login",
     "chrome.method": "O método",
     "chrome.price": "Perfect Price",
