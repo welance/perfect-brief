@@ -225,6 +225,13 @@ WelanceI18n.register("ar", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "شيفرتك · CI · منتج",
+    "int.w.ifmcp": "إن كان يتحدث MCP",
+    "int.w.other": "أي مساعد آخر",
+    "int.w.api": "استدعِ الواجهة",
+    "int.w.prompt": "الصق موجّهًا",
+    "int.w.mcp": "خادم MCP",
+    "int.w.tool": "أين تعمل",
     "chrome.theme": "فاتح أو داكن",
     "chrome.data": "موجزك، مفتاحك",
     "chrome.api": "وثائق الواجهة",

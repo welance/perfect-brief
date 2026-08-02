@@ -225,6 +225,14 @@ WelanceI18n.register("it", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "Il tuo codice · CI · un prodotto",
+    "int.w.ifmcp": "se parla MCP",
+    "int.w.other": "Qualsiasi altro assistente",
+    "int.w.conn": "✓ connectors",
+    "int.w.api": "chiama l'API",
+    "int.w.prompt": "incolla un prompt",
+    "int.w.mcp": "server MCP",
+    "int.w.tool": "dove lavori",
     "chrome.theme": "chiaro o scuro",
     "chrome.data": "Il tuo brief, la tua chiave",
     "chrome.api": "Documentazione API",
@@ -241,7 +249,7 @@ WelanceI18n.register("it", {
     "int.s1": "Non installi nulla: <code>uvx</code> lo scarica e lo esegue. Ti serve <a href=\"https://docs.astral.sh/uv/\">uv</a> (oppure usa <code>pipx</code>).",
     "int.c1": "Il tuo assistente, con un'asticella che non può piegare.",
     "int.eb3": "il server mcp, passo per passo",
-    "int.works.note": "Va tutto ciò che parla MCP o HTTP. Qui non c'è nessuna partnership né uno store di plugin — c'è un endpoint aperto e un piccolo server che puoi leggere.",
+    "int.works.note": "Ogni strada arriva alla stessa asticella; cambia solo la fatica. Qui non c'è nessuna partnership né uno store di plugin — c'è un endpoint aperto e un piccolo server che puoi leggere.",
     "int.eb2": "funziona con",
     "int.r4.go": "→ documentazione API",
     "int.r4.e": "15 minuti",

@@ -225,6 +225,13 @@ WelanceI18n.register("ur", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "آپ کا کوڈ · CI · ایک پروڈکٹ",
+    "int.w.ifmcp": "اگر MCP بولتا ہو",
+    "int.w.other": "کوئی بھی دوسرا اسسٹنٹ",
+    "int.w.api": "API کال کریں",
+    "int.w.prompt": "پرامپٹ چسپاں کریں",
+    "int.w.mcp": "MCP سرور",
+    "int.w.tool": "آپ کہاں کام کرتے ہیں",
     "chrome.theme": "روشن یا گہرا",
     "chrome.data": "آپ کا بریف، آپ کی چابی",
     "chrome.api": "API دستاویزات",

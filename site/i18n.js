@@ -102,12 +102,38 @@
     document.dispatchEvent(new CustomEvent("welance:lang", { detail: { lang: code, dir: m.dir } }));
   }
 
+  /* Which language to show, in order of authority:
+       1. ?lang= — an explicit, shareable choice
+       2. what this visitor picked before
+       3. what their browser asks for
+       4. English
+     Never a redirect. The English markup is the content of record and the only
+     URL search engines see; translation happens in the page, so there are no
+     duplicate URLs to index and nothing to get wrong with hreflang. */
+  function fromBrowser() {
+    var wanted = (navigator.languages && navigator.languages.length
+      ? navigator.languages : [navigator.language || ""]);
+    for (var i = 0; i < wanted.length; i++) {
+      var tag = String(wanted[i]);
+      if (meta(tag)) return tag;                       // exact: pt-BR
+      var base = tag.split("-")[0];
+      if (meta(base)) return base;                     // de-AT → de
+      var regional = LANGS.filter(function (l) {       // pt-PT → pt-BR
+        return l.code.split("-")[0] === base;
+      })[0];
+      if (regional) return regional.code;
+    }
+    return null;
+  }
+
   function initial() {
     try {
       var q = new URLSearchParams(location.search).get("lang");
       if (q && meta(q)) return q;
-      var s = localStorage.getItem(STORE);
-      if (s && meta(s)) return s;
+      var stored = localStorage.getItem(STORE);
+      if (stored && meta(stored)) return stored;
+      var guess = fromBrowser();
+      if (guess) return guess;
     } catch (e) {}
     return "en";
   }
@@ -120,7 +146,15 @@
     get dir() { return (meta(current) || LANGS[0]).dir; }
   };
 
-  function boot() { set(initial()); }
+  function boot() {
+    var lang = initial();
+    var guessed = false;
+    try { guessed = !new URLSearchParams(location.search).get("lang") && !localStorage.getItem(STORE); }
+    catch (e) {}
+    set(lang);
+    // a guess is a courtesy, not a decision: only remember what a human picks
+    if (guessed) { try { localStorage.removeItem(STORE); } catch (e) {} }
+  }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {

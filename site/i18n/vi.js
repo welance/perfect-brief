@@ -225,6 +225,13 @@ WelanceI18n.register("vi", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "Mã của bạn · CI · một sản phẩm",
+    "int.w.ifmcp": "nếu nói được MCP",
+    "int.w.other": "Bất kỳ trợ lý nào khác",
+    "int.w.api": "gọi API",
+    "int.w.prompt": "dán một prompt",
+    "int.w.mcp": "máy chủ MCP",
+    "int.w.tool": "nơi bạn làm việc",
     "chrome.theme": "sáng hoặc tối",
     "chrome.data": "Brief của bạn, khóa của bạn",
     "chrome.api": "Tài liệu API",

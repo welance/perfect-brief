@@ -93,7 +93,7 @@
       '<div class="wl-head"><div class="wl-head-in">' +
       '<a class="wl-brandline" href="./">' +
         MACHINE +
-        '<span class="wl-project">Perfect Briefs Machine<span class="b">_</span></span>' +
+        '<span class="wl-project">Perfect Briefs<span class="b">_</span></span>' +
         '<span class="wl-origin">' + tt("chrome.by", "an open standard, started by") +
         ' <span class="wl-mark">' + LOGO + "</span></span>" +
       "</a>" +

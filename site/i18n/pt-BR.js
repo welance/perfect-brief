@@ -225,6 +225,13 @@ WelanceI18n.register("pt-BR", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "Seu código · CI · um produto",
+    "int.w.ifmcp": "se falar MCP",
+    "int.w.other": "Qualquer outro assistente",
+    "int.w.api": "chame a API",
+    "int.w.prompt": "cole um prompt",
+    "int.w.mcp": "servidor MCP",
+    "int.w.tool": "onde você trabalha",
     "chrome.theme": "claro ou escuro",
     "chrome.data": "Seu brief, sua chave",
     "chrome.api": "Documentação da API",

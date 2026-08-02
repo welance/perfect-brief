@@ -9,8 +9,8 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
-<link rel="stylesheet" href="welance.css?v=18">
-<script src="i18n.js?v=1"></script>
+<link rel="stylesheet" href="welance.css?v=20">
+<script src="i18n.js?v=2"></script>
 <script src="i18n/de.js?v=1"></script>
 <script src="i18n/it.js?v=1"></script>
 <script src="i18n/ur.js?v=1"></script>
@@ -18,7 +18,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=8"></script>
+<script src="chrome.js?v=9"></script>
 <script src="code.js?v=1"></script>
 <style>
   /* tokens, fonts, buttons come from welance.css */
@@ -54,12 +54,15 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     border: 1px solid var(--rule); background: var(--paper); padding: 3px 8px;
     align-self: flex-start; }
 
-  /* the logo wall */
-  .works { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 16px; }
-  .work { display: flex; align-items: center; gap: 9px; border: 1px solid var(--rule);
-    background: var(--paper-2); padding: 10px 14px; font-family: var(--mono); font-size: 12.5px; }
-  .work svg { width: 18px; height: 18px; flex: none; }
-  .work .tick { color: var(--pass); font-size: 11px; }
+  /* what actually works where — a matrix beats a badge wall */
+  .works { border-collapse: collapse; width: 100%; max-width: 760px; margin: 6px 0 14px; }
+  .works th, .works td { text-align: start; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+  .works th { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+  .works td.t { font-weight: 600; font-size: 15px; }
+  .works td.y { color: var(--pass); font-family: var(--mono); font-size: 13px; }
+  .works td.m { color: var(--partial); font-family: var(--mono); font-size: 12px; }
+  .works td.n { color: var(--ink-soft); font-family: var(--mono); font-size: 13px; }
 
   .step { display: grid; grid-template-columns: 26px 1fr; gap: 12px; margin: 0 0 14px;
     max-width: 66ch; align-items: start; }
@@ -110,14 +113,22 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </div>
 
   <div class="eyebrow"><span data-i18n="int.eb2">works with</span></div>
-  <div class="works">
-    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16v14H4z" opacity=".12"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4.8 5.8h14.4v12.4H4.8zM8 9h8M8 12h8M8 15h5"/></svg>Claude<span class="tick">MCP</span></div>
-    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 4.8v14.4M4.8 12h14.4"/></svg>ChatGPT<span class="tick">prompt</span></div>
-    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="m9 7-5 5 5 5M15 7l5 5-5 5"/></svg>Cursor · VS Code<span class="tick">MCP</span></div>
-    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 12h16M4 7h16M4 17h10"/></svg>curl · any language<span class="tick">API</span></div>
-    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 8v5l3 2"/></svg>CI · pre-publish checks<span class="tick">API</span></div>
-  </div>
-  <p style="font-size:13.5px;color:var(--ink-soft)" data-i18n="int.works.note">Anything that speaks MCP or HTTP works. Nothing here is a partnership or a plugin store — it is one open endpoint and one small server you can read.</p>
+  <table class="works">
+    <thead><tr>
+      <th data-i18n="int.w.tool">where you work</th>
+      <th data-i18n="int.w.mcp">MCP server</th>
+      <th data-i18n="int.w.prompt">paste a prompt</th>
+      <th data-i18n="int.w.api">call the API</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="t">Claude · Desktop, Code</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td class="t">ChatGPT</td><td class="y" data-i18n="int.w.conn">✓ connectors</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td class="t">Cursor · VS Code · Zed</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td class="t" data-i18n="int.w.other">Any other assistant</td><td class="m" data-i18n="int.w.ifmcp">if it speaks MCP</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td class="t" data-i18n="int.w.ci">Your code · CI · a product</td><td class="n">—</td><td class="n">—</td><td class="y">✓</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13.5px;color:var(--ink-soft)" data-i18n="int.works.note">Every route reaches the same bar; only the effort differs. Nothing here is a partnership or a plugin store — it is one open endpoint and one small server you can read.</p>
 
   <div class="eyebrow" id="mcp"><span data-i18n="int.eb3">the mcp server, step by step</span></div>
   <p class="claim" data-i18n="int.c1">Your assistant, holding a bar it cannot bend.</p>

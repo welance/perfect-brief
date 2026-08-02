@@ -132,6 +132,87 @@ test.describe("eight languages, one choice", () => {
   });
 });
 
+test.describe("the ways in", () => {
+  test("every route on the integrate page leads somewhere real", async ({ page, request }) => {
+    await page.goto("/integrate.html");
+    await expect(page.locator(".route")).toHaveCount(4);
+    for (const href of await page.locator(".route .go").evaluateAll((as) => as.map((a) => a.getAttribute("href")))) {
+      if (href.startsWith("#")) {
+        await expect(page.locator(href)).toBeAttached();
+      } else {
+        expect((await request.get(href)).status(), `${href} should resolve`).toBeLessThan(400);
+      }
+    }
+  });
+
+  test("the works-with matrix is honest about MCP, prompt and API", async ({ page }) => {
+    await page.goto("/integrate.html");
+    const rows = page.locator(".works tbody tr");
+    await expect(rows).toHaveCount(5);
+    // Claude and ChatGPT both do all three — the earlier badges implied otherwise
+    const claude = rows.filter({ hasText: "Claude" });
+    await expect(claude.locator("td.y")).toHaveCount(3);
+    const gpt = rows.filter({ hasText: "ChatGPT" });
+    await expect(gpt.locator("td.y")).toHaveCount(3);
+    // code and CI can only call the API, and the table says so
+    await expect(rows.last().locator("td.n")).toHaveCount(2);
+  });
+
+  test("the MCP snippet is the command we actually publish", async ({ page }) => {
+    await page.goto("/integrate.html");
+    const cfg = page.locator('pre[data-lang="json"]');
+    await expect(cfg).toContainText("uvx");
+    await expect(cfg).toContainText("subdirectory=mcp-server");
+    await expect(cfg).toContainText("perfect-brief-mcp");
+  });
+
+  test("the console offers a calmer place to write", async ({ page }) => {
+    await page.goto("/console.html");
+    const cta = page.locator(".focus-cta");
+    await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute("href", /welance\.com\/directory\/brief\/focus/);
+  });
+});
+
+test.describe("the language a visitor expects", () => {
+  test("a German browser gets German without a redirect", async ({ browser }) => {
+    const ctx = await browser.newContext({ locale: "de-DE" });
+    const page = await ctx.newPage();
+    const responses = [];
+    page.on("response", (r) => responses.push(r.status()));
+    await page.goto("/method.html");
+    await expect(page.locator("html")).toHaveAttribute("lang", "de");
+    expect(responses.filter((s) => s >= 300 && s < 400), "no redirects").toHaveLength(0);
+    await ctx.close();
+  });
+
+  test("a regional variant falls back to the closest we have", async ({ browser }) => {
+    const ctx = await browser.newContext({ locale: "pt-PT" });
+    const page = await ctx.newPage();
+    await page.goto("/method.html");
+    await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+    await ctx.close();
+  });
+
+  test("an explicit choice always beats the browser, and is remembered", async ({ browser }) => {
+    const ctx = await browser.newContext({ locale: "de-DE" });
+    const page = await ctx.newPage();
+    await page.goto("/method.html?lang=it");
+    await expect(page.locator("html")).toHaveAttribute("lang", "it");
+    await page.goto("/team.html");
+    await expect(page.locator("html"), "the choice sticks").toHaveAttribute("lang", "it");
+    await ctx.close();
+  });
+
+  test("an unknown language lands on English, not on nothing", async ({ browser }) => {
+    const ctx = await browser.newContext({ locale: "ja-JP" });
+    const page = await ctx.newPage();
+    await page.goto("/method.html");
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await ctx.close();
+  });
+});
+
 test.describe("the method reads at a glance", () => {
   test("the map, the ledger and the loop are all drawn", async ({ page }, testInfo) => {
     await page.goto("/method.html");
@@ -143,12 +224,18 @@ test.describe("the method reads at a glance", () => {
     await expect(page.locator("#fxHead")).toContainText("8");
   });
 
-  test("a formula opens to its plain-language line and its source", async ({ page }) => {
+  test("every formula opens to its plain line and links to where it is defined", async ({ page }) => {
     await page.goto("/method.html");
-    const row = page.locator(".fxrow").nth(3); // the share
-    await row.locator("summary").click();
-    await expect(row.locator(".fxbody")).toBeVisible();
-    await expect(row.locator(".src")).toContainText("PERFECT-PRICE.md");
+    const rows = page.locator(".fxrow");
+    await expect(rows).toHaveCount(8);
+    for (let i = 0; i < 8; i++) {
+      const row = rows.nth(i);
+      await row.locator("summary").click();
+      await expect(row.locator(".fxbody")).toBeVisible();
+      const link = row.locator(".src a");
+      await expect(link, "a formula must say where it is defined").toHaveAttribute(
+        "href", /github\.com\/welance\/perfect-brief\/blob\/main\//);
+    }
   });
 
   test("the fine print starts closed and opens on demand", async ({ page }) => {

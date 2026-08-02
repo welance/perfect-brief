@@ -9,9 +9,9 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
-<link rel="stylesheet" href="welance.css?v=18">
+<link rel="stylesheet" href="welance.css?v=20">
 <script src="pricing.js?v=1"></script>
-<script src="i18n.js?v=1"></script>
+<script src="i18n.js?v=2"></script>
 <script src="i18n/de.js?v=1"></script>
 <script src="i18n/it.js?v=1"></script>
 <script src="i18n/ur.js?v=1"></script>
@@ -19,7 +19,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=8"></script>
+<script src="chrome.js?v=9"></script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   * { box-sizing: border-box; }
@@ -328,7 +328,15 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       su.appendChild(n2); su.appendChild(nm); su.appendChild(fo); su.appendChild(ch);
       var body = document.createElement("div"); body.className = "fxbody";
       body.textContent = tt("fx." + f.id + ".plain", f.plain);
-      var src = document.createElement("div"); src.className = "src"; src.textContent = f.source;
+      var src = document.createElement("div"); src.className = "src";
+      if (f.url) {
+        var a = document.createElement("a");
+        a.href = f.url; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = f.source + " ↗";
+        src.appendChild(a);
+      } else {
+        src.textContent = f.source;
+      }
       body.appendChild(src);
       d.appendChild(su); d.appendChild(body);
       host.appendChild(d);
