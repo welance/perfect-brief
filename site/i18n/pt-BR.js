@@ -33,7 +33,6 @@ WelanceI18n.register("pt-BR", {
     "index.eb4": "governança",
     "index.triad": "<b>qualquer pessoa propõe</b> — cada regra é um arquivo; abra uma PR, zero gatekeeping<br><b>a evidência mergeia</b> — decide o corpus público de fixtures no CI, não o gosto<br><b>qualquer pessoa forkeia</b> — MIT; o direito de saída é a verdadeira garantia anticaptura",
     "index.govnote": "Detalhes em <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> e <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. O raciocínio completo está <a href=\"rules.html\">no artigo</a>.",
-    "index.foot": "The Perfect Brief · um projeto open source da welance",
 
     /* ---------- method.html ---------- */
     "method.crumb": "o método",
@@ -57,7 +56,6 @@ WelanceI18n.register("pt-BR", {
     "method.s3.go": "→ encontre um time",
     "method.p3": "Cada passo precisa do anterior. O preço precisa do escopo do brief para saber o que é um papel; o time precisa da aritmética do preço para dar a três pessoas uma taxa honesta. A informação desce em cascata — por isso são passos e não features, e por isso o brief continua sendo o conceito principal: nada rio abaixo sobrevive a um brief desonesto.",
     "method.fxintro": "Tudo o que o método calcula, derivado do mesmo arquivo em que as calculadoras rodam (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — esta página não pode divergir do código.",
-    "method.fxn": "fórmula {n} de {m}",
     "method.fxhead": "as {n} fórmulas, todas",
     "method.fxclose": "Estas <b>{n}</b> fórmulas ajudam a tomar a decisão. Todo o resto é capital humano — e ele não se calcula.",
     "method.eb3": "o que as fórmulas não enxergam",
@@ -90,7 +88,6 @@ WelanceI18n.register("pt-BR", {
     "site.copied": "copiado",
     "site.copy": "copiar",
     "site.response": "resposta",
-    "site.request": "requisição",
     "rules.q.ex": "92/100 — cita a marca",
     "rules.q.blk2": "bloqueado",
     "rules.q.blk": "bloqueado",
@@ -118,10 +115,6 @@ WelanceI18n.register("pt-BR", {
     "method.p2b": "Você entrega a estrutura de comunicação do seu time. Compor o time não é staffing, é design de produto — e é por isso que quem trabalha com quem é a decisão que tratamos como a mais importante.",
     "method.quotesrc": "Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — tornada célebre por Fred Brooks no <em>The Mythical Man-Month</em> como a “lei de Conway”.",
     "method.quote": "Organizações que projetam sistemas … estão fadadas a produzir projetos que são cópias das estruturas de comunicação dessas organizações.",
-    "method.cta1": "Comece pelo brief",
-    "method.cta2": "Calcule uma divisão",
-    "method.cta3": "Encontre um time",
-    "method.foot": "O método welance · um projeto open source da welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "A pontuação",
@@ -183,11 +176,10 @@ WelanceI18n.register("pt-BR", {
     "rules.p10": "As fixtures são o sistema imune: um corpus de briefs rotulados com pontuações esperadas. Tente baixar a régua às escondidas para passar um brief fraco e você quebra o corpus — o CI te rejeita. Para contornar, você teria que apagar fixtures, e isso é um diff visível e suspeito.",
     "rules.invh": "Uma regra para a qual adoraríamos uma PR",
     "rules.invp": "<code>decision-owner</code> — o brief nomeia uma única pessoa responsável pelas decisões? É puro \"80% time\": um brief sem dono empaca. Deixamos de fora de propósito. Adicione você.",
-    "rules.foot": "O Brief Perfeito para um Produto Digital · um projeto open source da <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "welance · um time, uma taxa",
+    "team.eyebrow": "um time, uma taxa",
     "team.h1": "Perfect Team",
     "team.lede": "Um time multifuncional, precificado como se precifica uma pessoa independente. Os papéis e seus pesos descrevem o projeto; cada papel carrega seu próprio nível e base de custo. O cliente vê <b>uma taxa combinada</b> — não cem diferentes — as margens variam dentro do time por nível, e o projeto como um todo cumpre um <b>welance margin</b> declarado e nomeado, que qualquer pessoa pode conferir.",
     "team.reset": "Restaurar padrões",
@@ -202,8 +194,6 @@ WelanceI18n.register("pt-BR", {
     "team.fl75": "pelo menos três quartos",
     "team.fl5": "pelo menos metade do pagamento do papel",
     "team.fl0": "sem piso — o pagamento segue todo o custo local",
-    "team.th1": "Papel", "team.th2": "Peso", "team.th3": "Nível", "team.th4": "País",
-    "team.th5": "Coef", "team.th6": "Taxa própria", "team.th7": "Teto",
     "team.add": "+ Adicionar papel",
     "team.c2h": "O primeiro check",
     "team.c2hint": "As fórmulas acima produzem o time de partida. O que elas não enxergam — a compatibilidade entre os membros e com o cliente, a gentileza, a disponibilidade, como alguém carrega o estresse — só se aprende trabalhando junto.",

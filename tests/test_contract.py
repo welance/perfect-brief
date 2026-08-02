@@ -125,6 +125,15 @@ def test_directory_context_off_drops_its_rules_entirely(client):
     assert "anonymised" not in gate_rules_off
 
 
+def test_no_cache_keeps_the_promise_the_docs_make(client):
+    """data.html promises nothing is written down. Prove the flag is honoured."""
+    body = _score(client, no_cache=True)
+    assert body["cached"] is False
+    again = _score(client, no_cache=True)
+    assert again["cached"] is False, "a no_cache call must never be served from cache"
+    assert again["score"] == body["score"], "and it must still be reproducible"
+
+
 def test_the_model_never_sets_a_number(client):
     """The seam: verdicts carry no score field — code owns the maths."""
     for v in _score(client)["verdicts"]:

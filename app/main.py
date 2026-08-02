@@ -150,7 +150,8 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
     kind = _judge_kind(req.judge, x_llm_key)
     try:
         return await scorer.score(
-            req.brief, req.locale, kind, req.model, x_llm_key, gate_contexts=req.gate_contexts
+            req.brief, req.locale, kind, req.model, x_llm_key,
+            gate_contexts=req.gate_contexts, no_cache=req.no_cache
         )
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

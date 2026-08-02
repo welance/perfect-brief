@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfect Price · the split calculator — welance</title>
 <meta name="description" content="How much of the client rate goes to the independent — welance's split rule as a calculator anyone can use and check.">
-<link rel="stylesheet" href="welance.css?v=12">
+<link rel="stylesheet" href="welance.css?v=14">
 <script src="pricing.js?v=1"></script>
 <script src="i18n.js?v=1"></script>
 <script src="i18n/de.js?v=1"></script>
@@ -15,7 +15,7 @@
 <script src="i18n/vi.js?v=1"></script>
 <script src="i18n/ar.js?v=1"></script>
 <script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=4"></script>
+<script src="chrome.js?v=6"></script>
 <style>
   /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
      The names below are this page's original component vocabulary, kept and
@@ -60,10 +60,6 @@
   @media (max-width: 700px) { .p-ident { display: none; } }
   .lang.reset { border-style: dashed; }
   .lang.reset:hover { color: var(--person); border-color: var(--person); }
-  .langs { display: flex; gap: 4px; flex-wrap: wrap; }
-  .lang { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
-    background: var(--surface); color: var(--ink-2);
-    border: 1px solid var(--line-strong); border-radius: 0; }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -138,8 +134,7 @@
     .fig { padding: 11px 12px; }
     .fig .v { font-size: 18px; }
     .mode { font-size: 12.5px; padding: 6px 11px; }
-    .lang { font-size: 11.5px; padding: 5px 9px; }
-  }
+    }
 
   .cov { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13.5px;
     font-weight: 600; display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
@@ -370,7 +365,7 @@
       askLbl: "Their asking rate \u20ac/h",
       provider: "provider", providerSub: "Independent — a freelancer or a small studio, up to about 25 people.",
       reset: "Reset to defaults",
-      eyebrow: "welance · split rule",
+      eyebrow: "the split rule",
       title: "How much of the client rate goes to the independent",
       lede: "The share depends on how much of the role the independent covers on its own — not on how much the client pays, and never on a judgement about who they are. List the parts of the role, mark who covers what, and the share follows. The independent may be one freelancer or a studio of up to about 25 people; the model does not care which.",
       roleh: "The role, part by part",
@@ -391,13 +386,13 @@
       growthh: "How to move up",
       growthhint: "The level is not a label, it is a map. Every uncovered part has a value per hour.",
       resulth: "Result", coverk: "Role coverage",
-      fShare: "Person share", fMargin: "welance margin", fSupport: "welance support", keySupport: "welance support", fPay: "To the person", fRate: "Client rate",
+      fShare: "Person share", fMargin: "structure & risk", fSupport: "welance support", keySupport: "welance support", fPay: "To the person", fRate: "Client rate",
       levelsh: "The three levels",
       levelshint: "They describe how the role is delivered, not who delivers it.",
-      cLevel: "Level", cCov: "Coverage", cShare: "Share", cMargin: "Margin",
+      cLevel: "Level", cCov: "Coverage", cShare: "Share", cMargin: "structure & risk",
       lv: ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"],
       lvSub: ["the person covers the whole role", "the role is delivered with a colleague's review", "the role is delivered with support on one part"],
-      keyPerson: "provider", keyGeo: "geographic differential", keyCompany: "welance",
+      keyPerson: "provider", keyGeo: "geographic differential", keyCompany: "structure & risk",
       okPayout: "At {pay}/h for {who}, this level needs at least {need}/h from the client. You are charging {rate}: the deal holds.",
       noPayout: "At {pay}/h for {who}, this level would need {need}/h from the client, but you are charging {rate}. Either the client rate rises, or the engagement does not happen.",
       okRate: "With the client at {rate}/h, this level gives {who} up to {max}/h. The agreed rate is {pay}: the deal holds.",
@@ -408,7 +403,7 @@
       geoOn: "Role-only pay would be <b>{full}</b>/h. With the coefficient it is <b>{local}</b>/h — a geographic differential of <b>{diff}</b>/h, {pctdiff} of what the role alone earns.",
       geoFloor: "The floor is binding: without it the coefficient would give {raw}/h.",
       f1: "<b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.",
-      f2: "<b>No-deal rule.</b> If the person's rate exceeds what the level allows and the client will not pay the minimum, the engagement does not happen. Nobody is squeezed below their rate to make the margin work.",
+      f2: "<b>It is not profit.</b> The retained share keeps the structure standing — finding the work, assembling the team, invoicing, the hours nobody bills — and carries the client-side risk: if a delivery goes wrong, a replacement is needed or an invoice is never paid, the collective absorbs it, not the person. It is deliberately thin.",
       f3: "<b>Rounding.</b> Where the two views differ by one step, coverage rounds toward the person. A two-step gap is not averaged: it is discussed.",
       f4: "<b>The level belongs to the person-and-role pair</b>, not the person. The same person can be autonomous in one role and work with support in another. Reviewed at each renewal.",
       f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers.",
@@ -423,7 +418,7 @@
       askLbl: "Ihr Wunschsatz \u20ac/h",
       provider: "Auftragnehmer", providerSub: "Unabhängig — freiberuflich oder ein kleines Studio, bis etwa 25 Personen.",
       reset: "Auf Standard zurücksetzen",
-      eyebrow: "welance · Aufteilungsregel",
+      eyebrow: "die Aufteilungsregel",
       title: "Wie viel vom Kundensatz an den Auftragnehmer geht",
       lede: "Der Anteil hängt davon ab, wie viel der Rolle der Auftragnehmer eigenständig abdeckt — nicht davon, wie viel der Kunde zahlt, und nie von einem Urteil darüber, wer er ist. Die Bestandteile der Rolle auflisten, markieren wer was abdeckt, und der Anteil ergibt sich. Der Auftragnehmer kann eine freiberufliche Person sein oder ein Studio mit bis zu etwa 25 Personen; dem Modell ist das gleich.",
       roleh: "Die Rolle, Bestandteil für Bestandteil",
@@ -444,13 +439,13 @@
       growthh: "Wie man aufsteigt",
       growthhint: "Die Stufe ist kein Etikett, sondern eine Karte. Jeder nicht abgedeckte Bestandteil hat einen Stundenwert.",
       resulth: "Ergebnis", coverk: "Rollenabdeckung",
-      fShare: "Anteil Person", fMargin: "Marge welance", fSupport: "welance-Unterstützung", keySupport: "welance-Unterstützung", fPay: "An die Person", fRate: "Kundensatz",
+      fShare: "Anteil Person", fMargin: "Struktur & Risiko", fSupport: "welance-Unterstützung", keySupport: "welance-Unterstützung", fPay: "An die Person", fRate: "Kundensatz",
       levelsh: "Die drei Stufen",
       levelshint: "Sie beschreiben, wie die Rolle geliefert wird, nicht wer sie liefert.",
-      cLevel: "Stufe", cCov: "Abdeckung", cShare: "Anteil", cMargin: "Marge",
+      cLevel: "Stufe", cCov: "Abdeckung", cShare: "Anteil", cMargin: "Struktur & Risiko",
       lv: ["EIGENSTÄNDIG", "MIT PRÜFUNG", "MIT UNTERSTÜTZUNG"],
       lvSub: ["die Person deckt die ganze Rolle ab", "die Rolle wird mit Prüfung durch Kolleg:innen geliefert", "die Rolle wird mit Unterstützung bei einem Teil geliefert"],
-      keyPerson: "Auftragnehmer", keyGeo: "geografische Differenz", keyCompany: "welance",
+      keyPerson: "Auftragnehmer", keyGeo: "geografische Differenz", keyCompany: "Struktur & Risiko",
       okPayout: "Bei {pay}/h für {who} braucht diese Stufe mindestens {need}/h vom Kunden. Ihr verlangt {rate}: die Vereinbarung trägt.",
       noPayout: "Bei {pay}/h für {who} bräuchte diese Stufe {need}/h vom Kunden, ihr verlangt aber {rate}. Entweder steigt der Kundensatz, oder das Engagement kommt nicht zustande.",
       okRate: "Bei {rate}/h vom Kunden gibt diese Stufe {who} bis zu {max}/h. Vereinbart sind {pay}: die Vereinbarung trägt.",
@@ -461,7 +456,7 @@
       geoOn: "Nur nach Rolle wären es <b>{full}</b>/h. Mit Koeffizient sind es <b>{local}</b>/h — eine geografische Differenz von <b>{diff}</b>/h, {pctdiff} dessen, was die Rolle allein einbringt.",
       geoFloor: "Die Untergrenze greift: ohne sie ergäbe der Koeffizient {raw}/h.",
       f1: "<b>Wohin die Differenz fließt, ist entscheidend.</b> Wird sie stillschweigend zur Marge, profitiert das Kollektiv davon, wo jemand lebt. Ihr Ziel benennen — Rücklage, Solidartopf, Reinvestition — damit darüber gestritten werden kann statt es anzunehmen.",
-      f2: "<b>Kein-Deal-Regel.</b> Übersteigt der Satz der Person das von der Stufe Erlaubte und zahlt der Kunde das Minimum nicht, kommt das Engagement nicht zustande. Niemand wird unter seinen Satz gedrückt, damit die Marge aufgeht.",
+      f2: "<b>Das ist kein Gewinn.</b> Der einbehaltene Anteil hält die Struktur am Laufen — Arbeit finden, Team aufstellen, Rechnungen, die Stunden, die niemand abrechnet — und trägt das Risiko zum Kunden hin: geht eine Lieferung schief, braucht es Ersatz oder wird eine Rechnung nie bezahlt, fängt das Kollektiv es auf, nicht die Person. Er ist bewusst dünn.",
       f3: "<b>Rundung.</b> Unterscheiden sich die Sichtweisen um eine Stufe, wird zugunsten der Person gerundet. Zwei Stufen werden nicht gemittelt, sondern besprochen.",
       f4: "<b>Die Stufe gehört dem Paar Person-und-Rolle</b>, nicht der Person. Dieselbe Person kann in einer Rolle eigenständig sein und in einer anderen mit Unterstützung arbeiten. Überprüfung bei jeder Verlängerung.",
       f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden.",
@@ -476,7 +471,7 @@
       askLbl: "La sua tariffa richiesta \u20ac/h",
       provider: "collaboratore", providerSub: "Indipendente — freelance o piccolo studio, fino a circa 25 persone.",
       reset: "Ripristina i valori iniziali",
-      eyebrow: "welance · regola di ripartizione",
+      eyebrow: "la regola di ripartizione",
       title: "Quanto della tariffa cliente va al collaboratore",
       lede: "La quota dipende da quanta parte del ruolo il collaboratore copre da solo — non da quanto paga il cliente, e mai da un giudizio su chi è. Si elencano le componenti del ruolo, si segna chi copre cosa, e la quota esce da sé. Il collaboratore può essere un freelance o uno studio fino a circa 25 persone: al modello non cambia nulla.",
       roleh: "Il ruolo, componente per componente",
@@ -497,13 +492,13 @@
       growthh: "Come si sale",
       growthhint: "Il livello non è un'etichetta: è una mappa. Ogni componente non coperta ha un valore in euro l'ora.",
       resulth: "Risultato", coverk: "Copertura del ruolo",
-      fShare: "Quota persona", fMargin: "Margine welance", fSupport: "supporto welance", keySupport: "supporto welance", fPay: "Alla persona", fRate: "Tariffa cliente",
+      fShare: "Quota persona", fMargin: "struttura e rischio", fSupport: "supporto welance", keySupport: "supporto welance", fPay: "Alla persona", fRate: "Tariffa cliente",
       levelsh: "I tre livelli",
       levelshint: "Descrivono come il ruolo viene consegnato, non chi lo consegna.",
-      cLevel: "Livello", cCov: "Copertura", cShare: "Quota", cMargin: "Margine",
+      cLevel: "Livello", cCov: "Copertura", cShare: "Quota", cMargin: "struttura e rischio",
       lv: ["AUTONOMO", "CON VERIFICA", "CON SUPPORTO"],
       lvSub: ["la persona copre il ruolo per intero", "il ruolo è consegnato con verifica di un collega", "il ruolo è consegnato con supporto su una parte"],
-      keyPerson: "collaboratore", keyGeo: "differenziale geografico", keyCompany: "welance",
+      keyPerson: "collaboratore", keyGeo: "differenziale geografico", keyCompany: "struttura e rischio",
       okPayout: "A {pay}/h per {who}, su questo livello serve almeno {need}/h dal cliente. Ne chiedete {rate}: l'accordo regge.",
       noPayout: "A {pay}/h per {who}, su questo livello servirebbero {need}/h dal cliente, ma ne chiedete {rate}. O sale la tariffa cliente, o l'ingaggio non si fa.",
       okRate: "Con il cliente a {rate}/h, questo livello dà a {who} fino a {max}/h. La tariffa concordata è {pay}: l'accordo regge.",
@@ -514,7 +509,7 @@
       geoOn: "Solo in base al ruolo sarebbero <b>{full}</b>/h. Col coefficiente sono <b>{local}</b>/h — un differenziale geografico di <b>{diff}</b>/h, il {pctdiff} di quanto rende il solo ruolo.",
       geoFloor: "Il pavimento è vincolante: senza, il coefficiente darebbe {raw}/h.",
       f1: "<b>Dove finisce il differenziale è la cosa che conta.</b> Se diventa margine in silenzio, il collettivo guadagna da dove una persona vive. Dategli una destinazione dichiarata — riserva, fondo di solidarietà, reinvestimento — così è discutibile invece che implicito.",
-      f2: "<b>Regola di non-accordo.</b> Se la tariffa della persona supera quanto il livello consente e il cliente non accetta il minimo, l'ingaggio non si fa. Nessuno viene compresso sotto la propria tariffa per far quadrare il margine.",
+      f2: "<b>Non è profitto.</b> La quota trattenuta tiene in piedi la struttura — trovare il lavoro, montare il team, fatturare, le ore che nessuno fattura — e porta il rischio verso il cliente: se una consegna va storta, se serve una sostituzione o se una fattura non viene mai pagata, ad assorbirlo è il collettivo, non la persona. È volutamente sottile.",
       f3: "<b>Arrotondamenti.</b> Dove le due viste differiscono di un gradino, la copertura si arrotonda verso la persona. Uno scarto di due gradini non si media: si discute.",
       f4: "<b>Il livello appartiene alla coppia persona-ruolo</b>, non alla persona. La stessa persona può essere autonoma su un ruolo e lavorare con supporto su un altro. Si rivede a ogni rinnovo.",
       f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua.",
@@ -529,7 +524,7 @@
       askLbl: "\u0627\u0646 \u06a9\u0627 \u0645\u0637\u0644\u0648\u0628\u06c1 \u0631\u06cc\u0679 \u20ac/\u06af\u06be\u0646\u0679\u06c1",
       provider: "فراہم کنندہ", providerSub: "خودمختار — فری لانسر یا چھوٹا اسٹوڈیو، تقریباً 25 افراد تک۔",
       reset: "ابتدائی حالت پر واپس",
-      eyebrow: "ویلانس · تقسیم کا اصول",
+      eyebrow: "تقسیم کا اصول",
       title: "کلائنٹ ریٹ کا کتنا حصہ فراہم کنندہ کو ملتا ہے",
       lede: "حصہ اس بات پر منحصر ہے کہ فراہم کنندہ کردار کا کتنا حصہ خود سنبھالتا ہے — اس پر نہیں کہ کلائنٹ کتنا دیتا ہے، اور کبھی بھی اس فیصلے پر نہیں کہ وہ کون ہے۔ کردار کے اجزاء لکھیں، نشان لگائیں کون کیا سنبھالتا ہے، اور حصہ خود نکل آئے گا۔ فراہم کنندہ ایک فری لانسر ہو سکتا ہے یا تقریباً 25 افراد تک کا اسٹوڈیو؛ ماڈل کے لیے دونوں برابر ہیں۔",
       roleh: "کردار، جزو بہ جزو",
@@ -550,13 +545,13 @@
       growthh: "آگے کیسے بڑھیں",
       growthhint: "درجہ ایک لیبل نہیں، ایک نقشہ ہے۔ ہر غیر محیط جزو کی فی گھنٹہ قیمت ہے۔",
       resulth: "نتیجہ", coverk: "کردار کی کوریج",
-      fShare: "فرد کا حصہ", fMargin: "ویلانس کا مارجن", fSupport: "ویلانس معاونت", keySupport: "ویلانس معاونت", fPay: "فرد کو", fRate: "کلائنٹ ریٹ",
+      fShare: "فرد کا حصہ", fMargin: "ڈھانچہ اور خطرہ", fSupport: "ویلانس معاونت", keySupport: "ویلانس معاونت", fPay: "فرد کو", fRate: "کلائنٹ ریٹ",
       levelsh: "تین درجے",
       levelshint: "یہ بتاتے ہیں کہ کردار کیسے ادا ہوتا ہے، یہ نہیں کہ کون ادا کرتا ہے۔",
-      cLevel: "درجہ", cCov: "کوریج", cShare: "حصہ", cMargin: "مارجن",
+      cLevel: "درجہ", cCov: "کوریج", cShare: "حصہ", cMargin: "ڈھانچہ اور خطرہ",
       lv: ["خود مختار", "تصدیق کے ساتھ", "معاونت کے ساتھ"],
       lvSub: ["فرد پورا کردار سنبھالتا ہے", "کردار ساتھی کی تصدیق کے ساتھ ادا ہوتا ہے", "کردار ایک حصے میں معاونت کے ساتھ ادا ہوتا ہے"],
-      keyPerson: "فراہم کنندہ", keyGeo: "جغرافیائی فرق", keyCompany: "ویلانس",
+      keyPerson: "فراہم کنندہ", keyGeo: "جغرافیائی فرق", keyCompany: "ڈھانچہ اور خطرہ",
       okPayout: "{who} کے لیے {pay}/گھنٹہ پر، اس درجے کو کلائنٹ سے کم از کم {need}/گھنٹہ درکار ہے۔ آپ {rate} لے رہے ہیں: معاہدہ درست ہے۔",
       noPayout: "{who} کے لیے {pay}/گھنٹہ پر، اس درجے کو کلائنٹ سے {need}/گھنٹہ درکار ہوں گے، مگر آپ {rate} لے رہے ہیں۔ یا کلائنٹ ریٹ بڑھے، یا یہ کام نہ لیا جائے۔",
       okRate: "کلائنٹ {rate}/گھنٹہ پر، یہ درجہ {who} کو زیادہ سے زیادہ {max}/گھنٹہ دیتا ہے۔ طے شدہ ریٹ {pay} ہے: معاہدہ درست ہے۔",
@@ -567,7 +562,7 @@
       geoOn: "صرف کردار کے حساب سے <b>{full}</b>/گھنٹہ بنتے۔ عامل کے ساتھ <b>{local}</b>/گھنٹہ ہیں — یعنی <b>{diff}</b>/گھنٹہ کا جغرافیائی فرق، جو صرف کردار کی کمائی کا {pctdiff} ہے۔",
       geoFloor: "کم سے کم حد لاگو ہے: اس کے بغیر عامل {raw}/گھنٹہ دیتا۔",
       f1: "<b>یہ فرق کہاں جاتا ہے، یہی اصل سوال ہے۔</b> اگر یہ خاموشی سے مارجن بن جائے تو اجتماع اس بات سے کما رہا ہے کہ کوئی کہاں رہتا ہے۔ اس کی منزل کا اعلان کریں — ذخیرہ، یکجہتی فنڈ، دوبارہ سرمایہ کاری — تاکہ اس پر بحث ہو سکے۔",
-      f2: "<b>معاہدہ نہ کرنے کا اصول۔</b> اگر فرد کا ریٹ اس درجے کی حد سے زیادہ ہو اور کلائنٹ کم سے کم رقم نہ دے، تو کام نہیں لیا جاتا۔ مارجن پورا کرنے کے لیے کسی کو اس کے ریٹ سے نیچے نہیں دبایا جاتا۔",
+      f2: "<b>یہ منافع نہیں ہے۔</b> روکا گیا حصہ ڈھانچے کو کھڑا رکھتا ہے — کام ڈھونڈنا، ٹیم جوڑنا، بلنگ، وہ گھنٹے جو کوئی بل نہیں کرتا — اور کلائنٹ کی طرف کا خطرہ اٹھاتا ہے: اگر ڈیلیوری بگڑے، متبادل درکار ہو یا کوئی رسید کبھی ادا نہ ہو، تو اسے اجتماع جذب کرتا ہے، فرد نہیں۔ یہ جان بوجھ کر باریک ہے۔",
       f3: "<b>گول کرنا۔</b> جہاں دونوں آراء میں ایک درجے کا فرق ہو، کوریج فرد کے حق میں گول ہوتی ہے۔ دو درجے کے فرق کا اوسط نہیں لیا جاتا: اس پر بات ہوتی ہے۔",
       f4: "<b>درجہ فرد اور کردار کے جوڑے کا ہے</b>، صرف فرد کا نہیں۔ ایک ہی شخص ایک کردار میں خود مختار اور دوسرے میں معاونت کے ساتھ ہو سکتا ہے۔ ہر تجدید پر نظرثانی۔",
       f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔",
@@ -582,7 +577,7 @@
       askLbl: "A taxa pedida por ela \u20ac/h",
       provider: "prestador", providerSub: "Independente — freelancer ou um pequeno estúdio, até cerca de 25 pessoas.",
       reset: "Restaurar padrões",
-      eyebrow: "welance · regra de divisão",
+      eyebrow: "a regra de divisão",
       title: "Quanto da taxa do cliente vai para o prestador",
       lede: "A parte depende de quanto do papel o prestador cobre sozinho — não de quanto o cliente paga, e nunca de um julgamento sobre quem ele é. Liste os componentes do papel, marque quem cobre o quê, e a parte sai sozinha. O prestador pode ser um freelancer ou um estúdio de até cerca de 25 pessoas; para o modelo dá no mesmo.",
       roleh: "O papel, componente por componente",
@@ -603,13 +598,13 @@
       growthh: "Como subir",
       growthhint: "O nível não é um rótulo, é um mapa. Cada componente não coberto tem um valor por hora.",
       resulth: "Resultado", coverk: "Cobertura do papel",
-      fShare: "Parte da pessoa", fMargin: "Margem welance", fSupport: "suporte welance", keySupport: "suporte welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
+      fShare: "Parte da pessoa", fMargin: "estrutura e risco", fSupport: "suporte welance", keySupport: "suporte welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
       levelsh: "Os três níveis",
       levelshint: "Descrevem como o papel é entregue, não quem o entrega.",
-      cLevel: "Nível", cCov: "Cobertura", cShare: "Parte", cMargin: "Margem",
+      cLevel: "Nível", cCov: "Cobertura", cShare: "Parte", cMargin: "estrutura e risco",
       lv: ["AUTÔNOMO", "COM VERIFICAÇÃO", "COM APOIO"],
       lvSub: ["a pessoa cobre o papel inteiro", "o papel é entregue com verificação de um colega", "o papel é entregue com apoio em uma parte"],
-      keyPerson: "prestador", keyGeo: "diferencial geográfico", keyCompany: "welance",
+      keyPerson: "prestador", keyGeo: "diferencial geográfico", keyCompany: "estrutura e risco",
       okPayout: "A {pay}/h para {who}, este nível exige ao menos {need}/h do cliente. Vocês cobram {rate}: o acordo se sustenta.",
       noPayout: "A {pay}/h para {who}, este nível exigiria {need}/h do cliente, mas vocês cobram {rate}. Ou a taxa do cliente sobe, ou o trabalho não é feito.",
       okRate: "Com o cliente a {rate}/h, este nível dá a {who} até {max}/h. A taxa combinada é {pay}: o acordo se sustenta.",
@@ -620,7 +615,7 @@
       geoOn: "Só pelo papel seriam <b>{full}</b>/h. Com o coeficiente são <b>{local}</b>/h — um diferencial geográfico de <b>{diff}</b>/h, {pctdiff} do que o papel sozinho rende.",
       geoFloor: "O piso está valendo: sem ele o coeficiente daria {raw}/h.",
       f1: "<b>Para onde vai o diferencial é o que importa.</b> Se virar margem em silêncio, o coletivo lucra com o lugar onde alguém mora. Declare o destino — reserva, fundo solidário, reinvestimento — para que seja discutível e não presumido.",
-      f2: "<b>Regra de não-acordo.</b> Se a taxa da pessoa passa do que o nível permite e o cliente não paga o mínimo, o trabalho não é feito. Ninguém é espremido abaixo da própria taxa para fechar a margem.",
+      f2: "<b>Não é lucro.</b> A parte retida mantém a estrutura de pé — encontrar o trabalho, montar o time, faturar, as horas que ninguém cobra — e carrega o risco do lado do cliente: se uma entrega dá errado, se é preciso substituir alguém ou se uma fatura nunca é paga, quem absorve é o coletivo, não a pessoa. É deliberadamente fina.",
       f3: "<b>Arredondamento.</b> Onde as duas visões diferem em um degrau, a cobertura arredonda a favor da pessoa. Dois degraus não se mediam: se conversa.",
       f4: "<b>O nível pertence ao par pessoa-e-papel</b>, não à pessoa. A mesma pessoa pode ser autônoma num papel e trabalhar com apoio em outro. Revisto a cada renovação.",
       f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos.",
@@ -635,7 +630,7 @@
       askLbl: "Su tarifa pedida \u20ac/h",
       provider: "colaborador", providerSub: "Independiente — freelance o un estudio pequeño, hasta unas 25 personas.",
       reset: "Restaurar valores iniciales",
-      eyebrow: "welance · regla de reparto",
+      eyebrow: "la regla de reparto",
       title: "Cuánto de la tarifa del cliente va al colaborador",
       lede: "La cuota depende de cuánta parte del rol cubre el colaborador por su cuenta — no de cuánto paga el cliente, y nunca de un juicio sobre quién es. Se listan los componentes del rol, se marca quién cubre qué, y la cuota sale sola. El colaborador puede ser un freelance o un estudio de hasta unas 25 personas: al modelo le da igual.",
       roleh: "El rol, componente a componente",
@@ -656,13 +651,13 @@
       growthh: "Cómo se sube",
       growthhint: "El nivel no es una etiqueta: es un mapa. Cada componente sin cubrir tiene un valor por hora.",
       resulth: "Resultado", coverk: "Cobertura del rol",
-      fShare: "Cuota persona", fMargin: "Margen welance", fSupport: "soporte welance", keySupport: "soporte welance", fPay: "A la persona", fRate: "Tarifa cliente",
+      fShare: "Cuota persona", fMargin: "estructura y riesgo", fSupport: "soporte welance", keySupport: "soporte welance", fPay: "A la persona", fRate: "Tarifa cliente",
       levelsh: "Los tres niveles",
       levelshint: "Describen cómo se entrega el rol, no quién lo entrega.",
-      cLevel: "Nivel", cCov: "Cobertura", cShare: "Cuota", cMargin: "Margen",
+      cLevel: "Nivel", cCov: "Cobertura", cShare: "Cuota", cMargin: "estructura y riesgo",
       lv: ["AUTÓNOMO", "CON REVISIÓN", "CON APOYO"],
       lvSub: ["la persona cubre el rol entero", "el rol se entrega con revisión de un colega", "el rol se entrega con apoyo en una parte"],
-      keyPerson: "colaborador", keyGeo: "diferencial geográfico", keyCompany: "welance",
+      keyPerson: "colaborador", keyGeo: "diferencial geográfico", keyCompany: "estructura y riesgo",
       okPayout: "A {pay}/h para {who}, este nivel necesita al menos {need}/h del cliente. Cobráis {rate}: el acuerdo se sostiene.",
       noPayout: "A {pay}/h para {who}, este nivel necesitaría {need}/h del cliente, pero cobráis {rate}. O sube la tarifa del cliente, o el trabajo no se hace.",
       okRate: "Con el cliente a {rate}/h, este nivel da a {who} hasta {max}/h. La tarifa acordada es {pay}: el acuerdo se sostiene.",
@@ -673,7 +668,7 @@
       geoOn: "Solo por el rol serían <b>{full}</b>/h. Con el coeficiente son <b>{local}</b>/h — un diferencial geográfico de <b>{diff}</b>/h, el {pctdiff} de lo que rinde el rol solo.",
       geoFloor: "El piso es vinculante: sin él el coeficiente daría {raw}/h.",
       f1: "<b>A dónde va el diferencial es lo que importa.</b> Si se vuelve margen en silencio, el colectivo gana de dónde vive alguien. Dale un destino declarado — reserva, fondo solidario, reinversión — para que sea discutible y no presumido.",
-      f2: "<b>Regla de no-acuerdo.</b> Si la tarifa de la persona supera lo que el nivel permite y el cliente no acepta el mínimo, el trabajo no se hace. Nadie es comprimido por debajo de su tarifa para cuadrar el margen.",
+      f2: "<b>No es beneficio.</b> La parte retenida sostiene la estructura — encontrar el trabajo, montar el equipo, facturar, las horas que nadie cobra — y carga el riesgo del lado del cliente: si una entrega sale mal, hace falta un reemplazo o una factura nunca se paga, lo absorbe el colectivo, no la persona. Es deliberadamente delgada.",
       f3: "<b>Redondeos.</b> Donde las dos miradas difieren un escalón, la cobertura se redondea a favor de la persona. Una brecha de dos escalones no se promedia: se conversa.",
       f4: "<b>El nivel pertenece al par persona-rol</b>, no a la persona. La misma persona puede ser autónoma en un rol y trabajar con apoyo en otro. Se revisa en cada renovación.",
       f5: "<b>Los coeficientes son valores por defecto editables y necesitan una fuente real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar a alguien con ellos. Las traducciones deben revisarlas hablantes nativos.",
@@ -688,7 +683,7 @@
       askLbl: "Mức giá họ đề nghị \u20ac/h",
       provider: "người cộng tác", providerSub: "Độc lập — freelancer hoặc một studio nhỏ, tới khoảng 25 người.",
       reset: "Khôi phục mặc định",
-      eyebrow: "welance · quy tắc chia",
+      eyebrow: "quy tắc chia",
       title: "Bao nhiêu phần giá khách hàng về tay người cộng tác",
       lede: "Phần chia phụ thuộc vào mức người cộng tác tự đảm nhận vai trò — không phụ thuộc khách trả bao nhiêu, và không bao giờ dựa trên phán xét về con người họ. Liệt kê các thành phần của vai trò, đánh dấu ai đảm nhận gì, và phần chia tự ra. Người cộng tác có thể là một freelancer hoặc một studio tới khoảng 25 người; với mô hình là như nhau.",
       roleh: "Vai trò, theo từng thành phần",
@@ -709,13 +704,13 @@
       growthh: "Cách đi lên",
       growthhint: "Cấp độ không phải nhãn dán, mà là bản đồ. Mỗi thành phần chưa bao phủ có giá trị theo giờ.",
       resulth: "Kết quả", coverk: "Bao phủ vai trò",
-      fShare: "Phần của người đó", fMargin: "Biên welance", fSupport: "hỗ trợ welance", keySupport: "hỗ trợ welance", fPay: "Cho người đó", fRate: "Giá khách hàng",
+      fShare: "Phần của người đó", fMargin: "cấu trúc & rủi ro", fSupport: "hỗ trợ welance", keySupport: "hỗ trợ welance", fPay: "Cho người đó", fRate: "Giá khách hàng",
       levelsh: "Ba cấp độ",
       levelshint: "Chúng mô tả cách vai trò được thực hiện, không phải ai thực hiện.",
-      cLevel: "Cấp độ", cCov: "Bao phủ", cShare: "Phần", cMargin: "Biên",
+      cLevel: "Cấp độ", cCov: "Bao phủ", cShare: "Phần", cMargin: "cấu trúc & rủi ro",
       lv: ["TỰ CHỦ", "CÓ RÀ SOÁT", "CÓ HỖ TRỢ"],
       lvSub: ["người đó đảm nhận trọn vai trò", "vai trò được thực hiện với sự rà soát của đồng nghiệp", "vai trò được thực hiện với hỗ trợ ở một phần"],
-      keyPerson: "người cộng tác", keyGeo: "chênh lệch địa lý", keyCompany: "welance",
+      keyPerson: "người cộng tác", keyGeo: "chênh lệch địa lý", keyCompany: "cấu trúc & rủi ro",
       okPayout: "Ở {pay}/h cho {who}, cấp độ này cần ít nhất {need}/h từ khách. Các bạn đang tính {rate}: thỏa thuận đứng vững.",
       noPayout: "Ở {pay}/h cho {who}, cấp độ này sẽ cần {need}/h từ khách, nhưng các bạn tính {rate}. Hoặc giá khách tăng, hoặc hợp tác không diễn ra.",
       okRate: "Khách ở {rate}/h, cấp độ này cho {who} tối đa {max}/h. Mức đã chốt là {pay}: thỏa thuận đứng vững.",
@@ -726,7 +721,7 @@
       geoOn: "Chỉ theo vai trò sẽ là <b>{full}</b>/h. Với hệ số là <b>{local}</b>/h — chênh lệch địa lý <b>{diff}</b>/h, bằng {pctdiff} phần vai trò tự kiếm được.",
       geoFloor: "Sàn đang ràng buộc: không có nó, hệ số sẽ cho {raw}/h.",
       f1: "<b>Chênh lệch đi về đâu mới là điều quan trọng.</b> Nếu nó âm thầm thành biên lợi nhuận, tập thể kiếm lời từ nơi một người sống. Đặt tên đích đến — quỹ dự trữ, quỹ đoàn kết, tái đầu tư — để nó bàn được thay vì mặc định.",
-      f2: "<b>Quy tắc không-thỏa-thuận.</b> Nếu giá của người đó vượt mức cấp độ cho phép và khách không trả mức tối thiểu, hợp tác không diễn ra. Không ai bị ép xuống dưới giá của mình để làm tròn biên.",
+      f2: "<b>Đây không phải lợi nhuận.</b> Phần giữ lại nuôi bộ khung — tìm việc, dựng đội, xuất hóa đơn, những giờ không ai tính công — và gánh rủi ro phía khách hàng: nếu bàn giao hỏng, cần người thay, hay một hóa đơn không bao giờ được trả, tập thể hấp thụ chứ không phải cá nhân. Nó mỏng một cách có chủ ý.",
       f3: "<b>Làm tròn.</b> Khi hai góc nhìn lệch nhau một bậc, bao phủ làm tròn có lợi cho người đó. Lệch hai bậc không lấy trung bình: phải trao đổi.",
       f4: "<b>Cấp độ thuộc về cặp người-và-vai-trò</b>, không thuộc về người. Cùng một người có thể tự chủ ở vai trò này và cần hỗ trợ ở vai trò khác. Xem lại ở mỗi lần gia hạn.",
       f5: "<b>Các hệ số là mặc định chỉnh sửa được và cần nguồn thật</b> (OECD PPP, World Bank ICP, Numbeo) trước khi trả lương ai đó theo chúng. Bản dịch nên được người bản ngữ kiểm tra.",
@@ -741,7 +736,7 @@
       askLbl: "سعره المطلوب \u20ac/س",
       provider: "المتعاون", providerSub: "مستقل — فريلانسر أو استوديو صغير، حتى نحو 25 شخصًا.",
       reset: "إعادة الضبط إلى الافتراضي",
-      eyebrow: "ويلانس · قاعدة القسمة",
+      eyebrow: "قاعدة القسمة",
       title: "كم من سعر العميل يذهب إلى المتعاون",
       lede: "الحصة تعتمد على مقدار ما يغطيه المتعاون من الدور بنفسه — لا على ما يدفعه العميل، ولا أبدًا على حكم على هويته. تُدرج أجزاء الدور، ويُعلَّم من يغطي ماذا، فتخرج الحصة وحدها. قد يكون المتعاون فريلانسرًا أو استوديو حتى نحو 25 شخصًا؛ لا فرق عند النموذج.",
       roleh: "الدور، جزءًا بجزء",
@@ -762,13 +757,13 @@
       growthh: "كيف تصعد",
       growthhint: "المستوى ليس ملصقًا بل خريطة. كل جزء غير مغطى له قيمة بالساعة.",
       resulth: "النتيجة", coverk: "تغطية الدور",
-      fShare: "حصة الشخص", fMargin: "هامش welance", fSupport: "دعم ويلانس", keySupport: "دعم ويلانس", fPay: "إلى الشخص", fRate: "سعر العميل",
+      fShare: "حصة الشخص", fMargin: "البنية والمخاطرة", fSupport: "دعم ويلانس", keySupport: "دعم ويلانس", fPay: "إلى الشخص", fRate: "سعر العميل",
       levelsh: "المستويات الثلاثة",
       levelshint: "تصف كيف يؤدى الدور، لا من يؤديه.",
-      cLevel: "المستوى", cCov: "التغطية", cShare: "الحصة", cMargin: "الهامش",
+      cLevel: "المستوى", cCov: "التغطية", cShare: "الحصة", cMargin: "البنية والمخاطرة",
       lv: ["مستقل تمامًا", "مع مراجعة", "مع دعم"],
       lvSub: ["يغطي الشخص الدور كله", "يؤدى الدور مع مراجعة زميل", "يؤدى الدور مع دعم في جزء"],
-      keyPerson: "المتعاون", keyGeo: "الفارق الجغرافي", keyCompany: "ويلانس",
+      keyPerson: "المتعاون", keyGeo: "الفارق الجغرافي", keyCompany: "البنية والمخاطرة",
       okPayout: "عند {pay}/س لـ{who}، يحتاج هذا المستوى {need}/س على الأقل من العميل. أنتم تطلبون {rate}: الاتفاق صامد.",
       noPayout: "عند {pay}/س لـ{who}، سيحتاج هذا المستوى {need}/س من العميل، لكنكم تطلبون {rate}. إما أن يرتفع سعر العميل، أو لا يتم التعاقد.",
       okRate: "والعميل عند {rate}/س، يعطي هذا المستوى {who} حتى {max}/س. السعر المتفق عليه {pay}: الاتفاق صامد.",
@@ -779,7 +774,7 @@
       geoOn: "بالدور وحده كانت <b>{full}</b>/س. مع المعامل هي <b>{local}</b>/س — فارق جغرافي قدره <b>{diff}</b>/س، أي {pctdiff} مما يدرّه الدور وحده.",
       geoFloor: "الحد الأدنى ملزم: بدونه كان المعامل سيعطي {raw}/س.",
       f1: "<b>إلى أين يذهب الفارق هو ما يهم.</b> إن صار هامشًا بصمت ربح التجمّع من مكان سكن أحدهم. سمِّ وجهته — احتياطي، صندوق تضامن، إعادة استثمار — ليكون قابلًا للنقاش لا مفترضًا.",
-      f2: "<b>قاعدة اللااتفاق.</b> إن تجاوز سعر الشخص ما يسمح به المستوى ولم يدفع العميل الحد الأدنى، لا يتم التعاقد. لا يُضغط أحد تحت سعره ليستقيم الهامش.",
+      f2: "<b>ليست ربحًا.</b> الحصة المحتجزة تُبقي البنية قائمة — إيجاد العمل، تجميع الفريق، الفوترة، والساعات التي لا يفوترها أحد — وتحمل المخاطرة تجاه العميل: إن ساء تسليم، أو لزم بديل، أو لم تُدفع فاتورة أبدًا، فالتجمّع من يمتصّها لا الشخص. وهي رفيعة عن قصد.",
       f3: "<b>التقريب.</b> حيث تختلف النظرتان درجة واحدة، تُقرَّب التغطية لصالح الشخص. تباعد الدرجتين لا يُؤخذ متوسطه: يُناقش.",
       f4: "<b>المستوى للثنائي شخص-ودور</b>، لا للشخص. الشخص نفسه قد يكون مستقلًا في دور ويعمل بدعم في آخر. يراجَع عند كل تجديد.",
       f5: "<b>المعاملات قيم افتراضية قابلة للتحرير وتحتاج مصدرًا حقيقيًا</b> (OECD PPP، البنك الدولي ICP، Numbeo) قبل أن يُدفع لأحد بناءً عليها. وينبغي أن يراجع الترجمات ناطقون أصليون.",

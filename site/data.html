@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your brief, your key — Perfect Brief</title>
+<meta name="description" content="Exactly what travels where when you score a brief: what we send, what we keep and for how long, what we never keep — and how to bring your own model key.">
+<link rel="stylesheet" href="welance.css?v=14">
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=6"></script>
+<script src="code.js?v=1"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 96px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { padding: 18px 0; border-bottom: 2px solid var(--ink); }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(30px, 5vw, 46px);
+    margin: 8px 0 6px; letter-spacing: -.02em; }
+  h1 .b { color: var(--accent); }
+  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: 10px 0 0; }
+  .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center;
+    gap: 10px; margin: 44px 0 14px; }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  p { max-width: 64ch; margin: 0 0 14px; }
+  .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
+    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 12px; max-width: 26ch; }
+  table { border-collapse: collapse; width: 100%; max-width: 860px; margin: 0 0 16px; font-size: 15px; }
+  th, td { text-align: start; padding: 12px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 600; }
+  td.k { font-weight: 600; white-space: nowrap; }
+  td .no { color: var(--fail); font-family: var(--mono); font-size: 12.5px; }
+  td .yes { color: var(--pass); font-family: var(--mono); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="data.crumb">your brief, your key</span></p>
+<div class="wrap">
+  <header>
+    <h1><span data-i18n="data.h1">Your brief, your key</span><span class="b">_</span></h1>
+    <p class="thesis" data-i18n="data.thesis">A project that asks you to trust an open bar owes you the boring details: what leaves your machine, what we keep, for how long, and what we never keep at all.</p>
+  </header>
+
+  <div class="eyebrow"><span data-i18n="data.eb1">what travels where</span></div>
+  <table>
+    <thead><tr>
+      <th data-i18n="data.th1">what</th>
+      <th data-i18n="data.th2">where it goes</th>
+      <th data-i18n="data.th3">what we keep</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="k" data-i18n="data.r1.k">The brief text</td>
+        <td data-i18n="data.r1.a">To our service, then to the model provider that judges it — Anthropic by default, or OpenRouter when you bring a key.</td>
+        <td><span class="no" data-i18n="data.r1.b">never stored</span></td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="data.r2.k">The verdicts</td>
+        <td data-i18n="data.r2.a">Back to you. Each carries a short quote copied verbatim from your brief as evidence.</td>
+        <td><span class="yes" data-i18n="data.r2.b">cached 24h</span> <span data-i18n="data.r2.c">— keyed by a hash of the brief, so the same brief is not re-judged and re-charged. Send <code>no_cache: true</code> and nothing is written.</span></td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="data.r3.k">Your model key</td>
+        <td data-i18n="data.r3.a">Forwarded once, over TLS, to the provider — as the Authorization header of that single call.</td>
+        <td><span class="no" data-i18n="data.r3.b">never stored, never logged, never part of any cache key</span></td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="data.r4.k">Who you are</td>
+        <td data-i18n="data.r4.a">Nowhere. There are no accounts, no cookies, no analytics on these pages.</td>
+        <td><span class="no" data-i18n="data.r4.b">nothing to keep</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p data-i18n="data.cache">The cache exists for one reason: the judge is deterministic at temperature 0, so scoring the same brief twice should cost once and answer identically. It holds verdicts — status, confidence, a short quote — never the brief itself, and it expires in a day.</p>
+
+  <div class="eyebrow"><span data-i18n="data.eb2">bring your own key</span></div>
+  <p class="claim" data-i18n="data.c1">With your key, we run no model for you.</p>
+  <p data-i18n-html="data.byok">Send an OpenRouter key in the <code>x-llm-key</code> header and the judgement runs on your account, against any model you choose. We forward the call and hand you the result — no model of ours is invoked, and nothing about the key is retained.</p>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">bash · <span data-i18n="data.byokLabel">your own judge</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
+  -H 'content-type: application/json' \
+  -H 'x-llm-key: sk-or-…' \
+  -d '{"brief":"…","judge":"llm","model":"anthropic/claude-sonnet-4.6","no_cache":true}'</pre>
+  </div>
+  <p data-i18n-html="data.mcpkey">The <a href="integrate.html#mcp">MCP server</a> reads the same key from <code>PB_LLM_KEY</code>, so an assistant on your machine can score briefs entirely on your own account.</p>
+
+  <div class="eyebrow"><span data-i18n="data.eb3">if that is not enough</span></div>
+  <p data-i18n-html="data.custom">Some briefs cannot leave a perimeter, and some organisations need a data-processing agreement, a named model, or the whole thing running somewhere else. That is a conversation, not a checkbox: write to <a href="mailto:hello@welance.com">hello@welance.com</a> and we will tell you plainly what is possible — including running it on models we select, or handing you the deployment to run yourself. It is MIT-licensed; self-hosting is a right, not a favour.</p>
+
+  <div class="eyebrow"><span data-i18n="data.eb4">the honest limits</span></div>
+  <p data-i18n="data.limits">We do not control the provider's own retention: once a brief reaches Anthropic or OpenRouter, their terms apply, and you should read them if the content is sensitive. The public service is rate-limited per IP and served over TLS, but it is a small open-source service, not a compliance product. For anything genuinely confidential, bring your own key, send no_cache, or run your own copy.</p>
+</div>
+<div id="site-footer"></div>
+</body>
+</html>

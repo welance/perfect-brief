@@ -6,7 +6,8 @@
  */
 import { test, expect } from "@playwright/test";
 
-const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html", "/console.html"];
+const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html",
+  "/console.html", "/integrate.html", "/data.html"];
 
 test.describe("one origin", () => {
   test("the site and the API are served together", async ({ request }) => {
@@ -45,7 +46,9 @@ test.describe("chrome and navigation", () => {
       await expect(page.locator(".wl-head")).toBeVisible();
       await expect(page.locator(".wl-foot")).toBeAttached();
       await expect(page.locator(".wl-cta-btn").last()).toHaveAttribute("href", /welance\.com\/directory/);
-      await expect(page.locator(".wl-head-logo")).toHaveAttribute("href", "./");
+      await expect(page.locator(".wl-brandline")).toHaveAttribute("href", "./");
+      // the project leads; welance is a small origin mark, not the headline
+      await expect(page.locator(".wl-project")).toContainText("Perfect Brief");
     });
   }
 

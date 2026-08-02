@@ -33,7 +33,6 @@ WelanceI18n.register("vi", {
     "index.eb4": "quản trị",
     "index.triad": "<b>ai cũng đề xuất được</b> — mỗi quy tắc là một tệp; mở PR, không gác cổng<br><b>bằng chứng quyết định merge</b> — kho fixture công khai trong CI quyết định, không phải khẩu vị<br><b>ai cũng fork được</b> — MIT; quyền rời đi là bảo đảm chống thâu tóm thật sự",
     "index.govnote": "Chi tiết trong <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> và <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. Lập luận đầy đủ nằm trong <a href=\"rules.html\">bài viết</a>.",
-    "index.foot": "The Perfect Brief · một dự án mã nguồn mở của welance",
 
     /* ---------- method.html ---------- */
     "method.crumb": "phương pháp",
@@ -57,7 +56,6 @@ WelanceI18n.register("vi", {
     "method.s3.go": "→ tìm đội ngũ",
     "method.p3": "Mỗi bước cần bước trước nó. Giá cần phạm vi của brief để biết một vai trò là gì; đội ngũ cần phép tính của giá để cho ba con người một mức giá trung thực. Thông tin đổ xuống theo tầng — vì thế chúng là các bước chứ không phải tính năng, và vì thế brief vẫn là khái niệm chính: không gì ở hạ nguồn sống sót qua một brief thiếu trung thực.",
     "method.fxintro": "Mọi thứ phương pháp tính toán, sinh ra từ chính tệp mà các máy tính chạy trên đó (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — trang này không thể lệch khỏi mã nguồn.",
-    "method.fxn": "công thức {n} trên {m}",
     "method.fxhead": "cả {n} công thức, đầy đủ",
     "method.fxclose": "<b>{n}</b> công thức này giúp đưa ra quyết định. Mọi thứ còn lại là vốn con người — và nó không tính toán được.",
     "method.eb3": "điều các công thức không thấy",
@@ -90,7 +88,6 @@ WelanceI18n.register("vi", {
     "site.copied": "đã chép",
     "site.copy": "sao chép",
     "site.response": "phản hồi",
-    "site.request": "yêu cầu",
     "rules.q.ex": "92/100 — nêu tên thương hiệu",
     "rules.q.blk2": "bị chặn",
     "rules.q.blk": "bị chặn",
@@ -118,10 +115,6 @@ WelanceI18n.register("vi", {
     "method.p2b": "Bạn giao đi chính cấu trúc giao tiếp của đội mình. Ghép đội không phải xếp người, mà là thiết kế sản phẩm — vì thế ai làm với ai là quyết định chúng tôi coi là quan trọng nhất.",
     "method.quotesrc": "Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — nổi tiếng nhờ Fred Brooks trong <em>The Mythical Man-Month</em> với tên “định luật Conway”.",
     "method.quote": "Các tổ chức thiết kế hệ thống … buộc phải tạo ra những thiết kế là bản sao cấu trúc giao tiếp của chính các tổ chức ấy.",
-    "method.cta1": "Bắt đầu từ brief",
-    "method.cta2": "Tính một phần chia",
-    "method.cta3": "Tìm đội ngũ",
-    "method.foot": "Phương Pháp welance · một dự án mã nguồn mở của welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "Điểm số",
@@ -183,11 +176,10 @@ WelanceI18n.register("vi", {
     "rules.p10": "Các fixture là hệ miễn dịch: một kho brief đã gán nhãn với điểm kỳ vọng. Thử âm thầm hạ thước đo để lọt một brief yếu là bạn phá kho — CI từ chối bạn. Muốn lách, bạn phải xóa fixture, và đó là một diff lộ liễu, đáng ngờ.",
     "rules.invh": "Một quy tắc chúng tôi rất mong có PR",
     "rules.invp": "<code>decision-owner</code> — brief có nêu tên một người duy nhất chịu trách nhiệm quyết định không? Đó là \"80% đội ngũ\" thuần túy: brief không có chủ thì giậm chân. Chúng tôi cố ý để ngỏ. Hãy thêm nó.",
-    "rules.foot": "Bản Brief Hoàn Hảo cho Sản Phẩm Số · một dự án mã nguồn mở của <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "welance · một đội ngũ, một mức giá",
+    "team.eyebrow": "một đội ngũ, một mức giá",
     "team.h1": "Perfect Team",
     "team.lede": "Một đội ngũ đa chức năng, được định giá như định giá một người độc lập. Các vai trò và trọng số mô tả dự án; mỗi vai trò mang cấp độ và nền chi phí riêng. Khách hàng thấy <b>một mức giá gộp duy nhất</b> — không phải một trăm mức khác nhau — biên lợi nhuận thay đổi trong đội theo cấp độ, và toàn dự án đạt một <b>welance margin</b> được tuyên bố, có tên, ai cũng kiểm tra được.",
     "team.reset": "Khôi phục mặc định",
@@ -202,8 +194,6 @@ WelanceI18n.register("vi", {
     "team.fl75": "ít nhất ba phần tư",
     "team.fl5": "ít nhất một nửa lương vai trò",
     "team.fl0": "không sàn — lương theo hẳn chi phí địa phương",
-    "team.th1": "Vai trò", "team.th2": "Trọng số", "team.th3": "Cấp độ", "team.th4": "Quốc gia",
-    "team.th5": "Hệ số", "team.th6": "Giá riêng", "team.th7": "Trần",
     "team.add": "+ Thêm vai trò",
     "team.c2h": "Lần kiểm tra đầu tiên",
     "team.c2hint": "Các công thức phía trên tạo ra đội ngũ khởi đầu. Điều chúng không thấy được — sự tương thích giữa các thành viên và với khách hàng, sự tử tế, sự sẵn sàng, cách một người chịu áp lực — chỉ học được khi làm việc cùng nhau.",

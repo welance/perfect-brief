@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integrate the bar — Perfect Brief</title>
+<meta name="description" content="Four ways to put the brief bar into your workflow: paste a prompt, connect an MCP server, call the API, or just use the console. Pick the one that matches how you already work.">
+<link rel="stylesheet" href="welance.css?v=14">
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=6"></script>
+<script src="code.js?v=1"></script>
+<style>
+  /* tokens, fonts, buttons come from welance.css */
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 96px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { padding: 18px 0; border-bottom: 2px solid var(--ink); }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(30px, 5vw, 46px);
+    margin: 8px 0 6px; letter-spacing: -.02em; }
+  h1 .b { color: var(--accent); }
+  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: 10px 0 0; }
+  .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center;
+    gap: 10px; margin: 44px 0 14px; }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  p { max-width: 64ch; margin: 0 0 14px; }
+  .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
+    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 12px; max-width: 24ch; }
+
+  /* the four routes */
+  .routes { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 0 0 8px; }
+  @media (min-width: 720px) { .routes { grid-template-columns: 1fr 1fr; } }
+  .route { border: 1px solid var(--rule); background: var(--paper-2); padding: 18px;
+    display: flex; flex-direction: column; gap: 8px; }
+  .route .who { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); }
+  .route h3 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin: 0; }
+  .route p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
+  .route .go { font-family: var(--mono); font-size: 13px; }
+  .route .effort { font-family: var(--mono); font-size: 11px; color: var(--ink);
+    border: 1px solid var(--rule); background: var(--paper); padding: 3px 8px;
+    align-self: flex-start; }
+
+  /* the logo wall */
+  .works { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 16px; }
+  .work { display: flex; align-items: center; gap: 9px; border: 1px solid var(--rule);
+    background: var(--paper-2); padding: 10px 14px; font-family: var(--mono); font-size: 12.5px; }
+  .work svg { width: 18px; height: 18px; flex: none; }
+  .work .tick { color: var(--pass); font-size: 11px; }
+
+  .step { display: grid; grid-template-columns: 26px 1fr; gap: 12px; margin: 0 0 14px;
+    max-width: 66ch; align-items: start; }
+  .step .n { font-family: var(--mono); font-size: 12px; color: var(--accent); padding-top: 3px; }
+  .step p { margin: 0; }
+  footer { display: none; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="int.crumb">integrate</span></p>
+<div class="wrap">
+  <header>
+    <h1><span data-i18n="int.h1">Put the bar in your workflow</span><span class="b">_</span></h1>
+    <p class="thesis" data-i18n="int.thesis">Four routes, from "paste this" to "call this". They all reach the same bar: a score computed by code, and a gate that can refuse. Pick the one that matches how you already work — you do not need to be technical for the first two.</p>
+  </header>
+
+  <div class="eyebrow"><span data-i18n="int.eb1">choose your route</span></div>
+  <div class="routes">
+    <div class="route">
+      <span class="who" data-i18n="int.r1.who">anyone · no setup</span>
+      <h3 data-i18n="int.r1.h">Use the console</h3>
+      <p data-i18n="int.r1.p">Paste a brief, press score, read what fails and fix it in place. Works offline on a keyword stub, and with the real judge in eight languages. Nothing to install, nothing to sign.</p>
+      <span class="effort" data-i18n="int.r1.e">2 minutes</span>
+      <a class="go" href="console.html" data-i18n="int.r1.go">→ open the console</a>
+    </div>
+    <div class="route">
+      <span class="who" data-i18n="int.r2.who">anyone with an assistant</span>
+      <h3 data-i18n="int.r2.h">Paste a prompt</h3>
+      <p data-i18n="int.r2.p">Copy one prompt into Claude, ChatGPT or your editor's assistant. It calls the public API, fixes the gate first, quotes the evidence and re-scores. No account, no key, no code.</p>
+      <span class="effort" data-i18n="int.r2.e">5 minutes</span>
+      <a class="go" href="console.html#assistant" data-i18n="int.r2.go">→ copy the prompt</a>
+    </div>
+    <div class="route">
+      <span class="who" data-i18n="int.r3.who">assistant power users</span>
+      <h3 data-i18n="int.r3.h">Connect the MCP server</h3>
+      <p data-i18n="int.r3.p">Your assistant gets four tools — read the rules, score, suggest fixes, check the bar — and a guided prompt. It runs on your machine and talks to the public API; bring your own model key if you want to.</p>
+      <span class="effort" data-i18n="int.r3.e">10 minutes</span>
+      <a class="go" href="#mcp" data-i18n="int.r3.go">→ set it up below</a>
+    </div>
+    <div class="route">
+      <span class="who" data-i18n="int.r4.who">developers · products</span>
+      <h3 data-i18n="int.r4.h">Call the API</h3>
+      <p data-i18n="int.r4.p">One POST returns the score, the gate and a verdict per rule with verbatim evidence. Stable, versioned, and pinned by a contract test suite: what you build against will not move under you.</p>
+      <span class="effort" data-i18n="int.r4.e">15 minutes</span>
+      <a class="go" href="/docs" data-i18n="int.r4.go">→ API docs</a>
+    </div>
+  </div>
+
+  <div class="eyebrow"><span data-i18n="int.eb2">works with</span></div>
+  <div class="works">
+    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16v14H4z" opacity=".12"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4.8 5.8h14.4v12.4H4.8zM8 9h8M8 12h8M8 15h5"/></svg>Claude<span class="tick">MCP</span></div>
+    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 4.8v14.4M4.8 12h14.4"/></svg>ChatGPT<span class="tick">prompt</span></div>
+    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="m9 7-5 5 5 5M15 7l5 5-5 5"/></svg>Cursor · VS Code<span class="tick">MCP</span></div>
+    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 12h16M4 7h16M4 17h10"/></svg>curl · any language<span class="tick">API</span></div>
+    <div class="work"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 8v5l3 2"/></svg>CI · pre-publish checks<span class="tick">API</span></div>
+  </div>
+  <p style="font-size:13.5px;color:var(--ink-soft)" data-i18n="int.works.note">Anything that speaks MCP or HTTP works. Nothing here is a partnership or a plugin store — it is one open endpoint and one small server you can read.</p>
+
+  <div class="eyebrow" id="mcp"><span data-i18n="int.eb3">the mcp server, step by step</span></div>
+  <p class="claim" data-i18n="int.c1">Your assistant, holding a bar it cannot bend.</p>
+  <div class="step"><span class="n">1</span><p data-i18n="int.s1">Install nothing: <code>uvx</code> fetches and runs it. You need <a href="https://docs.astral.sh/uv/">uv</a> (or use <code>pipx</code>).</p></div>
+  <div class="step"><span class="n">2</span><p data-i18n="int.s2">Add this to your assistant's MCP configuration — Claude Desktop, Claude Code, Cursor, or anything else that speaks MCP.</p></div>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">json · <span data-i18n="int.cfg">configuration</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="json">{
+  "mcpServers": {
+    "perfect-brief": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "perfect-brief-mcp"]
+    }
+  }
+}</pre>
+  </div>
+  <div class="step"><span class="n">3</span><p data-i18n="int.s3">Ask it to score a brief. It will read the rules first, report the decision, and fix the gate before anything else — that order is built into the server's own prompt.</p></div>
+  <p data-i18n-html="int.byok">Optional: set <code>PB_LLM_KEY</code> to your own OpenRouter key and the judge runs on your account — we forward the call and run no model for you. See <a href="data.html">your brief, your key</a> for exactly what travels where.</p>
+
+  <div class="eyebrow"><span data-i18n="int.eb4">or just call it</span></div>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-tabs">
+        <button data-tab="curl" aria-pressed="true">cURL</button>
+        <button data-tab="js">JavaScript</button>
+        <button data-tab="py">Python</button>
+      </div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="bash" data-tab="curl">curl -X POST https://briefs.welance.com/v1/score \
+  -H 'content-type: application/json' \
+  -d '{"brief":"…","judge":"llm"}'</pre>
+<pre data-lang="js" data-tab="js" hidden>const res = await fetch("https://briefs.welance.com/v1/score", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ brief, judge: "llm" }),
+});
+const { score, decision, gate } = await res.json();</pre>
+<pre data-lang="py" data-tab="py" hidden>import httpx
+
+r = httpx.post("https://briefs.welance.com/v1/score",
+               json={"brief": brief, "judge": "llm"})
+score, decision = r.json()["score"], r.json()["decision"]</pre>
+  </div>
+  <p data-i18n-html="int.api.note">Read the bar first with <code>GET /v1/rules</code>, or point a machine at <a href="llms.txt">llms.txt</a>. Full reference in the <a href="/docs">API docs</a>.</p>
+
+  <div class="eyebrow"><span data-i18n="int.eb5">before you build on it</span></div>
+  <p class="claim" data-i18n="int.c2">It scores articulation, not truth.</p>
+  <p data-i18n="int.honest">A brilliantly written brief for a doomed product will score well. What the bar gives you is narrower and more useful than a verdict on your idea: a number two people get the same way, a gate that refuses on policy rather than taste, and a shared vocabulary — "success-metrics is failing, weight 10" beats "the AI thinks it could be better". Build on that, not on the promise of good judgement.</p>
+</div>
+<div id="site-footer"></div>
+</body>
+</html>

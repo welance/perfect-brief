@@ -34,7 +34,6 @@ WelanceI18n.register("de", {
     "index.eb4": "Governance",
     "index.triad": "<b>alle schlagen vor</b> — jede Regel ist eine Datei; öffne eine PR, kein Gatekeeping<br><b>Belege mergen</b> — der öffentliche Fixture-Korpus in der CI entscheidet, nicht Geschmack<br><b>alle forken</b> — MIT; das Austrittsrecht ist die echte Anti-Vereinnahmungs-Garantie",
     "index.govnote": "Details in <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> und <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. Die ausführliche Begründung steht <a href=\"rules.html\">im Artikel</a>.",
-    "index.foot": "The Perfect Brief · ein Open-Source-Projekt von welance",
 
     /* ---------- method.html — The welance Method ---------- */
     "method.crumb": "die Methode",
@@ -58,7 +57,6 @@ WelanceI18n.register("de", {
     "method.s3.go": "→ Team finden",
     "method.p3": "Jeder Schritt braucht den davor. Der Preis braucht den Umfang des Briefings, um zu wissen, was eine Rolle überhaupt ist; das Team braucht die Arithmetik des Preises, um drei Menschen einen ehrlichen Satz zu geben. Information fällt kaskadenförmig — deshalb sind es Schritte und keine Features, und deshalb bleibt das Briefing das Hauptkonzept: nichts stromabwärts überlebt ein unehrliches.",
     "method.fxintro": "Alles, was die Methode berechnet, abgeleitet aus derselben Datei, auf der die Rechner laufen (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — diese Seite kann nicht vom Code abdriften.",
-    "method.fxn": "Formel {n} von {m}",
     "method.fxhead": "die {n} Formeln, alle",
     "method.fxclose": "Diese <b>{n}</b> Formeln helfen, die Entscheidung zu treffen. Alles andere ist Humankapital — und das lässt sich nicht berechnen.",
     "method.eb3": "was die Formeln nicht sehen",
@@ -91,7 +89,6 @@ WelanceI18n.register("de", {
     "site.copied": "kopiert",
     "site.copy": "kopieren",
     "site.response": "Antwort",
-    "site.request": "Anfrage",
     "rules.q.ex": "92/100 — nennt die Marke",
     "rules.q.blk2": "blockiert",
     "rules.q.blk": "blockiert",
@@ -119,10 +116,6 @@ WelanceI18n.register("de", {
     "method.p2b": "Du lieferst die Kommunikationsstruktur deines Teams aus. Ein Team zu komponieren ist kein Staffing, es ist Produktdesign — und deshalb ist wer mit wem arbeitet die Entscheidung, die wir als die wichtigste behandeln.",
     "method.quotesrc": "Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — berühmt gemacht von Fred Brooks im <em>Mythical Man-Month</em> als „Conways Gesetz“.",
     "method.quote": "Organisationen, die Systeme entwerfen, … sind gezwungen, Entwürfe zu produzieren, die Kopien der Kommunikationsstrukturen dieser Organisationen sind.",
-    "method.cta1": "Mit dem Briefing anfangen",
-    "method.cta2": "Eine Aufteilung berechnen",
-    "method.cta3": "Team finden",
-    "method.foot": "Die welance-Methode · ein Open-Source-Projekt von welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "Die Punktzahl",
@@ -184,11 +177,10 @@ WelanceI18n.register("de", {
     "rules.p10": "Die Fixtures sind das Immunsystem: ein Korpus gelabelter Briefings mit erwarteten Punktzahlen. Versuche, die Messlatte heimlich zu senken, um ein schwaches Briefing durchzuschleusen, und du brichst den Korpus — die CI weist dich ab. Um daran vorbeizukommen, müsstest du Fixtures löschen, und das ist ein sichtbarer, verdächtiger Diff.",
     "rules.invh": "Eine Regel, für die wir uns eine PR wünschen",
     "rules.invp": "<code>decision-owner</code> — nennt das Briefing eine einzige entscheidungsbefugte Person? Das ist pures \"80% Team\": ein Briefing ohne Owner bleibt stecken. Wir haben sie absichtlich weggelassen. Füge sie hinzu.",
-    "rules.foot": "Das perfekte Briefing für ein digitales Produkt · ein Open-Source-Projekt von <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "welance · ein Team, ein Satz",
+    "team.eyebrow": "ein Team, ein Satz",
     "team.h1": "Perfect Team",
     "team.lede": "Ein cross-funktionales Team, bepreist wie eine einzelne unabhängige Person. Die Rollen und ihre Gewichte beschreiben das Projekt; jede Rolle trägt ihre eigene Stufe und Kostenbasis. Der Kunde sieht <b>einen gemischten Satz</b> — nicht hundert verschiedene — Margen variieren im Team nach Stufe, und das Projekt als Ganzes hält eine erklärte, benannte <b>welance-Marge</b>, die jeder prüfen kann.",
     "team.reset": "Auf Standard zurücksetzen",
@@ -203,8 +195,6 @@ WelanceI18n.register("de", {
     "team.fl75": "mindestens drei Viertel",
     "team.fl5": "mindestens die Hälfte der Rollen-Bezahlung",
     "team.fl0": "keine Untergrenze — Bezahlung folgt ganz den lokalen Kosten",
-    "team.th1": "Rolle", "team.th2": "Gewicht", "team.th3": "Stufe", "team.th4": "Land",
-    "team.th5": "Koeff", "team.th6": "Eigener Satz", "team.th7": "Obergrenze",
     "team.add": "+ Rolle hinzufügen",
     "team.c2h": "Der erste Check",
     "team.c2hint": "Die Formeln oben erzeugen das Start-Team. Was sie nicht sehen können — Kompatibilität zwischen den Mitgliedern und mit dem Kunden, Freundlichkeit, Verfügbarkeit, wie jemand Stress trägt — lernt man nur beim Zusammenarbeiten.",
