@@ -33,7 +33,6 @@ WelanceI18n.register("es", {
     "index.eb4": "gobernanza",
     "index.triad": "<b>cualquiera propone</b> — cada regla es un archivo; abre una PR, cero gatekeeping<br><b>la evidencia mergea</b> — decide el corpus público de fixtures en CI, no el gusto<br><b>cualquiera forkea</b> — MIT; el derecho de salida es la verdadera garantía anti-captura",
     "index.govnote": "Detalles en <a href=\"https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md\">GOVERNANCE.md</a> y <a href=\"https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md\">CONTRIBUTING.md</a>. El razonamiento extenso está en <a href=\"rules.html\">el artículo</a>.",
-    "index.foot": "The Perfect Brief · un proyecto open source de welance",
 
     /* ---------- method.html ---------- */
     "method.crumb": "el método",
@@ -57,7 +56,6 @@ WelanceI18n.register("es", {
     "method.s3.go": "→ encuentra un equipo",
     "method.p3": "Cada paso necesita el anterior. El precio necesita el alcance del brief para saber qué es un rol; el equipo necesita la aritmética del precio para dar a tres personas una tarifa honesta. La información cae en cascada — por eso son pasos y no features, y por eso el brief sigue siendo el concepto principal: nada aguas abajo sobrevive a uno deshonesto.",
     "method.fxintro": "Todo lo que el método calcula, derivado del mismo archivo sobre el que corren las calculadoras (<a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">pricing.js</a>) — esta página no puede desviarse del código.",
-    "method.fxn": "fórmula {n} de {m}",
     "method.fxhead": "las {n} fórmulas, todas",
     "method.fxclose": "Estas <b>{n}</b> fórmulas ayudan a tomar la decisión. Todo lo demás es capital humano — y no se calcula.",
     "method.eb3": "lo que las fórmulas no ven",
@@ -90,7 +88,6 @@ WelanceI18n.register("es", {
     "site.copied": "copiado",
     "site.copy": "copiar",
     "site.response": "respuesta",
-    "site.request": "petición",
     "rules.q.ex": "92/100 — nombra la marca",
     "rules.q.blk2": "bloqueado",
     "rules.q.blk": "bloqueado",
@@ -118,10 +115,6 @@ WelanceI18n.register("es", {
     "method.p2b": "Entregas la estructura de comunicación de tu equipo. Componer el equipo no es staffing, es diseño de producto — y por eso quién trabaja con quién es la decisión que tratamos como la más importante.",
     "method.quotesrc": "Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — hecha célebre por Fred Brooks en <em>The Mythical Man-Month</em> como la “ley de Conway”.",
     "method.quote": "Las organizaciones que diseñan sistemas … están obligadas a producir diseños que son copias de las estructuras de comunicación de esas organizaciones.",
-    "method.cta1": "Empieza por el brief",
-    "method.cta2": "Calcula un reparto",
-    "method.cta3": "Encuentra un equipo",
-    "method.foot": "El método welance · un proyecto open source de welance",
 
     /* ---------- the formulas ---------- */
     "fx.score.name": "La puntuación",
@@ -183,11 +176,10 @@ WelanceI18n.register("es", {
     "rules.p10": "Las fixtures son el sistema inmune: un corpus de briefs etiquetados con puntuaciones esperadas. Intenta bajar el listón a escondidas para colar un brief flojo y rompes el corpus — la CI te rechaza. Para esquivarla tendrías que borrar fixtures, y ese es un diff visible y sospechoso.",
     "rules.invh": "Una regla para la que nos encantaría una PR",
     "rules.invp": "<code>decision-owner</code> — ¿el brief nombra a una única persona responsable de decidir? Es puro \"80% equipo\": un brief sin owner se estanca. La dejamos fuera a propósito. Añádela tú.",
-    "rules.foot": "El Brief Perfecto para un Producto Digital · un proyecto open source de <a href=\"https://welance.com\">welance</a>",
 
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
-    "team.eyebrow": "welance · un equipo, una tarifa",
+    "team.eyebrow": "un equipo, una tarifa",
     "team.h1": "Perfect Team",
     "team.lede": "Un equipo multifuncional, tasado como se tasa a una persona independiente. Los roles y sus pesos describen el proyecto; cada rol lleva su propio nivel y base de costos. El cliente ve <b>una tarifa combinada</b> — no cien distintas — los márgenes varían dentro del equipo por nivel, y el proyecto en su conjunto supera un <b>welance margin</b> declarado y con nombre, que cualquiera puede verificar.",
     "team.reset": "Restaurar los valores iniciales",
@@ -202,8 +194,6 @@ WelanceI18n.register("es", {
     "team.fl75": "al menos tres cuartos",
     "team.fl5": "al menos la mitad de la paga del rol",
     "team.fl0": "sin piso — la paga sigue del todo el costo local",
-    "team.th1": "Rol", "team.th2": "Peso", "team.th3": "Nivel", "team.th4": "País",
-    "team.th5": "Coef", "team.th6": "Tarifa propia", "team.th7": "Techo",
     "team.add": "+ Añadir rol",
     "team.c2h": "El primer check",
     "team.c2hint": "Las fórmulas de arriba producen el equipo de partida. Lo que no pueden ver — la compatibilidad entre los miembros y con el cliente, la amabilidad, la disponibilidad, cómo alguien lleva el estrés — se aprende solo trabajando juntos.",
@@ -235,6 +225,17 @@ WelanceI18n.register("es", {
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
     "chrome.brief": "Perfect Brief",
+    "int.w.ci": "Tu código · CI · un producto",
+    "int.w.ifmcp": "si habla MCP",
+    "int.w.other": "Cualquier otro asistente",
+    "int.w.api": "llama a la API",
+    "int.w.prompt": "pega un prompt",
+    "int.w.mcp": "servidor MCP",
+    "int.w.tool": "dónde trabajas",
+    "chrome.theme": "claro u oscuro",
+    "chrome.data": "Tu brief, tu clave",
+    "chrome.api": "Documentación API",
+    "chrome.build": "Construye con esto",
     "chrome.ctaPrice": "Calcula un reparto",
     "chrome.ctaBrief": "Evalúa un brief",
     "chrome.ctaHead": "El equipo que tu objetivo merece",
@@ -242,7 +243,7 @@ WelanceI18n.register("es", {
     "chrome.console": "Consola",
     "chrome.github": "GitHub",
     "chrome.imprint": "Imprint",
-    "chrome.links": "El método, abierto",
+    "chrome.links": "El método",
     "chrome.login": "Login",
     "chrome.method": "El método",
     "chrome.price": "Perfect Price",

@@ -1,5 +1,21 @@
 # Contributing a rule
 
+**Do not propose a rule. Propose the evidence.**
+
+Fourteen rules already share 100 points. Every rule added takes weight from the
+others, and a checklist that keeps growing is a checklist people stop reading —
+that is how bars die, not by being too strict but by being too long. So the bar
+for adding one is deliberately high, and it is empirical:
+
+> Bring a real brief the current ruleset scores **wrongly** — too high or too
+> low — and add it as a fixture. If the existing rules cannot explain the gap,
+> the missing rule proves itself and writing it is easy. If they can, the rule
+> was not needed; sharpen the criteria of the rule that should have caught it.
+
+The most valuable PRs are usually not new rules at all: a `criteria` line made
+unambiguous, a better source, a fixture that pins a case we were getting away
+with. Those raise the bar for everyone without costing anyone weight.
+
 Anyone can. A good rule PR contains:
 
 1. **A rule file** in `rules/` matching `rule.schema.json`:

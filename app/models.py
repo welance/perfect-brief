@@ -39,6 +39,11 @@ class ScoreRequest(BaseModel):
         "(drops the Directory-only rules: anonymised + €10k floor).",
         examples=[[]],
     )
+    no_cache: bool = Field(
+        default=False,
+        description="Skip the verdict cache entirely: nothing about this brief is "
+        "written down, not even the evidence quotes. Costs a fresh judge call.",
+    )
 
     model_config = {
         "json_schema_extra": {

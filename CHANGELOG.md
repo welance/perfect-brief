@@ -6,6 +6,49 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.5.0] - 2026-08-02
+
+The bar becomes something you can put inside your own tools — and the project
+starts standing on its own name rather than ours.
+
+### Added
+- **MCP server** (`mcp-server/`): a local stdio server over the public API with
+  four tools — `get_rules`, `score_brief`, `suggest_fixes`, `bar_status` — and
+  an `improve_brief` prompt that enforces the working order (read the rules,
+  fix the gate first, quote the evidence, re-score) and forbids inventing a
+  score. `PB_LLM_KEY` brings your own key: with it, we run no model for you.
+- **`integrate.html`**: four routes to the same bar — console, paste a prompt,
+  connect MCP, call the API — each labelled with who it is for and how long it
+  takes, plus a closing section on what the bar deliberately does not do.
+- **`data.html`**: what travels where, what is kept (verdict quotes, 24h) and
+  what never is, how to bring your own key, and the custom offer.
+- **`no_cache`** on `POST /v1/score`: skip the verdict cache entirely, so
+  nothing about a brief is written down — pinned by a contract test, because
+  documenting a feature we had not built would have been a lie.
+- **Light and dark**, decided before first paint and remembered across pages.
+- A **focus-mode invitation** in the console, pointing at the distraction-free
+  brief editor on welance/Directory (nine locales).
+
+### Changed
+- **Perfect Briefs Machine**, with a stick-drawn mark that shows it: sticks feed
+  in, a press stamps a brief, three members snap into a team and leave checked.
+  The header leads with the project; welance shrinks to a one-line origin mark.
+- **The retained share is named honestly.** On client work it is
+  *structure & risk* — it keeps the structure standing and absorbs what goes
+  wrong with a client, and the note says plainly that it is not profit and is
+  deliberately thin. On internal work it is *welance support*: a colleague's
+  real time, which is exactly why the rate drops.
+- Contribution guidance is now evidence-first: **do not propose a rule, propose
+  the evidence** — a real brief the ruleset scores wrongly, added as a fixture.
+  A longer checklist is a weaker one.
+- The footer carries two named columns; API docs and source are always one
+  click away.
+
+### Fixed
+- Internal work no longer reports a client-work share: at full autonomy the
+  person keeps 100%, and below it the bar shows the support share instead of a
+  margin that does not exist.
+
 ## [1.4.0] - 2026-08-02
 
 The welance method, digitalised end to end and opened as a blueprint: the

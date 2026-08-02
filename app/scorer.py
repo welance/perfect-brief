@@ -79,7 +79,7 @@ def _verdicts_from_cache(data: list[dict]) -> list[Verdict]:
 
 
 async def _judge(
-    brief: str, judge_kind: str, model: str | None, api_key: str | None
+    brief: str, judge_kind: str, model: str | None, api_key: str | None, no_cache: bool = False
 ) -> tuple[list[Verdict], bool, str | None]:
     """Return (verdicts, cached, resolved_model)."""
     if judge_kind == "mock":
@@ -89,14 +89,16 @@ async def _judge(
     use = llm_client.resolve_model(model, allow_any=bool(api_key))
     # a verdict is reproducible only against (ruleset_version, model)
     key = f"pb:v:{_VERSION}:llm:{use}:{_sha(brief)}"
-    hit = await cache.get_json(key)
-    if hit:
-        return _verdicts_from_cache(hit), True, use
+    if not no_cache:
+        hit = await cache.get_json(key)
+        if hit:
+            return _verdicts_from_cache(hit), True, use
 
     prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
     raw = await llm_client.complete(prompt, use, api_key)
     verdicts = llm.parse_judge(_RULES, raw)
-    await cache.set_json(key, _verdicts_to_cache(verdicts), settings().cache_ttl_seconds)
+    if not no_cache:
+        await cache.set_json(key, _verdicts_to_cache(verdicts), settings().cache_ttl_seconds)
     return verdicts, False, use
 
 
@@ -107,8 +109,9 @@ async def score(
     model: str | None = None,
     api_key: str | None = None,
     gate_contexts: list[str] | None = None,
+    no_cache: bool = False,
 ) -> ScoreResponse:
-    verdicts, cached, used_model = await _judge(brief, judge_kind, model, api_key)
+    verdicts, cached, used_model = await _judge(brief, judge_kind, model, api_key, no_cache)
     breakdown = aggregate(verdicts, _RULES, _CFG, contexts=gate_contexts)
     vmap = {v.rule_id: v for v in verdicts}
     out_verdicts = [
