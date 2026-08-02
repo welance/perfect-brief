@@ -63,6 +63,10 @@ them together, in eight languages.
 ### Fixed
 - The gate requirement value is `not_fail`; `rules.html` and the API
   description both said `not-fail`. Caught by the new contract suite.
+- **Internal work showed a person share of 70%.** There is no client and
+  therefore no split: the person keeps all of it, and what the level moves
+  is the ceiling, not anyone's cut. The figure now reads 100% and the
+  formula line stops naming a share that does not exist.
 
 ## [1.3.0] - 2026-07-19
 

@@ -58,10 +58,21 @@ test.describe("perfect price", () => {
     await expect(page.locator("#rows .comp input[type=text]").first()).toHaveValue("CraftCMS");
   });
 
-  test("internal work has no client share — the cap rules instead", async ({ page }) => {
+  test("internal work has no client share — the person keeps all of it", async ({ page }) => {
     await page.locator("#w-internal").click();
+    // nobody takes a cut: the share is the whole thing and there is no margin
+    await expect(page.locator("#figShare")).toHaveText("100%");
     await expect(page.locator("#figMargin")).toHaveText("—");
     await expect(page.locator("#figPay")).toContainText("50.00");
+    // the level still moves the ceiling — that is not a split
+    await expect(page.locator("#formula")).not.toContainText("70%");
+    // both views must drop: a one-step gap rounds toward the person (§4)
+    for (const sel of await page.locator("#rows .comp select").all()) {
+      await sel.selectOption("0.5");
+    }
+    await expect(page.locator("#levelname")).toHaveText("WITH SUPPORT");
+    await expect(page.locator("#figShare")).toHaveText("100%");
+    await expect(page.locator("#figPay")).not.toContainText("50.00");
   });
 });
 

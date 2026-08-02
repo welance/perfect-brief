@@ -1086,7 +1086,9 @@
       key.appendChild(s);
     });
 
-    $("figShare").textContent = pct(lv.share);
+    // Internal work has no client and therefore no split — the person keeps
+    // all of it. What the level changes is the ceiling, not anyone's share.
+    $("figShare").textContent = work === "internal" ? pct(1) : pct(lv.share);
     $("figMargin").textContent = work === "internal" ? "—" : pct(1 - lv.share);
     $("figPay").innerHTML = eur(pay) + " <small>/h</small>";
     $("t-f-rate").textContent = work === "internal" ? d.fCap : d.fRate;
@@ -1095,8 +1097,8 @@
       : eur(rate) + " <small>/h</small>";
 
     $("formula").innerHTML =
-      d.coverk + " = <b>" + pct(cov) + "</b> → " + d.cLevel + " <b>" + d.lv[idx] +
-      "</b> → " + d.cShare + " <b>" + pct(lv.share) + "</b><br>" +
+      d.coverk + " = <b>" + pct(cov) + "</b> → " + d.cLevel + " <b>" + d.lv[idx] + "</b>" +
+      (work === "internal" ? "" : " → " + d.cShare + " <b>" + pct(lv.share) + "</b>") + "<br>" +
       (work === "internal"
         ? d.fCap + " = " + eur(Number($("capr").value) || INTERNAL_MAX) + " × " +
           pct(lv.share / LEVELS[0].share) + " = <b>" + eur(roleOnly) + "</b>"
