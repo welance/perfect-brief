@@ -21,7 +21,8 @@
   var EXTRA = [
     { href: "console.html", key: "chrome.console", en: "Console" },
     { href: "rules.html",   key: "chrome.rules",   en: "Rules" },
-    { href: "https://github.com/welance/perfect-brief", key: "chrome.github", en: "GitHub" }
+    { href: "https://github.com/welance/perfect-brief", key: "chrome.github", en: "GitHub" },
+    { href: "llms.txt", key: "chrome.llms", en: "llms.txt" }
   ];
 
   function tt(key, en) {

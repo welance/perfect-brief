@@ -20,6 +20,14 @@ test.describe("one origin", () => {
     expect((await scored.json()).decision).toBeTruthy();
   });
 
+  test("llms.txt is served, and points machines at the bar", async ({ request }) => {
+    const r = await request.get("/llms.txt");
+    expect(r.status()).toBe(200);
+    const body = await r.text();
+    expect(body).toContain("/v1/score");
+    expect(body).toContain("Never invent or estimate a score");
+  });
+
   test("the console can score against the same origin it is served from", async ({ page }) => {
     await page.goto("/console.html");
     await expect(page.locator("#input")).not.toBeEmpty();

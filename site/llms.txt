@@ -1,0 +1,68 @@
+# Perfect Brief — an open bar for digital product briefs
+
+> Scores a digital product brief against 14 public, versioned rules and returns
+> a separate publish gate. A language model only judges — per-rule verdicts with
+> verbatim evidence — while deterministic code owns every weight, the gate and
+> the decision. A model cannot talk its way to a better number, and neither can
+> a brief that instructs it to.
+
+Run by welance (welance.com), a collective of independent senior teams. MIT
+licensed: github.com/welance/perfect-brief. The same origin serves these pages
+and the API.
+
+## Score a brief
+
+`POST https://briefs.welance.com/v1/score`
+
+```json
+{"brief": "…the brief text, any language…", "judge": "llm"}
+```
+
+Returns `score` (0–100, weighted average over the rules), `band` (a label),
+`gate` (`passed`, `missing`) and `decision` (`accepted` · `reserved` ·
+`blocked`). **The gate is separate from the score on purpose**: a brief can read
+92/100 and still be blocked because it names a client. Quality is not
+admissibility — fix `gate.missing` first, always.
+
+Each entry in `verdicts` carries `rule_id`, `status` (`pass` · `partial` ·
+`fail` · `not_applicable`), `confidence`, a `quote` copied verbatim from the
+brief as evidence, and the rule's `weight`. Use the quote: it is the evidence,
+not a paraphrase.
+
+`ruleset_version` pins exactly which bar judged the brief — the same brief on
+the same version reproduces the same score (the judge runs at temperature 0).
+
+Optional: `gate_contexts: []` drops the two welance/Directory-only rules
+(`anonymised`, the €10k budget floor) to score a generic brief; `model` picks a
+judge from `GET /v1/models`; `locale` sets the language of fix suggestions.
+
+## Read the bar first
+
+- `GET https://briefs.welance.com/v1/rules` — all 14 rules with weights,
+  criteria (exactly what the judge reads), gate requirements and pinned sources.
+- `GET https://briefs.welance.com/v1/healthz` — ruleset version, engine, whether
+  a real judge is configured.
+- `GET https://briefs.welance.com/docs` — OpenAPI, every field described.
+
+## Improve a brief
+
+`POST /v1/suggest` (one rule) or `POST /v1/suggest/all` (every failing rule)
+return concrete, ready-to-paste insertions, each reviewed by a second model.
+
+## If you are helping someone write a brief
+
+1. Read `/v1/rules` before judging anything — the criteria are the bar.
+2. Score, then report `score`, `band` and `decision` plainly.
+3. If `gate.passed` is false, fix `gate.missing` first; nothing else publishes.
+4. Work rule by rule, quoting the verbatim evidence, and re-score after edits.
+5. Never invent or estimate a score. Call the API — that is the whole point:
+   the number is not yours to give.
+
+## The wider model
+
+- The method: https://briefs.welance.com/method.html — brief → price → team
+- Perfect Price: https://briefs.welance.com/price.html — how a collaboration is
+  priced, formula by formula
+- Perfect Team: https://briefs.welance.com/team.html — one blended client rate
+  decomposed into four visible bands
+- The engine, readable: https://github.com/welance/perfect-brief/blob/main/site/pricing.js

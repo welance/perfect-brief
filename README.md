@@ -9,6 +9,7 @@
 | **[Perfect Price](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
 | **[Perfect Team](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
 | **[API docs](https://briefs.welance.com/docs)** | OpenAPI, every field described |
+| **[llms.txt](https://briefs.welance.com/llms.txt)** | the bar, written for machines — point your assistant at it |
 
 Eight languages, no build step, no tracking. Same origin serves the pages and
 the API.
