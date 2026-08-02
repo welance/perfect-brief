@@ -1,0 +1,21 @@
+id: ml-it
+lang: it
+input_type: brief
+input: '# Disponibilità in tempo reale per le prenotazioni di ristoranti indipendenti
+
+
+  Problema: i piccoli ristoranti perdono prenotazioni perché il personale non può
+  aggiornare la disponibilità sui vari canali in tempo reale. Utenti primari: responsabili
+  di turno in ristoranti indipendenti, che aggiornano da mobile durante il servizio.
+  Successo: ridurre le prenotazioni no-show del 30% entro due stagioni. Deliverable:
+  un login con email e SPID, sessioni persistite in Postgres, e un endpoint API
+  di disponibilità con p95 sotto i 200ms. Fuori ambito: app native e pagamenti nella
+  v1. Fascia di budget 25-40k. Tempi: consegnare l''MVP prima della stagione primaverile.
+  Servono uno sviluppatore full-stack e un product designer per circa otto settimane.
+  Costruito sullo stack esistente Next.js e Postgres; si integra col fornitore di
+  pagamenti esistente. Rischio: i ristoranti potrebbero non tenere aggiornata la
+  disponibilità, quindi validiamo prima questo. Conserva lo storico prenotazioni
+  dei clienti; base giuridica GDPR è il contratto; è richiesto un DPA. La pagina
+  pubblica di prenotazione punta a WCAG 2.2 AA, testata con tastiera e screen reader.'
+notes: Faithful it translation of 0003-accepted — same content, same expectations
+  as en.yaml, judged live.

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Digital Product Brief · welance</title>
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=3">
+<link rel="stylesheet" href="welance.css?v=12">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
@@ -17,7 +17,7 @@
   code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);padding:1px 5px;border:1px solid var(--rule)}
   p.body{max-width:64ch}
 
-  header{padding:46px 0 22px;border-bottom:2px solid var(--ink)}
+  header{padding:20px 0 22px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   h1{font-family:var(--disp);font-weight:700;font-size:clamp(32px,6vw,56px);line-height:1.02;margin:14px 0 0;letter-spacing:-.02em}
   .hero-sub{font-size:clamp(18px,2.6vw,23px);max-width:30ch;margin:16px 0 0;color:var(--ink-soft)}
@@ -30,7 +30,9 @@
   .eyebrow span{white-space:nowrap} .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
 
   .pull{margin:40px 0;padding:24px 26px;border:2px solid var(--ink);background:var(--paper-2);position:relative}
-  .pull .tag{position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .pull .tag{position:absolute;top:-11px;left:18px;}
+  [dir="rtl"] .pull .tag{left:auto;right:18px}
+  .pull .tag{background:var(--paper);padding:0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .pull p{margin:0;font-size:clamp(17px,2.5vw,22px);line-height:1.45} .pull b{font-weight:600} .pull .em{color:var(--accent)}
 
   /* gate scale */
@@ -39,6 +41,12 @@
   .gate .r{width:40%;background:var(--fail-bg);color:var(--fail)} .gate .s{width:35%;background:var(--partial-bg);color:var(--partial);border-left:1px solid var(--ink);border-right:1px solid var(--ink)} .gate .a{width:25%;background:var(--pass-bg);color:var(--pass)}
   .gate b{font-size:13px} .gate small{color:var(--ink-soft)}
   .gatecap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-top:4px}
+  .quad{margin:26px 0 6px;max-width:560px}
+  .quad svg{display:block;width:100%}
+  .quad .qa{font-family:var(--mono);font-size:10.5px;fill:var(--ink-soft);letter-spacing:.06em}
+  .quad .ql{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em}
+  .quad .ql.pass{fill:var(--pass)} .quad .ql.fail{fill:var(--fail)} .quad .ql.partial{fill:var(--partial)}
+  .quad .qe{font-family:var(--mono);font-size:10.5px;fill:var(--fail)}
 
   /* report mini-sample */
   .sample{border:1px solid var(--rule);background:var(--paper-2);font-family:var(--mono);font-size:12.5px;line-height:1.7;padding:14px 16px}
@@ -83,45 +91,33 @@
   .tiers li{padding:11px 0;border-bottom:1px solid var(--rule);max-width:66ch;font-size:14.5px}
   .tiers li:last-child{border-bottom:0} .tiers b{font-family:var(--mono);font-size:12.5px}
 
-  footer{margin-top:64px;padding-top:18px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </style>
 </head>
 <body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><a href="./" data-i18n="rules.crumbup">perfect brief</a><span class="sep">/</span><span class="cur" data-i18n="rules.crumb">rules</span></p>
 <div class="wrap">
   <header>
-    <nav class="crumbs" aria-label="breadcrumb">
-      <a class="brand" href="https://welance.com" aria-label="welance">
-        <svg class="wl-logo" viewBox="26.5 69.5 24 24" width="18" height="18" aria-hidden="true">
-          <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)"><g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
-            <path d="M-374.25,22 L-622.25,22"/><path d="M-498.25,-102 L-498.25,146"/>
-            <path d="M-410.5,109.75 L-586,-65.75"/><path d="M-586,109.75 L-410.5,-65.75"/>
-          </g></g>
-        </svg>
-        welance
-      </a>
-      <span class="sep">/</span><a href="./">perfect brief</a>
-      <span class="sep">/</span><span class="cur">rules</span>
-      <a class="gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
-    </nav>
-    <h1>The Perfect Digital&nbsp;Product Brief</h1>
-    <p class="hero-sub">A good brief gives a product the right start. We made the standard open.</p>
-    <div class="hero-ratio"><span class="s">20%</span> brief · <span class="t">80%</span> team</div>
-    <div class="hero-ratio-cap">where the success of a digital product actually comes from</div>
-    <a class="navlink" href="console.html">→ score a brief in the live console</a>
+    
+    <h1 data-i18n-html="rules.h1">The Perfect Digital&nbsp;Product Brief</h1>
+    <p class="hero-sub" data-i18n="rules.herosub">A good brief gives a product the right start. We made the standard open.</p>
+    <div class="hero-ratio" data-i18n-html="rules.ratio"><span class="s">20%</span> brief · <span class="t">80%</span> team</div>
+    <div class="hero-ratio-cap" data-i18n="rules.ratiocap">where the success of a digital product actually comes from</div>
+    <a class="navlink" href="console.html" data-i18n="rules.navlink">→ score a brief in the live console</a>
   </header>
 
-  <p class="body" style="margin-top:34px">We put together teams for a living, so we see it constantly: a product's outcome is mostly the team — but the brief is the 20% that decides whether that team starts on solid ground or spends the first month untangling what was meant. Usually that untangling happens in workshops: expensive, slow, and dependent on us being in the room.</p>
-  <p class="body">So we're proposing something more modest and more useful: a way to check a brief for <b>grip on reality, doability, and scalability</b> before anyone starts — and we're publishing the whole standard openly, so it isn't ours to gatekeep. This page is the standard. The console scores against it. The rules live on GitHub, and anyone can change them.</p>
+  <p class="body" style="margin-top:34px" data-i18n-html="rules.p1">We put together teams for a living, so we see it constantly: a product's outcome is mostly the team — but the brief is the 20% that decides whether that team starts on solid ground or spends the first month untangling what was meant. Usually that untangling happens in workshops: expensive, slow, and dependent on us being in the room.</p>
+  <p class="body" data-i18n-html="rules.p2">So we're proposing something more modest and more useful: a way to check a brief for <b>grip on reality, doability, and scalability</b> before anyone starts — and we're publishing the whole standard openly, so it isn't ours to gatekeep. This page is the standard. The console scores against it. The rules live on GitHub, and anyone can change them.</p>
 
   <div class="pull">
-    <div class="tag">the one invariant</div>
-    <p>An LLM reads the brief and judges each rule — pass, partial, fail, with evidence. It <b>never</b> sees the weights and <b>never</b> decides the number. <span class="em">Code</span> does the maths and the publish decision, the same way every time.</p>
+    <div class="tag" data-i18n="rules.pulltag">the one invariant</div>
+    <p data-i18n-html="rules.pullp">An LLM reads the brief and judges each rule — pass, partial, fail, with evidence. It <b>never</b> sees the weights and <b>never</b> decides the number. <span class="em">Code</span> does the maths and the publish decision, the same way every time.</p>
   </div>
-  <p class="body">That line is what makes a score you can argue with instead of a verdict from a black box. Every point traces to a rule and a source. Disagree? The rule is a file you can open a pull request against.</p>
+  <p class="body" data-i18n-html="rules.p3">That line is what makes a score you can argue with instead of a verdict from a black box. Every point traces to a rule and a source. Disagree? The rule is a file you can open a pull request against.</p>
 
   <!-- HOW THE SCORE READS -->
-  <div class="eyebrow"><span>what you get back</span></div>
-  <p class="body" style="margin-top:-4px">Not a grade — a <b>progress bar toward publication</b>. A number, what's already strong, what would raise it, and a checkable source behind every line. The "what would raise it" list is literally your to-do to cross the line.</p>
+  <div class="eyebrow"><span data-i18n="rules.eb1">what you get back</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p4">Not a grade — a <b>progress bar toward publication</b>. A number, what's already strong, what would raise it, and a checkable source behind every line. The "what would raise it" list is literally your to-do to cross the line.</p>
   <div class="sample">
     PERFECT BRIEF SCORE 72/100 — with reservation<br>
     <span class="ok">✓ Scope boundaries</span> — you named what's out ("no native apps in v1").<br>
@@ -132,55 +128,74 @@
   </div>
 
   <!-- SCORE vs GATE -->
-  <div class="eyebrow"><span>score vs gate · two axes</span></div>
-  <p class="body" style="margin-top:-4px">The score says <b>how good</b> a brief is. A separate <b>gate</b> says whether it may publish at all. Keeping them apart is the point: a brilliant brief that leaks the client's name shouldn't go on a blind noticeboard, and no average should be able to paper over that.</p>
+  <div class="eyebrow"><span data-i18n="rules.eb2">score vs gate · two axes</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p5">The score says <b>how good</b> a brief is. A separate <b>gate</b> says whether it may publish at all. Keeping them apart is the point: a brilliant brief that leaks the client's name shouldn't go on a blind noticeboard, and no average should be able to paper over that.</p>
   <div class="gate">
-    <div class="r"><b>&lt; 45</b><small>Needs work</small></div>
-    <div class="s"><b>45 – 84</b><small>Getting there / Strong</small></div>
-    <div class="a"><b>85 +</b><small>Directory-ready</small></div>
+    <div class="r"><b>&lt; 45</b><small data-i18n="rules.g1">Needs work</small></div>
+    <div class="s"><b>45 – 84</b><small data-i18n="rules.g2">Getting there / Strong</small></div>
+    <div class="a"><b>85 +</b><small data-i18n="rules.g3">Directory-ready</small></div>
   </div>
-  <div class="gatecap"><span>← descriptive score bands</span><span>bands, floor &amp; gate live in scoring.yaml — contestable</span></div>
-  <p class="body" style="margin-top:16px">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely. Two requirements are scoped rather than universal: anonymisation and the €10k floor exist for the blind noticeboard, so both rules carry a <code>context: directory</code> tag — a caller scoring a generic digital-product brief deactivates that context (<code>gate_contexts: []</code>) and they drop out entirely: no gate, no score weight, the average renormalised over the twelve rules that apply anywhere.</p>
+  <div class="gatecap"><span data-i18n="rules.gc1">← descriptive score bands</span><span data-i18n="rules.gc2">bands, floor &amp; gate live in scoring.yaml — contestable</span></div>
+  
+  <figure class="quad" style="direction:ltr">
+    <svg viewBox="0 0 540 300" aria-label="Two axes: score is quality, the gate is admissibility — a brilliant brief can still be blocked">
+      <!-- axes -->
+      <path d="M40 150 H508 m0 0 l-8 -5 m8 5 l-8 5" stroke="var(--ink)" stroke-width="2" fill="none"/>
+      <path d="M274 284 V24 m0 0 l-5 8 m5 -8 l5 8" stroke="var(--ink)" stroke-width="2" fill="none"/>
+      <text class="qa" x="283" y="30" data-i18n="rules.q.score">score · quality</text>
+      <text class="qa" x="504" y="140" text-anchor="end" data-i18n="rules.q.gate">gate · admissibility</text>
+      <!-- quadrants -->
+      <text class="ql fail" x="157" y="78" text-anchor="middle" data-i18n="rules.q.blk">blocked</text>
+      <text class="ql pass" x="391" y="78" text-anchor="middle" data-i18n="rules.q.pub">published</text>
+      <text class="ql fail" x="157" y="222" text-anchor="middle" data-i18n="rules.q.blk2">blocked</text>
+      <text class="ql partial" x="391" y="222" text-anchor="middle" data-i18n="rules.q.res">with reservation</text>
+      <!-- the example that makes the point: high score, gate failed -->
+      <circle cx="157" cy="52" r="6" fill="var(--fail)"/>
+      <text class="qe" x="157" y="102" text-anchor="middle" data-i18n="rules.q.ex">92/100 — names the brand</text>
+    </svg>
+  </figure>
+  <p class="body" style="margin-top:16px" data-i18n-html="rules.p6">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. <em>This replaces the old severity-cap mechanism — a critical gap is now an explicit gate requirement, not a quiet penalty on the number.</em> The line is fair because the score is <b>reproducible</b> (temperature 0), the breakdown shows exactly which rule or gate flips you, and you can <b>revise and resubmit</b> freely. Two requirements are scoped rather than universal: anonymisation and the €10k floor exist for the blind noticeboard, so both rules carry a <code>context: directory</code> tag — a caller scoring a generic digital-product brief deactivates that context (<code>gate_contexts: []</code>) and they drop out entirely: no gate, no score weight, the average renormalised over the twelve rules that apply anywhere.</p>
 
   <!-- RULESET -->
-  <div class="eyebrow"><span>the ruleset · 14 rules</span></div>
-  <p class="body" style="margin-top:-4px">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests. Numbers (R01–R14) are for easy reference in discussion — link any rule directly, e.g. <code>rules.html#anonymised</code>; the <code>id</code> is the canonical name in PRs and API verdicts.</p>
+  <div class="eyebrow"><span data-i18n="rules.eb3">the ruleset · 14 rules</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p7">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests. Numbers (R01–R14) are for easy reference in discussion — link any rule directly, e.g. <code>rules.html#anonymised</code>; the <code>id</code> is the canonical name in PRs and API verdicts.</p>
+  <p class="body" style="font-size:13.5px;color:var(--ink-soft)" data-i18n="rules.cannote">The rule texts below stay in their canonical English on purpose: the criteria are the exact files the judge reads, and the sample report above shows the judge's real output. Translating this page changes nothing about the bar itself.</p>
   <div id="ruleset"></div>
 
   <!-- CITATION TIERS -->
-  <div class="eyebrow"><span>why every line cites a source</span></div>
-  <p class="body" style="margin-top:-4px">In the AI era, fluency is free — a brief can read beautifully and say nothing. Anchoring each rule to an authoritative source pushes the score toward substance over polish. Sources are typed by authority, and pinned &amp; human-verified in the PR, never generated by the model:</p>
+  <div class="eyebrow"><span data-i18n="rules.eb4">why every line cites a source</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p8">In the AI era, fluency is free — a brief can read beautifully and say nothing. Anchoring each rule to an authoritative source pushes the score toward substance over polish. Sources are typed by authority, and pinned &amp; human-verified in the PR, never generated by the model:</p>
   <ul class="tiers">
-    <li><b>Standard</b> — ISO/IEEE, W3C, OWASP, EN, AgID, GDPR. Authoritative and stable. Preferred.</li>
-    <li><b>Practice</b> — INVEST, SMART, OKR, scope management, Designers Italia. Recognised professional practice.</li>
-    <li><b>Encyclopedic</b> — Wikipedia. A friendly way in to name a concept; never the sole anchor for a normative claim.</li>
+    <li data-i18n-html="rules.t1"><b>Standard</b> — ISO/IEEE, W3C, OWASP, EN, AgID, GDPR. Authoritative and stable. Preferred.</li>
+    <li data-i18n-html="rules.t2"><b>Practice</b> — INVEST, SMART, OKR, scope management, Designers Italia. Recognised professional practice.</li>
+    <li data-i18n-html="rules.t3"><b>Encyclopedic</b> — Wikipedia. A friendly way in to name a concept; never the sole anchor for a normative claim.</li>
   </ul>
 
   <!-- GOVERNANCE -->
-  <div class="eyebrow"><span>who controls the bar</span></div>
-  <p class="body" style="margin-top:-4px">We run the directory and the bar — a conflict of interest. Making the bar open-source is what defuses it: a credible signal we're not tuning the metre in our own favour. Three gestures, kept separate:</p>
+  <div class="eyebrow"><span data-i18n="rules.eb5">who controls the bar</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p9">We run the directory and the bar — a conflict of interest. Making the bar open-source is what defuses it: a credible signal we're not tuning the metre in our own favour. Three gestures, kept separate:</p>
   <div class="gov">
-    <div class="gcard propose"><h4>Anyone proposes</h4><p>Open a PR on GitHub. Zero gatekeeping on contribution — this is the part that says we're not the bouncer.</p></div>
-    <div class="gcard merge"><h4>Evidence merges</h4><p>A change ships when it passes the public fixture corpus in CI and gets review. Not because a curator likes it. Maintainership is earned by good PRs, not appointed.</p></div>
-    <div class="gcard fork"><h4>Anyone forks</h4><p>It's OSS. If the bar is ever unfair, fork it and run your own. That exit right keeps the maintainers honest better than any promise.</p></div>
+    <div class="gcard propose"><h4 data-i18n="rules.gov1h">Anyone proposes</h4><p data-i18n="rules.gov1p">Open a PR on GitHub. Zero gatekeeping on contribution — this is the part that says we're not the bouncer.</p></div>
+    <div class="gcard merge"><h4 data-i18n="rules.gov2h">Evidence merges</h4><p data-i18n="rules.gov2p">A change ships when it passes the public fixture corpus in CI and gets review. Not because a curator likes it. Maintainership is earned by good PRs, not appointed.</p></div>
+    <div class="gcard fork"><h4 data-i18n="rules.gov3h">Anyone forks</h4><p data-i18n="rules.gov3p">It's OSS. If the bar is ever unfair, fork it and run your own. That exit right keeps the maintainers honest better than any promise.</p></div>
   </div>
-  <p class="body" style="margin-top:18px">The fixtures are the immune system: a corpus of labelled briefs with expected scores. Try to quietly lower the bar to slip a weak brief through and you break the corpus — CI rejects you. To get around it you'd have to delete fixtures, and that's a visible, suspicious diff.</p>
+  <p class="body" style="margin-top:18px" data-i18n-html="rules.p10">The fixtures are the immune system: a corpus of labelled briefs with expected scores. Try to quietly lower the bar to slip a weak brief through and you break the corpus — CI rejects you. To get around it you'd have to delete fixtures, and that's a visible, suspicious diff.</p>
 
   <div class="invite">
-    <h4>A rule we'd love a PR for</h4>
-    <p><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
+    <h4 data-i18n="rules.invh">A rule we'd love a PR for</h4>
+    <p data-i18n-html="rules.invp"><code>decision-owner</code> — does the brief name a single accountable decision-maker? It's pure "80% team": a brief with no owner stalls. We left it out on purpose. Add it.</p>
   </div>
 
-  <footer><span>The Perfect Digital Product Brief · a <a href="https://welance.com">Welance</a> open-source project</span><span><a href="https://github.com/welance/perfect-brief">github</a> · <a href="console.html">→ live console</a></span></footer>
 </div>
+<div id="site-footer"></div>
 
 <script>
 const RULES=[
- {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not-fail",
+ {id:"clear-title",title:"The brief has a clear title",weight:5,severity:"medium",gate:"not_fail",
   rationale:"A titled brief is findable, scannable, and signals that the author knows what the thing is. On a noticeboard, a missing title is the first failure of communication.",
   criteria:"The brief opens with a short, specific title naming the product or problem. Partial if a title exists but is generic.",
   refs:[["practice", "Design brief — names itself up front", "a brief leads with a clear subject", "https://en.wikipedia.org/wiki/Design_brief"]]},
- {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not-fail",
+ {id:"problem-defined",title:"States a problem, not just a solution",weight:12,severity:"high",gate:"not_fail",
   rationale:"A solution with no stated problem can't be validated, prioritised, or measured. Starting from a problem is the first grip on reality.",
   criteria:"Names the user problem the product addresses, distinct from the proposed solution. Partial if the problem is only implied.",
   refs:[["practice", "Jobs to be Done", "frame the need before the solution", "https://en.wikipedia.org/wiki/Outcome-Driven_Innovation"]]},
@@ -188,7 +203,7 @@ const RULES=[
   rationale:"Most overruns come from the gap between assumed-included and assumed-excluded. Naming exclusions up front is cheap.",
   criteria:"Explicitly names at least one thing out of scope, or states a clear boundary. Partial if only implied.",
   refs:[["practice", "Scope statement", "in-scope vs out-of-scope is stated", "https://en.wikipedia.org/wiki/Scope_(project_management)"], ["encyclopedic", "Scope creep", "the failure this prevents", "https://en.wikipedia.org/wiki/Scope_creep"]]},
- {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not-fail",
+ {id:"budget-floor",title:"Budget is stated and clears the floor",weight:11,severity:"high",gate:"not_fail",
   rationale:"A brief with no budget, or one below the engagement floor, can't be matched to a senior team. The floor is marketplace policy.",
   criteria:"States a budget figure. Pass at/above the floor with headroom; warn if it only just clears; fail if absent or below. Floor is policy in scoring.yaml.",
   refs:[["practice", "Statement of work — budget", "engagement is sized before it starts", "https://en.wikipedia.org/wiki/Statement_of_work"]]},
@@ -247,5 +262,14 @@ document.getElementById("ruleset").innerHTML=RULES.map((r,i)=>`
 (function(){const h=location.hash.slice(1);if(!h)return;const el=document.getElementById(h);if(el&&el.classList.contains("rule")){el.open=true;el.scrollIntoView({block:"start"});}})();
 document.querySelectorAll(".rule-num").forEach(a=>a.addEventListener("click",e=>{const d=e.target.closest("details");if(d)d.open=true;}));
 </script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=4"></script>
 </body>
 </html>
