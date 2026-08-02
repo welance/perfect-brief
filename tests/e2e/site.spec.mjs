@@ -148,6 +148,31 @@ test.describe("the method reads at a glance", () => {
     await expect(fp).toHaveAttribute("open", "");
   });
 
+  /* The house style, enforced. welance.com's rhythm is: a short claim carries
+     the section, ONE paragraph supports it, depth lives in the fine print.
+     Prolixity is a UX bug — this test is how it stays fixed. */
+  test("no paragraph on the surface runs longer than the style allows", async ({ page }) => {
+    await page.goto("/method.html");
+    const long = await page.evaluate(() => {
+      const out = [];
+      document.querySelectorAll(".wrap p, .wrap .door p, .wrap .step p").forEach((el) => {
+        if (el.closest("details.fineprint")) return;       // depth is allowed to be long
+        if (el.classList.contains("claim")) return;        // claims are short by construction
+        const t = (el.textContent || "").trim();
+        if (t.length > 360) out.push(t.slice(0, 60) + "… (" + t.length + ")");
+      });
+      return out;
+    });
+    expect(long, `too long on the surface: ${long.join(" | ")}`).toHaveLength(0);
+  });
+
+  test("every section leads with a short claim", async ({ page }) => {
+    await page.goto("/method.html");
+    const claims = await page.locator(".claim").allTextContents();
+    expect(claims.length).toBeGreaterThanOrEqual(4);
+    for (const c of claims) expect(c.length, `claim too long: ${c}`).toBeLessThan(70);
+  });
+
   test("the score × gate quadrant is on the rules page", async ({ page }) => {
     await page.goto("/rules.html");
     await expect(page.locator(".quad svg")).toBeVisible();

@@ -31,17 +31,22 @@
   .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 62ch; margin: 10px 0 0; }
   .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
   .head-grid .txt { min-width: 0; }
-  .m-ident { flex: none; width: 300px; margin-top: 6px; }
+  .m-ident { flex: none; width: 400px; margin-top: 2px; }
   .m-ident svg { display: block; width: 100%; }
-  .m-ident .ml { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); letter-spacing: .06em; }
+  .m-ident .ml { font-family: var(--mono); font-size: 10px; fill: var(--ink-soft); letter-spacing: .06em; }
   .m-ident .ml.accent { fill: var(--accent); }
   .d7 { animation-delay: 1.45s; } .d8 { animation-delay: 1.7s; }
-  @media (max-width: 700px) { .m-ident { display: none; } }
+  @media (max-width: 880px) { .m-ident { display: none; } }
   .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
     text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center;
     gap: 10px; margin: 44px 0 14px; }
   .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
   p { max-width: 66ch; margin: 0 0 14px; }
+  /* welance.com rhythm: a short claim carries the section, one paragraph
+     supports it, everything else lives in the fine print */
+  .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
+    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 12px; max-width: 24ch; }
+  .lead { font-size: clamp(16.5px, 1.9vw, 18px); max-width: 56ch; margin: 0 0 16px; }
 
   /* the three steps */
   .steps { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 0 0 14px; }
@@ -101,9 +106,9 @@
   .door h3 { font-family: var(--disp); font-size: 18px; font-weight: 600; margin: 0; }
   .door p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
   .door .go { font-family: var(--mono); font-size: 13px; }
-  .bloop { margin: 16px 0 6px; max-width: 400px; }
+  .bloop { margin: 22px 0 10px; max-width: 620px; }
   .bloop svg { display: block; width: 100%; }
-  .bloop .ml { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); letter-spacing: .05em; }
+  .bloop .ml { font-family: var(--mono); font-size: 10px; fill: var(--ink-soft); letter-spacing: .05em; }
   .bloop .ml.accent { fill: var(--accent); }
   .bloop .ml.pass { fill: var(--pass); }
   .cta { display: flex; gap: 10px 22px; flex-wrap: wrap; align-items: center; margin: 22px 0 0; }
@@ -118,7 +123,7 @@
     <div class="head-grid">
       <div class="txt">
     <h1><span data-i18n="method.h1">The welance method</span><span class="b">_</span></h1>
-    <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2011 — take an honest brief, price it transparently, assemble the team around it — digitalised end to end and opened as a blueprint. In an era when AI makes producing ever cheaper, what decides is composition: who you put together, and how fast you learn whether it works.</p>
+    <p class="thesis" data-i18n="method.thesis">The process we have run in person since 2011 — an honest brief, a transparent price, a team built for the goal — digitalised and opened as a blueprint. Producing gets cheaper every year; composition decides.</p>
       </div>
       <div class="m-ident" role="img" aria-label="brief, then price, then team — and the check that adjusts the team">
         <svg viewBox="0 0 300 158" aria-hidden="true">
@@ -151,14 +156,19 @@
   </header>
 
   <div class="eyebrow"><span data-i18n="method.eb1">the problem, honestly</span></div>
+  <p class="claim" data-i18n="method.c1">Sold by the day. Staffed by whoever was free.</p>
+  <p class="lead" data-i18n="method.l1">Big consultancies price utilisation, not fit — and the client relationship stays theirs, hidden behind the brand. A team assembled for the goal does better work: it is the one pattern that held across fifteen years.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="method.p1">The big consulting firms sell teams by the day, at full list price, staffed by whoever was on the bench — a model that lives off utilisation, not fit. It optimises economic capital and structurally ignores the human and relational kind: the people doing the work are interchangeable by design, and the client relationship is kept proprietary to the firm — hidden behind it — instead of belonging to the humans who actually build together. It is an old model, and an unsustainable one; the wasted budget is priced in.</p>
   <p data-i18n-html="method.p2">A cross-functional team assembled <em>for</em> the goal — people personally and professionally inclined to exactly this problem, not adapted to it — does better work. That is not a slogan; it is the one consistent pattern in fifteen years of engagements in the segment we serve: bounded, product-shaped work, where fit beats scale.</p>
+  </details>
   <blockquote class="conway" data-i18n="method.quote">Organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations.</blockquote>
   <p class="conway-src" data-i18n-html="method.quotesrc">Melvin E. Conway, <em>How Do Committees Invent?</em> (1968) — made famous by Fred Brooks in <em>The Mythical Man-Month</em> as “Conway’s Law”.</p>
   <p data-i18n="method.p2b">You ship your team’s communication structure. Composing the team is not staffing, it is product design — which is why who works with whom is the decision we treat as the most important one.</p>
 
 
   <div class="eyebrow"><span data-i18n="method.eb2">the method — three steps</span></div>
+  <p class="claim" data-i18n="method.c2">Three steps. Each needs the one before.</p>
   <div class="steps">
     <a class="step" href="index.html" style="color:inherit;text-decoration:none">
       <div class="ident" role="img" aria-label="A brief being written and checked">
@@ -209,30 +219,34 @@
       <span class="go" data-i18n="method.s3.go">→ assemble a team</span>
     </a>
   </div>
-  <p data-i18n="method.p3">Each step needs the one before it. The price needs the brief's scope to know what a role even is; the team needs the price's arithmetic to give three people one honest rate. Information cascades — that is why they are steps and not features, and why the brief stays the principal concept: nothing downstream survives a dishonest one.</p>
+<details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+    <p data-i18n="method.p3">Each step needs the one before it. The price needs the brief's scope to know what a role even is; the team needs the price's arithmetic to give three people one honest rate. Information cascades — that is why they are steps and not features, and why the brief stays the principal concept: nothing downstream survives a dishonest one.</p>
+  </details>
 
 
   <div class="eyebrow"><span data-i18n="method.eb5">two doors, one method</span></div>
+  <p class="claim" data-i18n="method.c3">Do it yourselves, or we do it with you.</p>
   <div class="doors">
     <div class="door">
       <h3 data-i18n="method.d1.h">welance/Directory — do it yourselves</h3>
-      <p data-i18n="method.d1.p">A curated, blind noticeboard where cross-functional teams pick up briefs on substance, not brand. The platform maximises connections, not margin: never a percentage of the relationship — meeting a team costs a fixed, symbolic token, and from there the group belongs to the people in it. Client and team run the method’s checks themselves.</p>
+      <p data-i18n="method.d1.p">A curated, blind noticeboard: teams pick up briefs on substance, not brand. The platform maximises connections, not margin — meeting a team costs a fixed, symbolic token, never a percentage of the relationship.</p>
       <a class="go" href="https://welance.com/directory" data-i18n="method.d1.go">→ welance.com/directory</a>
     </div>
     <div class="door">
       <h3 data-i18n="method.d2.h">welance — we do it with you</h3>
-      <p data-i18n="method.d2.p">Given an engagement, welance finds, contacts and assembles the team, and answers for the delivery. That work is priced by the split you can read on this site — 70/30 at full autonomy — and guarded by the no-deal rule: we would rather lose an engagement than compress a person below their rate. The opposite of a day rate for whoever was available.</p>
+      <p data-i18n="method.d2.p">Given an engagement, welance finds, contacts and assembles the team, and answers for the delivery. Priced by the split on this site — 70/30 at full autonomy — and guarded by the no-deal rule.</p>
       <a class="go" href="price.html" data-i18n="method.d2.go">→ compute the split</a>
     </div>
   </div>
 
   <div class="eyebrow"><span id="fxHead">the formulas, all of them</span></div>
-  <p data-i18n-html="method.fxintro">Everything the method computes, in one list — derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>), so this page cannot drift from the code. If you disagree with a constant, it is in one readable file, with the reason next to it.</p>
+  <p data-i18n-html="method.fxintro">Everything the method computes, derived from the same file the calculators run on (<a href="https://github.com/welance/perfect-brief/blob/main/site/pricing.js">pricing.js</a>) — this page cannot drift from the code.</p>
   <div class="formulas" id="formulas"></div>
   <p class="fx-close">These <b>8</b> formulas help make the decision. Everything else is human capital — and it does not compute.</p>
 
   <div class="eyebrow"><span data-i18n="method.eb3">what the formulas cannot see</span></div>
-  <p data-i18n-html="method.p4"><b>Work starts for real.</b> The formulas produce the <em>starting</em> team — not a trial, not a pilot: the actual work begins. What no formula can see is learned only by collaborating: cultural compatibility between members and with the client, kindness, humanity, availability, how someone carries stress, the whole mass of soft skills that only show up when the pressure is real.</p>
+  <p class="claim" data-i18n="method.c4">Work starts. Then we check.</p>
+  <p class="lead" data-i18n="method.l4">The formulas produce the starting team — not a trial, not a pilot: the actual work begins. What no formula sees is learned only by collaborating: compatibility, kindness, how someone carries stress.</p>
   <figure class="bloop" style="direction:ltr">
     <svg viewBox="0 0 384 150" aria-label="Work, then a check: either keep going or change the team">
       <path class="draw d1" d="M162 50 C 148 16, 92 16, 68 42 m0 0 l-1 -7 m1 7 l6 -3" stroke="var(--pass)" stroke-width="2.5" fill="none"/>
@@ -252,19 +266,27 @@
   </figure>
 
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+    <p data-i18n-html="method.p4"><b>Work starts for real.</b> The formulas produce the <em>starting</em> team — not a trial, not a pilot: the actual work begins. What no formula can see is learned only by collaborating: cultural compatibility between members and with the client, kindness, humanity, availability, how someone carries stress, the whole mass of soft skills that only show up when the pressure is real.</p>
   <p data-i18n="method.p5">So the start carries a declared reserve: scheduled checks at one to three days, weeks, or months — scaled to the project's size and complexity — where either side may say it is not working, and the initial choices can be replaced, removed, or modified. Bidirectional, always: the independent may not feel right either, and every human problem should surface at the first check rather than fester. That early surfacing is what prevents resentment, bad vibes, and ugly projects.</p>
   <p data-i18n="method.p6">In white-collar work, ideas, intuition and mental elasticity need room to convert into success. When something is off, the adjustment is made on the most important asset: the people.</p>
   </details>
 
   <div class="eyebrow"><span data-i18n="method.eb4">why open</span></div>
+  <p class="claim" data-i18n="method.c5">We open the model. We curate the membership.</p>
+  <p class="lead" data-i18n="method.l5">Digitalising a practice turns it into a blueprint: open rules, one readable file, one equation — MIT, so a collective that disagrees with our numbers can fork it. That curation is the service, and saying so is part of the transparency.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="method.p7">This is what we have always done as an agency, in person, engagement by engagement. Digitalising it and opening it turns a practice into a blueprint: open rules for the brief, one readable file for the price, one equation for the team — MIT like the rest, so a collective that disagrees with our numbers can fork the method and run its own. We open the model; we curate the membership. That curation is the service, and saying so plainly is part of the transparency.</p>
   <p data-i18n="method.p8">A collective priced this way is resilient the way a network is resilient: no bench to feed, no fixed shape to break, a declared reserve instead of a hidden one. The claim stays small and true: a brief you can score, a split you can compute, a team you can reason about — and an honest check, early, where the humans decide what the formulas cannot.</p>
+  </details>
   <div class="eyebrow"><span data-i18n="method.eb6">the model, noticed</span></div>
   <blockquote class="conway notice" data-i18n="method.n1">All you need to set up a company today is a laptop, internet connection, your own manpower and a good idea.</blockquote>
   <p class="conway-src" data-i18n-html="method.n1src">Philipp Hentschel, welance founder — in Deutsche Bank’s <a href="https://www.youtube.com/watch?v=ORLOpc2G2K8">#EconomyStories</a> on the on-demand society (2015).</p>
   <blockquote class="conway notice" data-i18n="method.n2">We sat down with two of Europe’s pioneering freelance collectives: La Collab and Welance.</blockquote>
   <p class="conway-src" data-i18n-html="method.n2src">Qonto, <a href="https://qonto.com/en/blog/business-creation/freelancer/unlocking-sme-growth-with-the-rise-of-freelance-collectives">Unlocking SME growth with the rise of freelance collectives</a> (2024).</p>
+  <p class="lead" data-i18n="method.l6">The traces are older than this site: the first global digital-nomad survey, Coconat, rural-development projects, partnerships now past a decade — from nothing.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n-html="method.traces">The traces are older than this site: we helped run the first global digital-nomad survey, from Berlin; backed <a href="https://coconat-space.com/about/team/">Coconat</a> and rural-development projects like <a href="https://rural-pop-up.com">rural-pop-up.com</a>, <a href="https://piazzainfesta.it">piazzainfesta.it</a>, <a href="https://zukunftsorte.land">zukunftsorte.land</a> and <a href="https://brandenburgconnect.de">brandenburgconnect.de</a>; and grew cross-functional engineering engagements into partnerships now lasting more than a decade — from nothing. The same model now fits a faster, smaller world: scale-ups and enterprises drawing on the AI era’s almost-generalists — people who can see the business and the technique, the strategy and the detail, and dig into any of them, AI at hand.</p>
+  </details>
 
   <div class="cta">
     <a class="btn primary" href="index.html" data-i18n="method.cta1">Start with the brief</a>
