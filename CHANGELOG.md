@@ -6,6 +6,64 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.4.0] - 2026-08-02
+
+The welance method, digitalised end to end and opened as a blueprint: the
+brief bar was already public, this release adds the two steps that follow it
+— what the work is worth, and who does it — plus the narrative that ties
+them together, in eight languages.
+
+### Added
+- **Perfect Price** (`site/price.html`, now on `welance.css`) and **Perfect
+  Team** (`site/team.html`): the split calculator and the missing equation.
+  A team is priced like a single independent — roles carry weights, levels
+  and their own cost base — and one blended client rate decomposes into four
+  visible bands (to the people · headroom · geographic differential ·
+  welance margin) that must sum exactly. No-deal is enforced per role: we
+  would rather lose an engagement than compress someone below their rate.
+- **`site/pricing.js`** — one shared, dependency-free engine holding every
+  constant of the model with the reason next to it, plus a formula registry
+  the pages *derive* their count from. Pinned by `make test-site`.
+- **The method** (`site/method.html`): the problem, Conway's law correctly
+  attributed, the three steps, the two doors (Directory maximises
+  connections, not margin; welance full service is priced 70/30 and
+  guarded by the no-deal rule), the eight formulas, and the human check
+  that no formula can make.
+- **Eight languages, one switcher** (`site/i18n.js` + `site/i18n/*.js`):
+  en · de · it · ur · pt-BR · vi · ar · es, RTL included, each dictionary a
+  flat file a native speaker can correct in a plain PR. Unreviewed
+  languages carry a visible `draft` marker.
+- **Shared chrome** (`site/chrome.js`): welance.com's header and footer on
+  every page, with one call to action — score a brief · compute a split ·
+  find a team.
+- **Code blocks** (`site/code.js`): language tabs (cURL · JavaScript ·
+  Python), one-click copy and a ~50-line highlighter. No build step, no
+  dependency; the markup stays plain text so copy yields clean code.
+- **`/llms.txt`** and a paste-ready assistant prompt in the console — the
+  bar, addressed to machines: never invent a score, call the API.
+- **The judge's language guarantee**: one line in the prompt makes it
+  explicit, and `make test-llm-multilingual` proves it — the same brief in
+  eight languages must reach the same gate decision and a score within a
+  declared tolerance (llm-only, outside offline CI).
+- **Tests as promises**: `tests/test_contract.py` pins the public API shape
+  and its invariants for OSS consumers; `tests/e2e` drives the real service
+  with Playwright (both calculators, every internal link, no unexpected
+  external host, the language following you across pages). `make test-e2e`,
+  `make test-all`.
+
+### Changed
+- **`/docs` explains itself**: every schema field carries a one-line
+  description and, where it helps, an example.
+- Public copy follows welance.com's rhythm — a short claim, one paragraph,
+  the depth one click down in the fine print. Two e2e tests keep it that
+  way: nothing on the surface over 360 characters.
+- The brand is lowercase everywhere it is written: **welance**.
+- Founding year stated consistently as 2011.
+
+### Fixed
+- The gate requirement value is `not_fail`; `rules.html` and the API
+  description both said `not-fail`. Caught by the new contract suite.
+
 ## [1.3.0] - 2026-07-19
 
 ### Added
