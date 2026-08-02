@@ -162,44 +162,29 @@
 .wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
   border-bottom: 1px solid var(--rule); }
 .wl-head-in { height: 76px; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
-@media (min-width: 1024px) { .wl-head-in { height: 92px; padding: 0 32px; gap: 20px; } }
-/* welance.com carries three nav items; we carry five, so the full proportions
-   only arrive when there is genuinely room for them */
+@media (min-width: 1180px) { .wl-head-in { height: 92px; padding: 0 32px; gap: 20px; } }
+/* welance.com carries three nav items; we carry five plus a language select,
+   so each step up in size waits until five names, the select and the pill all
+   genuinely fit on one line — 1024 is a tablet, and there they do not */
 @media (min-width: 1440px) { .wl-head-in { height: 100px; padding: 0 48px; gap: 24px; } }
-.wl-brandline { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;
-  column-gap: 10px; align-items: center; flex: none; color: var(--ink); text-decoration: none; }
-.wl-machine { grid-row: 1 / 3; width: 92px; height: 33px; overflow: visible; }
-@media (min-width: 1024px) { .wl-machine { width: 100px; height: 36px; } }
-@media (min-width: 1440px) { .wl-machine { width: 116px; height: 41px; } }
-/* the sticks draw themselves in, the team snaps out */
-.wl-machine [class^="wl-m-"] { stroke-dasharray: 60; stroke-dashoffset: 60;
-  animation: wl-m-draw .5s cubic-bezier(.6,0,.3,1) forwards; }
-.wl-m-in { animation-delay: .05s; } .wl-m-box { animation-delay: .2s; }
-.wl-m-stamp { animation-delay: .4s; } .wl-m-out { animation-delay: .55s; }
-.wl-m-a { animation-delay: .7s; } .wl-m-c { animation-delay: .78s; }
-.wl-m-b { animation-delay: .86s; } .wl-m-go { animation-delay: 1s; }
-.wl-m-tick { animation-delay: 1.1s; }
-@keyframes wl-m-draw { to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .wl-machine [class^="wl-m-"] { animation: none; stroke-dashoffset: 0; }
-}
+.wl-brandline { display: flex; flex-direction: column; justify-content: center;
+  gap: 3px; flex: none; color: var(--ink); text-decoration: none; }
 .wl-brandline:hover { text-decoration: none; }
 .wl-project { font-family: var(--disp); font-size: 22px; font-weight: 600; line-height: 1;
-  letter-spacing: -.02em; align-self: end; }
-@media (min-width: 1024px) { .wl-project { font-size: 24px; } }
+  letter-spacing: -.02em; }
+@media (min-width: 1180px) { .wl-project { font-size: 24px; } }
 @media (min-width: 1440px) { .wl-project { font-size: 28px; } }
 .wl-project .b { color: var(--accent); }
 .wl-origin { display: flex; align-items: center; gap: 5px; font-family: var(--mono);
-  font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); align-self: start; }
+  font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); }
 .wl-mark { display: inline-flex; }
 .wl-mark .wl-logo { width: 60px; height: 15px; }
 @media (max-width: 560px) { .wl-origin { display: none; } }
-/* small screens: the machine and the name shrink together so the header
-   never widens the document (the band test catches this) */
+/* small screens: the name shrinks so the header never widens the document
+   (the band test catches this) */
 @media (max-width: 640px) {
   .wl-head-in { gap: 8px; padding: 0 12px; }
-  .wl-brandline { min-width: 0; column-gap: 7px; }
-  .wl-machine { width: 52px; height: 19px; }
+  .wl-brandline { min-width: 0; }
   .wl-project { font-size: 14.5px; }
   .wl-head-right { gap: 6px; min-width: 0; }
   /* the select keeps the flag and the code; the full name needs room it
@@ -208,11 +193,11 @@
   .wl-theme { padding: 7px; }
 }
 .wl-nav { display: flex; align-items: center; gap: 26px; margin-inline-start: auto; }
-@media (min-width: 1024px) { .wl-nav { gap: 22px; } }
+@media (min-width: 1180px) { .wl-nav { gap: 22px; } }
 @media (min-width: 1440px) { .wl-nav { gap: 40px; } }
 .wl-nav-item { font-family: var(--disp); font-size: 17px; font-weight: 600;
   line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
-@media (min-width: 1024px) { .wl-nav-item { font-size: 16.5px; } }
+@media (min-width: 1180px) { .wl-nav-item { font-size: 16.5px; } }
 @media (min-width: 1440px) { .wl-nav-item { font-size: 18px; } }
 .wl-nav-item:hover { color: var(--accent); text-decoration: none; }
 .wl-nav-item[aria-current="page"] { box-shadow: 0 2px 0 0 var(--ink); }
@@ -223,6 +208,17 @@
   transition: background 150ms ease, color 150ms ease; }
 .wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
 @media (max-width: 900px) { .wl-nav { display: none; } .wl-head-right { margin-inline-start: auto; } }
+/* the awkward middle: five names, a language select and the pill all want to
+   be on one line and there is not quite room. Rather than drop the navigation
+   on a tablet, everything tightens and the origin line stands down. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .wl-head-in { gap: 10px; padding: 0 16px; }
+  .wl-origin { display: none; }
+  .wl-nav { gap: 14px; }
+  .wl-nav-item { font-size: 14.5px; }
+  .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 6px; }
+  .wl-pill { font-size: 14px; padding: 9px 15px; }
+}
 @media (max-width: 560px) { .wl-pill { display: none; } }
 
 /* --- breadcrumb line under the header ---------------------------------- */

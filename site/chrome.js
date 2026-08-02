@@ -61,25 +61,6 @@
     '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="wl-asterisk" aria-hidden="true">' +
     '<path fill="currentColor" fill-rule="evenodd" d="m18.403 16.5 7.951 8.046-2.096 2.121-7.952-8.046V30h-2.965V18.621L5.39 26.667l-2.096-2.121 7.951-8.046H0v-3h11.245L3.294 5.454 5.39 3.333l7.952 8.046V0h2.964v11.379l7.952-8.046 2.096 2.121-7.951 8.046h11.245v3z" clip-rule="evenodd"></path></svg>';
 
-  /* the machine, in welance sticks: raw sticks feed in from the left, the
-     press stamps a brief, three members snap into a team and leave to the
-     right — fast, and checked on the way out. */
-  var MACHINE =
-    '<svg class="wl-machine" viewBox="0 0 96 34" role="img" aria-label="sticks feeding a machine that stamps briefs and sends out checked teams">' +
-    '<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">' +
-    '<path class="wl-m-in" d="M2 9h12M2 17h9M2 25h12"/>' +
-    '<rect class="wl-m-box" x="22" y="5" width="24" height="24" stroke-width="2.8"/>' +
-    '<path class="wl-m-stamp" d="M28 13h12M28 19h8"/>' +
-    '<path class="wl-m-out" d="M50 17h8"/>' +
-    '</g>' +
-    '<g fill="none" stroke-width="2.4">' +
-    '<circle class="wl-m-a" cx="66" cy="11" r="4" stroke="var(--wl-c)"/>' +
-    '<circle class="wl-m-b" cx="78" cy="17" r="4" stroke="var(--wl-p)"/>' +
-    '<circle class="wl-m-c" cx="66" cy="23" r="4" stroke="var(--wl-cy)"/>' +
-    '<path class="wl-m-go" d="M86 17h6" stroke="var(--ink)" stroke-linecap="round"/>' +
-    '<path class="wl-m-tick" d="M88 11l2.5 2.5L95 8" stroke="var(--wl-y)" stroke-width="2.6" stroke-linecap="round"/>' +
-    '</g></svg>';
-
   function renderHeader() {
     var host = document.getElementById("site-header");
     if (!host) return;
@@ -92,7 +73,6 @@
     host.innerHTML =
       '<div class="wl-head"><div class="wl-head-in">' +
       '<a class="wl-brandline" href="./">' +
-        MACHINE +
         '<span class="wl-project">Perfect Briefs<span class="b">_</span></span>' +
         '<span class="wl-origin">' + tt("chrome.by", "an open standard, started by") +
         ' <span class="wl-mark">' + LOGO + "</span></span>" +

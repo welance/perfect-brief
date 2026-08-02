@@ -277,6 +277,21 @@ test.describe("the method reads at a glance", () => {
     }
   });
 
+  test("the header holds at every width, not only the two we test on", async ({ page }) => {
+    // it has broken three times now, always between the phone and the laptop:
+    // five nav names, a language select and the pill competing for one line
+    const broken = [];
+    for (const width of [412, 560, 640, 768, 900, 960, 1024, 1100, 1180, 1280, 1440, 1600]) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/method.html");
+      const over = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      if (over > 0) broken.push(`${width}px overflows by ${over}px`);
+    }
+    expect(broken, broken.join(" | ")).toHaveLength(0);
+  });
+
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
     const blocks = page.locator(".code");
