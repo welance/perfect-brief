@@ -58,21 +58,35 @@ test.describe("perfect price", () => {
     await expect(page.locator("#rows .comp input[type=text]").first()).toHaveValue("CraftCMS");
   });
 
-  test("internal work has no client share — the person keeps all of it", async ({ page }) => {
+  test("internal work: no margin — what is not covered alone is welance support", async ({ page }) => {
     await page.locator("#w-internal").click();
-    // nobody takes a cut: the share is the whole thing and there is no margin
+
+    // full autonomy: the person keeps the whole cap, support is zero
     await expect(page.locator("#figShare")).toHaveText("100%");
-    await expect(page.locator("#figMargin")).toHaveText("—");
+    await expect(page.locator("#t-f-margin")).toHaveText("welance support");
+    await expect(page.locator("#figMargin")).toHaveText("0%");
     await expect(page.locator("#figPay")).toContainText("50.00");
-    // the level still moves the ceiling — that is not a split
     await expect(page.locator("#formula")).not.toContainText("70%");
-    // both views must drop: a one-step gap rounds toward the person (§4)
+
+    // drop both views (a one-step gap rounds toward the person, §4): the
+    // uncovered part becomes a colleague's real time, and the rate follows
     for (const sel of await page.locator("#rows .comp select").all()) {
       await sel.selectOption("0.5");
     }
     await expect(page.locator("#levelname")).toHaveText("WITH SUPPORT");
-    await expect(page.locator("#figShare")).toHaveText("100%");
-    await expect(page.locator("#figPay")).not.toContainText("50.00");
+    await expect(page.locator("#figShare")).toHaveText("71%");
+    await expect(page.locator("#figMargin")).toHaveText("29%");
+    await expect(page.locator("#splitkey")).toContainText("welance support");
+    await expect(page.locator("#figPay")).toContainText("35.71");
+
+    // the two bands fill the bar: nothing hides
+    const w = await page.evaluate(() => {
+      const bar = document.querySelector(".splitbar").getBoundingClientRect().width;
+      const sum = ["barPerson", "barGeo", "barCompany"].reduce(
+        (t, id) => t + document.getElementById(id).getBoundingClientRect().width, 0);
+      return { bar, sum };
+    });
+    expect(Math.abs(w.sum - w.bar)).toBeLessThan(4);
   });
 });
 
