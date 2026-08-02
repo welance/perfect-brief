@@ -1,5 +1,21 @@
 # Perfect Brief — scoring service (`briefs.welance.com`)
 
+### → **[briefs.welance.com](https://briefs.welance.com)** — the public pages, live
+
+| | |
+|---|---|
+| **[The method](https://briefs.welance.com/method.html)** | brief → price → team, the welance model opened as a blueprint |
+| **[Perfect Brief](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
+| **[Perfect Price](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
+| **[Perfect Team](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
+| **[API docs](https://briefs.welance.com/docs)** | OpenAPI, every field described |
+| **[llms.txt](https://briefs.welance.com/llms.txt)** | the bar, written for machines — point your assistant at it |
+
+Eight languages, no build step, no tracking. Same origin serves the pages and
+the API.
+
+---
+
 Scores a digital product brief against an **open, versioned ruleset**. The score
 says *how good* a brief is; a separate **gate** says *whether it may publish*. An
 LLM only ever **judges** (server-side, key never leaves the box); deterministic

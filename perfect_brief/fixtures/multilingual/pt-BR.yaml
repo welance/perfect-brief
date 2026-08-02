@@ -1,0 +1,21 @@
+id: ml-pt-BR
+lang: pt-BR
+input_type: brief
+input: '# Disponibilidade em tempo real para reservas de restaurantes independentes
+
+
+  Problema: restaurantes pequenos perdem reservas porque a equipe não consegue atualizar
+  a disponibilidade em todos os canais em tempo real. Usuários primários: gerentes
+  de turno em restaurantes independentes, atualizando pelo celular durante o serviço.
+  Sucesso: reduzir reservas no-show em 30% em duas temporadas. Entregáveis: um login
+  com e-mail e SPID, sessões persistidas no Postgres, e um endpoint de API de disponibilidade
+  com p95 abaixo de 200ms. Fora do escopo: apps nativos e pagamentos na v1. Faixa
+  de orçamento 25-40 mil. Prazo: entregar o MVP antes da temporada de primavera.
+  Precisa de uma pessoa full-stack e um product designer por cerca de oito semanas.
+  Construído sobre a stack existente de Next.js e Postgres; integra com o provedor
+  de pagamentos existente. Risco: os restaurantes podem não manter a disponibilidade
+  atualizada, então validamos isso primeiro. Armazena histórico de reservas dos
+  clientes; a base legal do GDPR é o contrato; um DPA é necessário. A página pública
+  de reservas mira WCAG 2.2 AA, testada com teclado e leitor de tela.'
+notes: Faithful pt-BR translation of 0003-accepted — same content, same expectations
+  as en.yaml, judged live.

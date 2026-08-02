@@ -1,5 +1,14 @@
 # PLAN — Perfect Price
 
+> **Superseded 2026-08-01** by
+> `docs/superpowers/plans/2026-07-31-perfect-method-price-team.md`
+> (spec: `docs/superpowers/specs/2026-07-31-perfect-method-price-team-design.md`),
+> which executed Phases 0–2 of this plan and extended them: shared engine in
+> `site/pricing.js`, `team.html`, `method.html`, site-wide i18n (8 languages),
+> multilingual judge guarantee. Phases 3–4 below (the €50/h cap decision, CoL
+> real sources, native-speaker reviews — now one per language, the five open
+> decisions, the permalink idea) are **still owed** and queue after it.
+
 **Goal.** Publish **Perfect Price** as the second public surface of this project,
 beside *The Perfect Brief*: a page explaining how Welance prices collaborations,
 with a calculator anyone can use and check.

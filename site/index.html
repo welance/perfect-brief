@@ -6,14 +6,14 @@
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
-<link rel="stylesheet" href="welance.css?v=3">
+<link rel="stylesheet" href="welance.css?v=12">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 96px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  header{padding:40px 0 18px;border-bottom:2px solid var(--ink)}
+  header{padding:16px 0 18px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:20px}
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5vw,46px);margin:14px 0 6px;letter-spacing:-.02em}
@@ -34,7 +34,12 @@
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
-  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .seam{margin:18px 0 14px;max-width:600px}
+  .seam svg{display:block;width:100%}
+  .seam .sl{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.05em}
+  .seam .sl.b{font-size:13px;font-weight:600;fill:var(--ink)}
+  .seam .sl.accent{fill:var(--accent)}
+  [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
@@ -56,35 +61,15 @@
 </style>
 </head>
 <body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="index.crumb">perfect brief</span></p>
 <div class="wrap">
   <header>
     <div class="head-grid">
       <div class="txt">
-        <nav class="crumbs" aria-label="breadcrumb">
-        <a class="brand" href="https://welance.com" aria-label="welance — back to welance.com">
-          <!-- welance asterisk + wordmark, paths verbatim from welance.com / Directory -->
-          <svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" width="116" height="28" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">
-            <g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)">
-              <g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">
-                <path class="wl-stroke wl-s1" d="M-374.25,22 L-622.25,22"/>
-                <path class="wl-stroke wl-s2" d="M-498.25,-102 L-498.25,146"/>
-                <path class="wl-stroke wl-s3" d="M-410.5,109.75 L-586,-65.75"/>
-                <path class="wl-stroke wl-s4" d="M-586,109.75 L-410.5,-65.75"/>
-              </g>
-            </g>
-            <g class="wl-glyph wl-g1" transform="matrix(0.0833,0,0,0.0833,61.3753,82.5643)"><path fill="currentColor" d="M-60.793,67.637 L-36.475,67.637 L-0.384,-37.519 L0.128,-37.519 L36.475,67.637 L60.793,67.637 L92.788,-67.637 L67.96,-67.637 L45.691,31.65 L45.178,31.65 L11.134,-67.637 L-11.134,-67.637 L-45.178,31.65 L-45.69,31.65 L-67.96,-67.637 L-92.788,-67.637 Z"/></g>
-            <g class="wl-glyph wl-g2" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M-119.854,30.837 C-119.854,73.461 -94.257,102.303 -56.63,102.303 C-30.777,102.303 -10.811,90.817 1.219,68.357 L-18.234,55.339 C-29.497,73.461 -39.736,80.097 -56.885,80.097 C-67.892,80.097 -76.851,76.269 -83.762,68.357 C-90.673,60.444 -94.257,50.235 -94.513,38.239 L4.547,38.239 L4.547,27.774 C4.547,-12.809 -20.026,-40.63 -56.885,-40.63 C-94.001,-40.63 -119.854,-11.277 -119.854,30.837 Z M-94.001,19.096 C-93.489,-1.323 -77.363,-18.424 -56.885,-18.424 C-35.384,-18.424 -21.306,-3.11 -20.282,19.096 Z"/></g>
-            <g class="wl-glyph wl-g3" transform="matrix(0.0833,0,0,0.0833,83.6117,80.4382)"><path fill="currentColor" d="M-12.541,93.161 L12.541,93.161 L12.541,-93.161 L-12.541,-93.161 Z"/></g>
-            <g class="wl-glyph wl-g4" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M82.13,63.252 C82.13,86.989 99.8,102.303 126.67,102.303 C143.31,102.303 157.39,95.922 164.81,85.457 L165.32,85.457 L165.32,98.474 L188.36,98.474 L188.36,5.568 C188.36,-23.018 168.91,-40.63 137.42,-40.63 C122.83,-40.63 110.29,-36.546 100.05,-28.634 C90.07,-20.721 83.93,-10.256 81.62,3.016 L105.94,8.121 C109.27,-8.98 120.78,-18.679 137.42,-18.679 C152.78,-18.679 162.25,-11.533 162.25,-0.557 C162.25,9.397 154.57,14.246 130,20.372 C95.44,28.54 82.13,40.536 82.13,63.252 Z M163.53,52.787 C163.53,68.357 149.45,79.842 129.74,79.842 C114.64,79.842 106.71,73.206 106.71,61.72 C106.71,51.511 114.9,45.64 136.4,40.28 C152.78,35.941 160.72,31.858 163.02,25.987 L163.53,25.987 Z"/></g>
-            <g class="wl-glyph wl-g5" transform="matrix(0.0833,0,0,0.0833,102.9065,82.4049)"><path fill="currentColor" d="M-56.7,69.552 L-31.61,69.552 L-31.61,-13.91 C-31.61,-33.308 -18.81,-46.325 0.64,-46.325 C20.1,-46.325 31.61,-34.074 31.61,-13.91 L31.61,69.552 L56.7,69.552 L56.7,-17.739 C56.7,-49.388 36.48,-69.552 5.5,-69.552 C-8.83,-69.552 -23.93,-63.171 -32.12,-53.727 L-32.63,-53.727 L-32.63,-65.723 L-56.7,-65.723 Z"/></g>
-            <g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>
-            <g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g>
-          </svg>
-        </a>
-        <span class="sep">/</span><span class="cur">perfect brief</span>
-        </nav>
-        <h1>The Perfect Brief<span class="b">_</span></h1>
-        <p class="thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
+        
+        <h1><span data-i18n="index.h1">The Perfect Brief</span><span class="b">_</span></h1>
+        <p class="thesis" data-i18n-html="index.thesis">A great digital product is mostly made by the team that builds it — we'd say <b>20% brief, 80% team</b>. But the brief is the 20% that decides whether a good team can even start well. This is a small, open service that scores a brief before it goes out.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
       <svg viewBox="0 0 120 140" aria-hidden="true">
@@ -98,57 +83,116 @@
       </div>
     </div>
     <div class="cta">
-      <a class="btn primary gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
-      <a class="btn" href="console.html">Try the console</a>
-      <a class="btn ghost" href="rules.html">Read the rules</a>
+      <a class="btn gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
+      <a class="btn primary" href="console.html" data-i18n="index.cta.console">Try the console</a>
+      <a class="btn ghost" href="rules.html" data-i18n="index.cta.rules">Read the rules</a>
+      <a class="btn ghost" href="method.html" data-i18n="index.cta.method">The method</a>
     </div>
     <div class="prov">
       <span class="dot" style="background:var(--wl-y)"></span><span class="dot" style="background:var(--wl-c)"></span><span class="dot" style="background:var(--wl-p)"></span><span class="dot" style="background:var(--wl-cy)"></span>
-      <span>made by <a href="https://welance.com">Welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
+      <span data-i18n-html="index.prov">made by <a href="https://welance.com">welance</a> · powering the brief bar of <b>welance/Directory</b> · MIT</span>
     </div>
   </header>
 
-  <div class="eyebrow"><span>what it does</span></div>
-  <p>It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
-  <p>Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <p style="font-size:14px;color:var(--ink-soft)">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
+  <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
+  <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
+  <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
+  <div class="band">
   <div class="two">
-    <div class="card"><span class="n g">92 / 100</span><h3>Directory-ready</h3><p>High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
-    <div class="card"><span class="n f">blocked</span><h3>…and still not published</h3><p>The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
+    <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
+  </div>
+    <div class="card"><span class="n f">blocked</span><h3 data-i18n="index.card2.h">…and still not published</h3><p data-i18n="index.card2.p">The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
   </div>
 
-  <div class="eyebrow"><span>how it works</span></div>
-  <p>There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
-  <p>The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p>
-  <pre>curl -X POST https://briefs.welance.com/v1/score \
+  <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
+  <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
+  
+  <figure class="seam" style="direction:ltr">
+    <svg viewBox="0 0 560 128" aria-label="The LLM only judges; code owns weights, gate and decision">
+      <rect x="10" y="34" width="92" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M28 52 h56 M28 64 h44 M28 76 h50" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <text class="sl" x="56" y="112" text-anchor="middle" data-i18n="idx.seam.b">brief</text>
+      <path d="M104 64 h28 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <rect x="136" y="24" width="140" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="206" y="58" text-anchor="middle" data-i18n="idx.seam.judge1">LLM judge</text>
+      <text class="sl" x="206" y="78" text-anchor="middle" data-i18n="idx.seam.judge2">verdicts only</text>
+      <path d="M278 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <path d="M310 14 v100 M318 14 v100" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
+      <text class="sl accent" x="314" y="10" text-anchor="middle" data-i18n="idx.seam.seam">the seam</text>
+      <path d="M330 64 h18 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <rect x="360" y="24" width="150" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="435" y="58" text-anchor="middle" data-i18n="idx.seam.code1">code</text>
+      <text class="sl" x="435" y="78" text-anchor="middle" data-i18n="idx.seam.code2">weights · gate · decision</text>
+      <path d="M512 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <text class="sl b" x="536" y="46" text-anchor="end" data-i18n="idx.seam.out">score + gate</text>
+    </svg>
+  </figure>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-tabs">
+        <button data-tab="curl" aria-pressed="true">cURL</button>
+        <button data-tab="js">JavaScript</button>
+        <button data-tab="py">Python</button>
+      </div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="bash" data-tab="curl">curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
-  -d '{"brief":"…","judge":"llm"}'
+  -d '{"brief":"…","judge":"llm"}'</pre>
+<pre data-lang="js" data-tab="js" hidden>const res = await fetch("https://briefs.welance.com/v1/score", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ brief, judge: "llm" }),
+});
+const { score, decision, gate } = await res.json();</pre>
+<pre data-lang="py" data-tab="py" hidden>import httpx
 
-{ "score": 92.0, "band": "Directory-ready", <b>"decision": "blocked"</b>,
-  "gate": { "passed": false, "missing": ["anonymised"] },
-  "verdicts": [ … per-rule status + verbatim evidence … ],
-  "ruleset_version": "1.0.0+83107baec655" }</pre>
-  <p style="font-size:14px;color:var(--ink-soft)">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+r = httpx.post("https://briefs.welance.com/v1/score",
+               json={"brief": brief, "judge": "llm"})
+score, decision = r.json()["score"], r.json()["decision"]</pre>
+  </div>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">json · <span data-i18n="site.response">response</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="json">{
+  "score": 92.0,
+  "band": "Directory-ready",
+  "decision": "blocked",
+  "gate": {
+    "passed": false,
+    "missing": ["anonymised"]
+  },
+  "verdicts": [ … one per rule: status, confidence, verbatim evidence … ],
+  "review_required": false,
+  "ruleset_version": "1.0.0+83107baec655"
+}</pre>
+  </div>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
-  <div class="eyebrow"><span>why we built it, honestly</span></div>
-  <p>We are <a href="https://welance.com">Welance</a>, a small collective of independent senior teams, working together since 2012. We're building <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
-  <p>There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
-  <p>This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
-  <p>Together, this service and the Directory are the digitalised version of what Welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
+  <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
+  <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a small collective of independent senior teams, working together since 2011. We run <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. The platform maximises connections, not margin: meeting a team costs a fixed, symbolic token, never a percentage of the relationship. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
+  <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
+  <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
+  </details>
 
-  <div class="eyebrow"><span>governance</span></div>
-  <div class="triad">
+  <div class="eyebrow"><span data-i18n="index.eb4">governance</span></div>
+  <div class="triad" data-i18n-html="index.triad">
     <b>anyone proposes</b> — every rule is a file; open a PR, no gatekeeping<br>
     <b>evidence merges</b> — the public fixture corpus in CI decides, not taste<br>
     <b>anyone forks</b> — MIT; the exit right is the real anti-capture guarantee
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.govnote">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
 
-  <footer>
-    <span>The Perfect Brief · a Welance open-source project</span>
-    <span><a href="console.html">console</a> · <a href="rules.html">rules</a> · <a href="https://briefs.welance.com/docs">API docs</a> · <a href="https://github.com/welance/perfect-brief">github</a></span>
-  </footer>
 </div>
+<div id="site-footer"></div>
 <script>
 /* the perfect-brief ident: hand-authored Lottie in the welance house style
    (same palette/format as welance.com's directory animations). The inline
@@ -169,5 +213,15 @@
   document.head.appendChild(s);
 })();
 </script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=4"></script>
+<script src="code.js?v=1"></script>
 </body>
 </html>

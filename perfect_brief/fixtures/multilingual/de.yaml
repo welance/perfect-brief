@@ -1,0 +1,21 @@
+id: ml-de
+lang: de
+input_type: brief
+input: '# Echtzeit-Verfügbarkeit für Reservierungen unabhängiger Restaurants
+
+
+  Problem: Kleine Restaurants verlieren Reservierungen, weil das Personal die Verfügbarkeit
+  nicht kanalübergreifend in Echtzeit aktualisieren kann. Primäre Nutzer: Schichtleitungen
+  in unabhängigen Restaurants, die während des Service mobil aktualisieren. Erfolg:
+  No-Show-Reservierungen innerhalb von zwei Saisons um 30% senken. Liefergegenstände:
+  ein Auth-Login mit E-Mail und SPID, Sessions in Postgres persistiert, und ein
+  Verfügbarkeits-API-Endpoint mit p95 unter 200ms. Außerhalb des Umfangs: native
+  Apps und Zahlungen in v1. Budgetband 25-40k. Zeitplan: das MVP vor der Frühjahrssaison
+  ausliefern. Braucht eine Full-Stack-Entwicklung und Produktdesign für etwa acht
+  Wochen. Auf dem bestehenden Next.js- und Postgres-Stack; integriert den bestehenden
+  Zahlungsanbieter. Risiko: Restaurants halten die Verfügbarkeit womöglich nicht
+  aktuell, das validieren wir zuerst. Speichert Reservierungshistorien; DSGVO-Rechtsgrundlage
+  ist der Vertrag; ein AVV ist erforderlich. Die öffentliche Buchungsseite zielt
+  auf WCAG 2.2 AA, getestet mit Tastatur und Screenreader.'
+notes: Faithful de translation of 0003-accepted — same content, same expectations
+  as en.yaml, judged live.

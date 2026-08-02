@@ -125,3 +125,138 @@
 .btn.sm { height: 34px; padding: 0 14px; font-size: 13px; }
 .btn.ghost { border-color: transparent; }
 .btn.ghost:hover { background: var(--paper-2); color: var(--ink); }
+
+/* --- language switcher: one dropdown with flags (rendered by i18n.js) --- */
+#langswitch { display: flex; align-items: center; }
+.wl-lang-select { font-family: var(--disp); font-size: 14px; font-weight: 500;
+  padding: 8px 10px; cursor: pointer; background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); max-width: 190px; }
+.wl-lang-select:hover { border-color: var(--ink); }
+.wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* --- site header, copied from welance.com's (chrome.js) ----------------- */
+.wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
+  border-bottom: 1px solid var(--rule); }
+.wl-head-in { max-width: var(--maxw); margin: 0 auto; height: 76px; padding: 0 24px;
+  display: flex; align-items: center; gap: 16px; }
+.wl-head-logo { display: flex; align-items: center; color: var(--ink); flex: none; }
+.wl-head-logo .wl-logo { width: 140px; height: 34px; }
+.wl-nav { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
+.wl-nav-item { font-family: var(--disp); font-size: 16px; font-weight: 600;
+  line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
+.wl-nav-item:hover { color: var(--accent); text-decoration: none; }
+.wl-nav-item[aria-current="page"] { box-shadow: 0 2px 0 0 var(--ink); }
+.wl-head-right { display: flex; align-items: center; gap: 12px; margin-inline-start: 8px; }
+.wl-pill { font-family: var(--disp); font-size: 15px; font-weight: 600; line-height: 1;
+  border: 2px solid var(--ink); border-radius: 999px; padding: 11px 20px;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease; }
+.wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
+@media (max-width: 900px) { .wl-nav { display: none; } .wl-head-right { margin-inline-start: auto; } }
+@media (max-width: 560px) { .wl-pill { display: none; } }
+
+/* --- breadcrumb line under the header ---------------------------------- */
+.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px 0;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-soft);
+  display: flex; align-items: center; gap: 8px; }
+.wl-crumb a { color: var(--ink-soft); text-decoration: none; }
+.wl-crumb a:hover { color: var(--accent); }
+.wl-crumb .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+.wl-crumb .sep { opacity: .5; }
+.wl-crumb .cur { color: var(--ink); }
+
+/* --- site footer, copied from welance.com's (chrome.js) ----------------- */
+.wl-foot { display: block; margin-top: 72px; padding: 0; border: 0; max-width: none;
+  background: var(--paper); color: var(--ink); font-family: var(--disp); font-size: 16px; }
+.wl-foot-cta { background: var(--ink); color: var(--paper); }
+.wl-foot-cta-in { max-width: var(--maxw); margin: 0 auto; padding: 44px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
+.wl-foot-cta h2 { font-family: var(--disp); font-weight: 600; margin: 0;
+  font-size: clamp(24px, 3.6vw, 36px); letter-spacing: -.01em; }
+.wl-foot-cta h2 .b { color: var(--wl-y); }
+.wl-cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.wl-cta-btn { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
+  border: 2px solid var(--paper); background: var(--paper); color: var(--ink);
+  padding: 14px 24px; text-decoration: none; white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease; }
+.wl-cta-btn:hover { background: transparent; color: var(--paper); text-decoration: none; }
+.wl-cta-btn.ghost { background: transparent; color: var(--paper); border-color: #4a4a4a; }
+.wl-cta-btn.ghost:hover { border-color: var(--paper); background: transparent; color: var(--paper); }
+.wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
+.wl-foot-top { display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start; }
+.wl-foot-mark { flex: none; color: var(--ink); }
+.wl-asterisk { width: 72px; height: 72px; display: block; }
+.wl-foot-offices { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 640px) { .wl-foot-offices { grid-template-columns: 1fr 1fr; gap: 12px 48px; } }
+.wl-office { display: flex; flex-direction: column; gap: 2px; }
+.wl-office p { margin: 0; font-size: 15.5px; line-height: 1.45; }
+.wl-office-h { font-weight: 600; font-size: 17px !important; margin-bottom: 4px !important; }
+.wl-office a { color: var(--ink); font-size: 15.5px; text-decoration: underline;
+  text-underline-offset: .125em; }
+.wl-office a:hover { color: var(--accent); }
+.wl-foot-links { display: flex; flex-direction: column; gap: 4px; margin-inline-start: auto; }
+.wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
+.wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
+@media (max-width: 900px) { .wl-foot-links { margin-inline-start: 0; } }
+.wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
+.wl-foot-bottom p { margin: 0; }
+.wl-foot-bottom nav { display: flex; gap: 8px; }
+.wl-foot-bottom a { color: var(--ink); text-decoration: none; }
+.wl-foot-bottom a:hover { color: var(--accent); }
+
+/* --- the fine print: depth one click away --------------------------------- */
+details.fineprint { border-left: 2px solid var(--rule); margin: 6px 0 18px; padding-left: 14px; }
+html[dir=rtl] details.fineprint { border-left: 0; border-right: 2px solid var(--rule);
+  padding-left: 0; padding-right: 14px; }
+details.fineprint > summary { list-style: none; cursor: pointer; font-family: var(--mono);
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+details.fineprint > summary::-webkit-details-marker { display: none; }
+details.fineprint > summary::before { content: "+ "; }
+details.fineprint[open] > summary::before { content: "− "; }
+details.fineprint > summary:hover { color: var(--accent); }
+details.fineprint[open] > summary { margin-bottom: 10px; }
+
+/* --- code blocks: tabs, copy, and a two-tone dark surface ----------------
+   The modern docs pattern (tabs + copy + per-language colour), built from
+   nothing: the highlighting lives in code.js, the markup stays plain text. */
+.code { border: 1px solid var(--ink); background: var(--ink); margin: 0 0 12px; overflow: hidden; }
+.code-bar { display: flex; align-items: stretch; justify-content: space-between;
+  gap: 12px; border-bottom: 1px solid #232323; }
+.code-tabs { display: flex; }
+.code-tabs button, .code-copy { font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
+  color: #8a8a8a; padding: 10px 14px; }
+.code-tabs button:hover, .code-copy:hover { color: var(--paper); }
+.code-tabs button[aria-pressed="true"] { color: var(--paper); box-shadow: inset 0 -2px 0 var(--wl-y); }
+.code-copy { white-space: nowrap; }
+.code-copy.done { color: var(--wl-cy); }
+.code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: #8a8a8a; padding: 10px 14px; }
+.code pre { margin: 0; padding: 14px 16px 16px; background: transparent; border: 0;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
+.code .s  { color: var(--wl-y); }      /* strings */
+.code .k  { color: var(--wl-cy); }     /* json keys */
+.code .n  { color: #b18cf0; }          /* numbers, booleans */
+.code .kw { color: #ff9d78; }          /* keywords */
+.code .u  { color: var(--wl-y); text-decoration: underline; text-underline-offset: .18em; }
+.code .fl { color: #8a8a8a; }          /* -X -H -d */
+.code .cm { color: #7d7d7d; font-style: italic; }
+.code .p  { color: #6d6d6d; }          /* punctuation */
+
+/* --- full-width bands: break the scroll with brand colour ----------------
+   Paints beyond the container without touching layout width, so no page
+   ever gains a horizontal scrollbar (the vw trick does). Content keeps the
+   container's measure; only the colour runs edge to edge. */
+.band { --bandbg: var(--paper-2); background: var(--bandbg);
+  box-shadow: 0 0 0 100vmax var(--bandbg); clip-path: inset(0 -100vmax);
+  padding: 40px 0; margin: 52px 0; }
+.band > :first-child { margin-top: 0; }
+.band > :last-child { margin-bottom: 0; }
+.band.cy { --bandbg: var(--wl-cy); }
+.band.y  { --bandbg: var(--wl-y); }
+.band.c  { --bandbg: var(--wl-c); }
+.band.ink { --bandbg: var(--ink); color: var(--paper); }
+.band .eyebrow { color: var(--ink); }
+.band .eyebrow::after { background: rgba(10,10,10,.25); }

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfect Team · one team, one rate — welance</title>
+<meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named welance margin out.">
+<link rel="stylesheet" href="welance.css?v=12">
+<script src="pricing.js?v=1"></script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=4"></script>
+<style>
+  /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
+     Component vocabulary shared with price.html: same names, same look.
+     The fourth band — headroom — gets the house yellow: margin beyond the
+     target never hides, exactly like the geographic differential. */
+  :root {
+    --bg: var(--paper); --surface: var(--paper); --surface-2: var(--paper-2);
+    --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
+    --line: var(--rule); --line-strong: var(--rule);
+    --person: var(--wl-c); --person-soft: var(--fail-bg);
+    --company: var(--rule-strong); --company-soft: var(--pass-bg);
+    --geo: var(--wl-p); --geo-soft: var(--accent-bg);
+    --head: var(--wl-y);
+    --full: var(--pass); --none: #8a8a8a; --focus: var(--accent);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--disp); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
+  .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
+  .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(29px, 4.4vw, 42px);
+    line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
+
+  .topbar { display: flex; justify-content: flex-start; margin: 14px 0 20px; }
+  .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+  .head-grid .txt { min-width: 0; }
+  .t-ident { flex: none; width: 210px; margin-top: 30px; }
+  .t-ident svg { display: block; width: 100%; }
+  .pd { fill: none; stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300;
+    animation: p-draw 1s cubic-bezier(.6,0,.3,1) forwards; }
+  .pd.d1 { animation-delay: .1s; } .pd.d2 { animation-delay: .25s; } .pd.d3 { animation-delay: .45s; }
+  .pd.d4 { animation-delay: .65s; } .pd.d5 { animation-delay: .85s; } .pd.d6 { animation-delay: 1.05s; }
+  @keyframes p-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
+  @media (max-width: 700px) { .t-ident { display: none; } }
+  .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+    background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
+  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+
+  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
+  @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
+  .sticky { position: sticky; top: 18px; }
+  @media (max-width: 920px) { .sticky { position: static; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line); padding: 22px; }
+  .card + .card { margin-top: 20px; }
+  .card h2 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
+  .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
+
+  .rolebar { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; }
+  .subnote { font-size: 12px; color: var(--ink-3); }
+  input[type="text"], input[type="number"], select {
+    font: inherit; color: var(--ink); background: var(--surface-2);
+    border: 1px solid var(--line-strong); padding: 8px 10px; }
+  input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .grow { flex: 1 1 200px; }
+  .w-rate { width: 124px; }
+  .w-floor { max-width: 300px; }
+  :is(input, select, button, [tabindex]):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* each role: the name gets a full-width line of its own, the parameters
+     sit below it — a role you cannot read is a role you cannot argue with */
+  .role-head, .role { display: grid;
+    grid-template-columns: 58px minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
+    gap: 8px; align-items: center; }
+  .role > input[type="text"] { grid-column: 1 / -1; font-size: 15px; font-weight: 600;
+    padding: 9px 12px; }
+  .role-head { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; padding: 0 0 8px; border-bottom: 1px solid var(--line); }
+  .role { padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .role:last-of-type { border-bottom: 0; }
+  .role input, .role select { width: 100%; }
+  .role select { font-size: 13px; padding: 7px 6px; }
+  .role input[type="number"] { padding: 7px 4px; text-align: center; }
+  .ceil { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px;
+    font-weight: 600; text-align: end; white-space: nowrap; }
+  .ceil.bad { color: var(--fail); }
+  .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--fail); }
+  @media (max-width: 720px) {
+    .role-head { display: none; }
+    .role { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 26px;
+      gap: 6px; padding: 9px 0; }
+    .role > input[type="text"] { grid-column: 1 / 4; grid-row: 1; }
+    .role > :nth-child(7) { grid-column: 4; grid-row: 1; }     /* × beside the name */
+    .role > :nth-child(2) { grid-column: 1; grid-row: 2; }     /* weight */
+    .role > :nth-child(3) { grid-column: 2 / 5; grid-row: 2; } /* level */
+    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* country */
+    .role > :nth-child(5) { grid-column: 3; grid-row: 3; }     /* own rate */
+    .role > :nth-child(6) { grid-column: 1 / 4; grid-row: 4; text-align: start; } /* ceiling */
+    .role select { font-size: 12.5px; padding: 6px 4px; }
+  }
+  .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
+    cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
+  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
+    color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
+  .addbtn:hover { border-color: var(--person); color: var(--person); }
+  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--partial); }
+
+  .splitbar { display: flex; height: 42px; overflow: hidden; border: 1px solid var(--line-strong); }
+  .splitbar > div { display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+    font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
+  .sb-people { background: var(--person); }
+  .sb-head { background: var(--head); color: var(--ink); }
+  .sb-geo { background: var(--geo); }
+  .sb-company { background: var(--company); }
+  .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+  .splitkey span { display: flex; align-items: center; gap: 5px; }
+  .sw { width: 9px; height: 9px; flex: none; }
+
+  .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
+    border: 1px solid var(--line); overflow: hidden; margin-top: 20px; }
+  .fig { background: var(--surface); padding: 13px 14px; }
+  .fig .k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px; }
+  .fig .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
+  .fig .v small { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+
+  .formula { margin-top: 18px; background: var(--surface-2); padding: 13px 15px;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink-2); overflow-x: auto; }
+  .formula b { color: var(--ink); font-weight: 600; }
+
+  .verdict { margin: 16px 0 0; padding: 13px 15px; font-size: 14.5px; }
+  .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
+  .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .check { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; }
+  .checkval { font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: 20px; font-weight: 600; padding: 4px 0 6px; color: var(--person); }
+  .checknote { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-2); max-width: 66ch; }
+
+  .wrap footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  .wrap footer p { margin: 0 0 9px; }
+  .wrap footer b { color: var(--ink-2); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="team.crumb">perfect team</span></p>
+<div class="wrap">
+  
+
+  <header>
+    <div class="head-grid">
+      <div class="txt">
+    <p class="eyebrow" data-i18n="team.eyebrow">welance · one team, one rate</p>
+    <h1><span data-i18n="team.h1">Perfect Team</span><span style="color:var(--accent)">_</span></h1>
+    <p class="lede" data-i18n-html="team.lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated, named <b>welance margin</b> anyone can check.</p>
+      </div>
+      <div class="t-ident" role="img" aria-label="Three roles, one blended rate, four visible bands">
+        <svg viewBox="0 0 220 130" aria-hidden="true">
+          <circle class="pd d1" cx="52" cy="26" r="12" stroke="var(--person)" stroke-width="3" fill="none"/>
+          <circle class="pd d1" cx="110" cy="20" r="12" stroke="var(--geo)" stroke-width="3" fill="none"/>
+          <circle class="pd d2" cx="168" cy="26" r="12" stroke="var(--head)" stroke-width="3" fill="none"/>
+          <path class="pd d3" d="M52 42 v18 M110 36 v24 M168 42 v18" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+          <path class="pd d4" d="M52 62 h116" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d4" d="M110 62 v18" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d5" d="M12 92 h196 v26 h-196 z" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d6" d="M19 105 h72" stroke="var(--person)" stroke-width="9"/>
+          <path class="pd d6" d="M97 105 h20" stroke="var(--head)" stroke-width="9"/>
+          <path class="pd d6" d="M123 105 h26" stroke="var(--geo)" stroke-width="9"/>
+          <path class="pd d6" d="M155 105 h46" stroke="var(--company)" stroke-width="9"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <div class="topbar">
+    <button class="lang reset" id="reset" type="button" data-i18n="team.reset">Reset to defaults</button>
+  </div>
+
+  <div class="cols">
+    <div>
+      <section class="card">
+        <h2 data-i18n="team.c1h">The team, role by role</h2>
+        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. For each role: its weight in the project, the level it is delivered at, the member's cost-of-living coefficient, and their own rate — for the no-deal check.</p>
+        <div class="rolebar">
+          <div class="field grow"><label for="teamname" data-i18n="team.l.team">Team</label>
+            <input type="text" id="teamname" value="Team — product rebuild">
+            <span class="subnote" data-i18n="team.l.sub">Anonymised by design: roles, never people.</span></div>
+          <div class="field"><label for="rate" data-i18n="team.l.rate">Client rate €/h</label>
+            <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
+          <div class="field"><label for="floorc" data-i18n="team.l.floor">Cost-of-living floor</label>
+            <select id="floorc" class="w-floor">
+              <option value="0" data-i18n="team.fl0">no floor — pay follows local cost fully</option>
+              <option value="0.5" data-i18n="team.fl5">at least half the role's pay</option>
+              <option value="0.75" data-i18n="team.fl75">at least three quarters</option>
+              <option value="1" data-i18n="team.fl100">full role pay — geography off</option>
+            </select>
+            <span class="subnote" data-i18n="team.l.floornote">A guarantee: wherever someone lives, pay never drops below this.</span></div>
+        </div>
+        <div class="role-head">
+          <div data-i18n="team.th2">Weight</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
+        </div>
+        <div id="rows"></div>
+        <p class="weightflag" id="weightflag" hidden>Weights are read as shares of their sum.</p>
+        <button class="addbtn" id="add" type="button" data-i18n="team.add">+ Add role</button>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="team.c2h">The first check</h2>
+        <p class="hint" data-i18n="team.c2hint">The formulas above produce the starting team. What they cannot see — compatibility between members and with the client, kindness, availability, how someone carries stress — is learned only by working together.</p>
+        <div class="check">
+          <div class="field"><label for="projsize" data-i18n="team.l.size">Project size</label>
+            <select id="projsize">
+              <option value="s" data-i18n="team.size.s">Small — days to weeks</option>
+              <option value="m" selected data-i18n="team.size.m">Medium — weeks to months</option>
+              <option value="l" data-i18n="team.size.l">Large — months and up</option>
+            </select></div>
+          <div class="field"><label data-i18n="team.l.first">First check after</label>
+            <div class="checkval" id="checkval">2 weeks</div></div>
+        </div>
+        <p class="checknote" data-i18n-html="team.checknote">A suggested rhythm, deliberately <b>not</b> a formula. Work starts for real, with the declared reserve to replace, remove or modify the initial choices — and it is bidirectional, always: the independent may not feel right either. Every human problem should surface at the first check, not fester. The adjustment is made on the most important asset: the people.</p>
+      </section>
+    </div>
+
+    <div class="sticky">
+      <section class="card">
+        <h2 style="margin-bottom:14px" data-i18n="team.resh">Result</h2>
+        <div class="splitbar" aria-label="how the client rate splits">
+          <div class="sb-people" id="barPeople"></div>
+          <div class="sb-head" id="barHead"></div>
+          <div class="sb-geo" id="barGeo"></div>
+          <div class="sb-company" id="barCompany"></div>
+        </div>
+        <div class="splitkey">
+          <span><span class="sw" style="background:var(--person)"></span><span data-i18n="team.key1">to the people</span></span>
+          <span><span class="sw" style="background:var(--head)"></span><span data-i18n="team.key2">headroom</span></span>
+          <span><span class="sw" style="background:var(--geo)"></span><span data-i18n="team.key3">geographic differential</span></span>
+          <span><span class="sw" style="background:var(--company)"></span><span data-i18n="team.key4">welance margin</span></span>
+        </div>
+        <div class="figures">
+          <div class="fig"><div class="k" data-i18n="team.fig1">To the people</div><div class="v" id="figPeople">—</div></div>
+          <div class="fig"><div class="k" data-i18n="team.fig2">welance margin · target</div><div class="v" id="figMargin">—</div></div>
+          <div class="fig"><div class="k" data-i18n="team.fig3">Minimum viable rate</div><div class="v" id="figMinR">—</div></div>
+          <div class="fig"><div class="k" data-i18n="team.fig4">Client rate</div><div class="v" id="figRate">—</div></div>
+        </div>
+        <div class="formula" id="formula"></div>
+        <div id="verdict"></div>
+      </section>
+    </div>
+  </div>
+
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <footer>
+    <p data-i18n-html="team.foot1"><b>The four bands must sum to the client rate — that is the equation.</b> Margin the people leave on the table (headroom) and margin that comes from where somebody lives (the geographic differential) are shown in their own colours, because margin that cannot be seen cannot be argued with.</p>
+    <p data-i18n-html="team.foot2"><b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.</p>
+    <p data-i18n-html="team.foot3"><b>No-deal rule.</b> If a member's rate exceeds what their level allows at the agreed client rate, the engagement does not happen. Nobody is squeezed below their rate to make the margin work.</p>
+    <p data-i18n-html="team.foot4"><b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them.</p>
+    <p data-i18n-html="team.foot5"><b>The rate prices the person; the share prices the delivery risk.</b> When the numbers do not close, the fix is never to compress a person — it is to raise the client rate, or not to do the deal. This full-service split is welance’s own; on <a href="https://welance.com/directory">Directory</a> the platform takes no share at all — meeting a team costs a fixed, symbolic token.</p>
+  </footer>
+  </details>
+</div>
+<div id="site-footer"></div>
+<script>
+(function () {
+  "use strict";
+
+  // All policy and math come from the shared engine — this file is only UI.
+  var P = window.WelancePricing;
+  // Strings come from the site i18n; every lookup falls back to the
+  // English literal next to it, so the page works with no dictionaries.
+  var I = window.WelanceI18n;
+  function tt(key, en) {
+    var v = I ? I.t(key) : null;
+    return v === null || v === undefined ? en : v;
+  }
+  function fillT(str, o) {
+    return str.replace(/\{(\w+)\}/g, function (_, k) { return o[k] !== undefined ? o[k] : ""; });
+  }
+  function langBase() {
+    var l = I ? I.lang : "en";
+    return l === "pt-BR" ? "pt" : l;
+  }
+  var LEVEL_EN = ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"];
+  function levelName(i) { return tt("team.lv" + i, LEVEL_EN[i]); }
+  var STORE_KEY = "welance-team-calc-v1";
+  // the first check is DERIVED from the project size — a suggestion the
+  // humans overrule at kick-off, never a second knob to tune
+  var SIZE_CHECK = {
+    s: { key: "team.ck1", en: "3 days" },
+    m: { key: "team.ck3", en: "2 weeks" },
+    l: { key: "team.ck4", en: "1 month" }
+  };
+
+  // The default team mirrors the engine's pinned test — role names only.
+  var DEF = {
+    name: "Team — product rebuild",
+    rate: 100, floor: 0, size: "m",
+    rows: [
+      { role: "Design lead",        weight: 30, level: 0, country: "DE", coef: 1.00, own: 55 },
+      { role: "Full-stack developer", weight: 45, level: 1, country: "IT", coef: 0.82, own: 40 },
+      { role: "QA engineer",        weight: 25, level: 2, country: "VN", coef: 0.32, own: 12 }
+    ]
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  function eur(n) {
+    try { return new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR" }).format(n); }
+    catch (e) { return "€" + n.toFixed(2); }
+  }
+  function pct(n) { return Math.round(n * 100) + "%"; }
+
+  // formula tooltips: "formula N of M — ..." derived from the registry.
+  function ftip(id) {
+    var f = P.FORMULAS.filter(function (x) { return x.id === id; })[0];
+    return "formula " + f.n + " of " + P.FORMULAS.length + " — " + f.formula;
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) { var v = JSON.parse(raw); if (v && v.rows && v.rows.length) return v; }
+    } catch (e) {}
+    return JSON.parse(JSON.stringify(DEF));
+  }
+  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+  var state = load();
+
+  function renderRows() {
+    var host = $("rows");
+    host.textContent = "";
+    state.rows.forEach(function (r, i) {
+      var row = document.createElement("div");
+      row.className = "role";
+
+      var name = document.createElement("input");
+      name.type = "text"; name.value = r.role; name.setAttribute("aria-label", "Role");
+      name.addEventListener("input", function () { r.role = name.value; save(); });
+      row.appendChild(name);
+
+      var w = document.createElement("input");
+      w.type = "number"; w.min = "0"; w.step = "5"; w.value = String(r.weight);
+      w.setAttribute("aria-label", "Weight");
+      w.title = "share of the project's effort — read as part of the sum";
+      w.addEventListener("input", function () { r.weight = Number(w.value) || 0; save(); render(); });
+      row.appendChild(w);
+
+      var lv = document.createElement("select");
+      lv.setAttribute("aria-label", "Level");
+      lv.title = ftip("share");
+      LEVEL_EN.forEach(function (n, li) {
+        var o = document.createElement("option");
+        o.value = String(li); o.textContent = levelName(li); if (li === r.level) o.selected = true;
+        lv.appendChild(o);
+      });
+      lv.addEventListener("change", function () { r.level = Number(lv.value); save(); render(); });
+      row.appendChild(lv);
+
+      var co = document.createElement("select");
+      co.setAttribute("aria-label", "Country");
+      co.title = ftip("col");
+      P.COUNTRIES.forEach(function (c) {
+        var o = document.createElement("option");
+        o.value = c.code; o.textContent = (c[langBase()] || c.en) + " · " + c.coef.toFixed(2);
+        if (c.code === r.country) o.selected = true;
+        co.appendChild(o);
+      });
+      co.addEventListener("change", function () {
+        var c = P.COUNTRIES.filter(function (x) { return x.code === co.value; })[0];
+        r.country = co.value; if (c) r.coef = c.coef;
+        save(); render();
+      });
+      row.appendChild(co);
+
+      var own = document.createElement("input");
+      own.type = "number"; own.min = "0"; own.step = "0.5"; own.value = String(r.own);
+      own.setAttribute("aria-label", "Own rate €/h");
+      own.title = ftip("nodeal");
+      own.addEventListener("input", function () { r.own = Number(own.value) || 0; save(); render(); });
+      row.appendChild(own);
+
+      // ceiling cell — filled in by render() from the engine's result
+      var ceil = document.createElement("div");
+      ceil.className = "ceil";
+      ceil.title = ftip("margin");
+      row.appendChild(ceil);
+
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
+      del.setAttribute("aria-label", "remove role");
+      del.addEventListener("click", function () { state.rows.splice(i, 1); save(); render(); });
+      row.appendChild(del);
+
+      host.appendChild(row);
+    });
+  }
+
+  function computeInput() {
+    var floor = Number($("floorc").value) || 0;
+    return state.rows.map(function (r) {
+      return { weight: r.weight, levelIndex: r.level, coef: r.coef, floor: floor, ownRate: r.own };
+    });
+  }
+
+  function render() {
+    renderRows();
+    var R = Number($("rate").value) || 0;
+    var res = P.computeTeam(R, computeInput());
+
+    // per-row ceiling + no-deal flags
+    var rowEls = $("rows").children;
+    res.rows.forEach(function (r, i) {
+      var el = rowEls[i];
+      if (!el) return;
+      var ceil = el.querySelector(".ceil");
+      ceil.className = "ceil" + (r.ok ? "" : " bad");
+      ceil.textContent = "≤ " + eur(r.ceiling) + "/h";
+      var old = el.querySelector(".rowflag");
+      if (old) el.removeChild(old);
+      if (!r.ok) {
+        var fl = document.createElement("p");
+        fl.className = "rowflag";
+        fl.textContent = fillT(
+          tt("team.d.rowflag", "At {R}/h the ceiling for this role is {C}/h — below their {O}/h. Either the client rate rises, or this team does not happen."),
+          { R: eur(R), C: eur(r.ceiling), O: eur(r.ownRate) });
+        el.appendChild(fl);
+      }
+    });
+
+    // the four bands, in % of R
+    var bp = R > 0 ? res.payouts / R : 0;
+    var bh = R > 0 ? res.headroom / R : 0;
+    var bg = R > 0 ? res.geoBand / R : 0;
+    var bc = Math.max(0, 1 - bp - bh - bg);
+    $("barPeople").style.flexBasis = (bp * 100) + "%";
+    $("barHead").style.flexBasis = (bh * 100) + "%";
+    $("barGeo").style.flexBasis = (bg * 100) + "%";
+    $("barCompany").style.flexBasis = (bc * 100) + "%";
+    $("barPeople").textContent = bp > 0.07 ? pct(bp) : "";
+    $("barHead").textContent = bh > 0.07 ? pct(bh) : "";
+    $("barGeo").textContent = bg > 0.07 ? pct(bg) : "";
+    $("barCompany").textContent = bc > 0.07 ? pct(bc) : "";
+    document.querySelector(".splitbar").title = ftip("team");
+
+    $("figPeople").innerHTML = eur(res.payouts) + " <small>" + tt("team.d.blended", "/h blended") + "</small>";
+    $("figPeople").title = ftip("team");
+    // the welance margin is ONLY its own band — headroom and the geo
+    // differential are never counted into it (PERFECT-PRICE.md §7, spec §5a)
+    $("figMargin").innerHTML = pct(R > 0 ? res.welanceMargin / R : 0) +
+      " <small>· " + tt("team.d.target", "target") + " " + pct(res.marginTarget) + "</small>";
+    $("figMargin").title = ftip("margin");
+    $("figMinR").innerHTML = eur(res.minViableR) + " <small>/h</small>";
+    $("figMinR").title = ftip("nodeal");
+    $("figRate").innerHTML = eur(R) + " <small>/h</small>";
+
+    // the equation only holds when every row clears its ceiling — in a
+    // no-deal state there is no honest equation to show.
+    $("formula").innerHTML = res.ok
+      ? tt("team.d.eq", "R = people + headroom + geo + margin") + "<br>" +
+        eur(R) + " = <b>" + eur(res.payouts) + "</b> + " + eur(res.headroom) +
+        " + " + eur(res.geoBand) + " + <b>" + eur(res.welanceMargin) + "</b>"
+      : tt("team.d.noeq", "no equation at this rate — no-deal (see the flagged role)");
+
+    var v = $("verdict");
+    v.textContent = "";
+    var p = document.createElement("p");
+    p.className = "verdict " + (res.ok ? "ok" : "no");
+    p.innerHTML = fillT(res.ok
+      ? tt("team.d.vok", "Every role clears its ceiling at {R}/h. The smallest client rate this team works at is <b>{min}</b>/h.")
+      : tt("team.d.vno", "This team does not work at {R}/h — the flagged role would be squeezed below its own rate, and that is a no-deal. The smallest rate that works is <b>{min}</b>/h."),
+      { R: eur(R), min: eur(res.minViableR) });
+    v.appendChild(p);
+
+    $("weightflag").hidden = false;
+    var tw = state.rows.reduce(function (s, r) { return s + r.weight; }, 0);
+    $("weightflag").textContent = fillT(
+      tt("team.d.wsum", "Weights sum to {w} — read as shares of that sum."), { w: tw });
+
+    var ck = SIZE_CHECK[state.size] || SIZE_CHECK.m;
+    $("checkval").textContent = tt(ck.key, ck.en);
+    $("floorc").title = tt("team.l.floornote", "A guarantee: wherever someone lives, pay never drops below this.");
+  }
+
+  $("teamname").value = state.name;
+  $("rate").value = String(state.rate);
+  $("floorc").value = String(state.floor);
+  $("projsize").value = state.size || "m";
+
+  $("teamname").addEventListener("input", function () { state.name = $("teamname").value; save(); });
+  $("rate").addEventListener("input", function () { state.rate = Number($("rate").value) || 0; save(); render(); });
+  $("floorc").addEventListener("input", function () { state.floor = Number($("floorc").value) || 0; save(); render(); });
+  $("projsize").addEventListener("change", function () {
+    state.size = $("projsize").value;
+    save(); render();
+  });
+  $("add").addEventListener("click", function () {
+    state.rows.push({ role: "", weight: 10, level: 1, country: "DE", coef: 1.00, own: 40 });
+    save(); render();
+  });
+  $("reset").addEventListener("click", function () {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    state = JSON.parse(JSON.stringify(DEF));
+    $("teamname").value = state.name; $("rate").value = String(state.rate);
+    $("floorc").value = String(state.floor); $("projsize").value = state.size;
+    render();
+  });
+
+  render();
+  // re-render dynamic strings (levels, countries, verdict) on language change
+  document.addEventListener("welance:lang", function () { render(); });
+})();
+</script>
+</body>
+</html>

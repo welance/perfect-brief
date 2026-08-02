@@ -1,64 +1,69 @@
-<title>Freelancer Share Calculator — Welance</title>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfect Price · the split calculator — welance</title>
+<meta name="description" content="How much of the client rate goes to the independent — welance's split rule as a calculator anyone can use and check.">
+<link rel="stylesheet" href="welance.css?v=12">
+<script src="pricing.js?v=1"></script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n/de.js?v=1"></script>
+<script src="i18n/it.js?v=1"></script>
+<script src="i18n/ur.js?v=1"></script>
+<script src="i18n/pt-BR.js?v=1"></script>
+<script src="i18n/vi.js?v=1"></script>
+<script src="i18n/ar.js?v=1"></script>
+<script src="i18n/es.js?v=1"></script>
+<script src="chrome.js?v=4"></script>
 <style>
+  /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
+     The names below are this page's original component vocabulary, kept and
+     aliased onto the shared tokens so the calculator reads the same as
+     console.html and rules.html. Light-only, like the rest of the site.
+     (--partial and --mono come straight from welance.css.) */
   :root {
-    --bg: #f4f6f6; --surface: #ffffff; --surface-2: #eceff0;
-    --ink: #16201f; --ink-2: #4a5a5a; --ink-3: #7b8a8a;
-    --line: #d8dfdf; --line-strong: #b9c5c5;
-    --person: #c07338; --person-soft: #f2e2d3;
-    --company: #1f5f6b; --company-soft: #d5e5e7;
-    --geo: #7a5c86; --geo-soft: #ece2f0;
-    --full: #2f7a63; --partial: #a8791f; --none: #8a7476; --focus: #1f5f6b;
-    --shadow: 0 1px 2px rgba(22,32,31,.06), 0 8px 24px -12px rgba(22,32,31,.18);
-    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --mono: ui-monospace, "SF Mono", SFMono-Regular, "Cascadia Mono", Menlo, Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #101615; --surface: #182120; --surface-2: #1f2a29;
-      --ink: #e7eeec; --ink-2: #a8b8b6; --ink-3: #7d8f8d;
-      --line: #2b3937; --line-strong: #3d4e4c;
-      --person: #dc9257; --person-soft: #3a2b1e;
-      --company: #58a8b4; --company-soft: #1b3236;
-      --geo: #ab8ab6; --geo-soft: #2e2635;
-      --full: #4fa287; --partial: #caa049; --none: #a2898b; --focus: #58a8b4;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #101615; --surface: #182120; --surface-2: #1f2a29;
-    --ink: #e7eeec; --ink-2: #a8b8b6; --ink-3: #7d8f8d;
-    --line: #2b3937; --line-strong: #3d4e4c;
-    --person: #dc9257; --person-soft: #3a2b1e;
-    --company: #58a8b4; --company-soft: #1b3236;
-    --geo: #ab8ab6; --geo-soft: #2e2635;
-    --full: #4fa287; --partial: #caa049; --none: #a2898b; --focus: #58a8b4;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-  }
-  :root[data-theme="light"] {
-    --bg: #f4f6f6; --surface: #ffffff; --surface-2: #eceff0;
-    --ink: #16201f; --ink-2: #4a5a5a; --ink-3: #7b8a8a;
-    --line: #d8dfdf; --line-strong: #b9c5c5;
-    --person: #c07338; --person-soft: #f2e2d3;
-    --company: #1f5f6b; --company-soft: #d5e5e7;
-    --geo: #7a5c86; --geo-soft: #ece2f0;
-    --full: #2f7a63; --partial: #a8791f; --none: #8a7476; --focus: #1f5f6b;
-    --shadow: 0 1px 2px rgba(22,32,31,.06), 0 8px 24px -12px rgba(22,32,31,.18);
+    --bg: var(--paper); --surface: var(--paper); --surface-2: var(--paper-2);
+    --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
+    --line: var(--rule); --line-strong: var(--rule);
+    --person: var(--wl-c); --person-soft: var(--fail-bg);
+    --company: var(--rule-strong); --company-soft: var(--pass-bg);
+    --geo: var(--wl-p); --geo-soft: var(--accent-bg);
+    --full: var(--pass); --none: #8a8a8a; --focus: var(--accent);
+    --shadow: none;
+    --serif: var(--disp); --sans: var(--disp);
   }
 
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 1140px; margin: 0 auto; padding: 30px 22px 72px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
+  .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
+
+  /* Directory DNA is square */
+  .card, .splitbar, .formula, .growth li, .verdict, .warn, .addbtn,
+  .figures, .fig, .mode, .lang, .rung, .levelbadge .chip,
+  input[type="text"], input[type="number"], select { border-radius: 0; }
 
   .topbar { display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    gap: 12px; flex-wrap: wrap; margin: 14px 0 20px; }
+  .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
+  .head-grid .txt { min-width: 0; }
+  .p-ident { flex: none; width: 210px; margin-top: 26px; }
+  .p-ident svg { display: block; width: 100%; }
+  .pd { fill: none; stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300;
+    animation: p-draw 1s cubic-bezier(.6,0,.3,1) forwards; }
+  .pd.d1 { animation-delay: .1s; } .pd.d2 { animation-delay: .3s; } .pd.d3 { animation-delay: .5s; }
+  .pd.d4 { animation-delay: .7s; } .pd.d5 { animation-delay: .85s; } .pd.d6 { animation-delay: 1.05s; }
+  @keyframes p-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
+  @media (max-width: 700px) { .p-ident { display: none; } }
   .lang.reset { border-style: dashed; }
   .lang.reset:hover { color: var(--person); border-color: var(--person); }
   .langs { display: flex; gap: 4px; flex-wrap: wrap; }
   .lang { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
     background: var(--surface); color: var(--ink-2);
-    border: 1px solid var(--line-strong); border-radius: 999px; }
+    border: 1px solid var(--line-strong); border-radius: 0; }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -71,7 +76,7 @@
   @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
 
   .card { background: var(--surface); border: 1px solid var(--line);
-    border-radius: 10px; padding: 22px; box-shadow: var(--shadow); }
+    border-radius: 0; padding: 22px; box-shadow: var(--shadow); }
   .card + .card { margin-top: 20px; }
   .card h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
   .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
@@ -94,7 +99,7 @@
     color: var(--ink-3); font-weight: 600; }
   input[type="text"], input[type="number"], select {
     font: inherit; color: var(--ink); background: var(--surface-2);
-    border: 1px solid var(--line-strong); border-radius: 7px; padding: 8px 10px; }
+    border: 1px solid var(--line-strong); border-radius: 0; padding: 8px 10px; }
   input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
   .grow { flex: 1 1 200px; }
   .w-rate { width: 124px; }
@@ -142,65 +147,65 @@
   .dot.f { background: var(--full); } .dot.p { background: var(--partial); } .dot.n { background: var(--none); }
 
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
-    border-radius: 6px; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
+    border-radius: 0; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
   .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
   .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--partial); }
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
-    color: var(--ink-2); border-radius: 7px; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
+    color: var(--ink-2); border-radius: 0; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
   .addbtn:hover { border-color: var(--person); color: var(--person); }
 
   .levelbadge { display: flex; align-items: center; gap: 9px; font-family: var(--serif);
     font-size: 24px; font-weight: 600; margin: 0 0 3px; }
-  .levelbadge .chip { width: 11px; height: 31px; border-radius: 3px; background: var(--person); flex: none; }
+  .levelbadge .chip { width: 11px; height: 31px; border-radius: 0; background: var(--person); flex: none; }
   .levelsub { color: var(--ink-3); font-size: 13.5px; margin: 0 0 20px; }
   .coverline { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
   .coverline .k { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
   .coverline .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 600; }
   .ladder { display: flex; gap: 3px; margin-bottom: 22px; }
-  .rung { flex: 1; height: 5px; border-radius: 2px; background: var(--surface-2); }
+  .rung { flex: 1; height: 5px; border-radius: 0; background: var(--surface-2); }
   .rung.on { background: var(--person); }
 
-  .splitbar { display: flex; height: 42px; border-radius: 7px; overflow: hidden; border: 1px solid var(--line-strong); }
+  .splitbar { display: flex; height: 42px; border-radius: 0; overflow: hidden; border: 1px solid var(--line-strong); }
   .splitbar > div { display: flex; align-items: center; justify-content: center;
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
     font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
   .sb-person { background: var(--person); } .sb-geo { background: var(--geo); } .sb-company { background: var(--company); }
   .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
   .splitkey span { display: flex; align-items: center; gap: 5px; }
-  .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .sw { width: 9px; height: 9px; border-radius: 0; flex: none; }
 
   .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
-    border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-top: 20px; }
+    border: 1px solid var(--line); border-radius: 0; overflow: hidden; margin-top: 20px; }
   .fig { background: var(--surface); padding: 13px 14px; }
   .fig .k { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 3px; }
   .fig .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
   .fig .v small { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
   .fig.geo .v { color: var(--geo); }
 
-  .formula { margin-top: 18px; background: var(--surface-2); border-radius: 8px; padding: 13px 15px;
+  .formula { margin-top: 18px; background: var(--surface-2); border-radius: 0; padding: 13px 15px;
     font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink-2); overflow-x: auto; }
   .formula b { color: var(--ink); font-weight: 600; }
 
   .growth { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
   .growth li { display: flex; gap: 11px; align-items: baseline; padding: 11px 13px;
-    background: var(--surface-2); border-radius: 7px; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
+    background: var(--surface-2); border-radius: 0; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
   .growth .gain { margin-inline-start: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
     font-weight: 600; color: var(--person); white-space: nowrap; }
   .allset { color: var(--full); font-size: 14.5px; margin: 0; }
 
   .modes { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .mode { font: inherit; font-size: 13.5px; padding: 7px 13px; cursor: pointer;
-    background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 999px; }
+    background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 0; }
   .mode[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
-  .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; font-size: 14.5px; }
+  .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; font-size: 14.5px; }
   .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
   .verdict b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
   .switch { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 14.5px; }
   .switch input { width: 17px; height: 17px; accent-color: var(--geo); }
 
-  .warn { margin: 16px 0 0; padding: 13px 15px; border-radius: 8px; background: var(--geo-soft);
+  .warn { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; background: var(--geo-soft);
     font-size: 13.5px; color: var(--ink); border-inline-start: 3px solid var(--geo); }
   .warn b { font-weight: 600; }
 
@@ -212,25 +217,45 @@
   .levels-ref tr:last-child td { border-bottom: 0; }
   .tablewrap { overflow-x: auto; }
 
-  footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
-  footer p { margin: 0 0 9px; }
-  footer b { color: var(--ink-2); }
+  .wrap footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  .wrap footer p { margin: 0 0 9px; }
+  .wrap footer b { color: var(--ink-2); }
 
   [dir="rtl"] .growth li { border-inline-start: 3px solid var(--person); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
-
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur">perfect price</span></p>
 <div class="wrap">
-  <div class="topbar">
-    <button class="lang reset" id="reset" type="button"></button>
-    <div class="langs" id="langs" role="group" aria-label="Language"></div>
-  </div>
+  
 
   <header>
-    <p class="eyebrow" id="t-eyebrow"></p>
-    <h1 id="t-title"></h1>
-    <p class="lede" id="t-lede"></p>
+    <div class="head-grid">
+      <div class="txt">
+        <p class="eyebrow" id="t-eyebrow"></p>
+        <h1 id="t-title"></h1>
+        <p class="lede" id="t-lede" style="margin-bottom:0"></p>
+      </div>
+      <div class="p-ident" role="img" aria-label="A client rate split into visible bands">
+        <svg viewBox="0 0 220 120" aria-hidden="true">
+          <path class="pd d1" d="M10 34 h200 v34 h-200 z" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d2" d="M132 34 v34 M164 34 v34" stroke="var(--ink)" stroke-width="3" fill="none"/>
+          <path class="pd d3" d="M18 51 h104" stroke="var(--person)" stroke-width="10"/>
+          <path class="pd d4" d="M139 51 h18" stroke="var(--geo)" stroke-width="10"/>
+          <path class="pd d5" d="M171 51 h32" stroke="var(--company)" stroke-width="10"/>
+          <circle class="pd d6" cx="196" cy="18" r="11" stroke="var(--wl-y)" stroke-width="3" fill="none"/>
+          <path class="pd d6" d="M196 12 v12 M191 15 h10 M191 21 h10" stroke="var(--ink)" stroke-width="2" fill="none"/>
+          <path class="pd d6" d="M10 86 h60 M10 98 h44" stroke="var(--ink-soft)" stroke-width="2.5" fill="none"/>
+        </svg>
+      </div>
+    </div>
   </header>
+
+  <div class="topbar">
+    <button class="lang reset" id="reset" type="button"></button>
+  </div>
 
   <div class="cols">
     <div>
@@ -246,10 +271,11 @@
           <div class="field" id="fld-cap"><label id="t-l-cap" for="capr"></label>
             <input type="number" id="capr" class="w-rate" value="50" min="0" step="0.5"></div>
         </div>
-        <div class="modes" style="margin-bottom:18px">
+        <div class="modes" style="margin-bottom:10px">
           <button class="mode" id="w-client" type="button" aria-pressed="true"></button>
           <button class="mode" id="w-internal" type="button" aria-pressed="false"></button>
         </div>
+        <p class="subnote" id="t-ratesnote" style="max-width:66ch;margin:0 0 18px"></p>
         <div class="comp-head">
           <div id="t-h-comp"></div><div id="t-h-weight"></div><div id="t-h-self"></div>
           <div id="t-h-eval"></div><div id="t-h-cov"></div><div></div>
@@ -327,7 +353,9 @@
     </div>
   </div>
 
-  <footer id="footer"></footer>
+  <details class="fineprint"><summary id="t-fineprint">the fine print</summary>
+    <footer id="footer"></footer>
+  </details>
 </div>
 
 <script>
@@ -338,10 +366,11 @@
     en: {
       dir: "ltr", locale: "en-GB", name: "English",
       workh: "Type of work", wtClient: "Client work", wtInternal: "Internal work", capLbl: "Internal cap \u20ac/h", fCap: "Level ceiling", internalNote: "Internal work has no client rate \u2014 there is nothing to take a share of. The ceiling is {cap}/h at the top level, scaled down by level.",
+      ratesNote: "The default rates are welance's own — every firm will set theirs. Stated honestly: we believe these are fair EU rates for today's digital professionals, whose roles are flattening into something more fluid and generalist — one role, really: the AI-powered digital professional.",
       askLbl: "Their asking rate \u20ac/h",
       provider: "provider", providerSub: "Independent — a freelancer or a small studio, up to about 25 people.",
       reset: "Reset to defaults",
-      eyebrow: "Welance · split rule",
+      eyebrow: "welance · split rule",
       title: "How much of the client rate goes to the independent",
       lede: "The share depends on how much of the role the independent covers on its own — not on how much the client pays, and never on a judgement about who they are. List the parts of the role, mark who covers what, and the share follows. The independent may be one freelancer or a studio of up to about 25 people; the model does not care which.",
       roleh: "The role, part by part",
@@ -362,13 +391,13 @@
       growthh: "How to move up",
       growthhint: "The level is not a label, it is a map. Every uncovered part has a value per hour.",
       resulth: "Result", coverk: "Role coverage",
-      fShare: "Person share", fMargin: "Welance margin", fPay: "To the person", fRate: "Client rate",
+      fShare: "Person share", fMargin: "welance margin", fPay: "To the person", fRate: "Client rate",
       levelsh: "The three levels",
       levelshint: "They describe how the role is delivered, not who delivers it.",
       cLevel: "Level", cCov: "Coverage", cShare: "Share", cMargin: "Margin",
       lv: ["AUTONOMOUS", "WITH REVIEW", "WITH SUPPORT"],
       lvSub: ["the person covers the whole role", "the role is delivered with a colleague's review", "the role is delivered with support on one part"],
-      keyPerson: "provider", keyGeo: "geographic differential", keyCompany: "Welance",
+      keyPerson: "provider", keyGeo: "geographic differential", keyCompany: "welance",
       okPayout: "At {pay}/h for {who}, this level needs at least {need}/h from the client. You are charging {rate}: the deal holds.",
       noPayout: "At {pay}/h for {who}, this level would need {need}/h from the client, but you are charging {rate}. Either the client rate rises, or the engagement does not happen.",
       okRate: "With the client at {rate}/h, this level gives {who} up to {max}/h. The agreed rate is {pay}: the deal holds.",
@@ -382,15 +411,18 @@
       f2: "<b>No-deal rule.</b> If the person's rate exceeds what the level allows and the client will not pay the minimum, the engagement does not happen. Nobody is squeezed below their rate to make the margin work.",
       f3: "<b>Rounding.</b> Where the two views differ by one step, coverage rounds toward the person. A two-step gap is not averaged: it is discussed.",
       f4: "<b>The level belongs to the person-and-role pair</b>, not the person. The same person can be autonomous in one role and work with support in another. Reviewed at each renewal.",
-      f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers."
+      f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers.",
+      f6: "<b>This split is welance’s full-service price</b> — for finding, assembling and answering for the team. On <a href='https://welance.com/directory'>Directory</a> the platform takes no share at all: meeting a team costs a fixed, symbolic token, and the relationship belongs to the people in it. The rate prices the person; the share prices the delivery risk — compression is never the fix, the client rate is.",
+      finePrint: "the fine print"
     },
     de: {
       dir: "ltr", locale: "de-DE", name: "Deutsch",
       workh: "Art der Arbeit", wtClient: "Kundenarbeit", wtInternal: "Interne Arbeit", capLbl: "Interne Obergrenze \u20ac/h", fCap: "Obergrenze der Stufe", internalNote: "Interne Arbeit hat keinen Kundensatz \u2014 es gibt nichts, wovon ein Anteil genommen werden k\u00f6nnte. Die Obergrenze ist {cap}/h auf der h\u00f6chsten Stufe, nach Stufe abgestuft.",
+      ratesNote: "Die Standardsätze sind die von welance — jede Firma setzt ihre eigenen. Ehrlich gesagt: wir halten sie für faire EU-Sätze für die digitalen Profis von heute, deren Rollen flacher und fließender werden und mehr generalistischen Zugriff verlangen — im Grunde eine Rolle: der KI-gestützte Digital-Profi.",
       askLbl: "Ihr Wunschsatz \u20ac/h",
       provider: "Auftragnehmer", providerSub: "Unabhängig — freiberuflich oder ein kleines Studio, bis etwa 25 Personen.",
       reset: "Auf Standard zurücksetzen",
-      eyebrow: "Welance · Aufteilungsregel",
+      eyebrow: "welance · Aufteilungsregel",
       title: "Wie viel vom Kundensatz an den Auftragnehmer geht",
       lede: "Der Anteil hängt davon ab, wie viel der Rolle der Auftragnehmer eigenständig abdeckt — nicht davon, wie viel der Kunde zahlt, und nie von einem Urteil darüber, wer er ist. Die Bestandteile der Rolle auflisten, markieren wer was abdeckt, und der Anteil ergibt sich. Der Auftragnehmer kann eine freiberufliche Person sein oder ein Studio mit bis zu etwa 25 Personen; dem Modell ist das gleich.",
       roleh: "Die Rolle, Bestandteil für Bestandteil",
@@ -411,13 +443,13 @@
       growthh: "Wie man aufsteigt",
       growthhint: "Die Stufe ist kein Etikett, sondern eine Karte. Jeder nicht abgedeckte Bestandteil hat einen Stundenwert.",
       resulth: "Ergebnis", coverk: "Rollenabdeckung",
-      fShare: "Anteil Person", fMargin: "Marge Welance", fPay: "An die Person", fRate: "Kundensatz",
+      fShare: "Anteil Person", fMargin: "Marge welance", fPay: "An die Person", fRate: "Kundensatz",
       levelsh: "Die drei Stufen",
       levelshint: "Sie beschreiben, wie die Rolle geliefert wird, nicht wer sie liefert.",
       cLevel: "Stufe", cCov: "Abdeckung", cShare: "Anteil", cMargin: "Marge",
       lv: ["EIGENSTÄNDIG", "MIT PRÜFUNG", "MIT UNTERSTÜTZUNG"],
       lvSub: ["die Person deckt die ganze Rolle ab", "die Rolle wird mit Prüfung durch Kolleg:innen geliefert", "die Rolle wird mit Unterstützung bei einem Teil geliefert"],
-      keyPerson: "Auftragnehmer", keyGeo: "geografische Differenz", keyCompany: "Welance",
+      keyPerson: "Auftragnehmer", keyGeo: "geografische Differenz", keyCompany: "welance",
       okPayout: "Bei {pay}/h für {who} braucht diese Stufe mindestens {need}/h vom Kunden. Ihr verlangt {rate}: die Vereinbarung trägt.",
       noPayout: "Bei {pay}/h für {who} bräuchte diese Stufe {need}/h vom Kunden, ihr verlangt aber {rate}. Entweder steigt der Kundensatz, oder das Engagement kommt nicht zustande.",
       okRate: "Bei {rate}/h vom Kunden gibt diese Stufe {who} bis zu {max}/h. Vereinbart sind {pay}: die Vereinbarung trägt.",
@@ -431,15 +463,18 @@
       f2: "<b>Kein-Deal-Regel.</b> Übersteigt der Satz der Person das von der Stufe Erlaubte und zahlt der Kunde das Minimum nicht, kommt das Engagement nicht zustande. Niemand wird unter seinen Satz gedrückt, damit die Marge aufgeht.",
       f3: "<b>Rundung.</b> Unterscheiden sich die Sichtweisen um eine Stufe, wird zugunsten der Person gerundet. Zwei Stufen werden nicht gemittelt, sondern besprochen.",
       f4: "<b>Die Stufe gehört dem Paar Person-und-Rolle</b>, nicht der Person. Dieselbe Person kann in einer Rolle eigenständig sein und in einer anderen mit Unterstützung arbeiten. Überprüfung bei jeder Verlängerung.",
-      f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden."
+      f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden.",
+      f6: "<b>Diese Aufteilung ist welances Full-Service-Preis</b> — für das Finden, Aufstellen und Einstehen für das Team. Auf <a href='https://welance.com/directory'>Directory</a> nimmt die Plattform gar keinen Anteil: ein Team zu treffen kostet einen festen, symbolischen Token, und die Beziehung gehört den Menschen darin. Der Satz bepreist die Person; der Anteil bepreist das Lieferrisiko — Kompression ist nie die Lösung, der Kundensatz ist es.",
+      finePrint: "das Kleingedruckte"
     },
     it: {
       dir: "ltr", locale: "it-IT", name: "Italiano",
       workh: "Tipo di lavoro", wtClient: "Lavoro cliente", wtInternal: "Lavoro interno", capLbl: "Tetto interno \u20ac/h", fCap: "Tetto del livello", internalNote: "Il lavoro interno non ha una tariffa cliente \u2014 non c'\u00e8 nulla di cui prendere una quota. Il tetto \u00e8 {cap}/h al livello massimo, scalato per livello.",
+      ratesNote: "Le tariffe di default sono quelle di welance — ogni realtà fisserà le sue. Detto onestamente: crediamo siano tariffe EU eque per i professionisti digitali di oggi, i cui ruoli si stanno appiattendo in qualcosa di più fluido e generalista — in fondo un ruolo solo: il professionista digitale potenziato dall'AI.",
       askLbl: "La sua tariffa richiesta \u20ac/h",
       provider: "collaboratore", providerSub: "Indipendente — freelance o piccolo studio, fino a circa 25 persone.",
       reset: "Ripristina i valori iniziali",
-      eyebrow: "Welance · regola di ripartizione",
+      eyebrow: "welance · regola di ripartizione",
       title: "Quanto della tariffa cliente va al collaboratore",
       lede: "La quota dipende da quanta parte del ruolo il collaboratore copre da solo — non da quanto paga il cliente, e mai da un giudizio su chi è. Si elencano le componenti del ruolo, si segna chi copre cosa, e la quota esce da sé. Il collaboratore può essere un freelance o uno studio fino a circa 25 persone: al modello non cambia nulla.",
       roleh: "Il ruolo, componente per componente",
@@ -460,13 +495,13 @@
       growthh: "Come si sale",
       growthhint: "Il livello non è un'etichetta: è una mappa. Ogni componente non coperta ha un valore in euro l'ora.",
       resulth: "Risultato", coverk: "Copertura del ruolo",
-      fShare: "Quota persona", fMargin: "Margine Welance", fPay: "Alla persona", fRate: "Tariffa cliente",
+      fShare: "Quota persona", fMargin: "Margine welance", fPay: "Alla persona", fRate: "Tariffa cliente",
       levelsh: "I tre livelli",
       levelshint: "Descrivono come il ruolo viene consegnato, non chi lo consegna.",
       cLevel: "Livello", cCov: "Copertura", cShare: "Quota", cMargin: "Margine",
       lv: ["AUTONOMO", "CON VERIFICA", "CON SUPPORTO"],
       lvSub: ["la persona copre il ruolo per intero", "il ruolo è consegnato con verifica di un collega", "il ruolo è consegnato con supporto su una parte"],
-      keyPerson: "collaboratore", keyGeo: "differenziale geografico", keyCompany: "Welance",
+      keyPerson: "collaboratore", keyGeo: "differenziale geografico", keyCompany: "welance",
       okPayout: "A {pay}/h per {who}, su questo livello serve almeno {need}/h dal cliente. Ne chiedete {rate}: l'accordo regge.",
       noPayout: "A {pay}/h per {who}, su questo livello servirebbero {need}/h dal cliente, ma ne chiedete {rate}. O sale la tariffa cliente, o l'ingaggio non si fa.",
       okRate: "Con il cliente a {rate}/h, questo livello dà a {who} fino a {max}/h. La tariffa concordata è {pay}: l'accordo regge.",
@@ -480,11 +515,14 @@
       f2: "<b>Regola di non-accordo.</b> Se la tariffa della persona supera quanto il livello consente e il cliente non accetta il minimo, l'ingaggio non si fa. Nessuno viene compresso sotto la propria tariffa per far quadrare il margine.",
       f3: "<b>Arrotondamenti.</b> Dove le due viste differiscono di un gradino, la copertura si arrotonda verso la persona. Uno scarto di due gradini non si media: si discute.",
       f4: "<b>Il livello appartiene alla coppia persona-ruolo</b>, non alla persona. La stessa persona può essere autonoma su un ruolo e lavorare con supporto su un altro. Si rivede a ogni rinnovo.",
-      f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua."
+      f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua.",
+      f6: "<b>Questa ripartizione è il prezzo full-service di welance</b> — per trovare, assemblare e rispondere del team. Su <a href='https://welance.com/directory'>Directory</a> la piattaforma non prende alcuna quota: incontrare un team costa un token fisso e simbolico, e la relazione appartiene alle persone che la compongono. La tariffa prezza la persona; la quota prezza il rischio di delivery — comprimere non è mai la soluzione, alzare la tariffa cliente sì.",
+      finePrint: "per esteso"
     },
     ur: {
       dir: "rtl", locale: "ur-PK", name: "اردو",
       workh: "\u06a9\u0627\u0645 \u06a9\u06cc \u0642\u0633\u0645", wtClient: "\u06a9\u0644\u0627\u0626\u0646\u0679 \u06a9\u0627 \u06a9\u0627\u0645", wtInternal: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645", capLbl: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u062d\u062f \u20ac/\u06af\u06be\u0646\u0679\u06c1", fCap: "\u062f\u0631\u062c\u06d2 \u06a9\u06cc \u062d\u062f", internalNote: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645 \u06a9\u0627 \u06a9\u0648\u0626\u06cc \u06a9\u0644\u0627\u0626\u0646\u0679 \u0631\u06cc\u0679 \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627 \u2014 \u062d\u0635\u06c1 \u0644\u06cc\u0646\u06d2 \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0686\u06be \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627\u06d4 \u0633\u0628 \u0633\u06d2 \u0627\u0648\u067e\u0631 \u062f\u0631\u062c\u06d2 \u067e\u0631 \u062d\u062f {cap}/\u06af\u06be\u0646\u0679\u06c1 \u06c1\u06d2\u060c \u062f\u0631\u062c\u06d2 \u06a9\u06d2 \u062d\u0633\u0627\u0628 \u0633\u06d2 \u06a9\u0645 \u06c1\u0648\u062a\u06cc \u06c1\u06d2\u06d4",
+      ratesNote: "طے شدہ ریٹ welance کے اپنے ہیں — ہر ادارہ اپنے مقرر کرے گا۔ ایمانداری سے: ہم انہیں آج کے ڈیجیٹل پیشہ ور افراد کے لیے منصفانہ یورپی ریٹ سمجھتے ہیں، جن کے کردار ہموار اور سیال ہو کر زیادہ ہمہ جہت انداز مانگ رہے ہیں — درحقیقت ایک ہی کردار: AI سے لیس ڈیجیٹل پیشہ ور۔",
       askLbl: "\u0627\u0646 \u06a9\u0627 \u0645\u0637\u0644\u0648\u0628\u06c1 \u0631\u06cc\u0679 \u20ac/\u06af\u06be\u0646\u0679\u06c1",
       provider: "فراہم کنندہ", providerSub: "خودمختار — فری لانسر یا چھوٹا اسٹوڈیو، تقریباً 25 افراد تک۔",
       reset: "ابتدائی حالت پر واپس",
@@ -529,15 +567,18 @@
       f2: "<b>معاہدہ نہ کرنے کا اصول۔</b> اگر فرد کا ریٹ اس درجے کی حد سے زیادہ ہو اور کلائنٹ کم سے کم رقم نہ دے، تو کام نہیں لیا جاتا۔ مارجن پورا کرنے کے لیے کسی کو اس کے ریٹ سے نیچے نہیں دبایا جاتا۔",
       f3: "<b>گول کرنا۔</b> جہاں دونوں آراء میں ایک درجے کا فرق ہو، کوریج فرد کے حق میں گول ہوتی ہے۔ دو درجے کے فرق کا اوسط نہیں لیا جاتا: اس پر بات ہوتی ہے۔",
       f4: "<b>درجہ فرد اور کردار کے جوڑے کا ہے</b>، صرف فرد کا نہیں۔ ایک ہی شخص ایک کردار میں خود مختار اور دوسرے میں معاونت کے ساتھ ہو سکتا ہے۔ ہر تجدید پر نظرثانی۔",
-      f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔"
+      f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔",
+      f6: "<b>یہ تقسیم ویلانس کی فل سروس قیمت ہے</b> — ٹیم کو ڈھونڈنے، جوڑنے اور اس کی ذمہ داری اٹھانے کی۔ <a href='https://welance.com/directory'>Directory</a> پر پلیٹ فارم کوئی حصہ نہیں لیتا: ٹیم سے ملاقات کی قیمت ایک مقررہ، علامتی ٹوکن ہے، اور رشتہ ان لوگوں کا ہوتا ہے جو اس میں ہیں۔ ریٹ فرد کی قیمت ہے؛ حصہ ڈیلیوری کے خطرے کی — دبانا کبھی حل نہیں، کلائنٹ ریٹ بڑھانا حل ہے۔",
+      finePrint: "تفصیل"
     },
     pt: {
       dir: "ltr", locale: "pt-BR", name: "Português (BR)",
       workh: "Tipo de trabalho", wtClient: "Trabalho de cliente", wtInternal: "Trabalho interno", capLbl: "Teto interno \u20ac/h", fCap: "Teto do n\u00edvel", internalNote: "Trabalho interno n\u00e3o tem taxa de cliente \u2014 n\u00e3o h\u00e1 do que tirar uma parte. O teto \u00e9 {cap}/h no n\u00edvel mais alto, reduzido conforme o n\u00edvel.",
+      ratesNote: "As taxas padrão são as da welance — cada firma definirá as suas. Com honestidade: acreditamos que são taxas UE justas para os profissionais digitais de hoje, cujos papéis estão se achatando em algo mais fluido e generalista — no fundo um papel só: o profissional digital potencializado por IA.",
       askLbl: "A taxa pedida por ela \u20ac/h",
       provider: "prestador", providerSub: "Independente — freelancer ou um pequeno estúdio, até cerca de 25 pessoas.",
       reset: "Restaurar padrões",
-      eyebrow: "Welance · regra de divisão",
+      eyebrow: "welance · regra de divisão",
       title: "Quanto da taxa do cliente vai para o prestador",
       lede: "A parte depende de quanto do papel o prestador cobre sozinho — não de quanto o cliente paga, e nunca de um julgamento sobre quem ele é. Liste os componentes do papel, marque quem cobre o quê, e a parte sai sozinha. O prestador pode ser um freelancer ou um estúdio de até cerca de 25 pessoas; para o modelo dá no mesmo.",
       roleh: "O papel, componente por componente",
@@ -558,13 +599,13 @@
       growthh: "Como subir",
       growthhint: "O nível não é um rótulo, é um mapa. Cada componente não coberto tem um valor por hora.",
       resulth: "Resultado", coverk: "Cobertura do papel",
-      fShare: "Parte da pessoa", fMargin: "Margem Welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
+      fShare: "Parte da pessoa", fMargin: "Margem welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
       levelsh: "Os três níveis",
       levelshint: "Descrevem como o papel é entregue, não quem o entrega.",
       cLevel: "Nível", cCov: "Cobertura", cShare: "Parte", cMargin: "Margem",
       lv: ["AUTÔNOMO", "COM VERIFICAÇÃO", "COM APOIO"],
       lvSub: ["a pessoa cobre o papel inteiro", "o papel é entregue com verificação de um colega", "o papel é entregue com apoio em uma parte"],
-      keyPerson: "prestador", keyGeo: "diferencial geográfico", keyCompany: "Welance",
+      keyPerson: "prestador", keyGeo: "diferencial geográfico", keyCompany: "welance",
       okPayout: "A {pay}/h para {who}, este nível exige ao menos {need}/h do cliente. Vocês cobram {rate}: o acordo se sustenta.",
       noPayout: "A {pay}/h para {who}, este nível exigiria {need}/h do cliente, mas vocês cobram {rate}. Ou a taxa do cliente sobe, ou o trabalho não é feito.",
       okRate: "Com o cliente a {rate}/h, este nível dá a {who} até {max}/h. A taxa combinada é {pay}: o acordo se sustenta.",
@@ -578,38 +619,173 @@
       f2: "<b>Regra de não-acordo.</b> Se a taxa da pessoa passa do que o nível permite e o cliente não paga o mínimo, o trabalho não é feito. Ninguém é espremido abaixo da própria taxa para fechar a margem.",
       f3: "<b>Arredondamento.</b> Onde as duas visões diferem em um degrau, a cobertura arredonda a favor da pessoa. Dois degraus não se mediam: se conversa.",
       f4: "<b>O nível pertence ao par pessoa-e-papel</b>, não à pessoa. A mesma pessoa pode ser autônoma num papel e trabalhar com apoio em outro. Revisto a cada renovação.",
-      f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos."
+      f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos.",
+      f6: "<b>Esta divisão é o preço full-service da welance</b> — por encontrar, montar e responder pelo time. No <a href='https://welance.com/directory'>Directory</a> a plataforma não fica com parte nenhuma: conhecer um time custa um token fixo e simbólico, e a relação pertence às pessoas que a compõem. A taxa precifica a pessoa; a cota precifica o risco de entrega — espremer nunca é a solução, subir a taxa do cliente é.",
+      finePrint: "as letras miúdas"
+    },
+    es: {
+      dir: "ltr", locale: "es-ES", name: "Español",
+      workh: "Tipo de trabajo", wtClient: "Trabajo de cliente", wtInternal: "Trabajo interno", capLbl: "Tope interno \u20ac/h", fCap: "Tope del nivel", internalNote: "El trabajo interno no tiene tarifa de cliente \u2014 no hay de qué tomar una parte. El tope es {cap}/h en el nivel máximo, escalado por nivel.",
+      ratesNote: "Las tarifas por defecto son las de welance — cada firma fijará las suyas. Dicho con honestidad: creemos que son tarifas UE justas para los profesionales digitales de hoy, cuyos roles se aplanan y se vuelven fluidos, pidiendo un enfoque más generalista — en el fondo un solo rol: el profesional digital potenciado por IA.",
+      askLbl: "Su tarifa pedida \u20ac/h",
+      provider: "colaborador", providerSub: "Independiente — freelance o un estudio pequeño, hasta unas 25 personas.",
+      reset: "Restaurar valores iniciales",
+      eyebrow: "welance · regla de reparto",
+      title: "Cuánto de la tarifa del cliente va al colaborador",
+      lede: "La cuota depende de cuánta parte del rol cubre el colaborador por su cuenta — no de cuánto paga el cliente, y nunca de un juicio sobre quién es. Se listan los componentes del rol, se marca quién cubre qué, y la cuota sale sola. El colaborador puede ser un freelance o un estudio de hasta unas 25 personas: al modelo le da igual.",
+      roleh: "El rol, componente a componente",
+      rolehint: "Para cada componente: la mirada de la propia persona y la de quien tiene el rol afín con más experiencia. Si las dos distan dos escalones, el cálculo se detiene y hace falta hablarlo.",
+      role: "Rol", person: "Persona",
+      hComp: "Componente", hWeight: "Peso", hSelf: "Autoeval.", hEval: "Evaluador", hCov: "Cobertura",
+      add: "+ Añadir componente",
+      full: "Plena", partial: "Parcial", none: "Ninguna",
+      flag: "Las dos miradas distan dos escalones: aquí no se promedia, se conversa.",
+      geoh: "Costo de vida",
+      geohint: "Un coeficiente opcional para quien vive en un contexto de costos muy distinto. Es terreno discutido — el panel muestra siempre también cuánto pagaría el rol solo, así la diferencia queda visible y discutible.",
+      usegeo: "Aplicar el coeficiente de costo de vida",
+      country: "País", coef: "Coeficiente", floorc: "Piso",
+      checkh: "Verificar el acuerdo",
+      checkhint: "La tarifa del cliente es un hecho negociado y nunca se mueve. La cobertura y el coeficiente cambian lo que recibe la persona — el campo de abajo es solo su tarifa pedida, para la comprobación de no-acuerdo.",
+      mPayout: "Partir de la tarifa de la persona", mRate: "Partir de la tarifa del cliente",
+      payout: "Tarifa persona €/h", rate: "Tarifa cliente €/h",
+      growthh: "Cómo se sube",
+      growthhint: "El nivel no es una etiqueta: es un mapa. Cada componente sin cubrir tiene un valor por hora.",
+      resulth: "Resultado", coverk: "Cobertura del rol",
+      fShare: "Cuota persona", fMargin: "Margen welance", fPay: "A la persona", fRate: "Tarifa cliente",
+      levelsh: "Los tres niveles",
+      levelshint: "Describen cómo se entrega el rol, no quién lo entrega.",
+      cLevel: "Nivel", cCov: "Cobertura", cShare: "Cuota", cMargin: "Margen",
+      lv: ["AUTÓNOMO", "CON REVISIÓN", "CON APOYO"],
+      lvSub: ["la persona cubre el rol entero", "el rol se entrega con revisión de un colega", "el rol se entrega con apoyo en una parte"],
+      keyPerson: "colaborador", keyGeo: "diferencial geográfico", keyCompany: "welance",
+      okPayout: "A {pay}/h para {who}, este nivel necesita al menos {need}/h del cliente. Cobráis {rate}: el acuerdo se sostiene.",
+      noPayout: "A {pay}/h para {who}, este nivel necesitaría {need}/h del cliente, pero cobráis {rate}. O sube la tarifa del cliente, o el trabajo no se hace.",
+      okRate: "Con el cliente a {rate}/h, este nivel da a {who} hasta {max}/h. La tarifa acordada es {pay}: el acuerdo se sostiene.",
+      noRate: "Con el cliente a {rate}/h, este nivel da a {who} como máximo {max}/h, pero su tarifa es {pay}. O sube la tarifa del cliente, o el trabajo no se hace.",
+      cover: "Cubrir «{name}» por completo → {cov} de cobertura, nivel {lv}",
+      sameLevel: "mismo nivel", allset: "Rol cubierto por completo: esta ya es la cuota máxima.",
+      geoOff: "Coeficiente apagado: la cuota depende solo de la cobertura del rol, viva donde viva la persona.",
+      geoOn: "Solo por el rol serían <b>{full}</b>/h. Con el coeficiente son <b>{local}</b>/h — un diferencial geográfico de <b>{diff}</b>/h, el {pctdiff} de lo que rinde el rol solo.",
+      geoFloor: "El piso es vinculante: sin él el coeficiente daría {raw}/h.",
+      f1: "<b>A dónde va el diferencial es lo que importa.</b> Si se vuelve margen en silencio, el colectivo gana de dónde vive alguien. Dale un destino declarado — reserva, fondo solidario, reinversión — para que sea discutible y no presumido.",
+      f2: "<b>Regla de no-acuerdo.</b> Si la tarifa de la persona supera lo que el nivel permite y el cliente no acepta el mínimo, el trabajo no se hace. Nadie es comprimido por debajo de su tarifa para cuadrar el margen.",
+      f3: "<b>Redondeos.</b> Donde las dos miradas difieren un escalón, la cobertura se redondea a favor de la persona. Una brecha de dos escalones no se promedia: se conversa.",
+      f4: "<b>El nivel pertenece al par persona-rol</b>, no a la persona. La misma persona puede ser autónoma en un rol y trabajar con apoyo en otro. Se revisa en cada renovación.",
+      f5: "<b>Los coeficientes son valores por defecto editables y necesitan una fuente real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar a alguien con ellos. Las traducciones deben revisarlas hablantes nativos.",
+      f6: "<b>Este reparto es el precio full-service de welance</b> — por encontrar, montar y responder por el equipo. En <a href='https://welance.com/directory'>Directory</a> la plataforma no toma parte alguna: conocer a un equipo cuesta un token fijo y simbólico, y la relación pertenece a las personas que la componen. La tarifa tasa a la persona; la cuota tasa el riesgo de entrega — comprimir nunca es la solución, subir la tarifa del cliente sí.",
+      finePrint: "la letra pequeña"
+    },
+    vi: {
+      dir: "ltr", locale: "vi-VN", name: "Tiếng Việt",
+      workh: "Loại công việc", wtClient: "Việc cho khách hàng", wtInternal: "Việc nội bộ", capLbl: "Trần nội bộ \u20ac/h", fCap: "Trần của cấp độ", internalNote: "Việc nội bộ không có giá khách hàng \u2014 không có gì để chia phần. Trần là {cap}/h ở cấp cao nhất, giảm dần theo cấp độ.",
+      ratesNote: "Mức giá mặc định là của welance — mỗi công ty sẽ đặt mức riêng. Nói thật lòng: chúng tôi tin đây là mức giá EU công bằng cho người làm nghề số hôm nay, khi các vai trò đang phẳng ra, trở nên linh hoạt và đòi hỏi cách tiếp cận toàn diện hơn — thực chất là một vai trò: người làm nghề số được AI tiếp sức.",
+      askLbl: "Mức giá họ đề nghị \u20ac/h",
+      provider: "người cộng tác", providerSub: "Độc lập — freelancer hoặc một studio nhỏ, tới khoảng 25 người.",
+      reset: "Khôi phục mặc định",
+      eyebrow: "welance · quy tắc chia",
+      title: "Bao nhiêu phần giá khách hàng về tay người cộng tác",
+      lede: "Phần chia phụ thuộc vào mức người cộng tác tự đảm nhận vai trò — không phụ thuộc khách trả bao nhiêu, và không bao giờ dựa trên phán xét về con người họ. Liệt kê các thành phần của vai trò, đánh dấu ai đảm nhận gì, và phần chia tự ra. Người cộng tác có thể là một freelancer hoặc một studio tới khoảng 25 người; với mô hình là như nhau.",
+      roleh: "Vai trò, theo từng thành phần",
+      rolehint: "Với mỗi thành phần: góc nhìn của chính người đó và của đồng nghiệp senior gần vai trò nhất. Nếu hai bên cách nhau hai bậc, phép tính dừng lại và cần một cuộc trò chuyện.",
+      role: "Vai trò", person: "Người",
+      hComp: "Thành phần", hWeight: "Trọng số", hSelf: "Tự đánh giá", hEval: "Người rà soát", hCov: "Bao phủ",
+      add: "+ Thêm thành phần",
+      full: "Đầy đủ", partial: "Một phần", none: "Không",
+      flag: "Hai góc nhìn cách nhau hai bậc: ở đây không lấy trung bình, mà trao đổi.",
+      geoh: "Chi phí sinh hoạt",
+      geohint: "Một hệ số tùy chọn cho người sống ở nền chi phí rất khác. Đây là vùng còn tranh luận — bảng bên dưới luôn hiển thị cả mức chỉ theo vai trò, để chênh lệch luôn nhìn thấy và bàn được.",
+      usegeo: "Áp dụng hệ số chi phí sinh hoạt",
+      country: "Quốc gia", coef: "Hệ số", floorc: "Sàn",
+      checkh: "Kiểm tra thỏa thuận",
+      checkhint: "Giá khách hàng là một thực tế đã đàm phán và không bao giờ dịch chuyển. Bao phủ và hệ số chỉ đổi phần người đó nhận — ô dưới chỉ là mức giá họ đề nghị, cho phép kiểm không-thỏa-thuận.",
+      mPayout: "Bắt đầu từ giá của người đó", mRate: "Bắt đầu từ giá khách hàng",
+      payout: "Giá của người đó €/h", rate: "Giá khách hàng €/h",
+      growthh: "Cách đi lên",
+      growthhint: "Cấp độ không phải nhãn dán, mà là bản đồ. Mỗi thành phần chưa bao phủ có giá trị theo giờ.",
+      resulth: "Kết quả", coverk: "Bao phủ vai trò",
+      fShare: "Phần của người đó", fMargin: "Biên welance", fPay: "Cho người đó", fRate: "Giá khách hàng",
+      levelsh: "Ba cấp độ",
+      levelshint: "Chúng mô tả cách vai trò được thực hiện, không phải ai thực hiện.",
+      cLevel: "Cấp độ", cCov: "Bao phủ", cShare: "Phần", cMargin: "Biên",
+      lv: ["TỰ CHỦ", "CÓ RÀ SOÁT", "CÓ HỖ TRỢ"],
+      lvSub: ["người đó đảm nhận trọn vai trò", "vai trò được thực hiện với sự rà soát của đồng nghiệp", "vai trò được thực hiện với hỗ trợ ở một phần"],
+      keyPerson: "người cộng tác", keyGeo: "chênh lệch địa lý", keyCompany: "welance",
+      okPayout: "Ở {pay}/h cho {who}, cấp độ này cần ít nhất {need}/h từ khách. Các bạn đang tính {rate}: thỏa thuận đứng vững.",
+      noPayout: "Ở {pay}/h cho {who}, cấp độ này sẽ cần {need}/h từ khách, nhưng các bạn tính {rate}. Hoặc giá khách tăng, hoặc hợp tác không diễn ra.",
+      okRate: "Khách ở {rate}/h, cấp độ này cho {who} tối đa {max}/h. Mức đã chốt là {pay}: thỏa thuận đứng vững.",
+      noRate: "Khách ở {rate}/h, cấp độ này cho {who} tối đa {max}/h, nhưng mức của họ là {pay}. Hoặc giá khách tăng, hoặc hợp tác không diễn ra.",
+      cover: "Đảm nhận trọn “{name}” → bao phủ {cov}, cấp độ {lv}",
+      sameLevel: "cùng cấp độ", allset: "Vai trò đã bao phủ trọn vẹn: đây đã là phần chia tối đa.",
+      geoOff: "Hệ số tắt: phần chia chỉ phụ thuộc bao phủ vai trò, dù người đó sống ở đâu.",
+      geoOn: "Chỉ theo vai trò sẽ là <b>{full}</b>/h. Với hệ số là <b>{local}</b>/h — chênh lệch địa lý <b>{diff}</b>/h, bằng {pctdiff} phần vai trò tự kiếm được.",
+      geoFloor: "Sàn đang ràng buộc: không có nó, hệ số sẽ cho {raw}/h.",
+      f1: "<b>Chênh lệch đi về đâu mới là điều quan trọng.</b> Nếu nó âm thầm thành biên lợi nhuận, tập thể kiếm lời từ nơi một người sống. Đặt tên đích đến — quỹ dự trữ, quỹ đoàn kết, tái đầu tư — để nó bàn được thay vì mặc định.",
+      f2: "<b>Quy tắc không-thỏa-thuận.</b> Nếu giá của người đó vượt mức cấp độ cho phép và khách không trả mức tối thiểu, hợp tác không diễn ra. Không ai bị ép xuống dưới giá của mình để làm tròn biên.",
+      f3: "<b>Làm tròn.</b> Khi hai góc nhìn lệch nhau một bậc, bao phủ làm tròn có lợi cho người đó. Lệch hai bậc không lấy trung bình: phải trao đổi.",
+      f4: "<b>Cấp độ thuộc về cặp người-và-vai-trò</b>, không thuộc về người. Cùng một người có thể tự chủ ở vai trò này và cần hỗ trợ ở vai trò khác. Xem lại ở mỗi lần gia hạn.",
+      f5: "<b>Các hệ số là mặc định chỉnh sửa được và cần nguồn thật</b> (OECD PPP, World Bank ICP, Numbeo) trước khi trả lương ai đó theo chúng. Bản dịch nên được người bản ngữ kiểm tra.",
+      f6: "<b>Phần chia này là giá full-service của welance</b> — cho việc tìm, dựng và chịu trách nhiệm về đội ngũ. Trên <a href='https://welance.com/directory'>Directory</a> nền tảng không lấy phần nào: gặp một đội ngũ chỉ tốn một token cố định, tượng trưng, và mối quan hệ thuộc về những người trong đó. Mức giá định giá con người; phần chia định giá rủi ro bàn giao — ép giá không bao giờ là lời giải, nâng giá khách hàng mới là.",
+      finePrint: "phần chi tiết"
+    },
+    ar: {
+      dir: "rtl", locale: "ar", name: "عربي",
+      workh: "نوع العمل", wtClient: "عمل لعميل", wtInternal: "عمل داخلي", capLbl: "السقف الداخلي \u20ac/س", fCap: "سقف المستوى", internalNote: "العمل الداخلي لا سعر عميل له \u2014 لا شيء تُؤخذ منه حصة. السقف {cap}/س في أعلى مستوى، متدرجًا نزولًا حسب المستوى.",
+      ratesNote: "الأسعار الافتراضية هي أسعار welance — وكل جهة تضع أسعارها. بصراحة: نراها أسعارًا أوروبية عادلة لمحترفي الرقمية اليوم، الذين تتسطح أدوارهم وتصير أكثر سيولة وتتطلب نهجًا أعمّ — دور واحد في الحقيقة: المحترف الرقمي المعزّز بالذكاء الاصطناعي.",
+      askLbl: "سعره المطلوب \u20ac/س",
+      provider: "المتعاون", providerSub: "مستقل — فريلانسر أو استوديو صغير، حتى نحو 25 شخصًا.",
+      reset: "إعادة الضبط إلى الافتراضي",
+      eyebrow: "ويلانس · قاعدة القسمة",
+      title: "كم من سعر العميل يذهب إلى المتعاون",
+      lede: "الحصة تعتمد على مقدار ما يغطيه المتعاون من الدور بنفسه — لا على ما يدفعه العميل، ولا أبدًا على حكم على هويته. تُدرج أجزاء الدور، ويُعلَّم من يغطي ماذا، فتخرج الحصة وحدها. قد يكون المتعاون فريلانسرًا أو استوديو حتى نحو 25 شخصًا؛ لا فرق عند النموذج.",
+      roleh: "الدور، جزءًا بجزء",
+      rolehint: "لكل جزء: نظرة الشخص نفسه ونظرة الزميل الأقرب للدور والأكثر خبرة. إن تباعدت النظرتان درجتين توقف الحساب ولزم حديث.",
+      role: "الدور", person: "الشخص",
+      hComp: "الجزء", hWeight: "الوزن", hSelf: "ذاتي", hEval: "المراجع", hCov: "التغطية",
+      add: "+ أضف جزءًا",
+      full: "كاملة", partial: "جزئية", none: "لا شيء",
+      flag: "النظرتان متباعدتان درجتين: هنا لا يؤخذ متوسط، بل يُتحدث.",
+      geoh: "تكلفة المعيشة",
+      geohint: "معامل اختياري لمن يعيش في قاعدة تكاليف مختلفة جدًا. أرض متنازع عليها — اللوحة أدناه تُظهر دائمًا ما كان الدور وحده سيدفعه، فيبقى الفارق مرئيًا وقابلًا للنقاش.",
+      usegeo: "طبّق معامل تكلفة المعيشة",
+      country: "البلد", coef: "المعامل", floorc: "الحد الأدنى",
+      checkh: "افحص الاتفاق",
+      checkhint: "سعر العميل حقيقة متفاوَض عليها ولا يتحرك أبدًا. التغطية والمعامل يغيّران ما يناله الشخص — الحقل أدناه هو سعره المطلوب فقط، لفحص اللااتفاق.",
+      mPayout: "ابدأ من سعر الشخص", mRate: "ابدأ من سعر العميل",
+      payout: "سعر الشخص €/س", rate: "سعر العميل €/س",
+      growthh: "كيف تصعد",
+      growthhint: "المستوى ليس ملصقًا بل خريطة. كل جزء غير مغطى له قيمة بالساعة.",
+      resulth: "النتيجة", coverk: "تغطية الدور",
+      fShare: "حصة الشخص", fMargin: "هامش welance", fPay: "إلى الشخص", fRate: "سعر العميل",
+      levelsh: "المستويات الثلاثة",
+      levelshint: "تصف كيف يؤدى الدور، لا من يؤديه.",
+      cLevel: "المستوى", cCov: "التغطية", cShare: "الحصة", cMargin: "الهامش",
+      lv: ["مستقل تمامًا", "مع مراجعة", "مع دعم"],
+      lvSub: ["يغطي الشخص الدور كله", "يؤدى الدور مع مراجعة زميل", "يؤدى الدور مع دعم في جزء"],
+      keyPerson: "المتعاون", keyGeo: "الفارق الجغرافي", keyCompany: "ويلانس",
+      okPayout: "عند {pay}/س لـ{who}، يحتاج هذا المستوى {need}/س على الأقل من العميل. أنتم تطلبون {rate}: الاتفاق صامد.",
+      noPayout: "عند {pay}/س لـ{who}، سيحتاج هذا المستوى {need}/س من العميل، لكنكم تطلبون {rate}. إما أن يرتفع سعر العميل، أو لا يتم التعاقد.",
+      okRate: "والعميل عند {rate}/س، يعطي هذا المستوى {who} حتى {max}/س. السعر المتفق عليه {pay}: الاتفاق صامد.",
+      noRate: "والعميل عند {rate}/س، يعطي هذا المستوى {who} حدًا أقصى {max}/س، لكن سعره {pay}. إما أن يرتفع سعر العميل، أو لا يتم التعاقد.",
+      cover: "غطِّ «{name}» كاملًا → تغطية {cov}، مستوى {lv}",
+      sameLevel: "المستوى نفسه", allset: "الدور مغطى بالكامل: هذه هي الحصة القصوى أصلًا.",
+      geoOff: "المعامل مطفأ: الحصة تعتمد على تغطية الدور وحدها، أينما عاش الشخص.",
+      geoOn: "بالدور وحده كانت <b>{full}</b>/س. مع المعامل هي <b>{local}</b>/س — فارق جغرافي قدره <b>{diff}</b>/س، أي {pctdiff} مما يدرّه الدور وحده.",
+      geoFloor: "الحد الأدنى ملزم: بدونه كان المعامل سيعطي {raw}/س.",
+      f1: "<b>إلى أين يذهب الفارق هو ما يهم.</b> إن صار هامشًا بصمت ربح التجمّع من مكان سكن أحدهم. سمِّ وجهته — احتياطي، صندوق تضامن، إعادة استثمار — ليكون قابلًا للنقاش لا مفترضًا.",
+      f2: "<b>قاعدة اللااتفاق.</b> إن تجاوز سعر الشخص ما يسمح به المستوى ولم يدفع العميل الحد الأدنى، لا يتم التعاقد. لا يُضغط أحد تحت سعره ليستقيم الهامش.",
+      f3: "<b>التقريب.</b> حيث تختلف النظرتان درجة واحدة، تُقرَّب التغطية لصالح الشخص. تباعد الدرجتين لا يُؤخذ متوسطه: يُناقش.",
+      f4: "<b>المستوى للثنائي شخص-ودور</b>، لا للشخص. الشخص نفسه قد يكون مستقلًا في دور ويعمل بدعم في آخر. يراجَع عند كل تجديد.",
+      f5: "<b>المعاملات قيم افتراضية قابلة للتحرير وتحتاج مصدرًا حقيقيًا</b> (OECD PPP، البنك الدولي ICP، Numbeo) قبل أن يُدفع لأحد بناءً عليها. وينبغي أن يراجع الترجمات ناطقون أصليون.",
+      f6: "<b>هذه القسمة هي سعر الخدمة الكاملة لدى ويلانس</b> — مقابل إيجاد الفريق وتجميعه وتحمّل مسؤوليته. على <a href='https://welance.com/directory'>Directory</a> لا تأخذ المنصة أي حصة: لقاء فريق يكلف رمزًا ثابتًا رمزيًا، والعلاقة ملك لمن فيها. السعر يقيّم الشخص؛ والحصة تقيّم مخاطرة التسليم — الضغط ليس الحل أبدًا، رفع سعر العميل هو الحل.",
+      finePrint: "التفاصيل الدقيقة"
     }
   };
 
-  // Rough cost-of-living ratios against Germany = 1.00. EDITABLE DEFAULTS ONLY —
-  // they must be replaced from a real source (OECD PPP / World Bank ICP / Numbeo)
-  // before anyone's pay depends on them.
-  var COUNTRIES = [
-    { code: "CH", coef: 1.35, en: "Switzerland", de: "Schweiz", it: "Svizzera", ur: "سوئٹزرلینڈ", pt: "Suíça" },
-    { code: "DE", coef: 1.00, en: "Germany", de: "Deutschland", it: "Germania", ur: "جرمنی", pt: "Alemanha" },
-    { code: "AT", coef: 0.95, en: "Austria", de: "Österreich", it: "Austria", ur: "آسٹریا", pt: "Áustria" },
-    { code: "IT", coef: 0.82, en: "Italy", de: "Italien", it: "Italia", ur: "اٹلی", pt: "Itália" },
-    { code: "ES", coef: 0.75, en: "Spain", de: "Spanien", it: "Spagna", ur: "اسپین", pt: "Espanha" },
-    { code: "PT", coef: 0.68, en: "Portugal", de: "Portugal", it: "Portogallo", ur: "پرتگال", pt: "Portugal" },
-    { code: "PL", coef: 0.55, en: "Poland", de: "Polen", it: "Polonia", ur: "پولینڈ", pt: "Polônia" },
-    { code: "BR", coef: 0.42, en: "Brazil", de: "Brasilien", it: "Brasile", ur: "برازیل", pt: "Brasil" },
-    { code: "AR", coef: 0.38, en: "Argentina", de: "Argentinien", it: "Argentina", ur: "ارجنٹینا", pt: "Argentina" },
-    { code: "UA", coef: 0.38, en: "Ukraine", de: "Ukraine", it: "Ucraina", ur: "یوکرین", pt: "Ucrânia" },
-    { code: "VN", coef: 0.32, en: "Vietnam", de: "Vietnam", it: "Vietnam", ur: "ویتنام", pt: "Vietnã" },
-    { code: "IN", coef: 0.30, en: "India", de: "Indien", it: "India", ur: "بھارت", pt: "Índia" },
-    { code: "PK", coef: 0.28, en: "Pakistan", de: "Pakistan", it: "Pakistan", ur: "پاکستان", pt: "Paquistão" }
-  ];
-
-  var LEVELS = [
-    { cover: 1.00, share: 0.70 },
-    { cover: 0.75, share: 0.60 },
-    { cover: 0.50, share: 0.50 }
-  ];
-  var STEPS = [1, 0.5, 0];
-  // Internal work has no client, so no share can be taken. Administrators and
-  // internal contributors are capped at this rate (Enrico 2026-07-31).
-  var INTERNAL_MAX = 50;
+  // The model itself — levels, CoL table, coverage math — lives in
+  // pricing.js, shared with team.html. One copy, one place to argue with.
+  var P = window.WelancePricing;
+  var COUNTRIES = P.COUNTRIES, LEVELS = P.LEVELS, STEPS = P.STEPS,
+      INTERNAL_MAX = P.INTERNAL_MAX;
 
   var STORE_KEY = "welance-share-calc-v1";
 
@@ -626,14 +802,16 @@
     client: {
       role: "FullstackDev & Web Projects Maintainer @welance",
       comps: [
-        { name: { en: "CraftCMS", de: "CraftCMS", it: "CraftCMS", ur: "CraftCMS", pt: "CraftCMS" },
+        { name: { en: "CraftCMS", de: "CraftCMS", it: "CraftCMS", ur: "CraftCMS", pt: "CraftCMS", es: "CraftCMS", vi: "CraftCMS", ar: "CraftCMS" },
           weight: 1, self: 1, evalr: 1 },
         { name: { en: "Client relationship", de: "Kundenbeziehung", it: "Rapporto cliente",
-                   ur: "کلائنٹ سے تعلق", pt: "Relação com o cliente" },
+                   ur: "کلائنٹ سے تعلق", pt: "Relação com o cliente", es: "Relación con el cliente",
+                   vi: "Quan hệ khách hàng", ar: "علاقة العميل" },
           weight: 1, self: 0.5, evalr: 0.5 },
         { name: { en: "Infrastructure & pipelines", de: "Infrastruktur & Pipelines",
                    it: "Infrastruttura e pipeline", ur: "انفراسٹرکچر اور پائپ لائنز",
-                   pt: "Infraestrutura e pipelines" },
+                   pt: "Infraestrutura e pipelines", es: "Infraestructura y pipelines",
+                   vi: "Hạ tầng & pipeline", ar: "البنية التحتية وخطوط الأنابيب" },
           weight: 1, self: 0, evalr: 0 }
       ]
     },
@@ -643,7 +821,10 @@
         { name: { en: "Maintain internal knowledge base", de: "Interne Wissensdatenbank pflegen",
                    it: "Manutenzione della knowledge base interna",
                    ur: "اندرونی نالج بیس کی دیکھ بھال",
-                   pt: "Manter a base de conhecimento interna" },
+                   pt: "Manter a base de conhecimento interna",
+                   es: "Mantener la base de conocimiento interna",
+                   vi: "Duy trì kho tri thức nội bộ",
+                   ar: "صيانة قاعدة المعرفة الداخلية" },
           weight: 1, self: 1, evalr: 1 }
       ]
     }
@@ -665,7 +846,23 @@
   }
 
   var state = load();
-  var lang = state.io && state.io.lang && T[state.io.lang] ? state.io.lang : "en";
+  // The language is shared with the whole site (localStorage "welance-lang",
+  // written by i18n.js on the other pages). This page's internal codes match
+  // the site's except pt <-> pt-BR.
+  var SITE_LANG_KEY = "welance-lang";
+  function fromSite(code) { return code === "pt-BR" ? "pt" : code; }
+  function toSite(code) { return code === "pt" ? "pt-BR" : code; }
+  function siteLang() {
+    try {
+      var q = new URLSearchParams(location.search).get("lang");
+      if (q && T[fromSite(q)]) return fromSite(q);
+      var s2 = localStorage.getItem(SITE_LANG_KEY);
+      if (s2 && T[fromSite(s2)]) return fromSite(s2);
+    } catch (e) {}
+    return null;
+  }
+  var lang = siteLang() ||
+    (state.io && state.io.lang && T[state.io.lang] ? state.io.lang : "en");
   var work = state.io && state.io.work === "internal" ? "internal" : "client";
   var comps = [];
 
@@ -726,29 +923,13 @@
     return s.replace(/\{(\w+)\}/g, function (_, k) { return o[k] !== undefined ? o[k] : ""; });
   }
 
-  function agreed(c) {
-    var m = (c.self + c.evalr) / 2;
-    if (m === 0.75) return 1;
-    if (m === 0.25) return 0.5;
-    return m;
-  }
-  function coverageOf(list) {
-    var w = 0, s = 0;
-    list.forEach(function (c) {
-      var wt = Number(c.weight) > 0 ? Number(c.weight) : 0;
-      w += wt; s += wt * agreed(c);
-    });
-    return w > 0 ? s / w : 0;
-  }
-  function levelFor(cov) { return cov >= 0.875 ? LEVELS[0] : cov >= 0.625 ? LEVELS[1] : LEVELS[2]; }
+  var agreed = P.agreed, coverageOf = P.coverageOf, levelFor = P.levelFor;
   function lvIndex(lv) { return LEVELS.indexOf(lv); }
 
   function geoCoef() {
     if (!$("usegeo").checked) return 1;
-    var c = Number($("coef").value);
-    var floor = Number($("floorc").value);
-    if (!(c > 0)) c = 1;
-    return Math.max(c, floor > 0 ? floor : 0);
+    // §7: max(coefficient, floor) — the same rule team.html uses.
+    return P.applyCol(1, Number($("coef").value), Number($("floorc").value));
   }
 
   function renderStatic() {
@@ -771,28 +952,16 @@
       "t-f-share": d.fShare, "t-f-margin": d.fMargin, "t-f-pay": d.fPay, "t-f-rate": d.fRate,
       "t-levelsh": d.levelsh, "t-levelshint": d.levelshint,
       "reset": d.reset,
-      "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin
+      "t-c-level": d.cLevel, "t-c-cov": d.cCov, "t-c-share": d.cShare, "t-c-margin": d.cMargin,
+      "t-ratesnote": d.ratesNote || "",
+      "t-fineprint": d.finePrint || "the fine print"
     };
     Object.keys(map).forEach(function (k) { $(k).textContent = map[k]; });
 
     var f = $("footer");
     f.textContent = "";
-    [d.f1, d.f2, d.f3, d.f4, d.f5].forEach(function (h) {
+    [d.f1, d.f2, d.f3, d.f4, d.f5, d.f6].forEach(function (h) {
       var p = document.createElement("p"); p.innerHTML = h; f.appendChild(p);
-    });
-
-    var langs = $("langs");
-    langs.textContent = "";
-    Object.keys(T).forEach(function (code) {
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "lang"; b.textContent = T[code].name;
-      b.setAttribute("aria-pressed", code === lang ? "true" : "false");
-      b.addEventListener("click", function () {
-        lang = code;
-        if (!state.dirty[work]) loadSet(work);   // untouched defaults follow the language
-        saveIO(); renderStatic(); render();
-      });
-      langs.appendChild(b);
     });
 
     var sel = $("country"), keep = sel.value;
@@ -1077,5 +1246,16 @@
   loadSet(work);
   renderStatic();
   render();
+  // the site-wide dropdown (chrome header) owns the language now
+  document.addEventListener("welance:lang", function (ev) {
+    var code = fromSite(ev.detail.lang);
+    if (!T[code] || code === lang) return;
+    lang = code;
+    if (!state.dirty[work]) loadSet(work);   // untouched defaults follow the language
+    saveIO(); renderStatic(); render();
+  });
 })();
 </script>
+<div id="site-footer"></div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+id: ml-vi
+lang: vi
+input_type: brief
+input: '# Chỗ trống theo thời gian thực cho đặt bàn nhà hàng độc lập
+
+
+  Vấn đề: các nhà hàng nhỏ mất lượt đặt bàn vì nhân viên không thể cập nhật chỗ
+  trống trên các kênh theo thời gian thực. Người dùng chính: quản lý ca ở các nhà
+  hàng độc lập, cập nhật trên di động trong giờ phục vụ. Thành công: giảm 30% lượt
+  đặt bàn bỏ hẹn trong hai mùa. Bàn giao: đăng nhập xác thực bằng email và SPID,
+  phiên lưu trong Postgres, và một endpoint API chỗ trống với p95 dưới 200ms. Ngoài
+  phạm vi: ứng dụng native và thanh toán ở v1. Khung ngân sách 25-40 nghìn. Thời
+  hạn: giao MVP trước mùa xuân. Cần một lập trình viên full-stack và một product
+  designer trong khoảng tám tuần. Xây trên stack Next.js và Postgres hiện có; tích
+  hợp với nhà cung cấp thanh toán hiện có. Rủi ro: nhà hàng có thể không giữ chỗ
+  trống được cập nhật, nên chúng tôi kiểm chứng điều đó trước. Lưu lịch sử đặt bàn
+  của khách; cơ sở pháp lý GDPR là hợp đồng; cần có DPA. Trang đặt bàn công khai
+  hướng tới WCAG 2.2 AA, kiểm thử bằng bàn phím và trình đọc màn hình.'
+notes: Faithful vi translation of 0003-accepted — same content, same expectations
+  as en.yaml, judged live.
