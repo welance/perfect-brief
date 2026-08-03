@@ -62,7 +62,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   @keyframes p-draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
   @media (max-width: 700px) { .p-ident { display: none; } }
-  .lang.reset { border-style: dashed; }
+  /* the reset sits with what it resets, not above the whole page */
+  .cardfoot { display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: 10px; margin-top: 14px; }
+  .cardfoot .addbtn { margin-top: 0; }
+  .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+    background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
   .lang.reset:hover { color: var(--person); border-color: var(--person); }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
@@ -252,10 +257,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </header>
 
-  <div class="topbar">
-    <button class="lang reset" id="reset" type="button"></button>
-  </div>
-
   <div class="cols">
     <div>
       <section class="card">
@@ -280,7 +281,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <div id="t-h-eval"></div><div id="t-h-cov"></div><div></div>
         </div>
         <div id="rows"></div>
-        <button class="addbtn" id="add" type="button"></button>
+        <div class="cardfoot">
+          <button class="addbtn" id="add" type="button"></button>
+          <button class="lang reset" id="reset" type="button"></button>
+        </div>
       </section>
 
       <section class="card">

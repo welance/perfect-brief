@@ -46,7 +46,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
   .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
-  .topbar { display: flex; justify-content: flex-start; margin: 14px 0 20px; }
   .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
   .head-grid .txt { min-width: 0; }
   .t-ident { flex: none; width: 210px; margin-top: 30px; }
@@ -122,7 +121,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
     color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
   .addbtn:hover { border-color: var(--person); color: var(--person); }
-  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-3); }
+  .weightflag { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+  /* the note explains the bar and the reset undoes it: both belong to the
+     split, so they sit together between the bar and the roles it describes */
+  .barfoot { display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 10px; margin: 0 0 18px; }
   /* the whole split, at a glance and under the thumb: one bar, one segment per
      role, and a handle on every boundary. Dragging a handle moves effort from
      one role to its neighbour, so the project stays whole by construction. */
@@ -217,10 +220,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </header>
 
-  <div class="topbar">
-    <button class="lang reset" id="reset" type="button" data-i18n="team.reset">Reset to defaults</button>
-  </div>
-
   <div class="cols">
     <div>
       <section class="card">
@@ -242,11 +241,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
             <span class="subnote" data-i18n="team.l.floornote">A guarantee: wherever someone lives, pay never drops below this.</span></div>
         </div>
         <div class="effortbar" id="effortbar" aria-hidden="true"></div>
+        <div class="barfoot">
+          <p class="weightflag" id="weightflag"></p>
+          <button class="lang reset" id="reset" type="button" data-i18n="team.reset">Reset to defaults</button>
+        </div>
         <div class="role-head">
           <div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
         </div>
         <div id="rows"></div>
-        <p class="weightflag" id="weightflag"></p>
         <button class="addbtn" id="add" type="button" data-i18n="team.add">+ Add role</button>
       </section>
 

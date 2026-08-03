@@ -12,12 +12,22 @@
 (function () {
   "use strict";
 
+  /* The header carries three: why the model works this way, the things you can
+     compute with it, and how to put it in your own tools. The individual
+     calculators are one click deeper — a menu that lists everything is a menu
+     nobody reads. The footer still names them all. */
+  var NAV = [
+    { href: "method.html", key: "chrome.method", en: "The method" },
+    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
+    { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
+  ];
+
   var PAGES = [
     { href: "method.html", key: "chrome.method", en: "The method" },
+    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "index.html",  key: "chrome.brief",  en: "Perfect Brief" },
     { href: "price.html",  key: "chrome.price",  en: "Perfect Price" },
-    { href: "team.html",   key: "chrome.team",   en: "Perfect Team" },
-    { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
+    { href: "team.html",   key: "chrome.team",   en: "Perfect Team" }
   ];
   // the footer's second column: the things a builder looks for
   var BUILD = [
@@ -65,7 +75,7 @@
     var host = document.getElementById("site-header");
     if (!host) return;
     var here = current();
-    var nav = PAGES.map(function (p) {
+    var nav = NAV.map(function (p) {
       var active = p.href === here ? ' aria-current="page"' : "";
       return '<a class="wl-nav-item" href="' + p.href + '"' + active + ">" +
         tt(p.key, p.en) + "</a>";
@@ -130,6 +140,7 @@
       '</div></div>' +
       '<div class="wl-foot-in">' +
       '<div class="wl-foot-top">' +
+      '<div class="wl-foot-who">' +
       '<div class="wl-foot-mark">' + ASTERISK + "</div>" +
       '<div class="wl-foot-offices">' +
       '<div class="wl-office"><p class="wl-office-h">🏙️ welance Berlin</p>' +
@@ -140,8 +151,11 @@
       "<p>Via San Michele 18,<br>12050 Lequio Berria (CN)</p>" +
       '<a href="tel:+393475331532">t: +39 347 533 1532</a>' +
       '<a href="mailto:ciao@welance.com">m: ciao@welance.com</a></div></div>' +
-      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The method") + "</p>" + col(PAGES) + "</div>" +
+      "</div>" +
+      '<div class="wl-foot-cols">' +
+      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The model") + "</p>" + col(PAGES) + "</div>" +
       '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.build", "Build with it") + "</p>" + col(BUILD) + "</div>" +
+      "</div>" +
       "</div>" +
       '<div class="wl-foot-bottom"><p>© 2026 · MIT</p>' +
       '<nav><a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +

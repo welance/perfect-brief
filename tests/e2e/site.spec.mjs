@@ -316,6 +316,28 @@ test.describe("the method reads at a glance", () => {
     expect(broken, broken.join(" ")).toHaveLength(0);
   });
 
+  test("the header carries three ways in, and the rest lives in the footer", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(3);
+    await expect(page.locator(".wl-nav")).toContainText("The calculators");
+    // the calculators page is the index the menu no longer has to be
+    await page.goto("/calculators.html");
+    for (const href of ["index.html", "price.html", "team.html"]) {
+      await expect(page.locator(`.tool a[href="${href}"]`)).toBeVisible();
+    }
+  });
+
+  test("choosing a language writes it into the address", async ({ page }) => {
+    await page.goto("/method.html");
+    await page.locator("#langswitch select").selectOption("it");
+    await expect(page).toHaveURL(/\/it\/method\.html$/);
+    // and following any relative link keeps you in that language — the footer
+    // one, because the header nav is not on a phone
+    await page.locator('.wl-foot-links a[href="calculators.html"]').click();
+    await expect(page).toHaveURL(/\/it\/calculators\.html$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "it");
+  });
+
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
     const blocks = page.locator(".code");

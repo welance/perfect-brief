@@ -255,8 +255,44 @@ if SITE.exists():
         """A page with its asset links pointed at the content-addressed copy."""
         return ASSET.sub(rf'\1="/a/{BUILD}/\2"', path.read_text(encoding="utf-8"))
 
+    # The languages are declared once, in site/i18n.js, and read from there —
+    # a second list here would be a second thing to keep true.
+    LANGS: dict[str, str] = dict(
+        re.findall(r'code:\s*"([\w-]+)".*?dir:\s*"(\w+)"', (SITE / "i18n.js").read_text())
+    )
+
+    def _localise(html: str, lang: str, page: str) -> str:
+        """The same page, told which language it is being read in.
+
+        English keeps the bare paths — it is the content of record, and moving
+        it would move every URL that already exists. Every page names all of
+        its translations, so a crawler finds them without following any script.
+        """
+        alt = "".join(
+            f'<link rel="alternate" hreflang="{code}" href="/{"" if code == "en" else code + "/"}{page}">'
+            for code in LANGS
+        )
+        alt += f'<link rel="alternate" hreflang="x-default" href="/{page}">'
+        canonical = f'<link rel="canonical" href="/{"" if lang == "en" else lang + "/"}{page}">'
+        html = html.replace("</head>", f"{alt}{canonical}</head>", 1)
+        return re.sub(
+            r'<html lang="[\w-]+" dir="\w+"',
+            f'<html lang="{lang}" dir="{LANGS.get(lang, "ltr")}"',
+            html,
+            count=1,
+        )
+
     def _pages() -> dict[str, str]:
-        return {p.relative_to(SITE).as_posix(): _page(p) for p in SITE.rglob("*.html")}
+        """Every page, once per language it can be read in."""
+        out: dict[str, str] = {}
+        for path in SITE.rglob("*.html"):
+            name = path.relative_to(SITE).as_posix()
+            html = _page(path)
+            out[name] = _localise(html, "en", name)
+            for lang in LANGS:
+                if lang != "en":
+                    out[f"{lang}/{name}"] = _localise(html, lang, name)
+        return out
 
     PAGES = _pages()
 
@@ -302,6 +338,8 @@ if SITE.exists():
             _refresh_if_edited()
             name = "index.html" if path in {"", ".", "/"} else path.lstrip("/")
             page = PAGES.get(name) or PAGES.get(f"{name.rstrip('/')}/index.html")
+            if page is None and name.rstrip("/") in LANGS:
+                page = PAGES.get(f"{name.rstrip('/')}/index.html")
             if page is not None:
                 return HTMLResponse(page, headers={"Cache-Control": "no-cache"})
             return await super().get_response(path, scope)

@@ -267,7 +267,14 @@
 .wl-cta-btn.ghost { background: transparent; color: var(--paper); border-color: #4a4a4a; }
 .wl-cta-btn.ghost:hover { border-color: var(--paper); background: transparent; color: var(--paper); }
 .wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
-.wl-foot-top { display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start; }
+/* Two columns: who we are on one side, where to go on the other — and the
+   links split in two again, because one list of twelve is a list nobody
+   finishes reading. */
+.wl-foot-top { display: grid; gap: 40px; align-items: start; }
+@media (min-width: 900px) { .wl-foot-top { grid-template-columns: 1.1fr 1fr; gap: 48px; } }
+.wl-foot-who { display: grid; gap: 24px; }
+.wl-foot-cols { display: grid; gap: 28px; }
+@media (min-width: 480px) { .wl-foot-cols { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
 .wl-foot-mark { flex: none; color: var(--ink); }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
 .wl-foot-offices { display: grid; grid-template-columns: 1fr; gap: 18px; }
@@ -279,12 +286,12 @@
   text-underline-offset: .125em; }
 .wl-office a:hover { color: var(--accent); }
 .wl-foot-links { display: flex; flex-direction: column; gap: 4px; }
-.wl-foot-links:first-of-type { margin-inline-start: auto; }
+
 .wl-foot-links a { display: inline-flex; align-items: center; gap: 7px; }
 .wl-gh { width: 14px; height: 14px; fill: currentColor; flex: none; }
 .wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
 .wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
-@media (max-width: 900px) { .wl-foot-links:first-of-type { margin-inline-start: 0; } }
+
 .wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
 .wl-foot-bottom p { margin: 0; }
