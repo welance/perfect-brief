@@ -39,6 +39,11 @@ derived from the asset itself.
   something the model concluded, so it uses a neutral ramp mixed from the
   page's own ink; the brand's colours stay spent on the result below, where
   they mean something.
+- **"Find a team" stays on the phone.** The one link that leads out of the
+  page was being dropped below 560px. It now holds at 320px in all eight
+  languages — the language switch shortens to its flag and code when closed
+  (the list still names every language in full), and on the narrowest screens
+  the theme toggle stands down, since the theme follows the system anyway.
 - **The header lost its glyph**, and holds its shape at every width — it had
   been overflowing on tablets (134px at 1024px) since the machine was drawn.
 - **welance is all-lowercase, everywhere.** In every language and every

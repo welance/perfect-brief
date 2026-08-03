@@ -69,6 +69,12 @@
     });
   }
 
+  // A closed <select> shows the text of the option that is selected, and on a
+  // phone "🇧🇷 Português (BR)" does not fit beside everything else in the
+  // header. Only the chosen one is shortened, so the list you open still names
+  // every language in full — a language you cannot read is one you cannot pick.
+  var narrow = window.matchMedia("(max-width: 560px)");
+
   function renderSwitcher() {
     var host = document.getElementById("langswitch");
     if (!host) return;
@@ -81,7 +87,11 @@
       o.value = l.code;
       var d = dicts[l.code];
       var draft = l.code !== "en" && d && d.reviewed === false;
-      o.textContent = l.flag + " " + l.name + (draft ? " · draft" : "");
+      var short = l.code === current && narrow.matches;
+      o.textContent = short
+        ? l.flag + " " + l.code.split("-")[0].toUpperCase()
+        : l.flag + " " + l.name + (draft ? " · draft" : "");
+      o.setAttribute("aria-label", l.name);
       if (draft) o.title = "machine-drafted — awaiting native-speaker review";
       if (l.code === current) o.selected = true;
       sel.appendChild(o);
@@ -89,6 +99,9 @@
     sel.addEventListener("change", function () { set(sel.value); });
     host.appendChild(sel);
   }
+
+  // crossing the width where the short label starts or stops making sense
+  if (narrow.addEventListener) narrow.addEventListener("change", renderSwitcher);
 
   function set(code) {
     if (!meta(code)) code = "en";

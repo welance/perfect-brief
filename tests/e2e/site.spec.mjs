@@ -94,7 +94,9 @@ test.describe("eight languages, one choice", () => {
     await page.goto("/method.html");
     const options = page.locator("#langswitch option");
     await expect(options).toHaveCount(8);
-    await expect(options.first()).toContainText("English");
+    // on a phone the chosen language shortens to "🇬🇧 EN" so the header still
+    // fits; the list keeps naming every language, and so does the a11y name
+    await expect(options.first()).toHaveAttribute("aria-label", "English");
   });
 
   test("choosing a language follows you across pages", async ({ page }) => {
@@ -290,6 +292,28 @@ test.describe("the method reads at a glance", () => {
       if (over > 0) broken.push(`${width}px overflows by ${over}px`);
     }
     expect(broken, broken.join(" | ")).toHaveLength(0);
+  });
+
+  test("the way out of the page survives a phone, in every language", async ({ page }) => {
+    // the pill is the one link that leads somewhere else — it does not get
+    // dropped for being inconvenient at 320px
+    const broken = [];
+    for (const lang of ["en", "pt-BR", "ar", "vi"]) {
+      for (const width of [320, 390, 412, 560]) {
+        await page.setViewportSize({ width, height: 800 });
+        await page.goto(`/method.html?lang=${lang}`);
+        const pill = page.locator(".wl-pill");
+        await expect(pill).toBeVisible();
+        const fits = await page.evaluate(() => {
+          const b = document.querySelector(".wl-pill").getBoundingClientRect();
+          const vw = document.documentElement.clientWidth;
+          return { inside: b.left >= -0.5 && b.right <= vw + 0.5,
+                   over: document.documentElement.scrollWidth - vw };
+        });
+        if (!fits.inside || fits.over > 0) broken.push(`${lang}@${width}px`);
+      }
+    }
+    expect(broken, broken.join(" ")).toHaveLength(0);
   });
 
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {

@@ -219,7 +219,24 @@
   .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 6px; }
   .wl-pill { font-size: 14px; padding: 9px 15px; }
 }
-@media (max-width: 560px) { .wl-pill { display: none; } }
+/* the pill is the one thing on the page that leads somewhere else: it earns
+   its room on a phone, and the rest of the header gives way for it */
+@media (max-width: 560px) {
+  .wl-pill { font-size: 13px; padding: 8px 12px; }
+  /* an explicit width, or the select sizes itself to its longest option even
+     though the closed label is now two letters */
+  .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 2px; }
+}
+@media (max-width: 400px) {
+  .wl-project { font-size: 13px; }
+  .wl-pill { font-size: 12px; padding: 7px 10px; }
+  .wl-lang-select { width: 60px; max-width: 60px; font-size: 12px; padding: 6px 1px; }
+  .wl-head-in { gap: 5px; padding: 0 9px; }
+  /* on the narrowest phones the CTA and the language win the argument: the
+     theme still follows the system, and "Encontre um time" is longer than
+     "Find a team" — the header has to hold in every language, not in English */
+  .wl-theme { display: none; }
+}
 
 /* --- breadcrumb line under the header ---------------------------------- */
 .wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px 0;
