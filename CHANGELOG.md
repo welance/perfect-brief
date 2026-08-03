@@ -34,7 +34,11 @@ derived from the asset itself.
   to. They are percentages of one project, and a handle sits on every boundary:
   drag it and effort moves from one role to its neighbour, so the total cannot
   leave 100 — on a phone as on a laptop, with the keyboard as with a thumb.
-  Typing a share still works; the other roles make room in proportion.
+  The per-role number field is gone: the split has one home, not two.
+- **The split bar is deliberately colourless.** It is something you set, not
+  something the model concluded, so it uses a neutral ramp mixed from the
+  page's own ink; the brand's colours stay spent on the result below, where
+  they mean something.
 - **The header lost its glyph**, and holds its shape at every width — it had
   been overflowing on tablets (134px at 1024px) since the machine was drawn.
 - **welance is all-lowercase, everywhere.** In every language and every

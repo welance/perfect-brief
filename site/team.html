@@ -89,7 +89,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   /* each role: the name gets a full-width line of its own, the parameters
      sit below it — a role you cannot read is a role you cannot argue with */
   .role-head, .role { display: grid;
-    grid-template-columns: 74px minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
+    grid-template-columns: minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
     gap: 8px; align-items: center; }
   .role > input[type="text"] { grid-column: 1 / -1; font-size: 15px; font-weight: 600;
     padding: 9px 12px; }
@@ -109,12 +109,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     .role { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 26px;
       gap: 6px; padding: 9px 0; }
     .role > input[type="text"] { grid-column: 1 / 4; grid-row: 1; }
-    .role > :nth-child(7) { grid-column: 4; grid-row: 1; }     /* × beside the name */
-    .role > :nth-child(2) { grid-column: 1; grid-row: 2; }     /* weight */
-    .role > :nth-child(3) { grid-column: 2 / 5; grid-row: 2; } /* level */
-    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* country */
-    .role > :nth-child(5) { grid-column: 3; grid-row: 3; }     /* own rate */
-    .role > :nth-child(6) { grid-column: 1 / 4; grid-row: 4; text-align: start; } /* ceiling */
+    .role > :nth-child(6) { grid-column: 4; grid-row: 1; }     /* × beside the name */
+    .role > :nth-child(2) { grid-column: 1 / 3; grid-row: 2; } /* level */
+    .role > :nth-child(3) { grid-column: 3 / 5; grid-row: 2; } /* country */
+    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* own rate */
+    .role > :nth-child(5) { grid-column: 3 / 5; grid-row: 3; text-align: end; } /* ceiling */
     .role select { font-size: 12.5px; padding: 6px 4px; }
   }
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
@@ -124,11 +123,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
   .addbtn:hover { border-color: var(--person); color: var(--person); }
   .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-3); }
-  /* the share is a percentage, and says so — no mental arithmetic */
-  /* min-width:0 or the number input's intrinsic width widens the whole page */
-  .sharecell { display: flex; align-items: center; gap: 2px; min-width: 0; }
-  .sharecell input[type="number"] { text-align: end; min-width: 0; }
-  .sharecell .pc { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
   /* the whole split, at a glance and under the thumb: one bar, one segment per
      role, and a handle on every boundary. Dragging a handle moves effort from
      one role to its neighbour, so the project stays whole by construction. */
@@ -231,7 +225,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div>
       <section class="card">
         <h2 data-i18n="team.c1h">The team, role by role</h2>
-        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. Drag the bar to split the effort, or type the shares — together they always describe one whole project. For each role: the level it is delivered at, where the member lives, and their own rate — for the no-deal check.</p>
+        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. Drag the bar to split the effort between roles — together they always describe one whole project. For each role: the level it is delivered at, where the member lives, and their own rate — for the no-deal check.</p>
         <div class="rolebar">
           <div class="field grow"><label for="teamname" data-i18n="team.l.team">Team</label>
             <input type="text" id="teamname" value="Team — product rebuild">
@@ -249,7 +243,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
         </div>
         <div class="effortbar" id="effortbar" aria-hidden="true"></div>
         <div class="role-head">
-          <div data-i18n="team.th2">Share</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
+          <div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
         </div>
         <div id="rows"></div>
         <p class="weightflag" id="weightflag"></p>
@@ -315,13 +309,16 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 (function () {
   "use strict";
 
-  // the brand's colours, in a fixed order so a role keeps its colour; the
-  // yellow is light enough to need dark text on it
-  var SHARE_COLOURS = [
-    { bg: "var(--person)", fg: "#fff" }, { bg: "var(--geo)", fg: "#fff" },
-    { bg: "var(--company)", fg: "#fff" }, { bg: "var(--head)", fg: "var(--ink)" },
-    { bg: "var(--partial)", fg: "#fff" }, { bg: "var(--ink-3)", fg: "#fff" }
-  ];
+  // Deliberately colourless: this bar is something you set, not something the
+  // model concluded. The brand's colours are spent on the result below, and
+  // reusing them here would make an input look like an answer. A neutral ramp
+  // mixed from the page's own ink still tells the segments apart, and it
+  // follows the theme into the dark without a second palette.
+  function tone(ink) {
+    return { bg: "color-mix(in srgb, var(--ink) " + ink + "%, var(--paper))",
+             fg: ink >= 45 ? "var(--paper)" : "var(--ink)" };
+  }
+  var SHARE_COLOURS = [tone(14), tone(52), tone(28), tone(68), tone(38), tone(84)];
 
   // All policy and math come from the shared engine — this file is only UI.
   var P = window.WelancePricing;
@@ -446,24 +443,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       name.addEventListener("input", function () { r.role = name.value; save(); });
       row.appendChild(name);
 
-      var cell = document.createElement("div");
-      cell.className = "sharecell";
-      var w = document.createElement("input");
-      w.type = "number"; w.min = "0"; w.max = "100"; w.step = "5"; w.value = String(r.weight);
-      w.setAttribute("aria-label", "Share of the project's effort, in percent");
-      w.title = tt("team.d.sharetip",
-        "Share of the project's effort. The other roles give way in proportion, so the team always describes one whole project.");
-      w.addEventListener("input", function () {
-        setShare(state.rows.indexOf(r), Number(w.value));
-        save(); paint();  // the caret stays where it is: only figures are repainted
-      });
-      w.addEventListener("blur", function () { w.value = String(r.weight); });
-      cell.appendChild(w);
-      var pc = document.createElement("span");
-      pc.className = "pc"; pc.textContent = "%";
-      cell.appendChild(pc);
-      row.appendChild(cell);
-
       var lv = document.createElement("select");
       lv.setAttribute("aria-label", "Level");
       lv.title = ftip("share");
@@ -525,6 +504,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   function buildBar() {
     var bar = $("effortbar");
     bar.textContent = "";
+    bar.title = tt("team.d.sharetip",
+      "Share of the project's effort. Drag a boundary and effort moves from one role to the next, so the team always describes one whole project.");
     state.rows.forEach(function (r, i) {
       var seg = document.createElement("div");
       seg.className = "effortseg";
@@ -551,6 +532,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       var seg = segs[i];
       if (!seg) return;
       seg.style.flexBasis = r.weight + "%";
+      seg.dataset.share = String(r.weight);
       seg.title = roleName(i) + " · " + r.weight + "%";
     });
     // what fits is a question about pixels, not about percentages: 25% of a
@@ -712,12 +694,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       : tt("team.d.vno", "This team does not work at {R}/h — the flagged role would be squeezed below its own rate, and that is a no-deal. The smallest rate that works is <b>{min}</b>/h."),
       { R: eur(R), min: eur(res.minViableR) });
     v.appendChild(p);
-
-    // the boxes not being typed in follow along
-    var cells = $("rows").querySelectorAll(".sharecell input");
-    state.rows.forEach(function (r, i) {
-      if (cells[i] && cells[i] !== document.activeElement) cells[i].value = String(r.weight);
-    });
 
     paintBar();
 

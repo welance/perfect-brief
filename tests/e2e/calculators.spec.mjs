@@ -147,8 +147,9 @@ test.describe("perfect team", () => {
 
   // The shares are a split of one project, so 100% is not a rule the reader
   // has to keep — it is a property no gesture is allowed to break.
+  // the bar is the only place a share is set, so it is the only place to read one
   const shares = (page) =>
-    page.$$eval("#rows .sharecell input", (els) => els.map((e) => Number(e.value)));
+    page.$$eval("#effortbar .effortseg", (els) => els.map((e) => Number(e.dataset.share)));
   const total = async (page) => (await shares(page)).reduce((a, b) => a + b, 0);
 
   test("adding and removing a role still describes one whole project", async ({ page }) => {
@@ -202,9 +203,8 @@ test.describe("perfect team", () => {
     expect(await total(page)).toBe(100);
   });
 
-  test("typing a share makes room in the others", async ({ page }) => {
-    await page.locator("#rows .sharecell input").first().fill("60");
-    expect(await total(page)).toBe(100);
-    expect((await shares(page))[0]).toBe(60);
+  test("a role row carries no share field — the bar owns the split", async ({ page }) => {
+    await expect(page.locator("#rows .role input[type=number]")).toHaveCount(3); // own rates only
+    await expect(page.locator("#effortbar .effortseg")).toHaveCount(3);
   });
 });
