@@ -29,6 +29,14 @@ derived from the asset itself.
   files keep working on GitHub Pages and when opened from disk.
 
 ### Changed
+- **The effort split is a bar you drag.** On Perfect Team the shares are no
+  longer free-standing weights read as parts of whatever they happen to add up
+  to. They are percentages of one project, and a handle sits on every boundary:
+  drag it and effort moves from one role to its neighbour, so the total cannot
+  leave 100 — on a phone as on a laptop, with the keyboard as with a thumb.
+  Typing a share still works; the other roles make room in proportion.
+- **The header lost its glyph**, and holds its shape at every width — it had
+  been overflowing on tablets (134px at 1024px) since the machine was drawn.
 - **welance is all-lowercase, everywhere.** In every language and every
   position, including the first word of a sentence; only the JavaScript
   identifiers a language forces (`WelanceI18n`, `WelancePricing`) keep their

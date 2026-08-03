@@ -89,7 +89,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   /* each role: the name gets a full-width line of its own, the parameters
      sit below it — a role you cannot read is a role you cannot argue with */
   .role-head, .role { display: grid;
-    grid-template-columns: 58px minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
+    grid-template-columns: 74px minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
     gap: 8px; align-items: center; }
   .role > input[type="text"] { grid-column: 1 / -1; font-size: 15px; font-weight: 600;
     padding: 9px 12px; }
@@ -123,7 +123,36 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
     color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
   .addbtn:hover { border-color: var(--person); color: var(--person); }
-  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--partial); }
+  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-3); }
+  /* the share is a percentage, and says so — no mental arithmetic */
+  /* min-width:0 or the number input's intrinsic width widens the whole page */
+  .sharecell { display: flex; align-items: center; gap: 2px; min-width: 0; }
+  .sharecell input[type="number"] { text-align: end; min-width: 0; }
+  .sharecell .pc { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+  /* the whole split, at a glance and under the thumb: one bar, one segment per
+     role, and a handle on every boundary. Dragging a handle moves effort from
+     one role to its neighbour, so the project stays whole by construction. */
+  .effortbar { position: relative; display: flex; width: 100%; height: 46px; margin: 0 0 14px;
+    border: 1px solid var(--line-strong); background: var(--surface-2);
+    touch-action: none; user-select: none; }
+  .effortseg { position: relative; width: 0; min-width: 0; overflow: hidden; }
+  /* the label floats above its segment rather than sitting inside it: text in
+     the flow would set how narrow the bar can be, and "Full-stack developer ·
+     45%" is wider than a phone */
+  .effortlabel { position: absolute; inset: 0; display: flex; align-items: center;
+    justify-content: center; padding: 0 6px; overflow: hidden; white-space: nowrap;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px;
+    font-weight: 600; }
+  .effortbar.smooth .effortseg, .effortbar.smooth .grip { transition: flex-basis .2s ease, inset-inline-start .2s ease; }
+  .grip { position: absolute; top: -5px; bottom: -5px; width: 26px; margin-inline-start: -13px;
+    display: flex; align-items: center; justify-content: center; cursor: ew-resize;
+    background: none; border: 0; padding: 0; touch-action: none; z-index: 2; }
+  .grip::before { content: ""; width: 4px; height: 100%; background: var(--ink);
+    border: 1px solid var(--surface); }
+  .grip:hover::before, .grip:focus-visible::before { background: var(--accent); width: 6px; }
+  .grip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .grip.dragging::before { background: var(--accent); width: 6px; }
+  @media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
 
   .splitbar { display: flex; height: 42px; overflow: hidden; border: 1px solid var(--line-strong); }
   .splitbar > div { display: flex; align-items: center; justify-content: center;
@@ -202,7 +231,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div>
       <section class="card">
         <h2 data-i18n="team.c1h">The team, role by role</h2>
-        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. For each role: its weight in the project, the level it is delivered at, the member's cost-of-living coefficient, and their own rate — for the no-deal check.</p>
+        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. Drag the bar to split the effort, or type the shares — together they always describe one whole project. For each role: the level it is delivered at, where the member lives, and their own rate — for the no-deal check.</p>
         <div class="rolebar">
           <div class="field grow"><label for="teamname" data-i18n="team.l.team">Team</label>
             <input type="text" id="teamname" value="Team — product rebuild">
@@ -218,11 +247,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
             </select>
             <span class="subnote" data-i18n="team.l.floornote">A guarantee: wherever someone lives, pay never drops below this.</span></div>
         </div>
+        <div class="effortbar" id="effortbar" aria-hidden="true"></div>
         <div class="role-head">
-          <div data-i18n="team.th2">Weight</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
+          <div data-i18n="team.th2">Share</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
         </div>
         <div id="rows"></div>
-        <p class="weightflag" id="weightflag" hidden>Weights are read as shares of their sum.</p>
+        <p class="weightflag" id="weightflag"></p>
         <button class="addbtn" id="add" type="button" data-i18n="team.add">+ Add role</button>
       </section>
 
@@ -285,6 +315,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 (function () {
   "use strict";
 
+  // the brand's colours, in a fixed order so a role keeps its colour; the
+  // yellow is light enough to need dark text on it
+  var SHARE_COLOURS = [
+    { bg: "var(--person)", fg: "#fff" }, { bg: "var(--geo)", fg: "#fff" },
+    { bg: "var(--company)", fg: "#fff" }, { bg: "var(--head)", fg: "var(--ink)" },
+    { bg: "var(--partial)", fg: "#fff" }, { bg: "var(--ink-3)", fg: "#fff" }
+  ];
+
   // All policy and math come from the shared engine — this file is only UI.
   var P = window.WelancePricing;
   // Strings come from the site i18n; every lookup falls back to the
@@ -346,6 +384,56 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
   var state = load();
 
+  /* --- the shares always describe one whole project -----------------------
+     A share is a percentage of the project's effort, so the shares add up to
+     100 — not as a rule the reader has to obey, but as a property the UI
+     maintains. Move one and the others give way in proportion; there is no
+     invalid state to warn about, and nothing to normalise in your head. */
+
+  function whole() {
+    // integers that still add to exactly 100 (largest remainder wins)
+    var rows = state.rows;
+    if (!rows.length) return;
+    var floors = rows.map(function (r) { return Math.floor(Math.max(0, r.weight)); });
+    var short = 100 - floors.reduce(function (a, b) { return a + b; }, 0);
+    var byFraction = rows.map(function (r, i) {
+      return { i: i, frac: Math.max(0, r.weight) - Math.floor(Math.max(0, r.weight)) };
+    }).sort(function (a, b) { return b.frac - a.frac; });
+    for (var k = 0; k < short; k++) floors[byFraction[k % rows.length].i]++;
+    for (var k = 0; k > short; k--) {  // over 100: take back from the largest
+      var big = floors.indexOf(Math.max.apply(null, floors));
+      if (floors[big] > 0) floors[big]--;
+    }
+    rows.forEach(function (r, i) { r.weight = floors[i]; });
+  }
+
+  function rescale() {
+    // used after adding or removing a role: keep proportions, restore the whole
+    var rows = state.rows;
+    if (!rows.length) return;
+    var sum = rows.reduce(function (a, r) { return a + Math.max(0, r.weight); }, 0);
+    rows.forEach(function (r) {
+      r.weight = sum > 0 ? Math.max(0, r.weight) * 100 / sum : 100 / rows.length;
+    });
+    whole();
+  }
+
+  function setShare(i, value) {
+    var rows = state.rows;
+    var v = Math.max(0, Math.min(100, Math.round(value) || 0));
+    if (rows.length === 1) { rows[0].weight = 100; return; }
+    var rest = 100 - v;
+    var others = rows.filter(function (_, j) { return j !== i; });
+    var sum = others.reduce(function (a, r) { return a + Math.max(0, r.weight); }, 0);
+    others.forEach(function (r) {
+      r.weight = sum > 0 ? rest * Math.max(0, r.weight) / sum : rest / others.length;
+    });
+    rows[i].weight = v;
+    whole();
+  }
+
+  rescale();  // whatever was stored, or edited by hand, describes one project
+
   function renderRows() {
     var host = $("rows");
     host.textContent = "";
@@ -358,12 +446,23 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       name.addEventListener("input", function () { r.role = name.value; save(); });
       row.appendChild(name);
 
+      var cell = document.createElement("div");
+      cell.className = "sharecell";
       var w = document.createElement("input");
-      w.type = "number"; w.min = "0"; w.step = "5"; w.value = String(r.weight);
-      w.setAttribute("aria-label", "Weight");
-      w.title = "share of the project's effort — read as part of the sum";
-      w.addEventListener("input", function () { r.weight = Number(w.value) || 0; save(); render(); });
-      row.appendChild(w);
+      w.type = "number"; w.min = "0"; w.max = "100"; w.step = "5"; w.value = String(r.weight);
+      w.setAttribute("aria-label", "Share of the project's effort, in percent");
+      w.title = tt("team.d.sharetip",
+        "Share of the project's effort. The other roles give way in proportion, so the team always describes one whole project.");
+      w.addEventListener("input", function () {
+        setShare(state.rows.indexOf(r), Number(w.value));
+        save(); paint();  // the caret stays where it is: only figures are repainted
+      });
+      w.addEventListener("blur", function () { w.value = String(r.weight); });
+      cell.appendChild(w);
+      var pc = document.createElement("span");
+      pc.className = "pc"; pc.textContent = "%";
+      cell.appendChild(pc);
+      row.appendChild(cell);
 
       var lv = document.createElement("select");
       lv.setAttribute("aria-label", "Level");
@@ -408,11 +507,131 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       var del = document.createElement("button");
       del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
       del.setAttribute("aria-label", "remove role");
-      del.addEventListener("click", function () { state.rows.splice(i, 1); save(); render(); });
+      del.addEventListener("click", function () {
+        if (state.rows.length === 1) return;  // a team of nobody prices nothing
+        state.rows.splice(i, 1); rescale(); save(); render();
+      });
       row.appendChild(del);
 
       host.appendChild(row);
     });
+  }
+
+  /* --- the split bar, dragged directly -----------------------------------
+     Segments are laid out by flex; the handles float above the boundaries.
+     A handle only ever moves effort between the two roles it sits between, so
+     their sum — and therefore the whole 100% — cannot change while you drag. */
+
+  function buildBar() {
+    var bar = $("effortbar");
+    bar.textContent = "";
+    state.rows.forEach(function (r, i) {
+      var seg = document.createElement("div");
+      seg.className = "effortseg";
+      var c = SHARE_COLOURS[i % SHARE_COLOURS.length];
+      seg.style.background = c.bg; seg.style.color = c.fg;
+      var label = document.createElement("span");
+      label.className = "effortlabel";
+      seg.appendChild(label);
+      bar.appendChild(seg);
+    });
+    for (var i = 0; i < state.rows.length - 1; i++) bar.appendChild(makeGrip(i));
+    paintBar();
+  }
+
+  function roleName(i) {
+    return state.rows[i].role || tt("team.d.unnamed", "unnamed role");
+  }
+
+  function paintBar() {
+    var bar = $("effortbar");
+    var segs = bar.querySelectorAll(".effortseg");
+    var at = 0;
+    state.rows.forEach(function (r, i) {
+      var seg = segs[i];
+      if (!seg) return;
+      seg.style.flexBasis = r.weight + "%";
+      seg.title = roleName(i) + " · " + r.weight + "%";
+    });
+    // what fits is a question about pixels, not about percentages: 25% of a
+    // phone is not 25% of a laptop. Ask the segment how wide it actually is.
+    state.rows.forEach(function (r, i) {
+      var seg = segs[i];
+      if (!seg) return;
+      var room = seg.getBoundingClientRect().width;
+      var full = roleName(i) + " · " + r.weight + "%";
+      seg.querySelector(".effortlabel").textContent =
+        room >= full.length * 6.6 ? full : (room >= 34 ? r.weight + "%" : "");
+    });
+
+    bar.querySelectorAll(".grip").forEach(function (g, i) {
+      at += state.rows[i].weight;
+      g.style.insetInlineStart = at + "%";
+      g.setAttribute("aria-valuenow", String(at));
+      g.setAttribute("aria-valuetext", roleName(i) + " " + state.rows[i].weight + "%, " +
+        roleName(i + 1) + " " + state.rows[i + 1].weight + "%");
+      g.setAttribute("aria-label", fillT(
+        tt("team.d.griplabel", "effort between {a} and {b}"),
+        { a: roleName(i), b: roleName(i + 1) }));
+    });
+  }
+
+  function moveBoundary(i, delta) {
+    // give what one role loses to the next, and never below nothing
+    var a = state.rows[i], b = state.rows[i + 1];
+    var d = Math.max(-a.weight, Math.min(b.weight, Math.round(delta)));
+    a.weight += d; b.weight -= d;
+  }
+
+  function makeGrip(i) {
+    var g = document.createElement("button");
+    g.type = "button"; g.className = "grip";
+    g.setAttribute("role", "slider");
+    g.setAttribute("aria-valuemin", "0"); g.setAttribute("aria-valuemax", "100");
+
+    function ratioAt(clientX) {
+      var box = $("effortbar").getBoundingClientRect();
+      var r = (clientX - box.left) / box.width;
+      if (getComputedStyle(document.documentElement).direction === "rtl") r = 1 - r;
+      return Math.max(0, Math.min(1, r));
+    }
+    function boundaryBefore() {
+      return state.rows.slice(0, i).reduce(function (a, r) { return a + r.weight; }, 0);
+    }
+
+    g.addEventListener("pointerdown", function (e) {
+      g.setPointerCapture(e.pointerId);
+      g.classList.add("dragging");
+      $("effortbar").classList.remove("smooth");  // follow the finger exactly
+      e.preventDefault();
+    });
+    g.addEventListener("pointermove", function (e) {
+      if (!g.hasPointerCapture(e.pointerId)) return;
+      moveBoundary(i, ratioAt(e.clientX) * 100 - boundaryBefore() - state.rows[i].weight);
+      paintBar(); paint();
+    });
+    function end(e) {
+      if (g.hasPointerCapture(e.pointerId)) g.releasePointerCapture(e.pointerId);
+      g.classList.remove("dragging");
+      $("effortbar").classList.add("smooth");
+      save();
+    }
+    g.addEventListener("pointerup", end);
+    g.addEventListener("pointercancel", end);
+
+    // the same control, from the keyboard
+    g.addEventListener("keydown", function (e) {
+      var rtl = getComputedStyle(document.documentElement).direction === "rtl";
+      var step = e.shiftKey ? 10 : 1;
+      var by = { ArrowLeft: -step, ArrowRight: step, ArrowDown: -step, ArrowUp: step,
+                 PageDown: -10, PageUp: 10 }[e.key];
+      if (by === undefined) return;
+      if (rtl && (e.key === "ArrowLeft" || e.key === "ArrowRight")) by = -by;
+      e.preventDefault();
+      moveBoundary(i, by);
+      save(); paintBar(); paint();
+    });
+    return g;
   }
 
   function computeInput() {
@@ -422,8 +641,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     });
   }
 
-  function render() {
-    renderRows();
+  function render() { renderRows(); buildBar(); paint(); }
+
+  /* Everything derived, without touching the row structure — so a share can
+     rebalance every other row while you are still typing in one of them. */
+  function paint() {
     var R = Number($("rate").value) || 0;
     var res = P.computeTeam(R, computeInput());
 
@@ -491,10 +713,16 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       { R: eur(R), min: eur(res.minViableR) });
     v.appendChild(p);
 
-    $("weightflag").hidden = false;
-    var tw = state.rows.reduce(function (s, r) { return s + r.weight; }, 0);
-    $("weightflag").textContent = fillT(
-      tt("team.d.wsum", "Weights sum to {w} — read as shares of that sum."), { w: tw });
+    // the boxes not being typed in follow along
+    var cells = $("rows").querySelectorAll(".sharecell input");
+    state.rows.forEach(function (r, i) {
+      if (cells[i] && cells[i] !== document.activeElement) cells[i].value = String(r.weight);
+    });
+
+    paintBar();
+
+    $("weightflag").textContent = tt("team.d.wsum",
+      "The shares always describe one whole project: move one and the others give way.");
 
     var ck = SIZE_CHECK[state.size] || SIZE_CHECK.m;
     $("checkval").textContent = tt(ck.key, ck.en);
@@ -514,7 +742,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     save(); render();
   });
   $("add").addEventListener("click", function () {
-    state.rows.push({ role: "", weight: 10, level: 1, country: "DE", coef: 1.00, own: 40 });
+    // a new role arrives with an even share; the others make room in proportion
+    state.rows.push({ role: "", weight: 0, level: 1, country: "DE", coef: 1.00, own: 40 });
+    setShare(state.rows.length - 1, Math.round(100 / state.rows.length));
     save(); render();
   });
   $("reset").addEventListener("click", function () {

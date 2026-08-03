@@ -196,6 +196,7 @@ def test_a_new_build_moves_every_asset(client):
     assert len(BUILD) == 12
     assert client.get(f"/a/{BUILD}/welance.css").status_code == 200
     assert client.get("/a/000000000000/welance.css").status_code == 404
+    assert client.get(f"/a/{BUILD}/").status_code == 404
 
 
 def test_the_brand_is_never_capitalised(client):

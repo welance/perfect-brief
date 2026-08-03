@@ -241,7 +241,7 @@ if SITE.exists():
     ASSET = re.compile(r'\b(href|src)="(?!https?:|//|/a/)([\w./-]+\.(?:css|js))"')
 
     def _digest() -> str:
-        """One short digest over every asset, recomputed at startup only."""
+        """One short digest over every asset."""
         h = hashlib.sha256()
         for path in sorted(SITE.rglob("*")):
             if path.suffix in {".css", ".js"}:
@@ -255,10 +255,35 @@ if SITE.exists():
         """A page with its asset links pointed at the content-addressed copy."""
         return ASSET.sub(rf'\1="/a/{BUILD}/\2"', path.read_text(encoding="utf-8"))
 
-    PAGES = {p.relative_to(SITE).as_posix(): _page(p) for p in SITE.rglob("*.html")}
+    def _pages() -> dict[str, str]:
+        return {p.relative_to(SITE).as_posix(): _page(p) for p in SITE.rglob("*.html")}
+
+    PAGES = _pages()
+
+    # In a container the files never change and this is read once. Locally they
+    # change constantly, and a page served from a snapshot taken at startup is
+    # a genuinely confusing thing to debug — you edit, reload, and see nothing.
+    NEWEST = max((p.stat().st_mtime for p in SITE.rglob("*")), default=0.0)
+
+    def _refresh_if_edited() -> None:
+        global PAGES, BUILD, NEWEST
+        newest = max((p.stat().st_mtime for p in SITE.rglob("*")), default=0.0)
+        if newest > NEWEST:
+            NEWEST, BUILD = newest, _digest()
+            PAGES = _pages()
 
     class Immutable(StaticFiles):
-        """Content-addressed: this exact URL can never mean anything else."""
+        """`/a/<digest>/welance.css` — this exact URL can never mean anything else.
+
+        The digest is checked rather than routed on, so that when the files
+        change under a running process the new digest simply starts working.
+        """
+
+        async def get_response(self, path: str, scope):  # type: ignore[override]
+            digest, _, rest = path.lstrip("/").partition("/")
+            if digest != BUILD or not rest:
+                raise HTTPException(status_code=404, detail="not found")
+            return await super().get_response(rest, scope)
 
         def file_response(self, *args, **kwargs):  # type: ignore[override]
             response = super().file_response(*args, **kwargs)
@@ -274,6 +299,7 @@ if SITE.exists():
         """
 
         async def get_response(self, path: str, scope):  # type: ignore[override]
+            _refresh_if_edited()
             name = "index.html" if path in {"", ".", "/"} else path.lstrip("/")
             page = PAGES.get(name) or PAGES.get(f"{name.rstrip('/')}/index.html")
             if page is not None:
@@ -285,5 +311,5 @@ if SITE.exists():
             response.headers["Cache-Control"] = "no-cache"
             return response
 
-    app.mount(f"/a/{BUILD}", Immutable(directory=str(SITE)), name="assets")
+    app.mount("/a", Immutable(directory=str(SITE)), name="assets")
     app.mount("/", Site(directory=str(SITE), html=True), name="site")
