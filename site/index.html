@@ -23,6 +23,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5vw,46px);margin:14px 0 6px;letter-spacing:-.02em}
   h1 .b{color:var(--accent)}
   .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
+  /* the invitation in the middle of the argument: an open ruleset is only
+     open if changing it is something a reader can picture themselves doing */
+  .hl { color: var(--ink); font-weight: 600; text-decoration: none;
+    background: linear-gradient(transparent 62%, var(--accent-bg) 62%);
+    box-shadow: inset 0 -2px 0 0 var(--accent); padding: 0 1px; }
+  .hl:hover { background: var(--accent); color: var(--paper); text-decoration: none;
+    box-shadow: inset 0 -2px 0 0 var(--accent); }
+  .hl::after { content: " ↗"; font-family: var(--mono); font-size: .82em; }
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin:44px 0 14px}
   .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
   p{max-width:66ch;margin:0 0 14px}
@@ -111,7 +119,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </div>
 
   <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
-  <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, anyone can propose a change. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
+  <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, <a class="hl" href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">anyone can propose a change</a>. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
   
   <figure class="seam" style="direction:ltr">
     <svg viewBox="0 0 560 128" aria-label="The LLM only judges; code owns weights, gate and decision">

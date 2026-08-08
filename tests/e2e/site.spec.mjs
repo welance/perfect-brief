@@ -298,7 +298,7 @@ test.describe("the method reads at a glance", () => {
     // the pill is the one link that leads somewhere else — it does not get
     // dropped for being inconvenient at 320px
     const broken = [];
-    for (const lang of ["en", "pt-BR", "ar", "vi"]) {
+    for (const lang of ["en", "es", "pt-BR", "ar", "vi"]) {
       for (const width of [320, 390, 412, 560]) {
         await page.setViewportSize({ width, height: 800 });
         await page.goto(`/method.html?lang=${lang}`);
@@ -338,6 +338,17 @@ test.describe("the method reads at a glance", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
   });
 
+  test("the invitation to change the rules is visible in every language", async ({ page }) => {
+    // an open ruleset is only open if changing it is something a reader can
+    // picture themselves doing — so the clause is marked, and it is a link
+    for (const lang of ["en", "it", "de", "ar"]) {
+      await page.goto(`/?lang=${lang}`);
+      const hl = page.locator("p .hl");
+      await expect(hl).toBeVisible();
+      await expect(hl).toHaveAttribute("href", /GOVERNANCE\.md$/);
+    }
+  });
+
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
     const blocks = page.locator(".code");
@@ -361,6 +372,15 @@ test.describe("the method reads at a glance", () => {
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     expect(copied).toContain("import httpx");
     expect(copied).not.toContain("<span");
+  });
+
+  test("the source is one click from every page, the theme lives in the footer", async ({ page }) => {
+    await page.goto("/");
+    const src = page.locator('.wl-head .wl-src[href*="github.com"]');
+    await expect(src).toBeVisible();
+    await expect(src.locator("svg")).toBeVisible();
+    await expect(page.locator(".wl-head .wl-theme")).toHaveCount(0);
+    await expect(page.locator(".wl-foot-bottom .wl-theme")).toBeVisible();
   });
 
   test("light and dark, remembered across pages, no flash", async ({ page }) => {

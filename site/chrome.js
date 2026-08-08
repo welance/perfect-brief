@@ -90,11 +90,12 @@
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
-      '<button class="wl-theme" type="button" aria-label="' + tt("chrome.theme", "light or dark") + '"></button>' +
+      '<a class="wl-src" href="https://github.com/welance/perfect-brief" ' +
+        'aria-label="' + tt("chrome.source", "the source on GitHub") + '" ' +
+        'title="' + tt("chrome.source", "the source on GitHub") + '">' + GH + "</a>" +
       '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
       "</div></div></div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
-    wireTheme(host);
   }
 
   /* Light or dark, remembered. The system preference decides until someone
@@ -119,10 +120,11 @@
     });
   }
 
+  var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+
   function renderFooter() {
     var host = document.getElementById("site-footer");
     if (!host) return;
-    var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
     var col = function (items) {
       return items.map(function (p) {
         return '<a href="' + p.href + '">' + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
@@ -158,9 +160,12 @@
       "</div>" +
       "</div>" +
       '<div class="wl-foot-bottom"><p>© 2026 · MIT</p>' +
-      '<nav><a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +
+      '<nav><button class="wl-theme" type="button" aria-label="' +
+        tt("chrome.theme", "light or dark") + '"></button><span>|</span>' +
+      '<a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +
       '<a href="https://otto.welance.com" rel="nofollow" target="_blank">' + tt("chrome.login", "Login") + "</a></nav></div>" +
       "</div></footer>";
+    wireTheme(host);
   }
 
   function render() { renderHeader(); renderFooter(); }

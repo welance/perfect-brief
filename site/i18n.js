@@ -73,7 +73,10 @@
   // phone "🇧🇷 Português (BR)" does not fit beside everything else in the
   // header. Only the chosen one is shortened, so the list you open still names
   // every language in full — a language you cannot read is one you cannot pick.
-  var narrow = window.matchMedia("(max-width: 560px)");
+  // the same width at which the header drops its nav: from there down, every
+  // pixel is spoken for
+  var narrow = window.matchMedia("(max-width: 900px)");
+  var tiny = window.matchMedia("(max-width: 400px)");
 
   function renderSwitcher() {
     var host = document.getElementById("langswitch");
@@ -87,10 +90,12 @@
       o.value = l.code;
       var d = dicts[l.code];
       var draft = l.code !== "en" && d && d.reviewed === false;
-      var short = l.code === current && narrow.matches;
-      o.textContent = short
-        ? l.flag + " " + l.code.split("-")[0].toUpperCase()
-        : l.flag + " " + l.name + (draft ? " · draft" : "");
+      var chosen = l.code === current;
+      o.textContent = chosen && tiny.matches
+        ? l.flag
+        : chosen && narrow.matches
+          ? l.flag + " " + l.code.split("-")[0].toUpperCase()
+          : l.flag + " " + l.name + (draft ? " · draft" : "");
       o.setAttribute("aria-label", l.name);
       if (draft) o.title = "machine-drafted — awaiting native-speaker review";
       if (l.code === current) o.selected = true;
@@ -101,7 +106,10 @@
   }
 
   // crossing the width where the short label starts or stops making sense
-  if (narrow.addEventListener) narrow.addEventListener("change", renderSwitcher);
+  if (narrow.addEventListener) {
+    narrow.addEventListener("change", renderSwitcher);
+    tiny.addEventListener("change", renderSwitcher);
+  }
 
   function set(code, guessed) {
     if (!meta(code)) code = "en";

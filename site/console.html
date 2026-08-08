@@ -60,14 +60,17 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .note b{color:var(--partial)}
   .offline{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;display:none}
   .offline.show{display:block}
-  .focus-cta{display:flex;align-items:center;gap:12px;margin:12px 0 0;padding:12px 14px;
-    border:1px solid var(--rule);background:var(--paper-2);color:var(--ink);text-decoration:none;
-    max-width:62ch;transition:border-color 140ms ease}
-  .focus-cta:hover{border-color:var(--ink);text-decoration:none}
-  .focus-cta b{font-size:15px;font-weight:600}
-  .focus-pen{font-size:17px;color:var(--accent);flex:none}
-  .focus-note{font-size:13px;color:var(--ink-soft)}
-  .focus-go{margin-inline-start:auto;font-family:var(--mono);color:var(--accent);flex:none}
+  .focus-cta{display:flex;align-items:center;gap:14px;margin:18px 0 0;padding:16px 18px;
+    border:2px solid var(--ink);background:var(--paper);color:var(--ink);text-decoration:none;
+    max-width:62ch;transition:background 140ms ease,color 140ms ease}
+  .focus-cta:hover{background:var(--ink);color:var(--paper);text-decoration:none}
+  .focus-cta:hover .focus-pen,.focus-cta:hover .focus-go{color:var(--paper)}
+  .focus-cta:hover .focus-note{color:var(--paper);opacity:.85}
+  .focus-cta b{font-size:17.5px;font-weight:600;letter-spacing:-.015em}
+  .focus-pen{font-size:22px;color:var(--accent);flex:none;transition:color 140ms ease}
+  .focus-note{font-size:13.5px;color:var(--ink-soft);transition:color 140ms ease}
+  .focus-go{margin-inline-start:auto;font-family:var(--mono);font-size:19px;
+    color:var(--accent);flex:none;transition:color 140ms ease}
   .assist-note{font-size:13.5px;color:var(--ink-soft);margin:0 0 10px;max-width:62ch}
   .fixtoast{font-family:var(--mono);font-size:12px;color:var(--pass);background:var(--pass-bg);border:1px solid var(--pass);padding:7px 12px;margin:12px 0 0;display:none}
   .fixtoast.show{display:block} .fixtoast .d{color:var(--ink)}

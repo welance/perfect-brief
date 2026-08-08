@@ -78,6 +78,11 @@
 :root[data-theme="dark"] .code { border-color: var(--rule); }
 :root[data-theme="dark"] img, :root[data-theme="dark"] .wl-asterisk { filter: none; }
 
+.wl-src { display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink); padding: 6px; flex: none; }
+.wl-src svg { width: 21px; height: 21px; fill: currentColor; }
+.wl-src:hover { color: var(--accent); }
+@media (min-width: 1180px) { .wl-src svg { width: 23px; height: 23px; } }
 .wl-theme { display: inline-flex; align-items: center; cursor: pointer;
   background: transparent; color: var(--ink-soft); border: 1px solid var(--rule);
   padding: 8px 9px; line-height: 0; }
@@ -179,7 +184,7 @@
   font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); }
 .wl-mark { display: inline-flex; }
 .wl-mark .wl-logo { width: 60px; height: 15px; }
-@media (max-width: 560px) { .wl-origin { display: none; } }
+@media (max-width: 760px) { .wl-origin { display: none; } }
 /* small screens: the name shrinks so the header never widens the document
    (the band test catches this) */
 @media (max-width: 640px) {
@@ -190,7 +195,6 @@
   /* the select keeps the flag and the code; the full name needs room it
      does not have on a phone */
   .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 4px; }
-  .wl-theme { padding: 7px; }
 }
 .wl-nav { display: flex; align-items: center; gap: 26px; margin-inline-start: auto; }
 @media (min-width: 1180px) { .wl-nav { gap: 22px; } }
@@ -207,7 +211,14 @@
   color: var(--ink); text-decoration: none; white-space: nowrap;
   transition: background 150ms ease, color 150ms ease; }
 .wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
-@media (max-width: 900px) { .wl-nav { display: none; } .wl-head-right { margin-inline-start: auto; } }
+@media (max-width: 900px) {
+  .wl-nav { display: none; }
+  .wl-head-right { margin-inline-start: auto; }
+  /* the switch shows the flag and the code from here down (see i18n.js), so it
+     no longer needs room for "Português (BR)" */
+  .wl-lang-select { width: 82px; max-width: 82px; font-size: 13px; padding: 8px 4px; }
+  .wl-pill { font-size: 14px; padding: 9px 14px; }
+}
 /* the awkward middle: five names, a language select and the pill all want to
    be on one line and there is not quite room. Rather than drop the navigation
    on a tablet, everything tightens and the origin line stands down. */
@@ -228,14 +239,18 @@
   .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 2px; }
 }
 @media (max-width: 400px) {
-  .wl-project { font-size: 13px; }
-  .wl-pill { font-size: 12px; padding: 7px 10px; }
-  .wl-lang-select { width: 60px; max-width: 60px; font-size: 12px; padding: 6px 1px; }
-  .wl-head-in { gap: 5px; padding: 0 9px; }
-  /* on the narrowest phones the CTA and the language win the argument: the
-     theme still follows the system, and "Encontre um time" is longer than
-     "Find a team" — the header has to hold in every language, not in English */
-  .wl-theme { display: none; }
+  .wl-project { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; }
+  .wl-brandline { min-width: 0; flex: 0 1 auto; }
+  .wl-pill { font-size: 11.5px; padding: 7px 8px; letter-spacing: -.01em; }
+  .wl-src { margin-inline: -2px; }
+  /* only the flag: the list still names every language when you open it */
+  .wl-lang-select { width: 46px; max-width: 46px; font-size: 12px; padding: 6px 0; }
+  .wl-head-in { gap: 4px; padding: 0 6px; }
+  /* the header has to hold in every language, not in English: "Encontre um
+     time" is a third longer than "Find a team", and at 320px that decides it */
+  .wl-src { padding: 2px; }
+  .wl-src svg { width: 18px; height: 18px; }
 }
 
 /* --- breadcrumb line under the header ---------------------------------- */
@@ -295,7 +310,8 @@
 .wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
 .wl-foot-bottom p { margin: 0; }
-.wl-foot-bottom nav { display: flex; gap: 8px; }
+.wl-foot-bottom nav { display: flex; gap: 8px; align-items: center; }
+.wl-foot-bottom .wl-theme { padding: 5px 8px; }
 .wl-foot-bottom a { color: var(--ink); text-decoration: none; }
 .wl-foot-bottom a:hover { color: var(--accent); }
 
