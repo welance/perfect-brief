@@ -306,6 +306,53 @@ WelanceI18n.register("it", {
     "calc.t3go": "Prezza un team →",
     "chrome.price": "Perfect Price",
     "chrome.rules": "Le regole",
-    "chrome.team": "Perfect Team"
+    "chrome.team": "Perfect Team",
+
+    /* ---------- data.html — your brief, your key ---------- */
+    "data.crumb": "il tuo brief, la tua chiave",
+    "data.h1": "Il tuo brief, la tua chiave",
+    "data.thesis": "Un progetto che ti chiede di fidarti di un'asticella aperta ti deve anche i dettagli noiosi: cosa esce dalla tua macchina, cosa conserviamo, per quanto, e cosa non conserviamo mai.",
+    "data.eb1": "cosa viaggia dove",
+    "data.th1": "cosa",
+    "data.th2": "dove va",
+    "data.th3": "cosa conserviamo",
+    "data.r1.k": "Il testo del brief",
+    "data.r1.a": "Al nostro servizio, poi al fornitore del modello che lo giudica — Anthropic di default, oppure OpenRouter quando porti una chiave.",
+    "data.r1.b": "mai conservato",
+    "data.r2.k": "I verdetti",
+    "data.r2.a": "Tornano a te. Ognuno porta una breve citazione copiata alla lettera dal tuo brief come prova.",
+    "data.r2.b": "in cache 24h",
+    "data.r2.c": "— con chiave l'hash del brief, così lo stesso brief non viene rigiudicato e riaddebitato. Manda <code>no_cache: true</code> e non viene scritto niente.",
+    "data.r3.k": "La tua chiave del modello",
+    "data.r3.a": "Inoltrata una volta sola, su TLS, al fornitore — come header Authorization di quella singola chiamata.",
+    "data.r3.b": "mai conservata, mai registrata, mai parte di una chiave di cache",
+    "data.r4.k": "Chi sei",
+    "data.r4.a": "Da nessuna parte. Non ci sono account, né cookie, né analytics su queste pagine.",
+    "data.r4.b": "niente da conservare",
+    "data.cache": "La cache esiste per una ragione: il giudice è deterministico a temperatura 0, quindi valutare due volte lo stesso brief dovrebbe costare una volta e rispondere identicamente. Contiene verdetti — stato, confidenza, una breve citazione — mai il brief, e scade in un giorno.",
+    "data.eb2": "porta la tua chiave",
+    "data.c1": "Con la tua chiave, non facciamo girare nessun modello per te.",
+    "data.byok": "Manda una chiave OpenRouter nell'header <code>x-llm-key</code> e il giudizio gira sul tuo account, contro il modello che scegli. Inoltriamo la chiamata e ti passiamo il risultato — nessun nostro modello viene invocato, e della chiave non resta niente.",
+    "data.byokLabel": "il tuo giudice",
+    "data.mcpkey": "Il <a href=\"integrate.html#mcp\">server MCP</a> legge la stessa chiave da <code>PB_LLM_KEY</code>, così un assistente sulla tua macchina può valutare brief interamente sul tuo account.",
+    "data.eb3": "se non basta",
+    "data.custom": "Certi brief non possono uscire da un perimetro, e certe organizzazioni hanno bisogno di un accordo sul trattamento dei dati, di un modello preciso, o di far girare tutto altrove. Quella è una conversazione, non una casella: scrivi a <a href=\"mailto:hello@welance.com\">hello@welance.com</a> e ti diremo chiaramente cosa è possibile — compreso farlo girare su modelli scelti da noi, o consegnarti il deployment da gestire in proprio. È licenza MIT; ospitarlo per conto proprio è un diritto, non un favore.",
+    "data.eb4": "i limiti onesti",
+    "data.limits": "Non controlliamo la conservazione del fornitore: una volta che un brief arriva ad Anthropic o OpenRouter valgono i loro termini, e vanno letti se il contenuto è sensibile. Il servizio pubblico ha un limite di frequenza per IP ed è servito su TLS, ma è un piccolo servizio open source, non un prodotto di conformità. Per qualcosa di davvero riservato: porta la tua chiave, manda no_cache, o fai girare una tua copia.",
+
+    /* ---------- integrate.html + calculators.html ---------- */
+    "calc.note": "Tutti e tre condividono un solo motore — <a href=\"https://github.com/welance/perfect-brief/blob/main/site/pricing.js\">un unico file leggibile</a> — così una modifica al modello cambia ogni pagina in una volta. Il ragionamento dietro è ne <a href=\"method.html\">il metodo</a>, e lì ogni formula rimanda alla riga che la definisce.",
+
+    /* ---------- team.html — columns and figures ---------- */
+    "team.th3": "Livello",
+    "team.th4": "Paese",
+    "team.th6": "Tariffa propria",
+    "team.th7": "Soffitto",
+    "team.key2": "margine di manovra",
+    "team.key3": "differenziale geografico",
+    "team.key4": "margine welance",
+    "team.fig2": "margine welance · obiettivo",
+    "team.fig3": "Tariffa minima sostenibile",
+    "team.fig4": "Tariffa cliente"
   }
 });

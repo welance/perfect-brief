@@ -29,7 +29,8 @@
     { code: "pt-BR", name: "Português (BR)", dir: "ltr", flag: "🇧🇷" },
     { code: "vi",    name: "Tiếng Việt",     dir: "ltr", flag: "🇻🇳" },
     { code: "ar",    name: "عربي",           dir: "rtl", flag: "🇵🇸" },
-    { code: "es",    name: "Español",        dir: "ltr", flag: "🇪🇸" }
+    { code: "es",    name: "Español",        dir: "ltr", flag: "🇪🇸" },
+    { code: "zh",    name: "中文",           dir: "ltr", flag: "🇨🇳" }
   ];
   var STORE = "welance-lang";
   var dicts = {};

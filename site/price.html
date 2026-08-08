@@ -19,6 +19,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <script src="i18n/vi.js"></script>
 <script src="i18n/ar.js"></script>
 <script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
 <script src="chrome.js"></script>
 <style>
   /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
@@ -750,6 +751,59 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f6: "<b>Phần chia này là giá full-service của welance</b> — cho việc tìm, dựng và chịu trách nhiệm về đội ngũ. Trên <a href='https://welance.com/directory'>Directory</a> nền tảng không lấy phần nào: gặp một đội ngũ chỉ tốn một token cố định, tượng trưng, và mối quan hệ thuộc về những người trong đó. Mức giá định giá con người; phần chia định giá rủi ro bàn giao — ép giá không bao giờ là lời giải, nâng giá khách hàng mới là.",
       f7: "<b>hỗ trợ welance</b>. Việc nội bộ không có khách hàng, nên không có gì bị lấy làm biên lợi nhuận. Phần người đó chưa tự đảm nhận thì một đồng nghiệp đảm nhận — đào tạo hoặc rà soát, thời gian nội bộ thật — và đó là phần bạn thấy bên cạnh phần của họ. Đảm nhận trọn vai trò thì phần hỗ trợ về 0.",
       finePrint: "phần chi tiết"
+    },
+    zh: {
+      dir: "ltr", locale: "zh-CN", name: "中文",
+      workh: "工作类型", wtClient: "客户工作", wtInternal: "内部工作", capLbl: "内部上限 \u20ac/小时", fCap: "该层级的上限", internalNote: "内部工作没有客户费率——没有什么可以从中抽取份额。最高层级的上限是 {cap}/小时，并按层级递减。",
+      ratesNote: "默认费率是 welance 自己的——每家机构都会定自己的。说实话：我们认为这对今天的数字专业人士来说是公道的欧盟费率，他们的角色正在被抹平成某种更流动、更通才的东西——其实就是一个角色：由 AI 加持的数字专业人士。",
+      askLbl: "他要的费率 \u20ac/小时",
+      provider: "合作者", providerSub: "独立工作者——自由职业者或小型工作室，最多约 25 人。",
+      reset: "恢复默认值",
+      eyebrow: "分配规则",
+      title: "客户费率里有多少归这位合作者",
+      lede: "份额取决于这个人独自覆盖了这个角色的多少——不取决于客户付多少，也绝不取决于对他是什么样的人的评判。把角色的组成部分列出来，标明谁覆盖了什么，份额自己就出来了。合作者可以是自由职业者，也可以是最多约 25 人的工作室：对模型没有任何区别。",
+      roleh: "这个角色，逐个组成部分",
+      rolehint: "每个组成部分都有两个视角：这个人的自评，以及最相近的资深同行的评估。若两者相差两级，计算就会停下，需要谈一谈。",
+      role: "角色", person: "人",
+      hComp: "组成部分", hWeight: "权重", hSelf: "自评", hEval: "评估者", hCov: "覆盖度",
+      add: "+ 添加组成部分",
+      full: "完全", partial: "部分", none: "没有",
+      flag: "两个视角相差两级：这里不取平均，而是要谈。",
+      geoh: "生活成本",
+      geohint: "为生活成本差异很大的人准备的一个可选系数。这是有争议的地带——面板始终同时显示「只按角色」会拿到多少，好让差额始终可见、可以被讨论。",
+      usegeo: "应用生活成本系数",
+      country: "国家", coef: "系数", floorc: "下限",
+      checkh: "成交检查",
+      checkhint: "客户费率是谈好的事实，永远不动。覆盖度和系数改变的是这个人拿到多少——下面这个字段只是他要的费率，用于「不成交」检查。",
+      mPayout: "从这个人的费率出发", mRate: "从客户费率出发",
+      payout: "个人费率 €/小时", rate: "客户费率 €/小时",
+      growthh: "怎么往上走",
+      growthhint: "层级不是一个标签：它是一张地图。每一个还没覆盖的组成部分，都有一个以欧元每小时计的价值。",
+      resulth: "结果", coverk: "角色覆盖度",
+      fShare: "个人份额", fMargin: "结构与风险", fSupport: "welance 支持", keySupport: "welance 支持", fPay: "给到人", fRate: "客户费率",
+      levelsh: "三个层级",
+      levelshint: "它们描述的是这个角色如何被交付，而不是谁来交付。",
+      cLevel: "层级", cCov: "覆盖度", cShare: "份额", cMargin: "结构与风险",
+      lv: ["自主", "需复核", "需支持"],
+      lvSub: ["这个人完整覆盖了整个角色", "这个角色在同事复核下交付", "这个角色有一部分在他人支持下交付"],
+      keyPerson: "合作者", keyGeo: "地理差额", keyCompany: "结构与风险",
+      okPayout: "{who} 按 {pay}/小时计，在这个层级上客户那边至少需要 {need}/小时。你们要的是 {rate}：这单成立。",
+      noPayout: "{who} 按 {pay}/小时计，在这个层级上客户那边需要 {need}/小时，但你们要的是 {rate}。要么提高客户费率，要么这次合作就不发生。",
+      okRate: "客户是 {rate}/小时时，这个层级最多能给 {who} {max}/小时。约定的费率是 {pay}：这单成立。",
+      noRate: "客户是 {rate}/小时时，这个层级最多给 {who} {max}/小时，而他的费率是 {pay}。要么提高客户费率，要么这次合作就不发生。",
+      cover: "完整覆盖「{name}」→ 覆盖度 {cov}，层级 {lv}",
+      sameLevel: "同一层级", allset: "角色已被完整覆盖：这已经是最高份额了。",
+      geoOff: "系数已关闭：份额只取决于角色的覆盖度，无论这个人住在哪里。",
+      geoOn: "只按角色算是 <b>{full}</b>/小时。加上系数是 <b>{local}</b>/小时——地理差额 <b>{diff}</b>/小时，相当于只按角色所得的 {pctdiff}。",
+      geoFloor: "下限起了作用：没有它，系数会给出 {raw}/小时。",
+      f1: "<b>差额最终去了哪里，才是要紧的事。</b> 如果它悄悄变成利润，那就是集体在从一个人住在哪里这件事上获利。给它一个写明的去向——储备金、互助基金、再投资——这样它才是可讨论的，而不是被默认的。",
+      f2: "<b>这不是利润。</b> 被留下的那一份撑起整个结构——找到工作、组建团队、开票、那些没人计费的时间——并把风险朝客户一侧承担起来：如果一次交付出问题、需要换人，或者一张发票永远没被付，吸收它的是集体，不是个人。它被刻意保持得很薄。",
+      f3: "<b>取整。</b> 当两个视角相差一级时，覆盖度向这个人的方向取整。相差两级则不取平均：要谈。",
+      f4: "<b>层级属于「人—角色」这一对</b>，而不属于这个人。同一个人可以在一个角色上自主，在另一个角色上需要支持。每次续约时重新评估。",
+      f5: "<b>这些系数是可编辑的默认值，在用它们给人付钱之前需要一个真实来源</b>（OECD PPP、世界银行 ICP、Numbeo）。译文需要由母语者校订。",
+      f6: "<b>这套分配是 welance 的全服务价格</b>——用于寻找、组建团队并为其负责。在 <a href='https://welance.com/directory'>Directory</a> 上平台完全不抽成：认识一支团队只需一笔固定的象征性费用，而这段关系属于组成它的人。费率给人定价；份额给交付风险定价——压缩从来不是解法，提高客户费率才是。",
+      f7: "<b>welance 支持</b>。内部工作没有客户，所以不会有任何东西被当作利润拿走。这个人还没能独自覆盖的部分由同事覆盖——培训或复核，是真实的内部时间——这就是你在他份额旁边看到的那一块。当他覆盖了整个角色，支持就归零。",
+      finePrint: "展开细则"
     },
     ar: {
       dir: "rtl", locale: "ar", name: "عربي",

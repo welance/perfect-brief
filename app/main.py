@@ -257,9 +257,10 @@ if SITE.exists():
 
     # The languages are declared once, in site/i18n.js, and read from there —
     # a second list here would be a second thing to keep true.
-    LANGS: dict[str, str] = dict(
-        re.findall(r'code:\s*"([\w-]+)".*?dir:\s*"(\w+)"', (SITE / "i18n.js").read_text())
-    )
+    def _langs() -> dict[str, str]:
+        return dict(re.findall(r'code:\s*"([\w-]+)".*?dir:\s*"(\w+)"', (SITE / "i18n.js").read_text()))
+
+    LANGS: dict[str, str] = _langs()
 
     def _localise(html: str, lang: str, page: str) -> str:
         """The same page, told which language it is being read in.
@@ -302,10 +303,11 @@ if SITE.exists():
     NEWEST = max((p.stat().st_mtime for p in SITE.rglob("*")), default=0.0)
 
     def _refresh_if_edited() -> None:
-        global PAGES, BUILD, NEWEST
+        global PAGES, BUILD, NEWEST, LANGS
         newest = max((p.stat().st_mtime for p in SITE.rglob("*")), default=0.0)
         if newest > NEWEST:
-            NEWEST, BUILD = newest, _digest()
+            # a new language is a new set of routes, so the list is re-read too
+            NEWEST, BUILD, LANGS = newest, _digest(), _langs()
             PAGES = _pages()
 
     class Immutable(StaticFiles):

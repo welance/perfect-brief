@@ -1,4 +1,4 @@
-/* The public surface: one origin, eight languages, no dead ends.
+/* The public surface: one origin, nine languages, no dead ends.
  *
  * These are the promises a visitor and a forker both rely on — the pages and
  * the API live together, every page carries the same chrome, the language
@@ -101,14 +101,32 @@ test.describe("chrome and navigation", () => {
   });
 });
 
-test.describe("eight languages, one choice", () => {
-  test("the switcher offers all eight with flags", async ({ page }) => {
+test.describe("nine languages, one choice", () => {
+  test("the switcher offers every language with a flag", async ({ page }) => {
     await page.goto("/method.html");
     const options = page.locator("#langswitch option");
-    await expect(options).toHaveCount(8);
+    const { LANGS } = await page.evaluate(() => ({ LANGS: WelanceI18n.LANGS.map((l) => l.code) }));
+    await expect(options).toHaveCount(LANGS.length);
     // on a phone the chosen language shortens to "🇬🇧 EN" so the header still
     // fits; the list keeps naming every language, and so does the a11y name
     await expect(options.first()).toHaveAttribute("aria-label", "English");
+  });
+
+  test("every declared language actually has a dictionary", async ({ page }) => {
+    // a flag in the switcher with no strings behind it is worse than no flag
+    await page.goto("/method.html");
+    const thin = await page.evaluate(async () => {
+      const out = [];
+      for (const l of WelanceI18n.LANGS) {
+        if (l.code === "en") continue;
+        WelanceI18n.set(l.code);
+        const untranslated = [...document.querySelectorAll("[data-i18n], [data-i18n-html]")]
+          .filter((el) => !el.textContent.trim()).length;
+        if (untranslated) out.push(`${l.code}: ${untranslated} empty`);
+      }
+      return out;
+    });
+    expect(thin, thin.join(" | ")).toHaveLength(0);
   });
 
   test("choosing a language follows you across pages", async ({ page }) => {
