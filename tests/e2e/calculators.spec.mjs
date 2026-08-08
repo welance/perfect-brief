@@ -88,6 +88,50 @@ test.describe("perfect price", () => {
     });
     expect(Math.abs(w.sum - w.bar)).toBeLessThan(4);
   });
+
+  // The parts of a role divide the role the way the roles divide a project:
+  // the same control, from splitbar.js, so testing it twice is cheap insurance
+  // against the two pages drifting apart again.
+  test("the weight of a part is dragged, not typed", async ({ page }) => {
+    await page.goto("/price.html");
+    const segs = () =>
+      page.$$eval("#weightbar .effortseg", (els) => els.map((e) => Number(e.dataset.share)));
+    const total = async () => (await segs()).reduce((a, b) => a + b, 0);
+
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(3);
+    await expect(page.locator("#rows .comp input[type=number]")).toHaveCount(0);
+    expect(await total()).toBe(100);
+
+    await page.locator("#weightbar").scrollIntoViewIfNeeded();
+    const bar = await page.locator("#weightbar").boundingBox();
+    const grip = await page.locator("#weightbar .grip").first().boundingBox();
+    const y = grip.y + grip.height / 2;
+    await page.mouse.move(grip.x + grip.width / 2, y);
+    await page.mouse.down();
+    await page.mouse.move(bar.x + bar.width * 0.6, y, { steps: 10 });
+    await page.mouse.up();
+
+    const after = await segs();
+    expect(after[0], "the first part grew").toBeGreaterThan(34);
+    expect(after[2], "the part beyond the boundary was left alone").toBe(33);
+    expect(await total()).toBe(100);
+
+    // and the coverage the engine computes follows the new weights
+    await expect(page.locator(".coverline .v").first()).not.toHaveText("50%");
+  });
+
+  test("adding and removing a part keeps the role whole", async ({ page }) => {
+    await page.goto("/price.html");
+    const total = async () =>
+      (await page.$$eval("#weightbar .effortseg", (els) =>
+        els.map((e) => Number(e.dataset.share)))).reduce((a, b) => a + b, 0);
+    await page.locator("#add").click();
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(4);
+    expect(await total()).toBe(100);
+    await page.locator("#rows .comp .iconbtn").last().click();
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(3);
+    expect(await total()).toBe(100);
+  });
 });
 
 test.describe("perfect team", () => {

@@ -11,6 +11,7 @@ if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <link rel="stylesheet" href="welance.css">
 <script src="pricing.js"></script>
+<script src="splitbar.js"></script>
 <script src="i18n.js"></script>
 <script src="i18n/de.js"></script>
 <script src="i18n/it.js"></script>
@@ -132,31 +133,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
      split, so they sit together between the bar and the roles it describes */
   .barfoot { display: flex; flex-wrap: wrap; align-items: baseline;
     justify-content: space-between; gap: 10px; margin: 0 0 18px; }
-  /* the whole split, at a glance and under the thumb: one bar, one segment per
-     role, and a handle on every boundary. Dragging a handle moves effort from
-     one role to its neighbour, so the project stays whole by construction. */
-  .effortbar { position: relative; display: flex; width: 100%; height: 46px; margin: 0 0 14px;
-    border: 1px solid var(--line-strong); background: var(--surface-2);
-    touch-action: none; user-select: none; }
-  .effortseg { position: relative; width: 0; min-width: 0; overflow: hidden; }
-  /* the label floats above its segment rather than sitting inside it: text in
-     the flow would set how narrow the bar can be, and "Full-stack developer ·
-     45%" is wider than a phone */
-  .effortlabel { position: absolute; inset: 0; display: flex; align-items: center;
-    justify-content: center; padding: 0 6px; overflow: hidden; white-space: nowrap;
-    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px;
-    font-weight: 600; }
-  .effortbar.smooth .effortseg, .effortbar.smooth .grip { transition: flex-basis .2s ease, inset-inline-start .2s ease; }
-  .grip { position: absolute; top: -5px; bottom: -5px; width: 26px; margin-inline-start: -13px;
-    display: flex; align-items: center; justify-content: center; cursor: ew-resize;
-    background: none; border: 0; padding: 0; touch-action: none; z-index: 2; }
-  .grip::before { content: ""; width: 4px; height: 100%; background: var(--ink);
-    border: 1px solid var(--surface); }
-  .grip:hover::before, .grip:focus-visible::before { background: var(--accent); width: 6px; }
-  .grip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .grip.dragging::before { background: var(--accent); width: 6px; }
-  @media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
-
   .splitbar { display: flex; height: 42px; overflow: hidden; border: 1px solid var(--line-strong); }
   .splitbar > div { display: flex; align-items: center; justify-content: center;
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
@@ -325,19 +301,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 (function () {
   "use strict";
 
-  // Deliberately colourless: this bar is something you set, not something the
-  // model concluded. The brand's colours are spent on the result below, and
-  // reusing them here would make an input look like an answer. A neutral ramp
-  // mixed from the page's own ink still tells the segments apart, and it
-  // follows the theme into the dark without a second palette.
-  function tone(ink) {
-    // the steps avoid the middle of the ramp on purpose: a 50% grey is where
-    // neither the page's ink nor its paper reads on top of it
-    return { bg: "color-mix(in srgb, var(--ink) " + ink + "%, var(--paper))",
-             fg: ink >= 55 ? "var(--paper)" : "var(--ink)" };
-  }
-  var SHARE_COLOURS = [tone(12), tone(66), tone(26), tone(82), tone(40), tone(92)];
-
   // All policy and math come from the shared engine — this file is only UI.
   var P = window.WelancePricing;
   // Strings come from the site i18n; every lookup falls back to the
@@ -399,55 +362,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
   var state = load();
 
-  /* --- the shares always describe one whole project -----------------------
-     A share is a percentage of the project's effort, so the shares add up to
-     100 — not as a rule the reader has to obey, but as a property the UI
-     maintains. Move one and the others give way in proportion; there is no
-     invalid state to warn about, and nothing to normalise in your head. */
-
-  function whole() {
-    // integers that still add to exactly 100 (largest remainder wins)
-    var rows = state.rows;
-    if (!rows.length) return;
-    var floors = rows.map(function (r) { return Math.floor(Math.max(0, r.weight)); });
-    var short = 100 - floors.reduce(function (a, b) { return a + b; }, 0);
-    var byFraction = rows.map(function (r, i) {
-      return { i: i, frac: Math.max(0, r.weight) - Math.floor(Math.max(0, r.weight)) };
-    }).sort(function (a, b) { return b.frac - a.frac; });
-    for (var k = 0; k < short; k++) floors[byFraction[k % rows.length].i]++;
-    for (var k = 0; k > short; k--) {  // over 100: take back from the largest
-      var big = floors.indexOf(Math.max.apply(null, floors));
-      if (floors[big] > 0) floors[big]--;
-    }
-    rows.forEach(function (r, i) { r.weight = floors[i]; });
-  }
-
-  function rescale() {
-    // used after adding or removing a role: keep proportions, restore the whole
-    var rows = state.rows;
-    if (!rows.length) return;
-    var sum = rows.reduce(function (a, r) { return a + Math.max(0, r.weight); }, 0);
-    rows.forEach(function (r) {
-      r.weight = sum > 0 ? Math.max(0, r.weight) * 100 / sum : 100 / rows.length;
-    });
-    whole();
-  }
-
-  function setShare(i, value) {
-    var rows = state.rows;
-    var v = Math.max(0, Math.min(100, Math.round(value) || 0));
-    if (rows.length === 1) { rows[0].weight = 100; return; }
-    var rest = 100 - v;
-    var others = rows.filter(function (_, j) { return j !== i; });
-    var sum = others.reduce(function (a, r) { return a + Math.max(0, r.weight); }, 0);
-    others.forEach(function (r) {
-      r.weight = sum > 0 ? rest * Math.max(0, r.weight) / sum : rest / others.length;
-    });
-    rows[i].weight = v;
-    whole();
-  }
-
-  rescale();  // whatever was stored, or edited by hand, describes one project
+  /* The shares are a split of one project: see splitbar.js, which Perfect
+     Price uses for exactly the same question about the parts of a role. */
+  var SB = window.WelanceSplitBar;
+  SB.rescale(state.rows);  // whatever was stored, or edited by hand, is one project
+  var bar;
 
   function renderRows() {
     var host = $("rows");
@@ -506,132 +425,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       del.setAttribute("aria-label", "remove role");
       del.addEventListener("click", function () {
         if (state.rows.length === 1) return;  // a team of nobody prices nothing
-        state.rows.splice(i, 1); rescale(); save(); render();
+        state.rows.splice(i, 1); SB.rescale(state.rows); save(); render();
       });
       row.appendChild(del);
 
       host.appendChild(row);
     });
-  }
-
-  /* --- the split bar, dragged directly -----------------------------------
-     Segments are laid out by flex; the handles float above the boundaries.
-     A handle only ever moves effort between the two roles it sits between, so
-     their sum — and therefore the whole 100% — cannot change while you drag. */
-
-  function buildBar() {
-    var bar = $("effortbar");
-    bar.textContent = "";
-    bar.title = tt("team.d.sharetip",
-      "Share of the project's effort. Drag a boundary and effort moves from one role to the next, so the team always describes one whole project.");
-    state.rows.forEach(function (r, i) {
-      var seg = document.createElement("div");
-      seg.className = "effortseg";
-      var c = SHARE_COLOURS[i % SHARE_COLOURS.length];
-      seg.style.background = c.bg; seg.style.color = c.fg;
-      var label = document.createElement("span");
-      label.className = "effortlabel";
-      seg.appendChild(label);
-      bar.appendChild(seg);
-    });
-    for (var i = 0; i < state.rows.length - 1; i++) bar.appendChild(makeGrip(i));
-    paintBar();
-  }
-
-  function roleName(i) {
-    return state.rows[i].role || tt("team.d.unnamed", "unnamed role");
-  }
-
-  function paintBar() {
-    var bar = $("effortbar");
-    var segs = bar.querySelectorAll(".effortseg");
-    var at = 0;
-    state.rows.forEach(function (r, i) {
-      var seg = segs[i];
-      if (!seg) return;
-      seg.style.flexBasis = r.weight + "%";
-      seg.dataset.share = String(r.weight);
-      seg.title = roleName(i) + " · " + r.weight + "%";
-    });
-    // what fits is a question about pixels, not about percentages: 25% of a
-    // phone is not 25% of a laptop. Ask the segment how wide it actually is.
-    state.rows.forEach(function (r, i) {
-      var seg = segs[i];
-      if (!seg) return;
-      var room = seg.getBoundingClientRect().width;
-      var full = roleName(i) + " · " + r.weight + "%";
-      seg.querySelector(".effortlabel").textContent =
-        room >= full.length * 6.6 ? full : (room >= 34 ? r.weight + "%" : "");
-    });
-
-    bar.querySelectorAll(".grip").forEach(function (g, i) {
-      at += state.rows[i].weight;
-      g.style.insetInlineStart = at + "%";
-      g.setAttribute("aria-valuenow", String(at));
-      g.setAttribute("aria-valuetext", roleName(i) + " " + state.rows[i].weight + "%, " +
-        roleName(i + 1) + " " + state.rows[i + 1].weight + "%");
-      g.setAttribute("aria-label", fillT(
-        tt("team.d.griplabel", "effort between {a} and {b}"),
-        { a: roleName(i), b: roleName(i + 1) }));
-    });
-  }
-
-  function moveBoundary(i, delta) {
-    // give what one role loses to the next, and never below nothing
-    var a = state.rows[i], b = state.rows[i + 1];
-    var d = Math.max(-a.weight, Math.min(b.weight, Math.round(delta)));
-    a.weight += d; b.weight -= d;
-  }
-
-  function makeGrip(i) {
-    var g = document.createElement("button");
-    g.type = "button"; g.className = "grip";
-    g.setAttribute("role", "slider");
-    g.setAttribute("aria-valuemin", "0"); g.setAttribute("aria-valuemax", "100");
-
-    function ratioAt(clientX) {
-      var box = $("effortbar").getBoundingClientRect();
-      var r = (clientX - box.left) / box.width;
-      if (getComputedStyle(document.documentElement).direction === "rtl") r = 1 - r;
-      return Math.max(0, Math.min(1, r));
-    }
-    function boundaryBefore() {
-      return state.rows.slice(0, i).reduce(function (a, r) { return a + r.weight; }, 0);
-    }
-
-    g.addEventListener("pointerdown", function (e) {
-      g.setPointerCapture(e.pointerId);
-      g.classList.add("dragging");
-      $("effortbar").classList.remove("smooth");  // follow the finger exactly
-      e.preventDefault();
-    });
-    g.addEventListener("pointermove", function (e) {
-      if (!g.hasPointerCapture(e.pointerId)) return;
-      moveBoundary(i, ratioAt(e.clientX) * 100 - boundaryBefore() - state.rows[i].weight);
-      paintBar(); paint();
-    });
-    function end(e) {
-      if (g.hasPointerCapture(e.pointerId)) g.releasePointerCapture(e.pointerId);
-      g.classList.remove("dragging");
-      $("effortbar").classList.add("smooth");
-      save();
-    }
-    g.addEventListener("pointerup", end);
-    g.addEventListener("pointercancel", end);
-
-    // the same control, from the keyboard
-    g.addEventListener("keydown", function (e) {
-      var rtl = getComputedStyle(document.documentElement).direction === "rtl";
-      var step = e.shiftKey ? 10 : 1;
-      var by = { ArrowLeft: -step, ArrowRight: step, ArrowDown: -step, ArrowUp: step,
-                 PageDown: -10, PageUp: 10 }[e.key];
-      if (by === undefined) return;
-      if (rtl && (e.key === "ArrowLeft" || e.key === "ArrowRight")) by = -by;
-      e.preventDefault();
-      moveBoundary(i, by);
-      save(); paintBar(); paint();
-    });
-    return g;
   }
 
   function computeInput() {
@@ -641,7 +440,24 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     });
   }
 
-  function render() { renderRows(); buildBar(); paint(); }
+  function render() {
+    renderRows();
+    if (!bar) {
+      bar = SB.mount($("effortbar"), {
+        rows: function () { return state.rows; },
+        name: function (i) { return state.rows[i].role || tt("team.d.unnamed", "unnamed role"); },
+        onChange: function () { save(); paint(); },
+        tip: tt("team.d.sharetip",
+          "Share of the project's effort. Drag a boundary and effort moves from one role to the next, so the team always describes one whole project."),
+        gripLabel: function (a, b) {
+          return fillT(tt("team.d.griplabel", "effort between {a} and {b}"), { a: a, b: b });
+        }
+      });
+    } else {
+      bar.rebuild();
+    }
+    paint();
+  }
 
   /* Everything derived, without touching the row structure — so a share can
      rebalance every other row while you are still typing in one of them. */
@@ -713,7 +529,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       { R: eur(R), min: eur(res.minViableR) });
     v.appendChild(p);
 
-    paintBar();
+    if (bar) bar.paint();
 
     $("weightflag").textContent = tt("team.d.wsum",
       "The shares always describe one whole project: move one and the others give way.");
@@ -738,7 +554,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   $("add").addEventListener("click", function () {
     // a new role arrives with an even share; the others make room in proportion
     state.rows.push({ role: "", weight: 0, level: 1, country: "DE", coef: 1.00, own: 40 });
-    setShare(state.rows.length - 1, Math.round(100 / state.rows.length));
+    SB.setShare(state.rows, state.rows.length - 1, Math.round(100 / state.rows.length));
     save(); render();
   });
   $("reset").addEventListener("click", function () {

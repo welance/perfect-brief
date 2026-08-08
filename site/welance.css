@@ -194,6 +194,33 @@
 .wl-lang-select:hover { border-color: var(--ink); }
 .wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* --- the split bar (splitbar.js): shared by Perfect Price and Perfect Team
+   ------------------------------------------------------------------- */
+/* the whole split, at a glance and under the thumb: one bar, one segment per
+   role, and a handle on every boundary. Dragging a handle moves effort from
+   one role to its neighbour, so the project stays whole by construction. */
+.effortbar { position: relative; display: flex; width: 100%; height: 46px; margin: 0 0 14px;
+  border: 1px solid var(--line-strong); background: var(--surface-2);
+  touch-action: none; user-select: none; }
+.effortseg { position: relative; width: 0; min-width: 0; overflow: hidden; }
+/* the label floats above its segment rather than sitting inside it: text in
+   the flow would set how narrow the bar can be, and "Full-stack developer ·
+   45%" is wider than a phone */
+.effortlabel { position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; padding: 0 6px; overflow: hidden; white-space: nowrap;
+  font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px;
+  font-weight: 600; }
+.effortbar.smooth .effortseg, .effortbar.smooth .grip { transition: flex-basis .2s ease, inset-inline-start .2s ease; }
+.grip { position: absolute; top: -5px; bottom: -5px; width: 26px; margin-inline-start: -13px;
+  display: flex; align-items: center; justify-content: center; cursor: ew-resize;
+  background: none; border: 0; padding: 0; touch-action: none; z-index: 2; }
+.grip::before { content: ""; width: 4px; height: 100%; background: var(--ink);
+  border: 1px solid var(--surface); }
+.grip:hover::before, .grip:focus-visible::before { background: var(--accent); width: 6px; }
+.grip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grip.dragging::before { background: var(--accent); width: 6px; }
+@media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
+
 /* --- site header, copied from welance.com's (chrome.js) ----------------- */
 .wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
   border-bottom: 1px solid var(--rule); }
