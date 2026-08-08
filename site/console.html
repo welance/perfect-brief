@@ -144,6 +144,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .modelsel{font-family:var(--mono);font-size:11px;margin-left:8px;color:var(--accent);background:var(--paper);border:1px solid var(--accent);padding:2px 5px;max-width:220px}
   .byok{font-family:var(--mono);font-size:11px;margin-left:8px;color:var(--ink);background:var(--paper);border:1px dashed var(--ink-soft);padding:2px 5px;width:190px}
   .byok:focus{border-color:var(--accent);outline:none}
+  .byoksafe{font-family:var(--mono);font-size:10.5px;margin-left:6px;color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px}
+  .byoksafe:hover{color:var(--accent)}
   /* unmissable "AI is working" pill */
   #aiwork{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:70;font-family:var(--mono);font-size:12.5px;font-weight:600;background:var(--accent);color:#fff;padding:10px 18px;box-shadow:0 6px 24px rgba(24,26,27,.35);align-items:center;gap:9px}
   #aiwork.on{display:flex}
@@ -188,7 +190,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <h1>The Perfect Brief<span class="b">_</span></h1>
     <p class="thesis" data-i18n="thesis"></p>
     <div class="readout keepltr">
-      <span>judge: <button id="modebtn" class="modebtn" data-i18n="judgeMockLbl">mock · keyword</button><input id="byok" class="byok" type="password" style="display:none" autocomplete="off" spellcheck="false" placeholder="your OpenRouter key (optional)" title="Bring your own key: sent only with your scoring requests, used per call, never stored. Use a spend-capped key."><input id="modelsel" class="modelsel" list="modellist" style="display:none" spellcheck="false" placeholder="model" title="judge model — with your own key, any OpenRouter slug"><datalist id="modellist"></datalist></span><span>rules: <b>14</b></span>
+      <span>judge: <button id="modebtn" class="modebtn" data-i18n="judgeMockLbl">mock · keyword</button><input id="byok" class="byok" type="password" style="display:none" autocomplete="off" spellcheck="false" placeholder="your OpenRouter key (optional)" title="Bring your own key: sent only with your scoring requests, used per call, never stored. Use a spend-capped key."><a id="byoksafe" class="byoksafe" href="security.html" style="display:none" title="Every line of ours that touches your key, and the test that fails if that changes.">is this safe?</a><input id="modelsel" class="modelsel" list="modellist" style="display:none" spellcheck="false" placeholder="model" title="judge model — with your own key, any OpenRouter slug"><datalist id="modellist"></datalist></span><span>rules: <b>14</b></span>
       <span>gate: <b>4 hard reqs</b></span><span>accept: <b>85</b></span><span>i18n: <b id="ro-langs">12</b></span>
     </div>
     <a class="navlink" href="rules.html" data-i18n="nav"></a>
@@ -350,6 +352,8 @@ function renderModelSel(){
  if(!s||!k)return;
  const live=MODE==="live";
  k.style.display=live?"":"none";
+ const safe=document.getElementById("byoksafe");
+ if(safe)safe.style.display=live?"":"none";  // travels with the key field
  const show=live&&((MODELS&&MODELS.available&&MODELS.available.length>1)||BYOK);
  s.style.display=show?"":"none";
  if(MODELS&&dl&&!dl.childElementCount)MODELS.available.forEach(m=>{const o=document.createElement("option");o.value=m;dl.appendChild(o);});

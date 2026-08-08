@@ -7,7 +7,7 @@
 import { test, expect } from "@playwright/test";
 
 const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html",
-  "/console.html", "/integrate.html", "/data.html"];
+  "/console.html", "/integrate.html", "/data.html", "/security.html"];
 
 
 // On a phone the language switch lives inside the menu panel, so it has to be

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your key, and why we can be checked — Perfect Brief</title>
+<meta name="description" content="Sending your own model key to someone else's server is a real risk. Here is every line of ours that touches it, where it provably is not, and the test that fails if that ever changes.">
+<script>/* theme before paint: no flash of the wrong one */
+(function(){try{var t=localStorage.getItem("welance-theme");
+if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="stylesheet" href="welance.css">
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
+<script src="code.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 96px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { padding: 18px 0; border-bottom: 2px solid var(--ink); }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(30px, 5vw, 46px);
+    margin: 8px 0 6px; letter-spacing: -.02em; }
+  h1 .b { color: var(--accent); }
+  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: 10px 0 0; }
+  .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center;
+    gap: 10px; margin: 44px 0 14px; }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  p { max-width: 64ch; margin: 0 0 14px; }
+  .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
+    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 12px; max-width: 28ch; }
+  /* The evidence column. Never translated: a file path and a function name
+     mean the same thing in every language, and a drifting translation of a
+     security claim is worse than no translation at all. */
+  .ref { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft);
+    display: block; margin: 2px 0 0; }
+  .ref a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
+  .ref a:hover { color: var(--accent); }
+  ol.path { max-width: 64ch; margin: 0 0 16px; padding: 0 0 0 1.1em; }
+  ol.path li { margin: 0 0 12px; }
+  .where { border-collapse: collapse; width: 100%; max-width: 860px;
+    margin: 0 0 16px; font-size: 15px; }
+  .where th, .where td { text-align: start; padding: 12px 14px;
+    border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .where th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+  .where td.k { font-weight: 600; white-space: nowrap; }
+  .no { color: var(--fail); font-family: var(--mono); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><a href="data.html" data-i18n="sec.crumbup">your brief, your key</a><span class="sep">/</span><span class="cur" data-i18n="sec.crumb">your key, checked</span></p>
+<div class="wrap">
+  <header>
+    <h1><span data-i18n="sec.h1">Your key, and why we can be checked</span><span class="b">_</span></h1>
+    <p class="thesis" data-i18n="sec.thesis">Sending your own model key to somebody else's server is a real risk, and you are right to hesitate. This page does not ask you to trust us. It shows you every line of ours that touches your key, and the test that turns red if that ever changes.</p>
+  </header>
+
+  <div class="eyebrow"><span data-i18n="sec.eb1">the claim, kept small</span></div>
+  <p class="claim" data-i18n="sec.c1">Your key reaches one destination, and nowhere else.</p>
+  <p data-i18n-html="sec.claim">We are not going to tell you your key is <em>safe</em> — that is a word nobody can check. The claim is narrower and testable: when you send <code>x-llm-key</code>, it is used to authenticate exactly one outbound call to OpenRouter, and it is never written to a log, a cache, a disk, or a response. Everything below is the evidence for that sentence.</p>
+
+  <div class="eyebrow"><span data-i18n="sec.eb2">the path your key takes</span></div>
+  <ol class="path">
+    <li>
+      <span data-i18n="sec.p1">It arrives as a request header and is bound to a single request. It is never read from a query string, so it cannot land in a browser history or a proxy access log on the way in.</span>
+      <span class="ref"><a href="https://github.com/welance/perfect-brief/blob/main/app/main.py"><code>ByokHeader</code> · app/main.py</a></span>
+    </li>
+    <li>
+      <span data-i18n="sec.p2">It is passed as an ordinary function argument down to the judge. It is never placed on a shared object, a module global, or anything that outlives the request.</span>
+      <span class="ref"><a href="https://github.com/welance/perfect-brief/blob/main/app/scorer.py"><code>score()</code> · app/scorer.py</a></span>
+    </li>
+    <li>
+      <span data-i18n="sec.p3">It becomes an Authorization header on one HTTPS call to OpenRouter — the same call your key would make if you called them yourself. It is not put in the request body, where it would be far easier to leak by accident.</span>
+      <span class="ref"><a href="https://github.com/welance/perfect-brief/blob/main/app/llm_client.py"><code>complete()</code> · app/llm_client.py</a></span>
+    </li>
+    <li>
+      <span data-i18n="sec.p4">The request ends and the value is garbage-collected with it. There is no step five: nothing persists it, because nothing is written anywhere that a later request could read.</span>
+    </li>
+  </ol>
+
+  <div class="eyebrow"><span data-i18n="sec.eb3">where it provably is not</span></div>
+  <p data-i18n="sec.wintro">Four places people reasonably worry about. In each case the reason it cannot be there matters more than our promise that it is not.</p>
+  <table class="where">
+    <thead><tr>
+      <th data-i18n="sec.wth1">the worry</th>
+      <th data-i18n="sec.wth2">why it cannot happen</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="k" data-i18n="sec.w1.k">In the logs</td>
+        <td>
+          <span data-i18n="sec.w1.a">Our access log format is client address, request line, status — headers and bodies are not part of it. The one place that logs on failure prints a Python traceback, and Python tracebacks carry source lines, not the values of local variables. What lands in the log is the literal text of the f-string that builds the header, never the key it built.</span>
+          <span class="ref">uvicorn CMD · Dockerfile — <code>log.exception()</code> · app/main.py</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="sec.w2.k">In the cache</td>
+        <td>
+          <span data-i18n-html="sec.w2.a">Cached verdicts are keyed by <code>ruleset_version : model : sha256(brief)</code>. No key material is an input to that key, and none is stored in the value, so nothing about your key can be recovered from our Redis — not even by us.</span>
+          <span class="ref"><code>_judge()</code> · app/scorer.py</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="sec.w3.k">In an error response</td>
+        <td>
+          <span data-i18n="sec.w3.a">When the provider rejects a call we return a 502 that includes the underlying error text, which is the kind of shortcut that leaks secrets. It does not here: that error carries the status code and the URL that was called, and never the headers it was called with.</span>
+          <span class="ref"><code>post_score()</code> · app/main.py</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="k" data-i18n="sec.w4.k">In your browser</td>
+        <td>
+          <span data-i18n-html="sec.w4.a">In the console, the key field is a password input with autocomplete off, and the value lives in a single JavaScript variable. It is never written to <code>localStorage</code> or <code>sessionStorage</code>, so it does not survive a reload and cannot be read later by anything else served from this origin.</span>
+          <span class="ref">#byok · site/console.html</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="eyebrow"><span data-i18n="sec.eb4">do not trust this page</span></div>
+  <p class="claim" data-i18n="sec.c2">Prose is not a guarantee. A failing build is.</p>
+  <p data-i18n-html="sec.canary">Everything above describes the code as it is today, and a page cannot stop somebody adding a well-meaning debug line next year. So the claim is also a test. It sends a real scoring request with a sentinel key, then hunts that sentinel through every channel this service can emit on — every log record, the response body, the response headers, and everything handed to Redis — and fails unless it appears in exactly one place: the Authorization header of the call to OpenRouter.</p>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">python · <span data-i18n="sec.canaryLabel">the canary</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="python">assert outbound["headers"]["authorization"] == f"Bearer {CANARY}"
+
+assert CANARY not in r.text
+assert CANARY not in str(dict(r.headers))
+for key, value in redis_writes:
+    assert CANARY not in key and CANARY not in str(value)
+for record in caplog.records:
+    assert CANARY not in caplog.handler.format(record)</pre>
+  </div>
+  <p data-i18n-html="sec.canaryref">It runs on every commit, and we check that it can fail: adding a single <code>log.debug</code> of the key turns it red. Read it, or run it yourself — <span class="ref" style="display:inline"><a href="https://github.com/welance/perfect-brief/blob/main/tests/test_byok_leak.py">tests/test_byok_leak.py</a></span>.</p>
+
+  <div class="eyebrow"><span data-i18n="sec.eb5">the honest limits</span></div>
+  <p data-i18n-html="sec.limit1"><b>A proxy has to see what it forwards.</b> TLS protects your key in transit, but it terminates on our server, so for the moment your request is in flight the key exists in that machine's memory. Anyone who has compromised the server could read it. That is true of every service that forwards a credential on your behalf, and no amount of care in our code changes it. If that risk is unacceptable for your key, it should be — do not send it, and see the options below.</p>
+  <p data-i18n-html="sec.limit2"><b>Cached verdicts are shared.</b> A scoring call made with your key still reads and writes the shared verdict cache, so an identical brief scored later may be answered from the cache rather than from a fresh call. Nothing about your key is involved, and a cache entry can only be reached by somebody who already has the exact brief text — but it does mean the verdict you paid for may serve someone else, and theirs may serve you. Send <code>no_cache: true</code> and neither happens.</p>
+  <p data-i18n-html="sec.limit3"><b>Downstream is not ours.</b> Once the call reaches OpenRouter, their terms and their retention apply, not ours. We can tell you what we do; we cannot make promises on their behalf.</p>
+  <p data-i18n-html="sec.limit4"><b>This is a small open-source service.</b> It is rate-limited and served over TLS by people who care about getting this right. It is not an audited compliance product, and we would rather say so here than imply otherwise.</p>
+
+  <div class="eyebrow"><span data-i18n="sec.eb6">what we would do in your place</span></div>
+  <p data-i18n-html="sec.do1"><b>Send a spend-capped key.</b> OpenRouter lets you mint a key with its own credit limit. Use one here rather than your main key: it turns the worst case from an open-ended loss into a known, small number, and it costs you nothing.</p>
+  <p data-i18n-html="sec.do2"><b>Or send no key at all.</b> Leave the header off and the call runs on our key, against our model allowlist. You lose free model choice; you keep your credentials.</p>
+  <p data-i18n-html="sec.do3"><b>Or run the whole thing yourself.</b> It is MIT-licensed and the container is one command. Then the only server that sees your key is yours — <a href="https://github.com/welance/perfect-brief">github.com/welance/perfect-brief</a>.</p>
+
+  <div class="eyebrow"><span data-i18n="sec.eb7">if we got this wrong</span></div>
+  <p data-i18n-html="sec.report">If you find a path that stores, logs, or echoes a caller's key, that is a vulnerability and we want to hear about it before anyone else does: <a href="https://github.com/welance/perfect-brief/security/advisories/new">report it privately</a> or write to <a href="mailto:security@welance.com">security@welance.com</a>. Our full policy, including scope, is in <a href="https://github.com/welance/perfect-brief/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+</div>
+<div id="site-footer"></div>
+</body>
+</html>
