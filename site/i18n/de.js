@@ -9,7 +9,7 @@ WelanceI18n.register("de", {
     /* ---------- index.html — The Perfect Brief ---------- */
     "index.crumb": "perfect brief",
     "index.h1": "Das perfekte Briefing",
-    "index.thesis": "Ein großartiges digitales Produkt macht vor allem das Team, das es baut — wir würden sagen <b>20% Briefing, 80% Team</b>. Aber das Briefing ist die 20%, die entscheiden, ob ein gutes Team überhaupt gut starten kann. Dies ist ein kleiner, offener Dienst, der ein Briefing bewertet, bevor es rausgeht.",
+    "index.thesis": "Ein Briefing hat noch nie ein Projekt zum Erfolg geführt — das tut das Team. Ein schlechtes scheitert dafür leise: Wochen später, wenn die Arbeit falsch zurückkommt. Und es ist der einzige Teil, den man prüfen kann, bevor Geld fließt. <b>20% Briefing, 80% Team</b> — dies ist ein kleiner, offener Dienst, der die 20% bewertet.",
     "index.cta.console": "Konsole ausprobieren",
     "index.cta.rules": "Die Regeln lesen",
     "index.cta.method": "Die Methode",

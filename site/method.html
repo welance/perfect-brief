@@ -104,6 +104,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-size: clamp(17px, 2.3vw, 21px); line-height: 1.5; max-width: 58ch; font-weight: 500; }
   [dir="rtl"] .conway { border-left: 0; border-right: 2px solid var(--ink); padding: 6px 16px 6px 0; }
   .conway-src { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; }
+  /* inside a coloured band the page greys do not apply — the band decides */
+  .band .conway-src, .band .conway-src a { color: inherit; opacity: .78; }
   .conway.notice { border-color: var(--accent); font-size: 16.5px; font-weight: 400; margin: 14px 0 6px; }
   .doors { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 0 0 14px; }
   @media (min-width: 760px) { .doors { grid-template-columns: 1fr 1fr; } }

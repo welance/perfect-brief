@@ -36,6 +36,13 @@
 }
 
 :root {
+  /* Some surfaces are dark on purpose in both themes — the CTA band, the code
+     block. They cannot be built from --ink/--paper, which swap: that is how
+     the band ended up black-on-black in the dark. These three never move. */
+  --slab: #0d0d0d;
+  --on-slab: #f2f2f2;
+  --on-slab-soft: #9a9a9a;
+
   /* Directory tokens, mapped onto the token names these pages already use */
   --maxw: 1200px;  /* one container width for every page: a notch above the old console (1080) */
   --paper: #ffffff;
@@ -74,9 +81,33 @@
 }
 :root[data-theme="dark"] .band.cy,
 :root[data-theme="dark"] .band.y { color: #0a0a0a; }
-:root[data-theme="dark"] .wl-foot-cta { background: #000; }
 :root[data-theme="dark"] .code { border-color: var(--rule); }
 :root[data-theme="dark"] img, :root[data-theme="dark"] .wl-asterisk { filter: none; }
+
+/* three lines, and the panel they open — only where the nav cannot fit */
+.wl-burger { display: none; flex-direction: column; justify-content: center; gap: 4px;
+  width: 34px; height: 34px; padding: 0 6px; flex: none; cursor: pointer;
+  background: none; border: 1px solid var(--rule); color: var(--ink); }
+.wl-burger span { display: block; height: 2px; background: currentColor; }
+.wl-burger[aria-expanded="true"] { background: var(--ink); color: var(--paper);
+  border-color: var(--ink); }
+@media (max-width: 900px) { .wl-burger { display: flex; } }
+.wl-menu { border-top: 1px solid var(--rule); background: var(--paper);
+  max-height: 70vh; overflow-y: auto; }
+.wl-menu-in { display: grid; gap: 22px; padding: 20px; }
+.wl-menu-lang:empty { display: none; }
+@media (min-width: 480px) { .wl-menu-lang { grid-column: 1 / -1; } }
+.wl-menu-lang .wl-lang-select { width: auto; max-width: none; font-size: 14px; padding: 9px 8px; }
+@media (min-width: 480px) { .wl-menu-in { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
+.wl-menu-col { display: flex; flex-direction: column; gap: 2px; }
+.wl-menu-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft); margin: 0 0 8px; }
+.wl-menu a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink);
+  text-decoration: none; font-family: var(--disp); font-size: 16px; padding: 7px 0; }
+.wl-menu a:hover { color: var(--accent); text-decoration: none; }
+.wl-menu a[aria-current="page"] { font-weight: 600;
+  box-shadow: inset 0 -2px 0 0 var(--ink); }
+.wl-menu .wl-gh { width: 15px; height: 15px; fill: currentColor; }
 
 .wl-src { display: inline-flex; align-items: center; justify-content: center;
   color: var(--ink); padding: 6px; flex: none; }
@@ -267,7 +298,7 @@
 /* --- site footer, copied from welance.com's (chrome.js) ----------------- */
 .wl-foot { display: block; margin-top: 72px; padding: 0; border: 0; max-width: none;
   background: var(--paper); color: var(--ink); font-family: var(--disp); font-size: 16px; }
-.wl-foot-cta { background: var(--ink); color: var(--paper); }
+.wl-foot-cta { background: var(--slab); color: var(--on-slab); }
 .wl-foot-cta-in { max-width: var(--maxw); margin: 0 auto; padding: 44px 24px;
   display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
 .wl-foot-cta h2 { font-family: var(--disp); font-weight: 600; margin: 0;
@@ -275,12 +306,12 @@
 .wl-foot-cta h2 .b { color: var(--wl-y); }
 .wl-cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .wl-cta-btn { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
-  border: 2px solid var(--paper); background: var(--paper); color: var(--ink);
+  border: 2px solid var(--on-slab); background: var(--on-slab); color: var(--slab);
   padding: 14px 24px; text-decoration: none; white-space: nowrap;
   transition: background 150ms ease, color 150ms ease; }
-.wl-cta-btn:hover { background: transparent; color: var(--paper); text-decoration: none; }
-.wl-cta-btn.ghost { background: transparent; color: var(--paper); border-color: #4a4a4a; }
-.wl-cta-btn.ghost:hover { border-color: var(--paper); background: transparent; color: var(--paper); }
+.wl-cta-btn:hover { background: transparent; color: var(--on-slab); text-decoration: none; }
+.wl-cta-btn.ghost { background: transparent; color: var(--on-slab); border-color: #6a6a6a; }
+.wl-cta-btn.ghost:hover { border-color: var(--on-slab); background: transparent; color: var(--on-slab); }
 .wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
 /* Two columns: who we are on one side, where to go on the other — and the
    links split in two again, because one list of twelve is a list nobody
@@ -330,19 +361,19 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 /* --- code blocks: tabs, copy, and a two-tone dark surface ----------------
    The modern docs pattern (tabs + copy + per-language colour), built from
    nothing: the highlighting lives in code.js, the markup stays plain text. */
-.code { border: 1px solid var(--ink); background: var(--ink); margin: 0 0 12px; overflow: hidden; }
+.code { border: 1px solid var(--slab); background: var(--slab); margin: 0 0 12px; overflow: hidden; }
 .code-bar { display: flex; align-items: stretch; justify-content: space-between;
   gap: 12px; border-bottom: 1px solid #232323; }
 .code-tabs { display: flex; }
 .code-tabs button, .code-copy { font-family: var(--mono); font-size: 11.5px;
   letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
-  color: #8a8a8a; padding: 10px 14px; }
-.code-tabs button:hover, .code-copy:hover { color: var(--paper); }
-.code-tabs button[aria-pressed="true"] { color: var(--paper); box-shadow: inset 0 -2px 0 var(--wl-y); }
+  color: var(--on-slab-soft); padding: 10px 14px; }
+.code-tabs button:hover, .code-copy:hover { color: var(--on-slab); }
+.code-tabs button[aria-pressed="true"] { color: var(--on-slab); box-shadow: inset 0 -2px 0 var(--wl-y); }
 .code-copy { white-space: nowrap; }
 .code-copy.done { color: var(--wl-cy); }
 .code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
-  text-transform: uppercase; color: #8a8a8a; padding: 10px 14px; }
+  text-transform: uppercase; color: var(--on-slab-soft); padding: 10px 14px; }
 .code pre { margin: 0; padding: 14px 16px 16px; background: transparent; border: 0;
   font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
 .code .s  { color: var(--wl-y); }      /* strings */
@@ -352,7 +383,7 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 .code .u  { color: var(--wl-y); text-decoration: underline; text-underline-offset: .18em; }
 .code .fl { color: #8a8a8a; }          /* -X -H -d */
 .code .cm { color: #7d7d7d; font-style: italic; }
-.code .p  { color: #6d6d6d; }          /* punctuation */
+.code .p  { color: #8e8e8e; }          /* punctuation */
 
 /* --- full-width bands: break the scroll with brand colour ----------------
    Paints beyond the container without touching layout width, so no page

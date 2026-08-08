@@ -31,6 +31,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
     --line: var(--rule); --line-strong: var(--rule);
     --person: var(--wl-c); --person-soft: var(--fail-bg);
+    /* coral as *text* on a light page is 2.56:1 — this is the same hue, dark
+       enough to read; in the dark theme the band colour already reads */
+    --person-ink: #b83c12;
     --company: var(--rule-strong); --company-soft: var(--pass-bg);
     --geo: var(--wl-p); --geo-soft: var(--accent-bg);
     --full: var(--pass); --none: #8a8a8a; --focus: var(--accent);
@@ -41,6 +44,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
   .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
 
@@ -68,7 +73,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .cardfoot .addbtn { margin-top: 0; }
   .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
-  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+  .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -152,11 +157,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
     border-radius: 0; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
-  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .iconbtn:hover { color: var(--person-ink); border-color: var(--line-strong); }
   .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--partial); }
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
     color: var(--ink-2); border-radius: 0; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
-  .addbtn:hover { border-color: var(--person); color: var(--person); }
+  .addbtn:hover { border-color: var(--person-ink); color: var(--person-ink); }
 
   .levelbadge { display: flex; align-items: center; gap: 9px; font-family: var(--serif);
     font-size: 24px; font-weight: 600; margin: 0 0 3px; }
@@ -174,6 +179,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
     font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
   .sb-person { background: var(--person); } .sb-geo { background: var(--geo); } .sb-company { background: var(--company); }
+
+  /* Measured, not guessed: white on coral is 2.56:1 and on yellow 1.56:1 —
+     both illegible. Black on them is 8.2 and 13.4. The neutral band is the
+     only one that swaps with the theme, so it is the only label that swaps. */
+  .splitbar > .sb-person, .splitbar > .sb-people, .splitbar > .sb-head { color: #0a0a0a; }
+  .splitbar > .sb-geo, .splitbar > .sb-company { color: #fff; }
+  :root[data-theme="dark"] .splitbar > .sb-company { color: #0a0a0a; }
+  :root[data-theme="dark"] { --person-ink: var(--wl-c); }
   .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
   .splitkey span { display: flex; align-items: center; gap: 5px; }
   .sw { width: 9px; height: 9px; border-radius: 0; flex: none; }
@@ -194,13 +207,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .growth li { display: flex; gap: 11px; align-items: baseline; padding: 11px 13px;
     background: var(--surface-2); border-radius: 0; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
   .growth .gain { margin-inline-start: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
-    font-weight: 600; color: var(--person); white-space: nowrap; }
+    font-weight: 600; color: var(--person-ink); white-space: nowrap; }
   .allset { color: var(--full); font-size: 14.5px; margin: 0; }
 
   .modes { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .mode { font: inherit; font-size: 13.5px; padding: 7px 13px; cursor: pointer;
     background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 0; }
   .mode[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
+  :root[data-theme="dark"] .mode[aria-pressed="true"] { color: #0a0a0a; }
 
   .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; font-size: 14.5px; }
   .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }

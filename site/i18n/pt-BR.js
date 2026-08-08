@@ -8,7 +8,7 @@ WelanceI18n.register("pt-BR", {
     /* ---------- index.html — The Perfect Brief ---------- */
     "index.crumb": "perfect brief",
     "index.h1": "O Brief Perfeito",
-    "index.thesis": "Um grande produto digital é feito sobretudo pelo time que o constrói — diríamos <b>20% brief, 80% time</b>. Mas o brief é os 20% que decidem se um bom time consegue sequer começar bem. Este é um pequeno serviço aberto que avalia um brief antes de ele sair.",
+    "index.thesis": "Um brief nunca fez um projeto dar certo — quem faz é o time. Um brief ruim, porém, fracassa em silêncio: semanas depois, quando o trabalho volta errado. E é a única parte que dá para conferir antes de o dinheiro se mover. <b>20% brief, 80% time</b> — este é um pequeno serviço aberto que avalia os 20%.",
     "index.cta.console": "Experimente o console",
     "index.cta.rules": "Leia as regras",
     "index.cta.method": "O método",

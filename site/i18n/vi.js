@@ -8,7 +8,7 @@ WelanceI18n.register("vi", {
     /* ---------- index.html — The Perfect Brief ---------- */
     "index.crumb": "perfect brief",
     "index.h1": "Bản Brief Hoàn Hảo",
-    "index.thesis": "Một sản phẩm số tuyệt vời chủ yếu do đội ngũ xây dựng nó làm nên — chúng tôi sẽ nói <b>20% brief, 80% đội ngũ</b>. Nhưng brief là 20% quyết định liệu một đội ngũ giỏi có thể bắt đầu tốt hay không. Đây là một dịch vụ nhỏ, mã nguồn mở, chấm điểm brief trước khi nó được gửi đi.",
+    "index.thesis": "Một bản brief chưa bao giờ làm nên thành công của dự án — đội ngũ mới làm điều đó. Nhưng một bản brief tồi thì thất bại trong im lặng: vài tuần sau, khi công việc trả về sai. Và nó cũng là phần duy nhất có thể kiểm tra trước khi tiền dịch chuyển. <b>20% brief, 80% đội ngũ</b> — đây là một dịch vụ nhỏ, mở, chấm điểm phần 20%.",
     "index.cta.console": "Dùng thử console",
     "index.cta.rules": "Đọc các quy tắc",
     "index.cta.method": "Phương pháp",

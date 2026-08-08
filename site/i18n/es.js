@@ -8,7 +8,7 @@ WelanceI18n.register("es", {
     /* ---------- index.html — The Perfect Brief ---------- */
     "index.crumb": "perfect brief",
     "index.h1": "El Brief Perfecto",
-    "index.thesis": "Un gran producto digital lo hace sobre todo el equipo que lo construye — diríamos <b>20% brief, 80% equipo</b>. Pero el brief es ese 20% que decide si un buen equipo puede siquiera empezar bien. Este es un pequeño servicio abierto que evalúa un brief antes de que salga.",
+    "index.thesis": "Un brief nunca ha hecho que un proyecto salga bien — eso lo hace el equipo. Uno malo, en cambio, fracasa en silencio: semanas después, cuando el trabajo vuelve equivocado. Y es la única parte que se puede revisar antes de que se mueva el dinero. <b>20% brief, 80% equipo</b> — este es un pequeño servicio abierto que evalúa el 20%.",
     "index.cta.console": "Prueba la consola",
     "index.cta.rules": "Lee las reglas",
     "index.cta.method": "El método",

@@ -9,6 +9,18 @@ import { test, expect } from "@playwright/test";
 const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html",
   "/console.html", "/integrate.html", "/data.html"];
 
+
+// On a phone the language switch lives inside the menu panel, so it has to be
+// opened first — the same two taps a visitor makes.
+async function chooseLanguage(page, code) {
+  const burger = page.locator(".wl-burger");
+  if (await burger.isVisible()) {
+    const panel = page.locator(".wl-menu");
+    if (!(await panel.isVisible())) await burger.click();
+  }
+  await page.locator("#langswitch select").selectOption(code);
+}
+
 test.describe("one origin", () => {
   test("the site and the API are served together", async ({ request }) => {
     expect((await request.get("/method.html")).status()).toBe(200);
@@ -101,7 +113,7 @@ test.describe("eight languages, one choice", () => {
 
   test("choosing a language follows you across pages", async ({ page }) => {
     await page.goto("/method.html");
-    await page.locator("#langswitch select").selectOption("it");
+    await chooseLanguage(page, "it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
     await page.goto("/team.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
@@ -120,8 +132,8 @@ test.describe("eight languages, one choice", () => {
   test("English is restored exactly — the markup is the content of record", async ({ page }) => {
     await page.goto("/method.html?lang=en");
     const before = await page.locator("[data-i18n='method.eb1']").textContent();
-    await page.locator("#langswitch select").selectOption("de");
-    await page.locator("#langswitch select").selectOption("en");
+    await chooseLanguage(page, "de");
+    await chooseLanguage(page, "en");
     await expect(page.locator("[data-i18n='method.eb1']")).toHaveText(before);
   });
 
@@ -329,7 +341,7 @@ test.describe("the method reads at a glance", () => {
 
   test("choosing a language writes it into the address", async ({ page }) => {
     await page.goto("/method.html");
-    await page.locator("#langswitch select").selectOption("it");
+    await chooseLanguage(page, "it");
     await expect(page).toHaveURL(/\/it\/method\.html$/);
     // and following any relative link keeps you in that language — the footer
     // one, because the header nav is not on a phone

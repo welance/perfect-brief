@@ -94,8 +94,77 @@
         'aria-label="' + tt("chrome.source", "the source on GitHub") + '" ' +
         'title="' + tt("chrome.source", "the source on GitHub") + '">' + GH + "</a>" +
       '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
-      "</div></div></div>";
+      '<button class="wl-burger" type="button" aria-expanded="false" aria-controls="wl-menu" ' +
+        'aria-label="' + tt("chrome.menu", "menu") + '">' +
+        '<span></span><span></span><span></span></button>' +
+      "</div></div>" +
+      // the same pages the footer lists: on a phone the header cannot show
+      // them, but it must still be able to reach them
+      '<nav class="wl-menu" id="wl-menu" hidden aria-label="' + tt("chrome.menu", "menu") + '">' +
+      '<div class="wl-menu-in">' +
+      '<div class="wl-menu-lang" id="wl-menu-lang"></div>' +
+      '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.links", "The model") + "</p>" +
+      menuCol(PAGES) + "</div>" +
+      '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.build", "Build with it") + "</p>" +
+      menuCol(BUILD) + "</div>" +
+      "</div></nav>" +
+      "</div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
+    wireMenu(host);
+  }
+
+  function menuCol(items) {
+    var here = current();
+    return items.map(function (p) {
+      var on = p.href === here ? ' aria-current="page"' : "";
+      return '<a href="' + p.href + '"' + on + ">" + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
+    }).join("");
+  }
+
+  /* The phone's way through the site. It closes on Escape, on a click outside,
+     and as soon as the window is wide enough to show the nav again — a panel
+     left open behind a visible menu is a puzzle nobody asked for. */
+  function wireMenu(host) {
+    var btn = host.querySelector(".wl-burger");
+    var panel = host.querySelector(".wl-menu");
+    if (!btn || !panel) return;
+
+    /* On a phone the language switch moves into the panel rather than being
+       duplicated there: one element, one id, one mounted switcher — and the
+       header bar gets its width back for the CTA, which in Spanish needs it. */
+    var sw = document.getElementById("langswitch");
+    var slot = panel.querySelector("#wl-menu-lang");
+    var bar = host.querySelector(".wl-head-right");
+    var src = host.querySelector(".wl-src");
+    var small = window.matchMedia("(max-width: 560px)");
+    function place() {
+      if (!sw || !slot || !bar) return;
+      if (small.matches) { if (sw.parentNode !== slot) slot.appendChild(sw); }
+      else if (sw.parentNode !== bar) bar.insertBefore(sw, src || bar.firstChild);
+    }
+    place();
+    if (small.addEventListener) small.addEventListener("change", place);
+
+    function shut() {
+      panel.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+    }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = btn.getAttribute("aria-expanded") === "true";
+      panel.hidden = open;
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") shut();
+    });
+    document.addEventListener("click", function (e) {
+      if (!panel.hidden && !panel.contains(e.target)) shut();
+    });
+    if (window.matchMedia) {
+      var wide = window.matchMedia("(min-width: 901px)");
+      if (wide.addEventListener) wide.addEventListener("change", shut);
+    }
   }
 
   /* Light or dark, remembered. The system preference decides until someone
