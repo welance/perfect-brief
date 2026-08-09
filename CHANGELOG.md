@@ -6,6 +6,20 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.6.2] - 2026-08-09
+
+### Fixed
+- **A per-role rate can be typed again.** On the team page, entering a rate of
+  more than one digit was effectively impossible: the field lost focus after
+  every keystroke. Each `input` event called `render()`, and `render()` clears
+  `#rows` and rebuilds every row — destroying the very element being typed
+  into. It now calls `paint()`, which updates the ceilings in place and is all
+  a rate change actually affects. The client rate field was never affected: it
+  lives outside `#rows`, so nothing was destroying it.
+- **Guarded by `tests/e2e/team-rate-focus.spec.mjs`**, which types a four-digit
+  rate and asserts the field is still focused and still holds what was typed.
+  It fails against the old code, on desktop and mobile.
+
 ## [1.6.1] - 2026-08-09
 
 1.6.0 shipped a page arguing that a claim about your key is worth nothing
