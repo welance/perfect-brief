@@ -90,6 +90,12 @@ on your key — any model allowed (you pay), used per request, never stored or
 logged. Use a spend-capped key. The console exposes this as an optional field
 in live mode.
 
+Sending a key to somebody else's server deserves more than that paragraph.
+Every line that touches it, where it provably is not, and the honest limits are
+at [briefs.welance.com/security.html](https://briefs.welance.com/security.html);
+the claim is enforced by `tests/test_byok_leak.py`, which fails if the key ever
+reaches a log, a cache write, or a response.
+
 Other endpoints:
 
 - `POST /v1/suggest` `{brief, rule_id, locale, model?}` → tailored fixes for one gap (LLM).

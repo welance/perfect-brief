@@ -1,4 +1,4 @@
-/* The public surface: one origin, eight languages, no dead ends.
+/* The public surface: one origin, nine languages, no dead ends.
  *
  * These are the promises a visitor and a forker both rely on — the pages and
  * the API live together, every page carries the same chrome, the language
@@ -7,7 +7,19 @@
 import { test, expect } from "@playwright/test";
 
 const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html",
-  "/console.html", "/integrate.html", "/data.html"];
+  "/console.html", "/integrate.html", "/data.html", "/security.html"];
+
+
+// On a phone the language switch lives inside the menu panel, so it has to be
+// opened first — the same two taps a visitor makes.
+async function chooseLanguage(page, code) {
+  const burger = page.locator(".wl-burger");
+  if (await burger.isVisible()) {
+    const panel = page.locator(".wl-menu");
+    if (!(await panel.isVisible())) await burger.click();
+  }
+  await page.locator("#langswitch select").selectOption(code);
+}
 
 test.describe("one origin", () => {
   test("the site and the API are served together", async ({ request }) => {
@@ -89,17 +101,37 @@ test.describe("chrome and navigation", () => {
   });
 });
 
-test.describe("eight languages, one choice", () => {
-  test("the switcher offers all eight with flags", async ({ page }) => {
+test.describe("nine languages, one choice", () => {
+  test("the switcher offers every language with a flag", async ({ page }) => {
     await page.goto("/method.html");
     const options = page.locator("#langswitch option");
-    await expect(options).toHaveCount(8);
-    await expect(options.first()).toContainText("English");
+    const { LANGS } = await page.evaluate(() => ({ LANGS: WelanceI18n.LANGS.map((l) => l.code) }));
+    await expect(options).toHaveCount(LANGS.length);
+    // on a phone the chosen language shortens to "🇬🇧 EN" so the header still
+    // fits; the list keeps naming every language, and so does the a11y name
+    await expect(options.first()).toHaveAttribute("aria-label", "English");
+  });
+
+  test("every declared language actually has a dictionary", async ({ page }) => {
+    // a flag in the switcher with no strings behind it is worse than no flag
+    await page.goto("/method.html");
+    const thin = await page.evaluate(async () => {
+      const out = [];
+      for (const l of WelanceI18n.LANGS) {
+        if (l.code === "en") continue;
+        WelanceI18n.set(l.code);
+        const untranslated = [...document.querySelectorAll("[data-i18n], [data-i18n-html]")]
+          .filter((el) => !el.textContent.trim()).length;
+        if (untranslated) out.push(`${l.code}: ${untranslated} empty`);
+      }
+      return out;
+    });
+    expect(thin, thin.join(" | ")).toHaveLength(0);
   });
 
   test("choosing a language follows you across pages", async ({ page }) => {
     await page.goto("/method.html");
-    await page.locator("#langswitch select").selectOption("it");
+    await chooseLanguage(page, "it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
     await page.goto("/team.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
@@ -118,8 +150,8 @@ test.describe("eight languages, one choice", () => {
   test("English is restored exactly — the markup is the content of record", async ({ page }) => {
     await page.goto("/method.html?lang=en");
     const before = await page.locator("[data-i18n='method.eb1']").textContent();
-    await page.locator("#langswitch select").selectOption("de");
-    await page.locator("#langswitch select").selectOption("en");
+    await chooseLanguage(page, "de");
+    await chooseLanguage(page, "en");
     await expect(page.locator("[data-i18n='method.eb1']")).toHaveText(before);
   });
 
@@ -277,6 +309,76 @@ test.describe("the method reads at a glance", () => {
     }
   });
 
+  test("the header holds at every width, not only the two we test on", async ({ page }) => {
+    // it has broken three times now, always between the phone and the laptop:
+    // five nav names, a language select and the pill competing for one line
+    const broken = [];
+    for (const width of [412, 560, 640, 768, 900, 960, 1024, 1100, 1180, 1280, 1440, 1600]) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/method.html");
+      const over = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      if (over > 0) broken.push(`${width}px overflows by ${over}px`);
+    }
+    expect(broken, broken.join(" | ")).toHaveLength(0);
+  });
+
+  test("the way out of the page survives a phone, in every language", async ({ page }) => {
+    // the pill is the one link that leads somewhere else — it does not get
+    // dropped for being inconvenient at 320px
+    const broken = [];
+    for (const lang of ["en", "es", "pt-BR", "ar", "vi"]) {
+      for (const width of [320, 390, 412, 560]) {
+        await page.setViewportSize({ width, height: 800 });
+        await page.goto(`/method.html?lang=${lang}`);
+        const pill = page.locator(".wl-pill");
+        await expect(pill).toBeVisible();
+        const fits = await page.evaluate(() => {
+          const b = document.querySelector(".wl-pill").getBoundingClientRect();
+          const vw = document.documentElement.clientWidth;
+          return { inside: b.left >= -0.5 && b.right <= vw + 0.5,
+                   over: document.documentElement.scrollWidth - vw };
+        });
+        if (!fits.inside || fits.over > 0) broken.push(`${lang}@${width}px`);
+      }
+    }
+    expect(broken, broken.join(" ")).toHaveLength(0);
+  });
+
+  test("the header carries three ways in, and the rest lives in the footer", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(3);
+    await expect(page.locator(".wl-nav")).toContainText("The calculators");
+    // the calculators page is the index the menu no longer has to be
+    await page.goto("/calculators.html");
+    for (const href of ["index.html", "price.html", "team.html"]) {
+      await expect(page.locator(`.tool a[href="${href}"]`)).toBeVisible();
+    }
+  });
+
+  test("choosing a language writes it into the address", async ({ page }) => {
+    await page.goto("/method.html");
+    await chooseLanguage(page, "it");
+    await expect(page).toHaveURL(/\/it\/method\.html$/);
+    // and following any relative link keeps you in that language — the footer
+    // one, because the header nav is not on a phone
+    await page.locator('.wl-foot-links a[href="calculators.html"]').click();
+    await expect(page).toHaveURL(/\/it\/calculators\.html$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "it");
+  });
+
+  test("the invitation to change the rules is visible in every language", async ({ page }) => {
+    // an open ruleset is only open if changing it is something a reader can
+    // picture themselves doing — so the clause is marked, and it is a link
+    for (const lang of ["en", "it", "de", "ar"]) {
+      await page.goto(`/?lang=${lang}`);
+      const hl = page.locator("p .hl");
+      await expect(hl).toBeVisible();
+      await expect(hl).toHaveAttribute("href", /GOVERNANCE\.md$/);
+    }
+  });
+
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
     const blocks = page.locator(".code");
@@ -300,6 +402,15 @@ test.describe("the method reads at a glance", () => {
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     expect(copied).toContain("import httpx");
     expect(copied).not.toContain("<span");
+  });
+
+  test("the source is one click from every page, the theme lives in the footer", async ({ page }) => {
+    await page.goto("/");
+    const src = page.locator('.wl-head .wl-src[href*="github.com"]');
+    await expect(src).toBeVisible();
+    await expect(src.locator("svg")).toBeVisible();
+    await expect(page.locator(".wl-head .wl-theme")).toHaveCount(0);
+    await expect(page.locator(".wl-foot-bottom .wl-theme")).toBeVisible();
   });
 
   test("light and dark, remembered across pages, no flash", async ({ page }) => {

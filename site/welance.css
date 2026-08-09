@@ -36,6 +36,13 @@
 }
 
 :root {
+  /* Some surfaces are dark on purpose in both themes — the CTA band, the code
+     block. They cannot be built from --ink/--paper, which swap: that is how
+     the band ended up black-on-black in the dark. These three never move. */
+  --slab: #0d0d0d;
+  --on-slab: #f2f2f2;
+  --on-slab-soft: #9a9a9a;
+
   /* Directory tokens, mapped onto the token names these pages already use */
   --maxw: 1200px;  /* one container width for every page: a notch above the old console (1080) */
   --paper: #ffffff;
@@ -74,10 +81,39 @@
 }
 :root[data-theme="dark"] .band.cy,
 :root[data-theme="dark"] .band.y { color: #0a0a0a; }
-:root[data-theme="dark"] .wl-foot-cta { background: #000; }
 :root[data-theme="dark"] .code { border-color: var(--rule); }
 :root[data-theme="dark"] img, :root[data-theme="dark"] .wl-asterisk { filter: none; }
 
+/* three lines, and the panel they open — only where the nav cannot fit */
+.wl-burger { display: none; flex-direction: column; justify-content: center; gap: 4px;
+  width: 34px; height: 34px; padding: 0 6px; flex: none; cursor: pointer;
+  background: none; border: 1px solid var(--rule); color: var(--ink); }
+.wl-burger span { display: block; height: 2px; background: currentColor; }
+.wl-burger[aria-expanded="true"] { background: var(--ink); color: var(--paper);
+  border-color: var(--ink); }
+@media (max-width: 900px) { .wl-burger { display: flex; } }
+.wl-menu { border-top: 1px solid var(--rule); background: var(--paper);
+  max-height: 70vh; overflow-y: auto; }
+.wl-menu-in { display: grid; gap: 22px; padding: 20px; }
+.wl-menu-lang:empty { display: none; }
+@media (min-width: 480px) { .wl-menu-lang { grid-column: 1 / -1; } }
+.wl-menu-lang .wl-lang-select { width: auto; max-width: none; font-size: 14px; padding: 9px 8px; }
+@media (min-width: 480px) { .wl-menu-in { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
+.wl-menu-col { display: flex; flex-direction: column; gap: 2px; }
+.wl-menu-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft); margin: 0 0 8px; }
+.wl-menu a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink);
+  text-decoration: none; font-family: var(--disp); font-size: 16px; padding: 7px 0; }
+.wl-menu a:hover { color: var(--accent); text-decoration: none; }
+.wl-menu a[aria-current="page"] { font-weight: 600;
+  box-shadow: inset 0 -2px 0 0 var(--ink); }
+.wl-menu .wl-gh { width: 15px; height: 15px; fill: currentColor; }
+
+.wl-src { display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink); padding: 6px; flex: none; }
+.wl-src svg { width: 21px; height: 21px; fill: currentColor; }
+.wl-src:hover { color: var(--accent); }
+@media (min-width: 1180px) { .wl-src svg { width: 23px; height: 23px; } }
 .wl-theme { display: inline-flex; align-items: center; cursor: pointer;
   background: transparent; color: var(--ink-soft); border: 1px solid var(--rule);
   padding: 8px 9px; line-height: 0; }
@@ -158,61 +194,72 @@
 .wl-lang-select:hover { border-color: var(--ink); }
 .wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* --- the split bar (splitbar.js): shared by Perfect Price and Perfect Team
+   ------------------------------------------------------------------- */
+/* the whole split, at a glance and under the thumb: one bar, one segment per
+   role, and a handle on every boundary. Dragging a handle moves effort from
+   one role to its neighbour, so the project stays whole by construction. */
+.effortbar { position: relative; display: flex; width: 100%; height: 46px; margin: 0 0 14px;
+  border: 1px solid var(--line-strong); background: var(--surface-2);
+  touch-action: none; user-select: none; }
+.effortseg { position: relative; width: 0; min-width: 0; overflow: hidden; }
+/* the label floats above its segment rather than sitting inside it: text in
+   the flow would set how narrow the bar can be, and "Full-stack developer ·
+   45%" is wider than a phone */
+.effortlabel { position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; padding: 0 6px; overflow: hidden; white-space: nowrap;
+  font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px;
+  font-weight: 600; }
+.effortbar.smooth .effortseg, .effortbar.smooth .grip { transition: flex-basis .2s ease, inset-inline-start .2s ease; }
+.grip { position: absolute; top: -5px; bottom: -5px; width: 26px; margin-inline-start: -13px;
+  display: flex; align-items: center; justify-content: center; cursor: ew-resize;
+  background: none; border: 0; padding: 0; touch-action: none; z-index: 2; }
+.grip::before { content: ""; width: 4px; height: 100%; background: var(--ink);
+  border: 1px solid var(--surface); }
+.grip:hover::before, .grip:focus-visible::before { background: var(--accent); width: 6px; }
+.grip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grip.dragging::before { background: var(--accent); width: 6px; }
+@media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
+
 /* --- site header, copied from welance.com's (chrome.js) ----------------- */
 .wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
   border-bottom: 1px solid var(--rule); }
 .wl-head-in { height: 76px; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
-@media (min-width: 1024px) { .wl-head-in { height: 92px; padding: 0 32px; gap: 20px; } }
-/* welance.com carries three nav items; we carry five, so the full proportions
-   only arrive when there is genuinely room for them */
+@media (min-width: 1180px) { .wl-head-in { height: 92px; padding: 0 32px; gap: 20px; } }
+/* welance.com carries three nav items; we carry five plus a language select,
+   so each step up in size waits until five names, the select and the pill all
+   genuinely fit on one line — 1024 is a tablet, and there they do not */
 @media (min-width: 1440px) { .wl-head-in { height: 100px; padding: 0 48px; gap: 24px; } }
-.wl-brandline { display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;
-  column-gap: 10px; align-items: center; flex: none; color: var(--ink); text-decoration: none; }
-.wl-machine { grid-row: 1 / 3; width: 92px; height: 33px; overflow: visible; }
-@media (min-width: 1024px) { .wl-machine { width: 100px; height: 36px; } }
-@media (min-width: 1440px) { .wl-machine { width: 116px; height: 41px; } }
-/* the sticks draw themselves in, the team snaps out */
-.wl-machine [class^="wl-m-"] { stroke-dasharray: 60; stroke-dashoffset: 60;
-  animation: wl-m-draw .5s cubic-bezier(.6,0,.3,1) forwards; }
-.wl-m-in { animation-delay: .05s; } .wl-m-box { animation-delay: .2s; }
-.wl-m-stamp { animation-delay: .4s; } .wl-m-out { animation-delay: .55s; }
-.wl-m-a { animation-delay: .7s; } .wl-m-c { animation-delay: .78s; }
-.wl-m-b { animation-delay: .86s; } .wl-m-go { animation-delay: 1s; }
-.wl-m-tick { animation-delay: 1.1s; }
-@keyframes wl-m-draw { to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .wl-machine [class^="wl-m-"] { animation: none; stroke-dashoffset: 0; }
-}
+.wl-brandline { display: flex; flex-direction: column; justify-content: center;
+  gap: 3px; flex: none; color: var(--ink); text-decoration: none; }
 .wl-brandline:hover { text-decoration: none; }
 .wl-project { font-family: var(--disp); font-size: 22px; font-weight: 600; line-height: 1;
-  letter-spacing: -.02em; align-self: end; }
-@media (min-width: 1024px) { .wl-project { font-size: 24px; } }
+  letter-spacing: -.02em; }
+@media (min-width: 1180px) { .wl-project { font-size: 24px; } }
 @media (min-width: 1440px) { .wl-project { font-size: 28px; } }
 .wl-project .b { color: var(--accent); }
 .wl-origin { display: flex; align-items: center; gap: 5px; font-family: var(--mono);
-  font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); align-self: start; }
+  font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); }
 .wl-mark { display: inline-flex; }
 .wl-mark .wl-logo { width: 60px; height: 15px; }
-@media (max-width: 560px) { .wl-origin { display: none; } }
-/* small screens: the machine and the name shrink together so the header
-   never widens the document (the band test catches this) */
+@media (max-width: 760px) { .wl-origin { display: none; } }
+/* small screens: the name shrinks so the header never widens the document
+   (the band test catches this) */
 @media (max-width: 640px) {
   .wl-head-in { gap: 8px; padding: 0 12px; }
-  .wl-brandline { min-width: 0; column-gap: 7px; }
-  .wl-machine { width: 52px; height: 19px; }
+  .wl-brandline { min-width: 0; }
   .wl-project { font-size: 14.5px; }
   .wl-head-right { gap: 6px; min-width: 0; }
   /* the select keeps the flag and the code; the full name needs room it
      does not have on a phone */
   .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 4px; }
-  .wl-theme { padding: 7px; }
 }
 .wl-nav { display: flex; align-items: center; gap: 26px; margin-inline-start: auto; }
-@media (min-width: 1024px) { .wl-nav { gap: 22px; } }
+@media (min-width: 1180px) { .wl-nav { gap: 22px; } }
 @media (min-width: 1440px) { .wl-nav { gap: 40px; } }
 .wl-nav-item { font-family: var(--disp); font-size: 17px; font-weight: 600;
   line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
-@media (min-width: 1024px) { .wl-nav-item { font-size: 16.5px; } }
+@media (min-width: 1180px) { .wl-nav-item { font-size: 16.5px; } }
 @media (min-width: 1440px) { .wl-nav-item { font-size: 18px; } }
 .wl-nav-item:hover { color: var(--accent); text-decoration: none; }
 .wl-nav-item[aria-current="page"] { box-shadow: 0 2px 0 0 var(--ink); }
@@ -222,8 +269,47 @@
   color: var(--ink); text-decoration: none; white-space: nowrap;
   transition: background 150ms ease, color 150ms ease; }
 .wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
-@media (max-width: 900px) { .wl-nav { display: none; } .wl-head-right { margin-inline-start: auto; } }
-@media (max-width: 560px) { .wl-pill { display: none; } }
+@media (max-width: 900px) {
+  .wl-nav { display: none; }
+  .wl-head-right { margin-inline-start: auto; }
+  /* the switch shows the flag and the code from here down (see i18n.js), so it
+     no longer needs room for "Português (BR)" */
+  .wl-lang-select { width: 82px; max-width: 82px; font-size: 13px; padding: 8px 4px; }
+  .wl-pill { font-size: 14px; padding: 9px 14px; }
+}
+/* the awkward middle: five names, a language select and the pill all want to
+   be on one line and there is not quite room. Rather than drop the navigation
+   on a tablet, everything tightens and the origin line stands down. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .wl-head-in { gap: 10px; padding: 0 16px; }
+  .wl-origin { display: none; }
+  .wl-nav { gap: 14px; }
+  .wl-nav-item { font-size: 14.5px; }
+  .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 6px; }
+  .wl-pill { font-size: 14px; padding: 9px 15px; }
+}
+/* the pill is the one thing on the page that leads somewhere else: it earns
+   its room on a phone, and the rest of the header gives way for it */
+@media (max-width: 560px) {
+  .wl-pill { font-size: 13px; padding: 8px 12px; }
+  /* an explicit width, or the select sizes itself to its longest option even
+     though the closed label is now two letters */
+  .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 2px; }
+}
+@media (max-width: 400px) {
+  .wl-project { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; }
+  .wl-brandline { min-width: 0; flex: 0 1 auto; }
+  .wl-pill { font-size: 11.5px; padding: 7px 8px; letter-spacing: -.01em; }
+  .wl-src { margin-inline: -2px; }
+  /* only the flag: the list still names every language when you open it */
+  .wl-lang-select { width: 46px; max-width: 46px; font-size: 12px; padding: 6px 0; }
+  .wl-head-in { gap: 4px; padding: 0 6px; }
+  /* the header has to hold in every language, not in English: "Encontre um
+     time" is a third longer than "Find a team", and at 320px that decides it */
+  .wl-src { padding: 2px; }
+  .wl-src svg { width: 18px; height: 18px; }
+}
 
 /* --- breadcrumb line under the header ---------------------------------- */
 .wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px 0;
@@ -239,7 +325,7 @@
 /* --- site footer, copied from welance.com's (chrome.js) ----------------- */
 .wl-foot { display: block; margin-top: 72px; padding: 0; border: 0; max-width: none;
   background: var(--paper); color: var(--ink); font-family: var(--disp); font-size: 16px; }
-.wl-foot-cta { background: var(--ink); color: var(--paper); }
+.wl-foot-cta { background: var(--slab); color: var(--on-slab); }
 .wl-foot-cta-in { max-width: var(--maxw); margin: 0 auto; padding: 44px 24px;
   display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
 .wl-foot-cta h2 { font-family: var(--disp); font-weight: 600; margin: 0;
@@ -247,14 +333,21 @@
 .wl-foot-cta h2 .b { color: var(--wl-y); }
 .wl-cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .wl-cta-btn { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
-  border: 2px solid var(--paper); background: var(--paper); color: var(--ink);
+  border: 2px solid var(--on-slab); background: var(--on-slab); color: var(--slab);
   padding: 14px 24px; text-decoration: none; white-space: nowrap;
   transition: background 150ms ease, color 150ms ease; }
-.wl-cta-btn:hover { background: transparent; color: var(--paper); text-decoration: none; }
-.wl-cta-btn.ghost { background: transparent; color: var(--paper); border-color: #4a4a4a; }
-.wl-cta-btn.ghost:hover { border-color: var(--paper); background: transparent; color: var(--paper); }
+.wl-cta-btn:hover { background: transparent; color: var(--on-slab); text-decoration: none; }
+.wl-cta-btn.ghost { background: transparent; color: var(--on-slab); border-color: #6a6a6a; }
+.wl-cta-btn.ghost:hover { border-color: var(--on-slab); background: transparent; color: var(--on-slab); }
 .wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
-.wl-foot-top { display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start; }
+/* Two columns: who we are on one side, where to go on the other — and the
+   links split in two again, because one list of twelve is a list nobody
+   finishes reading. */
+.wl-foot-top { display: grid; gap: 40px; align-items: start; }
+@media (min-width: 900px) { .wl-foot-top { grid-template-columns: 1.1fr 1fr; gap: 48px; } }
+.wl-foot-who { display: grid; gap: 24px; }
+.wl-foot-cols { display: grid; gap: 28px; }
+@media (min-width: 480px) { .wl-foot-cols { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
 .wl-foot-mark { flex: none; color: var(--ink); }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
 .wl-foot-offices { display: grid; grid-template-columns: 1fr; gap: 18px; }
@@ -266,16 +359,17 @@
   text-underline-offset: .125em; }
 .wl-office a:hover { color: var(--accent); }
 .wl-foot-links { display: flex; flex-direction: column; gap: 4px; }
-.wl-foot-links:first-of-type { margin-inline-start: auto; }
+
 .wl-foot-links a { display: inline-flex; align-items: center; gap: 7px; }
 .wl-gh { width: 14px; height: 14px; fill: currentColor; flex: none; }
 .wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
 .wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
-@media (max-width: 900px) { .wl-foot-links:first-of-type { margin-inline-start: 0; } }
+
 .wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
 .wl-foot-bottom p { margin: 0; }
-.wl-foot-bottom nav { display: flex; gap: 8px; }
+.wl-foot-bottom nav { display: flex; gap: 8px; align-items: center; }
+.wl-foot-bottom .wl-theme { padding: 5px 8px; }
 .wl-foot-bottom a { color: var(--ink); text-decoration: none; }
 .wl-foot-bottom a:hover { color: var(--accent); }
 
@@ -294,19 +388,19 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 /* --- code blocks: tabs, copy, and a two-tone dark surface ----------------
    The modern docs pattern (tabs + copy + per-language colour), built from
    nothing: the highlighting lives in code.js, the markup stays plain text. */
-.code { border: 1px solid var(--ink); background: var(--ink); margin: 0 0 12px; overflow: hidden; }
+.code { border: 1px solid var(--slab); background: var(--slab); margin: 0 0 12px; overflow: hidden; }
 .code-bar { display: flex; align-items: stretch; justify-content: space-between;
   gap: 12px; border-bottom: 1px solid #232323; }
 .code-tabs { display: flex; }
 .code-tabs button, .code-copy { font-family: var(--mono); font-size: 11.5px;
   letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
-  color: #8a8a8a; padding: 10px 14px; }
-.code-tabs button:hover, .code-copy:hover { color: var(--paper); }
-.code-tabs button[aria-pressed="true"] { color: var(--paper); box-shadow: inset 0 -2px 0 var(--wl-y); }
+  color: var(--on-slab-soft); padding: 10px 14px; }
+.code-tabs button:hover, .code-copy:hover { color: var(--on-slab); }
+.code-tabs button[aria-pressed="true"] { color: var(--on-slab); box-shadow: inset 0 -2px 0 var(--wl-y); }
 .code-copy { white-space: nowrap; }
 .code-copy.done { color: var(--wl-cy); }
 .code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
-  text-transform: uppercase; color: #8a8a8a; padding: 10px 14px; }
+  text-transform: uppercase; color: var(--on-slab-soft); padding: 10px 14px; }
 .code pre { margin: 0; padding: 14px 16px 16px; background: transparent; border: 0;
   font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
 .code .s  { color: var(--wl-y); }      /* strings */
@@ -316,7 +410,7 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 .code .u  { color: var(--wl-y); text-decoration: underline; text-underline-offset: .18em; }
 .code .fl { color: #8a8a8a; }          /* -X -H -d */
 .code .cm { color: #7d7d7d; font-style: italic; }
-.code .p  { color: #6d6d6d; }          /* punctuation */
+.code .p  { color: #8e8e8e; }          /* punctuation */
 
 /* --- full-width bands: break the scroll with brand colour ----------------
    Paints beyond the container without touching layout width, so no page

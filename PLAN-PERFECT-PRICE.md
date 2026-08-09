@@ -10,7 +10,7 @@
 > decisions, the permalink idea) are **still owed** and queue after it.
 
 **Goal.** Publish **Perfect Price** as the second public surface of this project,
-beside *The Perfect Brief*: a page explaining how Welance prices collaborations,
+beside *The Perfect Brief*: a page explaining how welance prices collaborations,
 with a calculator anyone can use and check.
 
 Perfect Brief is about being clear on **what the work is**.
@@ -91,7 +91,7 @@ nobody can check. Then the levels, then the calculator, then the open decisions
 — publishing those unresolved is the honest move, and it invites the argument
 rather than hiding it.
 
-**Acceptance:** a reader who has never heard of Welance can compute their own
+**Acceptance:** a reader who has never heard of welance can compute their own
 split and say where they disagree.
 
 ## Phase 3 — Decide what is public

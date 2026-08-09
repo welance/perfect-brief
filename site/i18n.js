@@ -29,7 +29,8 @@
     { code: "pt-BR", name: "Português (BR)", dir: "ltr", flag: "🇧🇷" },
     { code: "vi",    name: "Tiếng Việt",     dir: "ltr", flag: "🇻🇳" },
     { code: "ar",    name: "عربي",           dir: "rtl", flag: "🇵🇸" },
-    { code: "es",    name: "Español",        dir: "ltr", flag: "🇪🇸" }
+    { code: "es",    name: "Español",        dir: "ltr", flag: "🇪🇸" },
+    { code: "zh",    name: "中文",           dir: "ltr", flag: "🇨🇳" }
   ];
   var STORE = "welance-lang";
   var dicts = {};
@@ -69,6 +70,15 @@
     });
   }
 
+  // A closed <select> shows the text of the option that is selected, and on a
+  // phone "🇧🇷 Português (BR)" does not fit beside everything else in the
+  // header. Only the chosen one is shortened, so the list you open still names
+  // every language in full — a language you cannot read is one you cannot pick.
+  // the same width at which the header drops its nav: from there down, every
+  // pixel is spoken for
+  var narrow = window.matchMedia("(max-width: 900px)");
+  var tiny = window.matchMedia("(max-width: 400px)");
+
   function renderSwitcher() {
     var host = document.getElementById("langswitch");
     if (!host) return;
@@ -81,7 +91,13 @@
       o.value = l.code;
       var d = dicts[l.code];
       var draft = l.code !== "en" && d && d.reviewed === false;
-      o.textContent = l.flag + " " + l.name + (draft ? " · draft" : "");
+      var chosen = l.code === current;
+      o.textContent = chosen && tiny.matches
+        ? l.flag
+        : chosen && narrow.matches
+          ? l.flag + " " + l.code.split("-")[0].toUpperCase()
+          : l.flag + " " + l.name + (draft ? " · draft" : "");
+      o.setAttribute("aria-label", l.name);
       if (draft) o.title = "machine-drafted — awaiting native-speaker review";
       if (l.code === current) o.selected = true;
       sel.appendChild(o);
@@ -90,10 +106,25 @@
     host.appendChild(sel);
   }
 
-  function set(code) {
+  // crossing the width where the short label starts or stops making sense
+  if (narrow.addEventListener) {
+    narrow.addEventListener("change", renderSwitcher);
+    tiny.addEventListener("change", renderSwitcher);
+  }
+
+  function set(code, guessed) {
     if (!meta(code)) code = "en";
     current = code;
     try { localStorage.setItem(STORE, code); } catch (e) {}
+    // The address follows the choice, so a page can be shared as it was read.
+    // A guess is not a choice: a browser's Accept-Language must never end up
+    // in a URL someone then sends to somebody else.
+    try {
+      var want = guessed ? null : pathFor(code);
+      if (want && want !== location.pathname + location.search + location.hash) {
+        history.replaceState(null, "", want);
+      }
+    } catch (e) {}
     var m = meta(code);
     document.documentElement.setAttribute("lang", code);
     document.documentElement.setAttribute("dir", m.dir);
@@ -126,10 +157,28 @@
     return null;
   }
 
+  /* /it/method.html — the language is part of the address.
+     English keeps the bare paths: it is the content of record, the copy every
+     translation is made from, and giving it a prefix of its own would move
+     every existing URL for nothing. */
+  function fromPath() {
+    var first = location.pathname.split("/")[1];
+    return first && meta(first) ? first : null;
+  }
+
+  function pathFor(code) {
+    var rest = location.pathname.replace(/^\/[^/]+/, function (m) {
+      return meta(m.slice(1)) ? "" : m;
+    });
+    return (code === "en" ? "" : "/" + code) + (rest || "/") + location.search + location.hash;
+  }
+
   function initial() {
     try {
       var q = new URLSearchParams(location.search).get("lang");
       if (q && meta(q)) return q;
+      var routed = fromPath();
+      if (routed) return routed;
       var stored = localStorage.getItem(STORE);
       if (stored && meta(stored)) return stored;
       var guess = fromBrowser();
@@ -139,7 +188,7 @@
   }
 
   root.WelanceI18n = {
-    LANGS: LANGS, STORE: STORE,
+    LANGS: LANGS, STORE: STORE, pathFor: pathFor,
     register: register, t: t, set: set,
     mountSwitcher: renderSwitcher, // chrome.js re-mounts after re-rendering the header
     get lang() { return current; },
@@ -149,9 +198,11 @@
   function boot() {
     var lang = initial();
     var guessed = false;
-    try { guessed = !new URLSearchParams(location.search).get("lang") && !localStorage.getItem(STORE); }
-    catch (e) {}
-    set(lang);
+    try {
+      guessed = !new URLSearchParams(location.search).get("lang") &&
+        !fromPath() && !localStorage.getItem(STORE);
+    } catch (e) {}
+    set(lang, guessed);
     // a guess is a courtesy, not a decision: only remember what a human picks
     if (guessed) { try { localStorage.removeItem(STORE); } catch (e) {} }
   }

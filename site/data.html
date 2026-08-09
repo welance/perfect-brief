@@ -9,17 +9,18 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
-<link rel="stylesheet" href="welance.css?v=20">
-<script src="i18n.js?v=2"></script>
-<script src="i18n/de.js?v=1"></script>
-<script src="i18n/it.js?v=1"></script>
-<script src="i18n/ur.js?v=1"></script>
-<script src="i18n/pt-BR.js?v=1"></script>
-<script src="i18n/vi.js?v=1"></script>
-<script src="i18n/ar.js?v=1"></script>
-<script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=9"></script>
-<script src="code.js?v=1"></script>
+<link rel="stylesheet" href="welance.css">
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
+<script src="code.js"></script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
@@ -73,7 +74,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <tr>
         <td class="k" data-i18n="data.r2.k">The verdicts</td>
         <td data-i18n="data.r2.a">Back to you. Each carries a short quote copied verbatim from your brief as evidence.</td>
-        <td><span class="yes" data-i18n="data.r2.b">cached 24h</span> <span data-i18n="data.r2.c">— keyed by a hash of the brief, so the same brief is not re-judged and re-charged. Send <code>no_cache: true</code> and nothing is written.</span></td>
+        <td><span class="yes" data-i18n="data.r2.b">cached 24h</span> <span data-i18n-html="data.r2.c">— keyed by a hash of the brief, so the same brief is not re-judged and re-charged. This holds even when you bring your own key: the cache is shared, so an identical brief may be answered from it rather than charged again. Send <code>no_cache: true</code> and nothing is read or written.</span></td>
       </tr>
       <tr>
         <td class="k" data-i18n="data.r3.k">Your model key</td>
@@ -103,6 +104,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   -d '{"brief":"…","judge":"llm","model":"anthropic/claude-sonnet-4.6","no_cache":true}'</pre>
   </div>
   <p data-i18n-html="data.mcpkey">The <a href="integrate.html#mcp">MCP server</a> reads the same key from <code>PB_LLM_KEY</code>, so an assistant on your machine can score briefs entirely on your own account.</p>
+  <p data-i18n-html="data.secpage">Handing your key to somebody else's server deserves more than our word for it. <a href="security.html">Every line of ours that touches it</a> — and the test that fails if that ever changes — is written out on its own page.</p>
 
   <div class="eyebrow"><span data-i18n="data.eb3">if that is not enough</span></div>
   <p data-i18n-html="data.custom">Some briefs cannot leave a perimeter, and some organisations need a data-processing agreement, a named model, or the whole thing running somewhere else. That is a conversation, not a checkbox: write to <a href="mailto:hello@welance.com">hello@welance.com</a> and we will tell you plainly what is possible — including running it on models we select, or handing you the deployment to run yourself. It is MIT-licensed; self-hosting is a right, not a favour.</p>

@@ -9,17 +9,19 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
-<link rel="stylesheet" href="welance.css?v=20">
-<script src="pricing.js?v=1"></script>
-<script src="i18n.js?v=2"></script>
-<script src="i18n/de.js?v=1"></script>
-<script src="i18n/it.js?v=1"></script>
-<script src="i18n/ur.js?v=1"></script>
-<script src="i18n/pt-BR.js?v=1"></script>
-<script src="i18n/vi.js?v=1"></script>
-<script src="i18n/ar.js?v=1"></script>
-<script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=9"></script>
+<link rel="stylesheet" href="welance.css">
+<script src="pricing.js"></script>
+<script src="splitbar.js"></script>
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
 <style>
   /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
      Component vocabulary shared with price.html: same names, same look.
@@ -30,6 +32,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
     --line: var(--rule); --line-strong: var(--rule);
     --person: var(--wl-c); --person-soft: var(--fail-bg);
+    /* coral as *text* on a light page is 2.56:1 — this is the same hue, dark
+       enough to read; in the dark theme the band colour already reads */
+    --person-ink: #b83c12;
     --company: var(--rule-strong); --company-soft: var(--pass-bg);
     --geo: var(--wl-p); --geo-soft: var(--accent-bg);
     --head: var(--wl-y);
@@ -38,6 +43,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--disp); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
   .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -46,7 +53,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
   .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
-  .topbar { display: flex; justify-content: flex-start; margin: 14px 0 20px; }
   .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
   .head-grid .txt { min-width: 0; }
   .t-ident { flex: none; width: 210px; margin-top: 30px; }
@@ -60,7 +66,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   @media (max-width: 700px) { .t-ident { display: none; } }
   .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
-  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+  .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
 
   .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
   @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
@@ -89,7 +95,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   /* each role: the name gets a full-width line of its own, the parameters
      sit below it — a role you cannot read is a role you cannot argue with */
   .role-head, .role { display: grid;
-    grid-template-columns: 58px minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
+    grid-template-columns: minmax(0,1.2fr) minmax(0,1.2fr) 84px 100px 26px;
     gap: 8px; align-items: center; }
   .role > input[type="text"] { grid-column: 1 / -1; font-size: 15px; font-weight: 600;
     padding: 9px 12px; }
@@ -109,27 +115,37 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     .role { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 26px;
       gap: 6px; padding: 9px 0; }
     .role > input[type="text"] { grid-column: 1 / 4; grid-row: 1; }
-    .role > :nth-child(7) { grid-column: 4; grid-row: 1; }     /* × beside the name */
-    .role > :nth-child(2) { grid-column: 1; grid-row: 2; }     /* weight */
-    .role > :nth-child(3) { grid-column: 2 / 5; grid-row: 2; } /* level */
-    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* country */
-    .role > :nth-child(5) { grid-column: 3; grid-row: 3; }     /* own rate */
-    .role > :nth-child(6) { grid-column: 1 / 4; grid-row: 4; text-align: start; } /* ceiling */
+    .role > :nth-child(6) { grid-column: 4; grid-row: 1; }     /* × beside the name */
+    .role > :nth-child(2) { grid-column: 1 / 3; grid-row: 2; } /* level */
+    .role > :nth-child(3) { grid-column: 3 / 5; grid-row: 2; } /* country */
+    .role > :nth-child(4) { grid-column: 1 / 3; grid-row: 3; } /* own rate */
+    .role > :nth-child(5) { grid-column: 3 / 5; grid-row: 3; text-align: end; } /* ceiling */
     .role select { font-size: 12.5px; padding: 6px 4px; }
   }
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
     cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
-  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .iconbtn:hover { color: var(--person-ink); border-color: var(--line-strong); }
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
     color: var(--ink-2); padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
-  .addbtn:hover { border-color: var(--person); color: var(--person); }
-  .weightflag { margin: 10px 0 0; font-size: 12.5px; color: var(--partial); }
-
+  .addbtn:hover { border-color: var(--person-ink); color: var(--person-ink); }
+  .weightflag { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+  /* the note explains the bar and the reset undoes it: both belong to the
+     split, so they sit together between the bar and the roles it describes */
+  .barfoot { display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 10px; margin: 0 0 18px; }
   .splitbar { display: flex; height: 42px; overflow: hidden; border: 1px solid var(--line-strong); }
   .splitbar > div { display: flex; align-items: center; justify-content: center;
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
     font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
   .sb-people { background: var(--person); }
+
+  /* Measured, not guessed: white on coral is 2.56:1 and on yellow 1.56:1 —
+     both illegible. Black on them is 8.2 and 13.4. The neutral band is the
+     only one that swaps with the theme, so it is the only label that swaps. */
+  .splitbar > .sb-person, .splitbar > .sb-people, .splitbar > .sb-head { color: #0a0a0a; }
+  .splitbar > .sb-geo, .splitbar > .sb-company { color: #fff; }
+  :root[data-theme="dark"] .splitbar > .sb-company { color: #0a0a0a; }
+  :root[data-theme="dark"] { --person-ink: var(--wl-c); }
   .sb-head { background: var(--head); color: var(--ink); }
   .sb-geo { background: var(--geo); }
   .sb-company { background: var(--company); }
@@ -154,7 +170,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   .check { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; }
   .checkval { font-family: var(--mono); font-variant-numeric: tabular-nums;
-    font-size: 20px; font-weight: 600; padding: 4px 0 6px; color: var(--person); }
+    font-size: 20px; font-weight: 600; padding: 4px 0 6px; color: var(--person-ink); }
   .checknote { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-2); max-width: 66ch; }
 
   .wrap footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
@@ -194,15 +210,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </header>
 
-  <div class="topbar">
-    <button class="lang reset" id="reset" type="button" data-i18n="team.reset">Reset to defaults</button>
-  </div>
-
   <div class="cols">
     <div>
       <section class="card">
         <h2 data-i18n="team.c1h">The team, role by role</h2>
-        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. For each role: its weight in the project, the level it is delivered at, the member's cost-of-living coefficient, and their own rate — for the no-deal check.</p>
+        <p class="hint" data-i18n="team.c1hint">The name is the team's, not a person's. Drag the bar to split the effort between roles — together they always describe one whole project. For each role: the level it is delivered at, where the member lives, and their own rate — for the no-deal check.</p>
         <div class="rolebar">
           <div class="field grow"><label for="teamname" data-i18n="team.l.team">Team</label>
             <input type="text" id="teamname" value="Team — product rebuild">
@@ -218,11 +230,15 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
             </select>
             <span class="subnote" data-i18n="team.l.floornote">A guarantee: wherever someone lives, pay never drops below this.</span></div>
         </div>
+        <div class="effortbar" id="effortbar" aria-hidden="true"></div>
+        <div class="barfoot">
+          <p class="weightflag" id="weightflag"></p>
+          <button class="lang reset" id="reset" type="button" data-i18n="team.reset">Reset to defaults</button>
+        </div>
         <div class="role-head">
-          <div data-i18n="team.th2">Weight</div><div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
+          <div data-i18n="team.th3">Level</div><div data-i18n="team.th4">Country</div><div data-i18n="team.th6">Own rate</div><div style="text-align:end" data-i18n="team.th7">Ceiling</div><div></div>
         </div>
         <div id="rows"></div>
-        <p class="weightflag" id="weightflag" hidden>Weights are read as shares of their sum.</p>
         <button class="addbtn" id="add" type="button" data-i18n="team.add">+ Add role</button>
       </section>
 
@@ -346,6 +362,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
   var state = load();
 
+  /* The shares are a split of one project: see splitbar.js, which Perfect
+     Price uses for exactly the same question about the parts of a role. */
+  var SB = window.WelanceSplitBar;
+  SB.rescale(state.rows);  // whatever was stored, or edited by hand, is one project
+  var bar;
+
   function renderRows() {
     var host = $("rows");
     host.textContent = "";
@@ -357,13 +379,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       name.type = "text"; name.value = r.role; name.setAttribute("aria-label", "Role");
       name.addEventListener("input", function () { r.role = name.value; save(); });
       row.appendChild(name);
-
-      var w = document.createElement("input");
-      w.type = "number"; w.min = "0"; w.step = "5"; w.value = String(r.weight);
-      w.setAttribute("aria-label", "Weight");
-      w.title = "share of the project's effort — read as part of the sum";
-      w.addEventListener("input", function () { r.weight = Number(w.value) || 0; save(); render(); });
-      row.appendChild(w);
 
       var lv = document.createElement("select");
       lv.setAttribute("aria-label", "Level");
@@ -408,7 +423,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       var del = document.createElement("button");
       del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
       del.setAttribute("aria-label", "remove role");
-      del.addEventListener("click", function () { state.rows.splice(i, 1); save(); render(); });
+      del.addEventListener("click", function () {
+        if (state.rows.length === 1) return;  // a team of nobody prices nothing
+        state.rows.splice(i, 1); SB.rescale(state.rows); save(); render();
+      });
       row.appendChild(del);
 
       host.appendChild(row);
@@ -424,6 +442,26 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   function render() {
     renderRows();
+    if (!bar) {
+      bar = SB.mount($("effortbar"), {
+        rows: function () { return state.rows; },
+        name: function (i) { return state.rows[i].role || tt("team.d.unnamed", "unnamed role"); },
+        onChange: function () { save(); paint(); },
+        tip: tt("team.d.sharetip",
+          "Share of the project's effort. Drag a boundary and effort moves from one role to the next, so the team always describes one whole project."),
+        gripLabel: function (a, b) {
+          return fillT(tt("team.d.griplabel", "effort between {a} and {b}"), { a: a, b: b });
+        }
+      });
+    } else {
+      bar.rebuild();
+    }
+    paint();
+  }
+
+  /* Everything derived, without touching the row structure — so a share can
+     rebalance every other row while you are still typing in one of them. */
+  function paint() {
     var R = Number($("rate").value) || 0;
     var res = P.computeTeam(R, computeInput());
 
@@ -491,10 +529,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       { R: eur(R), min: eur(res.minViableR) });
     v.appendChild(p);
 
-    $("weightflag").hidden = false;
-    var tw = state.rows.reduce(function (s, r) { return s + r.weight; }, 0);
-    $("weightflag").textContent = fillT(
-      tt("team.d.wsum", "Weights sum to {w} — read as shares of that sum."), { w: tw });
+    if (bar) bar.paint();
+
+    $("weightflag").textContent = tt("team.d.wsum",
+      "The shares always describe one whole project: move one and the others give way.");
 
     var ck = SIZE_CHECK[state.size] || SIZE_CHECK.m;
     $("checkval").textContent = tt(ck.key, ck.en);
@@ -514,7 +552,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     save(); render();
   });
   $("add").addEventListener("click", function () {
-    state.rows.push({ role: "", weight: 10, level: 1, country: "DE", coef: 1.00, own: 40 });
+    // a new role arrives with an even share; the others make room in proportion
+    state.rows.push({ role: "", weight: 0, level: 1, country: "DE", coef: 1.00, own: 40 });
+    SB.setShare(state.rows, state.rows.length - 1, Math.round(100 / state.rows.length));
     save(); render();
   });
   $("reset").addEventListener("click", function () {

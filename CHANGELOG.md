@@ -6,6 +6,91 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.6.0] - 2026-08-09
+
+The API asks you to send it an `sk-` key, and until now the only answer to
+"why would I do that?" was a paragraph promising we are careful. A promise is
+what a sceptical reader discounts, and nothing in the repository failed if it
+stopped being true. Both halves of that are now fixed.
+
+### Added
+- **`tests/test_byok_leak.py` — the claim as a test.** It drives a real
+  `/v1/score` request with a sentinel key, then hunts that sentinel through
+  every channel the service can emit on — every log record, the response body,
+  the response headers, and everything handed to Redis — and fails unless it
+  appears in exactly one place: the `Authorization` header of the outbound
+  provider call. A second case forces a 401 from the provider and proves the
+  502 error path carries no key. Verified it can fail: a single `log.debug` of
+  the key turns both cases red. Its purpose is not today's audit but the
+  well-meaning debug line somebody adds next year.
+- **`site/security.html`** — the same argument for a reader who does not want
+  to read Python: the four hops a key takes, the four places it provably is
+  not and why each is impossible rather than merely promised, the canary, the
+  honest limits, and what to do instead. Linked from `data.html`,
+  `SECURITY.md`, the README, and the console's key field. Prose is translated
+  into all eight locales; file paths, function names and test names are not,
+  so a drifting translation can soften a sentence but never contradict the
+  code beside it.
+
+### Fixed
+- **The Redis URL is no longer logged.** `cache.connect` printed it at INFO on
+  every boot; if that URL carries a password, our own secret was going to
+  stdout.
+
+### Changed
+- **Both pages now admit that bring-your-own-key verdicts are cached.** The
+  no-cache guard only ever existed on the suggestion path, so a `/v1/score`
+  call made with your key reads and writes the shared verdict cache. No key
+  material reaches Redis and a cache entry can only be hit by somebody who
+  already has the exact brief text — but the verdict you paid for can serve
+  someone else. `data.html` said nothing about this; once a page invites
+  scrutiny, silence reads as concealment.
+
+## [1.5.1] - 2026-08-02
+
+A release nobody could see. 1.5.0 deployed correctly — right commit, right
+image, right tag — and then sat behind an hour of cached JavaScript. Asking a
+cache politely turned out not to be enough, so the address of an asset is now
+derived from the asset itself.
+
+### Fixed
+- **Assets are served at an address made from their own bytes.** Every page is
+  rewritten on the way out to point at `/a/<digest>/welance.css`, cached for a
+  year and marked `immutable`. When a file changes, its address changes, and
+  the old one is simply never requested again — no cache anywhere has to be
+  told anything, and there is no configuration to get right.
+- **Pages are never cached** (`Cache-Control: no-cache`): a page is how a new
+  build announces itself, so it must always be fresh.
+- **Query-string cache-busting removed.** The `?v=N` suffixes are gone. They
+  were manual, easy to forget, and a CDN may cache ignoring the query string.
+  Headers alone would not have been enough either — staging showed our
+  `no-cache` rewritten to `max-age=14400` before it reached the browser.
+- The plain paths (`/chrome.js`) still work untouched, so the same `site/`
+  files keep working on GitHub Pages and when opened from disk.
+
+### Changed
+- **The effort split is a bar you drag.** On Perfect Team the shares are no
+  longer free-standing weights read as parts of whatever they happen to add up
+  to. They are percentages of one project, and a handle sits on every boundary:
+  drag it and effort moves from one role to its neighbour, so the total cannot
+  leave 100 — on a phone as on a laptop, with the keyboard as with a thumb.
+  The per-role number field is gone: the split has one home, not two.
+- **The split bar is deliberately colourless.** It is something you set, not
+  something the model concluded, so it uses a neutral ramp mixed from the
+  page's own ink; the brand's colours stay spent on the result below, where
+  they mean something.
+- **"Find a team" stays on the phone.** The one link that leads out of the
+  page was being dropped below 560px. It now holds at 320px in all eight
+  languages — the language switch shortens to its flag and code when closed
+  (the list still names every language in full), and on the narrowest screens
+  the theme toggle stands down, since the theme follows the system anyway.
+- **The header lost its glyph**, and holds its shape at every width — it had
+  been overflowing on tablets (134px at 1024px) since the machine was drawn.
+- **welance is all-lowercase, everywhere.** In every language and every
+  position, including the first word of a sentence; only the JavaScript
+  identifiers a language forces (`WelanceI18n`, `WelancePricing`) keep their
+  capital. A test enforces it across the public pages.
+
 ## [1.5.0] - 2026-08-02
 
 The bar becomes something you can put inside your own tools — and the project

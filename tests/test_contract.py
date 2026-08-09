@@ -13,9 +13,19 @@ import pytest
 # --- the shapes consumers destructure ------------------------------------
 
 SCORE_KEYS = {
-    "score", "band", "decision", "decision_label", "gate", "verdicts",
-    "review_required", "low_confidence", "ruleset_version", "engine",
-    "judge", "model", "cached",
+    "score",
+    "band",
+    "decision",
+    "decision_label",
+    "gate",
+    "verdicts",
+    "review_required",
+    "low_confidence",
+    "ruleset_version",
+    "engine",
+    "judge",
+    "model",
+    "cached",
 }
 VERDICT_KEYS = {"rule_id", "status", "confidence", "quote", "note", "weight", "severity", "gate"}
 GATE_KEYS = {"passed", "missing", "contexts"}
@@ -139,6 +149,110 @@ def test_the_model_never_sets_a_number(client):
     for v in _score(client)["verdicts"]:
         assert "score" not in v
         assert "points" not in v
+
+
+# --- a release must actually reach people --------------------------------
+
+
+def test_a_page_is_never_cached(client):
+    """A page is how a new build announces itself: it must always be fresh."""
+    for path in ["/", "/method.html", "/price.html"]:
+        r = client.get(path)
+        assert r.status_code == 200, path
+        assert r.headers["cache-control"] == "no-cache", path
+
+
+def test_pages_point_at_content_addressed_assets(client):
+    """1.5.0 deployed correctly and served the previous JavaScript for an hour.
+
+    `?v=N` can be collapsed by a CDN and `Cache-Control` can be rewritten
+    before it reaches a browser — staging turned our `no-cache` into
+    `max-age=14400`. An address derived from the bytes survives both.
+    """
+    import re
+
+    html = client.get("/").text
+    assert not re.search(r'(?:href|src)="[\w./-]+\.(?:css|js)\?v=', html), "?v= is back"
+
+    assets = re.findall(r'(?:href|src)="(/a/[0-9a-f]{12}/[\w./-]+\.(?:css|js))"', html)
+    assert assets, "the page still links assets by a name that can go stale"
+
+    r = client.get(assets[0])
+    assert r.status_code == 200
+    assert "immutable" in r.headers["cache-control"]
+
+
+def test_the_plain_asset_path_still_works(client):
+    """The same files are published by GitHub Pages, where nothing rewrites."""
+    r = client.get("/chrome.js")
+    assert r.status_code == 200
+    assert r.headers["cache-control"] == "no-cache"
+
+
+def test_a_new_build_moves_every_asset(client):
+    """The digest is over the bytes, so a changed asset changes every URL."""
+    from app.main import BUILD
+
+    assert len(BUILD) == 12
+    assert client.get(f"/a/{BUILD}/welance.css").status_code == 200
+    assert client.get("/a/000000000000/welance.css").status_code == 404
+    assert client.get(f"/a/{BUILD}/").status_code == 404
+
+
+# --- a language you can link to -------------------------------------------
+
+
+def test_a_language_is_part_of_the_address(client):
+    """/it/method.html is a page you can send someone, not a session state."""
+    import re
+
+    for path, lang, direction in [
+        ("/method.html", "en", "ltr"),
+        ("/it/method.html", "it", "ltr"),
+        ("/ar/team.html", "ar", "rtl"),
+        ("/pt-BR/price.html", "pt-BR", "ltr"),
+        ("/it/", "it", "ltr"),
+    ]:
+        r = client.get(path)
+        assert r.status_code == 200, path
+        assert re.search(rf'<html lang="{lang}" dir="{direction}"', r.text), path
+
+
+def test_english_keeps_the_bare_paths(client):
+    """It is the content of record; giving it a prefix would move every URL."""
+    assert client.get("/en/method.html").status_code == 404
+    assert client.get("/xx/method.html").status_code == 404
+
+
+def test_every_page_names_its_translations(client):
+    """A crawler finds the other languages without running any script."""
+    import re
+
+    html = client.get("/it/method.html").text
+    langs = set(re.findall(r'rel="alternate" hreflang="([\w-]+)"', html))
+    assert {"en", "it", "de", "ar", "pt-BR", "vi", "ur", "es", "x-default"} <= langs
+    assert '<link rel="canonical" href="/it/method.html">' in html
+
+
+def test_the_brand_is_never_capitalised(client):
+    """welance is all-lowercase. Always — including as a sentence's first word.
+
+    Identifiers are exempt only because JavaScript demands them
+    (WelanceI18n, WelancePricing); prose never is.
+    """
+    import pathlib
+    import re
+
+    brand = re.compile(r"Welance(?![A-Za-z0-9])")
+    site = pathlib.Path(__file__).resolve().parent.parent / "site"
+    offenders = [
+        f"{p.name}:{n}"
+        for p in sorted(site.rglob("*"))
+        if p.suffix in {".html", ".js", ".css", ".txt"}
+        for n, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1)
+        if brand.search(line)
+    ]
+    assert not offenders, "welance is written all-lowercase: " + ", ".join(offenders)
 
 
 # --- the ruleset catalogue is the published bar ---------------------------

@@ -1,6 +1,6 @@
 # Perfect Price
 
-**How Welance prices collaborations, and why it works this way.**
+**How welance prices collaborations, and why it works this way.**
 
 A companion to *Perfect Brief*. Where Perfect Brief is about being clear on what
 the work is, Perfect Price is about being clear on what the work is worth and
@@ -23,7 +23,7 @@ compensation data by design — it is meant to be published.
 
 ## 1. The problem this solves
 
-Welance charges a fee on top of the work it brokers and delivers. The stated
+welance charges a fee on top of the work it brokers and delivers. The stated
 rule was: **minimum 30%, higher when the person filling a role is not fully
 self-sufficient in it.**
 

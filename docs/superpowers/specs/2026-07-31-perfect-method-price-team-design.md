@@ -1,11 +1,11 @@
-# The Welance Method, digitalised — Perfect Price · Perfect Team · method page · site-wide i18n
+# The welance Method, digitalised — Perfect Price · Perfect Team · method page · site-wide i18n
 
 **Date:** 2026-07-31 · **Status:** approved design, pre-implementation
 **Owner workstream:** Perfect Price (second workstream, `PLAN-PERFECT-PRICE.md`)
 
 ## 1. What this is
 
-Welance, as an agency, has always done one process in person: take an honest
+welance, as an agency, has always done one process in person: take an honest
 brief, price it transparently, assemble a cross-functional team around it. This
 design digitalises that process end to end and opens it as a **blueprint** —
 the same move already made for the brief bar. Three public concepts, in
@@ -22,7 +22,7 @@ The brief remains **the** principal concept; price and team complement it.
 Why it matters, stated once and reused everywhere: a rigid business unit
 *adapts itself* to a goal and wastes budget doing so; a cross-functional team
 *assembled for* the goal — personally and professionally inclined to it — does
-better work. Welance experiences and solves this as its principal generalist
+better work. welance experiences and solves this as its principal generalist
 problem. Formulas help decide; humans complete the decision (§8).
 
 ## 2. Sitemap

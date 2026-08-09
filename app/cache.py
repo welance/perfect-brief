@@ -24,7 +24,8 @@ async def connect() -> None:
     try:
         _redis = aioredis.from_url(settings().redis_url, decode_responses=True)
         await _redis.ping()
-        log.info("redis connected: %s", settings().redis_url)
+        # Never log the URL itself: it may carry a password (redis://:pw@host).
+        log.info("redis connected")
     except Exception as exc:  # noqa: BLE001
         log.warning("redis unavailable (%s) — running without cache/rate-limit", exc)
         _redis = None

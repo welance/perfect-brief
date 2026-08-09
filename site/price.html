@@ -9,17 +9,19 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
-<link rel="stylesheet" href="welance.css?v=20">
-<script src="pricing.js?v=1"></script>
-<script src="i18n.js?v=2"></script>
-<script src="i18n/de.js?v=1"></script>
-<script src="i18n/it.js?v=1"></script>
-<script src="i18n/ur.js?v=1"></script>
-<script src="i18n/pt-BR.js?v=1"></script>
-<script src="i18n/vi.js?v=1"></script>
-<script src="i18n/ar.js?v=1"></script>
-<script src="i18n/es.js?v=1"></script>
-<script src="chrome.js?v=9"></script>
+<link rel="stylesheet" href="welance.css">
+<script src="pricing.js"></script>
+<script src="splitbar.js"></script>
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
 <style>
   /* tokens, fonts, logo come from welance.css (welance/Directory DNA).
      The names below are this page's original component vocabulary, kept and
@@ -31,6 +33,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     --ink-2: var(--ink-soft); --ink-3: var(--ink-soft);
     --line: var(--rule); --line-strong: var(--rule);
     --person: var(--wl-c); --person-soft: var(--fail-bg);
+    /* coral as *text* on a light page is 2.56:1 — this is the same hue, dark
+       enough to read; in the dark theme the band colour already reads */
+    --person-ink: #b83c12;
     --company: var(--rule-strong); --company-soft: var(--pass-bg);
     --geo: var(--wl-p); --geo-soft: var(--accent-bg);
     --full: var(--pass); --none: #8a8a8a; --focus: var(--accent);
@@ -41,6 +46,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
   .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
 
@@ -62,8 +69,13 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   @keyframes p-draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) { .pd { animation: none; stroke-dashoffset: 0; } }
   @media (max-width: 700px) { .p-ident { display: none; } }
-  .lang.reset { border-style: dashed; }
-  .lang.reset:hover { color: var(--person); border-color: var(--person); }
+  /* the reset sits with what it resets, not above the whole page */
+  .cardfoot { display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: 10px; margin-top: 14px; }
+  .cardfoot .addbtn { margin-top: 0; }
+  .lang.reset { font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+    background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
+  .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
 
   .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
@@ -105,8 +117,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .w-rate { width: 124px; }
   :is(input, select, button, [tabindex]):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
+  .weightnote { margin: 0 0 16px; font-size: 12.5px; color: var(--ink-3); max-width: 62ch; }
   .comp-head, .comp { display: grid;
-    grid-template-columns: minmax(0,1fr) 44px 90px 90px 58px 26px; gap: 8px; align-items: center; }
+    grid-template-columns: minmax(0,1fr) 96px 96px 58px 26px; gap: 8px; align-items: center; }
   .comp-head { font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
     color: var(--ink-3); font-weight: 600; padding: 0 0 8px; border-bottom: 1px solid var(--line); }
   .comp { padding: 11px 0; border-bottom: 1px solid var(--line); }
@@ -117,7 +130,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .comp input[type="number"] { padding: 7px 4px; }
   @media (max-width: 620px) {
     .comp-head { display: none; }
-    .comp { grid-template-columns: 42px minmax(0,1fr) minmax(0,1fr) 52px 26px;
+    .comp { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 52px 26px;
       gap: 6px; padding: 9px 0; }
     .comp > :first-child { grid-column: 1 / -1; }
     .comp select { font-size: 12.5px; padding: 6px 4px; }
@@ -147,11 +160,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   .iconbtn { background: none; border: 1px solid transparent; color: var(--ink-3);
     border-radius: 0; cursor: pointer; font-size: 17px; line-height: 1; padding: 5px 7px; }
-  .iconbtn:hover { color: var(--person); border-color: var(--line-strong); }
+  .iconbtn:hover { color: var(--person-ink); border-color: var(--line-strong); }
   .rowflag { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--partial); }
   .addbtn { margin-top: 14px; background: var(--surface-2); border: 1px dashed var(--line-strong);
     color: var(--ink-2); border-radius: 0; padding: 9px 14px; cursor: pointer; font: inherit; font-size: 14px; }
-  .addbtn:hover { border-color: var(--person); color: var(--person); }
+  .addbtn:hover { border-color: var(--person-ink); color: var(--person-ink); }
 
   .levelbadge { display: flex; align-items: center; gap: 9px; font-family: var(--serif);
     font-size: 24px; font-weight: 600; margin: 0 0 3px; }
@@ -169,6 +182,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
     font-weight: 600; color: #fff; min-width: 0; overflow: hidden; transition: flex-basis .25s ease; }
   .sb-person { background: var(--person); } .sb-geo { background: var(--geo); } .sb-company { background: var(--company); }
+
+  /* Measured, not guessed: white on coral is 2.56:1 and on yellow 1.56:1 —
+     both illegible. Black on them is 8.2 and 13.4. The neutral band is the
+     only one that swaps with the theme, so it is the only label that swaps. */
+  .splitbar > .sb-person, .splitbar > .sb-people, .splitbar > .sb-head { color: #0a0a0a; }
+  .splitbar > .sb-geo, .splitbar > .sb-company { color: #fff; }
+  :root[data-theme="dark"] .splitbar > .sb-company { color: #0a0a0a; }
+  :root[data-theme="dark"] { --person-ink: var(--wl-c); }
   .splitkey { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 8px; }
   .splitkey span { display: flex; align-items: center; gap: 5px; }
   .sw { width: 9px; height: 9px; border-radius: 0; flex: none; }
@@ -189,13 +210,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .growth li { display: flex; gap: 11px; align-items: baseline; padding: 11px 13px;
     background: var(--surface-2); border-radius: 0; border-inline-start: 3px solid var(--person); font-size: 14.5px; }
   .growth .gain { margin-inline-start: auto; font-family: var(--mono); font-variant-numeric: tabular-nums;
-    font-weight: 600; color: var(--person); white-space: nowrap; }
+    font-weight: 600; color: var(--person-ink); white-space: nowrap; }
   .allset { color: var(--full); font-size: 14.5px; margin: 0; }
 
   .modes { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .mode { font: inherit; font-size: 13.5px; padding: 7px 13px; cursor: pointer;
     background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 0; }
   .mode[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
+  :root[data-theme="dark"] .mode[aria-pressed="true"] { color: #0a0a0a; }
 
   .verdict { margin: 16px 0 0; padding: 13px 15px; border-radius: 0; font-size: 14.5px; }
   .verdict.ok { background: var(--company-soft); } .verdict.no { background: var(--person-soft); }
@@ -252,10 +274,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </header>
 
-  <div class="topbar">
-    <button class="lang reset" id="reset" type="button"></button>
-  </div>
-
   <div class="cols">
     <div>
       <section class="card">
@@ -275,12 +293,17 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <button class="mode" id="w-internal" type="button" aria-pressed="false"></button>
         </div>
         <p class="subnote" id="t-ratesnote" style="max-width:66ch;margin:0 0 18px"></p>
+        <div class="effortbar" id="weightbar" aria-hidden="true"></div>
+        <p class="weightnote" id="weightnote"></p>
         <div class="comp-head">
-          <div id="t-h-comp"></div><div id="t-h-weight"></div><div id="t-h-self"></div>
+          <div id="t-h-comp"></div><div id="t-h-self"></div>
           <div id="t-h-eval"></div><div id="t-h-cov"></div><div></div>
         </div>
         <div id="rows"></div>
-        <button class="addbtn" id="add" type="button"></button>
+        <div class="cardfoot">
+          <button class="addbtn" id="add" type="button"></button>
+          <button class="lang reset" id="reset" type="button"></button>
+        </div>
       </section>
 
       <section class="card">
@@ -363,6 +386,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   var T = {
     en: {
+      weightNote: "Drag the bar to divide the role between its parts — together they always describe one whole role.",
+      weightTip: "Share of the role. Drag a boundary and weight moves from one part to the next, so the parts always describe one whole role.",
+      weightGrip: "weight between {a} and {b}",
       dir: "ltr", locale: "en-GB", name: "English",
       workh: "Type of work", wtClient: "Client work", wtInternal: "Internal work", capLbl: "Internal cap \u20ac/h", fCap: "Level ceiling", internalNote: "Internal work has no client rate \u2014 there is nothing to take a share of. The ceiling is {cap}/h at the top level, scaled down by level.",
       ratesNote: "The default rates are welance's own — every firm will set theirs. Stated honestly: we believe these are fair EU rates for today's digital professionals, whose roles are flattening into something more fluid and generalist — one role, really: the AI-powered digital professional.",
@@ -416,6 +442,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "the fine print"
     },
     de: {
+      weightNote: "Zieh den Balken, um die Rolle auf ihre Teile zu verteilen — zusammen ergeben sie immer eine ganze Rolle.",
+      weightTip: "Anteil an der Rolle. Zieh eine Grenze, und Gewicht wandert von einem Teil zum nächsten — so beschreiben die Teile immer eine ganze Rolle.",
+      weightGrip: "Gewicht zwischen {a} und {b}",
       dir: "ltr", locale: "de-DE", name: "Deutsch",
       workh: "Art der Arbeit", wtClient: "Kundenarbeit", wtInternal: "Interne Arbeit", capLbl: "Interne Obergrenze \u20ac/h", fCap: "Obergrenze der Stufe", internalNote: "Interne Arbeit hat keinen Kundensatz \u2014 es gibt nichts, wovon ein Anteil genommen werden k\u00f6nnte. Die Obergrenze ist {cap}/h auf der h\u00f6chsten Stufe, nach Stufe abgestuft.",
       ratesNote: "Die Standardsätze sind die von welance — jede Firma setzt ihre eigenen. Ehrlich gesagt: wir halten sie für faire EU-Sätze für die digitalen Profis von heute, deren Rollen flacher und fließender werden und mehr generalistischen Zugriff verlangen — im Grunde eine Rolle: der KI-gestützte Digital-Profi.",
@@ -469,6 +498,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "das Kleingedruckte"
     },
     it: {
+      weightNote: "Trascina la barra per dividere il ruolo tra le sue componenti: insieme descrivono sempre un ruolo intero.",
+      weightTip: "Quota del ruolo. Trascina un confine e il peso passa da una componente alla successiva, così le componenti descrivono sempre un ruolo intero.",
+      weightGrip: "peso tra {a} e {b}",
       dir: "ltr", locale: "it-IT", name: "Italiano",
       workh: "Tipo di lavoro", wtClient: "Lavoro cliente", wtInternal: "Lavoro interno", capLbl: "Tetto interno \u20ac/h", fCap: "Tetto del livello", internalNote: "Il lavoro interno non ha una tariffa cliente \u2014 non c'\u00e8 nulla di cui prendere una quota. Il tetto \u00e8 {cap}/h al livello massimo, scalato per livello.",
       ratesNote: "Le tariffe di default sono quelle di welance — ogni realtà fisserà le sue. Detto onestamente: crediamo siano tariffe EU eque per i professionisti digitali di oggi, i cui ruoli si stanno appiattendo in qualcosa di più fluido e generalista — in fondo un ruolo solo: il professionista digitale potenziato dall'AI.",
@@ -522,6 +554,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "per esteso"
     },
     ur: {
+      weightNote: "کردار کو اس کے حصوں میں بانٹنے کے لیے پٹی کھینچیں — یہ مل کر ہمیشہ ایک پورا کردار بیان کرتے ہیں۔",
+      weightTip: "کردار میں حصہ۔ کسی حد کو کھینچیں تو وزن ایک حصے سے اگلے کو منتقل ہوتا ہے، تاکہ حصے ہمیشہ ایک پورا کردار بیان کریں۔",
+      weightGrip: "{a} اور {b} کے درمیان وزن",
       dir: "rtl", locale: "ur-PK", name: "اردو",
       workh: "\u06a9\u0627\u0645 \u06a9\u06cc \u0642\u0633\u0645", wtClient: "\u06a9\u0644\u0627\u0626\u0646\u0679 \u06a9\u0627 \u06a9\u0627\u0645", wtInternal: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645", capLbl: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u062d\u062f \u20ac/\u06af\u06be\u0646\u0679\u06c1", fCap: "\u062f\u0631\u062c\u06d2 \u06a9\u06cc \u062d\u062f", internalNote: "\u0627\u0646\u062f\u0631\u0648\u0646\u06cc \u06a9\u0627\u0645 \u06a9\u0627 \u06a9\u0648\u0626\u06cc \u06a9\u0644\u0627\u0626\u0646\u0679 \u0631\u06cc\u0679 \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627 \u2014 \u062d\u0635\u06c1 \u0644\u06cc\u0646\u06d2 \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0686\u06be \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627\u06d4 \u0633\u0628 \u0633\u06d2 \u0627\u0648\u067e\u0631 \u062f\u0631\u062c\u06d2 \u067e\u0631 \u062d\u062f {cap}/\u06af\u06be\u0646\u0679\u06c1 \u06c1\u06d2\u060c \u062f\u0631\u062c\u06d2 \u06a9\u06d2 \u062d\u0633\u0627\u0628 \u0633\u06d2 \u06a9\u0645 \u06c1\u0648\u062a\u06cc \u06c1\u06d2\u06d4",
       ratesNote: "طے شدہ ریٹ welance کے اپنے ہیں — ہر ادارہ اپنے مقرر کرے گا۔ ایمانداری سے: ہم انہیں آج کے ڈیجیٹل پیشہ ور افراد کے لیے منصفانہ یورپی ریٹ سمجھتے ہیں، جن کے کردار ہموار اور سیال ہو کر زیادہ ہمہ جہت انداز مانگ رہے ہیں — درحقیقت ایک ہی کردار: AI سے لیس ڈیجیٹل پیشہ ور۔",
@@ -575,6 +610,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "تفصیل"
     },
     pt: {
+      weightNote: "Arraste a barra para dividir o papel entre suas partes — juntas elas sempre descrevem um papel inteiro.",
+      weightTip: "Cota do papel. Arraste um limite e o peso passa de uma parte para a seguinte, então as partes sempre descrevem um papel inteiro.",
+      weightGrip: "peso entre {a} e {b}",
       dir: "ltr", locale: "pt-BR", name: "Português (BR)",
       workh: "Tipo de trabalho", wtClient: "Trabalho de cliente", wtInternal: "Trabalho interno", capLbl: "Teto interno \u20ac/h", fCap: "Teto do n\u00edvel", internalNote: "Trabalho interno n\u00e3o tem taxa de cliente \u2014 n\u00e3o h\u00e1 do que tirar uma parte. O teto \u00e9 {cap}/h no n\u00edvel mais alto, reduzido conforme o n\u00edvel.",
       ratesNote: "As taxas padrão são as da welance — cada firma definirá as suas. Com honestidade: acreditamos que são taxas UE justas para os profissionais digitais de hoje, cujos papéis estão se achatando em algo mais fluido e generalista — no fundo um papel só: o profissional digital potencializado por IA.",
@@ -628,6 +666,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "as letras miúdas"
     },
     es: {
+      weightNote: "Arrastra la barra para repartir el rol entre sus partes: juntas siempre describen un rol entero.",
+      weightTip: "Cuota del rol. Arrastra un límite y el peso pasa de una parte a la siguiente, así las partes siempre describen un rol entero.",
+      weightGrip: "peso entre {a} y {b}",
       dir: "ltr", locale: "es-ES", name: "Español",
       workh: "Tipo de trabajo", wtClient: "Trabajo de cliente", wtInternal: "Trabajo interno", capLbl: "Tope interno \u20ac/h", fCap: "Tope del nivel", internalNote: "El trabajo interno no tiene tarifa de cliente \u2014 no hay de qué tomar una parte. El tope es {cap}/h en el nivel máximo, escalado por nivel.",
       ratesNote: "Las tarifas por defecto son las de welance — cada firma fijará las suyas. Dicho con honestidad: creemos que son tarifas UE justas para los profesionales digitales de hoy, cuyos roles se aplanan y se vuelven fluidos, pidiendo un enfoque más generalista — en el fondo un solo rol: el profesional digital potenciado por IA.",
@@ -681,6 +722,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       finePrint: "la letra pequeña"
     },
     vi: {
+      weightNote: "Kéo thanh để chia vai trò cho các phần của nó — chúng luôn mô tả trọn một vai trò.",
+      weightTip: "Phần trong vai trò. Kéo một ranh giới và trọng số chuyển từ phần này sang phần kế tiếp, nên các phần luôn mô tả trọn một vai trò.",
+      weightGrip: "trọng số giữa {a} và {b}",
       dir: "ltr", locale: "vi-VN", name: "Tiếng Việt",
       workh: "Loại công việc", wtClient: "Việc cho khách hàng", wtInternal: "Việc nội bộ", capLbl: "Trần nội bộ \u20ac/h", fCap: "Trần của cấp độ", internalNote: "Việc nội bộ không có giá khách hàng \u2014 không có gì để chia phần. Trần là {cap}/h ở cấp cao nhất, giảm dần theo cấp độ.",
       ratesNote: "Mức giá mặc định là của welance — mỗi công ty sẽ đặt mức riêng. Nói thật lòng: chúng tôi tin đây là mức giá EU công bằng cho người làm nghề số hôm nay, khi các vai trò đang phẳng ra, trở nên linh hoạt và đòi hỏi cách tiếp cận toàn diện hơn — thực chất là một vai trò: người làm nghề số được AI tiếp sức.",
@@ -733,7 +777,66 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f7: "<b>hỗ trợ welance</b>. Việc nội bộ không có khách hàng, nên không có gì bị lấy làm biên lợi nhuận. Phần người đó chưa tự đảm nhận thì một đồng nghiệp đảm nhận — đào tạo hoặc rà soát, thời gian nội bộ thật — và đó là phần bạn thấy bên cạnh phần của họ. Đảm nhận trọn vai trò thì phần hỗ trợ về 0.",
       finePrint: "phần chi tiết"
     },
+    zh: {
+      weightNote: "拖动色带把这个角色分配到它的各个组成部分——它们合起来永远描述一个完整的角色。",
+      weightTip: "在角色中的份额。拖动一个边界，权重就从一个部分移到下一个，所以这些部分永远描述一个完整的角色。",
+      weightGrip: "{a} 与 {b} 之间的权重",
+      dir: "ltr", locale: "zh-CN", name: "中文",
+      workh: "工作类型", wtClient: "客户工作", wtInternal: "内部工作", capLbl: "内部上限 \u20ac/小时", fCap: "该层级的上限", internalNote: "内部工作没有客户费率——没有什么可以从中抽取份额。最高层级的上限是 {cap}/小时，并按层级递减。",
+      ratesNote: "默认费率是 welance 自己的——每家机构都会定自己的。说实话：我们认为这对今天的数字专业人士来说是公道的欧盟费率，他们的角色正在被抹平成某种更流动、更通才的东西——其实就是一个角色：由 AI 加持的数字专业人士。",
+      askLbl: "他要的费率 \u20ac/小时",
+      provider: "合作者", providerSub: "独立工作者——自由职业者或小型工作室，最多约 25 人。",
+      reset: "恢复默认值",
+      eyebrow: "分配规则",
+      title: "客户费率里有多少归这位合作者",
+      lede: "份额取决于这个人独自覆盖了这个角色的多少——不取决于客户付多少，也绝不取决于对他是什么样的人的评判。把角色的组成部分列出来，标明谁覆盖了什么，份额自己就出来了。合作者可以是自由职业者，也可以是最多约 25 人的工作室：对模型没有任何区别。",
+      roleh: "这个角色，逐个组成部分",
+      rolehint: "每个组成部分都有两个视角：这个人的自评，以及最相近的资深同行的评估。若两者相差两级，计算就会停下，需要谈一谈。",
+      role: "角色", person: "人",
+      hComp: "组成部分", hWeight: "权重", hSelf: "自评", hEval: "评估者", hCov: "覆盖度",
+      add: "+ 添加组成部分",
+      full: "完全", partial: "部分", none: "没有",
+      flag: "两个视角相差两级：这里不取平均，而是要谈。",
+      geoh: "生活成本",
+      geohint: "为生活成本差异很大的人准备的一个可选系数。这是有争议的地带——面板始终同时显示「只按角色」会拿到多少，好让差额始终可见、可以被讨论。",
+      usegeo: "应用生活成本系数",
+      country: "国家", coef: "系数", floorc: "下限",
+      checkh: "成交检查",
+      checkhint: "客户费率是谈好的事实，永远不动。覆盖度和系数改变的是这个人拿到多少——下面这个字段只是他要的费率，用于「不成交」检查。",
+      mPayout: "从这个人的费率出发", mRate: "从客户费率出发",
+      payout: "个人费率 €/小时", rate: "客户费率 €/小时",
+      growthh: "怎么往上走",
+      growthhint: "层级不是一个标签：它是一张地图。每一个还没覆盖的组成部分，都有一个以欧元每小时计的价值。",
+      resulth: "结果", coverk: "角色覆盖度",
+      fShare: "个人份额", fMargin: "结构与风险", fSupport: "welance 支持", keySupport: "welance 支持", fPay: "给到人", fRate: "客户费率",
+      levelsh: "三个层级",
+      levelshint: "它们描述的是这个角色如何被交付，而不是谁来交付。",
+      cLevel: "层级", cCov: "覆盖度", cShare: "份额", cMargin: "结构与风险",
+      lv: ["自主", "需复核", "需支持"],
+      lvSub: ["这个人完整覆盖了整个角色", "这个角色在同事复核下交付", "这个角色有一部分在他人支持下交付"],
+      keyPerson: "合作者", keyGeo: "地理差额", keyCompany: "结构与风险",
+      okPayout: "{who} 按 {pay}/小时计，在这个层级上客户那边至少需要 {need}/小时。你们要的是 {rate}：这单成立。",
+      noPayout: "{who} 按 {pay}/小时计，在这个层级上客户那边需要 {need}/小时，但你们要的是 {rate}。要么提高客户费率，要么这次合作就不发生。",
+      okRate: "客户是 {rate}/小时时，这个层级最多能给 {who} {max}/小时。约定的费率是 {pay}：这单成立。",
+      noRate: "客户是 {rate}/小时时，这个层级最多给 {who} {max}/小时，而他的费率是 {pay}。要么提高客户费率，要么这次合作就不发生。",
+      cover: "完整覆盖「{name}」→ 覆盖度 {cov}，层级 {lv}",
+      sameLevel: "同一层级", allset: "角色已被完整覆盖：这已经是最高份额了。",
+      geoOff: "系数已关闭：份额只取决于角色的覆盖度，无论这个人住在哪里。",
+      geoOn: "只按角色算是 <b>{full}</b>/小时。加上系数是 <b>{local}</b>/小时——地理差额 <b>{diff}</b>/小时，相当于只按角色所得的 {pctdiff}。",
+      geoFloor: "下限起了作用：没有它，系数会给出 {raw}/小时。",
+      f1: "<b>差额最终去了哪里，才是要紧的事。</b> 如果它悄悄变成利润，那就是集体在从一个人住在哪里这件事上获利。给它一个写明的去向——储备金、互助基金、再投资——这样它才是可讨论的，而不是被默认的。",
+      f2: "<b>这不是利润。</b> 被留下的那一份撑起整个结构——找到工作、组建团队、开票、那些没人计费的时间——并把风险朝客户一侧承担起来：如果一次交付出问题、需要换人，或者一张发票永远没被付，吸收它的是集体，不是个人。它被刻意保持得很薄。",
+      f3: "<b>取整。</b> 当两个视角相差一级时，覆盖度向这个人的方向取整。相差两级则不取平均：要谈。",
+      f4: "<b>层级属于「人—角色」这一对</b>，而不属于这个人。同一个人可以在一个角色上自主，在另一个角色上需要支持。每次续约时重新评估。",
+      f5: "<b>这些系数是可编辑的默认值，在用它们给人付钱之前需要一个真实来源</b>（OECD PPP、世界银行 ICP、Numbeo）。译文需要由母语者校订。",
+      f6: "<b>这套分配是 welance 的全服务价格</b>——用于寻找、组建团队并为其负责。在 <a href='https://welance.com/directory'>Directory</a> 上平台完全不抽成：认识一支团队只需一笔固定的象征性费用，而这段关系属于组成它的人。费率给人定价；份额给交付风险定价——压缩从来不是解法，提高客户费率才是。",
+      f7: "<b>welance 支持</b>。内部工作没有客户，所以不会有任何东西被当作利润拿走。这个人还没能独自覆盖的部分由同事覆盖——培训或复核，是真实的内部时间——这就是你在他份额旁边看到的那一块。当他覆盖了整个角色，支持就归零。",
+      finePrint: "展开细则"
+    },
     ar: {
+      weightNote: "اسحب الشريط لتقسيم الدور بين أجزائه — فهي معًا تصف دائمًا دورًا كاملًا.",
+      weightTip: "حصة من الدور. اسحب حدًّا فينتقل الوزن من جزء إلى الذي يليه، لتبقى الأجزاء واصفةً دورًا كاملًا.",
+      weightGrip: "الوزن بين {a} و{b}",
       dir: "rtl", locale: "ar", name: "عربي",
       workh: "نوع العمل", wtClient: "عمل لعميل", wtInternal: "عمل داخلي", capLbl: "السقف الداخلي \u20ac/س", fCap: "سقف المستوى", internalNote: "العمل الداخلي لا سعر عميل له \u2014 لا شيء تُؤخذ منه حصة. السقف {cap}/س في أعلى مستوى، متدرجًا نزولًا حسب المستوى.",
       ratesNote: "الأسعار الافتراضية هي أسعار welance — وكل جهة تضع أسعارها. بصراحة: نراها أسعارًا أوروبية عادلة لمحترفي الرقمية اليوم، الذين تتسطح أدوارهم وتصير أكثر سيولة وتتطلب نهجًا أعمّ — دور واحد في الحقيقة: المحترف الرقمي المعزّز بالذكاء الاصطناعي.",
@@ -947,7 +1050,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       "t-eyebrow": d.eyebrow, "t-title": d.title, "t-lede": d.lede,
       "t-roleh": d.roleh, "t-rolehint": d.rolehint,
       "t-l-role": d.role, "t-providersub": d.providerSub,
-      "t-h-comp": d.hComp, "t-h-weight": d.hWeight, "t-h-self": d.hSelf,
+      "t-h-comp": d.hComp, "t-h-self": d.hSelf,
       "t-h-eval": d.hEval, "t-h-cov": d.hCov, "add": d.add,
       "t-geoh": d.geoh, "t-geohint": d.geohint, "t-usegeo": d.usegeo,
       "t-l-country": d.country, "t-l-coef": d.coef, "t-l-floor": d.floorc,
@@ -995,6 +1098,34 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     return sel;
   }
 
+  /* The parts of a role divide the role, the way the roles divide a project on
+     Perfect Team — the same question, so the same control (splitbar.js). */
+  var SB = window.WelanceSplitBar;
+  var wbar;
+
+  function partName(i) {
+    return comps[i].name || t().hComp;
+  }
+
+  function mountBar() {
+    // whatever was stored — or came from an older version, where weights were
+    // free numbers like 1, 1, 1 — is read as one whole role
+    var sum = comps.reduce(function (a, c) { return a + (Number(c.weight) || 0); }, 0);
+    if (Math.round(sum) !== 100) SB.rescale(comps);
+    if (!wbar) {
+      wbar = SB.mount($("weightbar"), {
+        rows: function () { return comps; },
+        name: partName,
+        onChange: function () { markDirty(); render(); },
+        tip: t().weightTip,
+        gripLabel: function (a, b) { return fill(t().weightGrip, { a: a, b: b }); }
+      });
+    } else {
+      wbar.rebuild();
+    }
+    $("weightnote").textContent = t().weightNote;
+  }
+
   function renderRows() {
     var host = $("rows");
     host.textContent = "";
@@ -1006,12 +1137,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       name.type = "text"; name.value = c.name; name.setAttribute("aria-label", t().hComp);
       name.addEventListener("input", function () { c.name = name.value; markDirty(); });
       row.appendChild(name);
-
-      var w = document.createElement("input");
-      w.type = "number"; w.min = "0"; w.step = "0.5"; w.value = String(c.weight);
-      w.setAttribute("aria-label", t().hWeight);
-      w.addEventListener("input", function () { c.weight = w.value; markDirty(); render(); });
-      row.appendChild(w);
 
       row.appendChild(stepSelect(c.self, function (v) { c.self = v; markDirty(); render(); }));
       row.appendChild(stepSelect(c.evalr, function (v) { c.evalr = v; markDirty(); render(); }));
@@ -1028,7 +1153,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       var del = document.createElement("button");
       del.type = "button"; del.className = "iconbtn"; del.textContent = "×";
       del.setAttribute("aria-label", "remove");
-      del.addEventListener("click", function () { comps.splice(i, 1); markDirty(); render(); });
+      del.addEventListener("click", function () {
+        if (comps.length === 1) return;  // a role with no parts prices nothing
+        comps.splice(i, 1); SB.rescale(comps); markDirty(); render();
+      });
       row.appendChild(del);
 
       if (Math.abs(c.self - c.evalr) === 1) {
@@ -1216,6 +1344,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     $("fld-cap").style.display = work === "internal" ? "" : "none";
     var cov = coverageOf(comps), lv = levelFor(cov);
     renderRows();
+    mountBar();
     var v = renderResult(cov, lv);
     renderGeoNote(v);
     renderVerdict(lv, v);
@@ -1223,7 +1352,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   }
 
   $("add").addEventListener("click", function () {
-    comps.push({ name: "", weight: 1, self: 1, evalr: 1 });
+    comps.push({ name: "", weight: 0, self: 1, evalr: 1 });
+    SB.setShare(comps, comps.length - 1, Math.round(100 / comps.length));
     markDirty(); render();
   });
   $("rolename").addEventListener("input", markDirty);

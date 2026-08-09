@@ -88,6 +88,50 @@ test.describe("perfect price", () => {
     });
     expect(Math.abs(w.sum - w.bar)).toBeLessThan(4);
   });
+
+  // The parts of a role divide the role the way the roles divide a project:
+  // the same control, from splitbar.js, so testing it twice is cheap insurance
+  // against the two pages drifting apart again.
+  test("the weight of a part is dragged, not typed", async ({ page }) => {
+    await page.goto("/price.html");
+    const segs = () =>
+      page.$$eval("#weightbar .effortseg", (els) => els.map((e) => Number(e.dataset.share)));
+    const total = async () => (await segs()).reduce((a, b) => a + b, 0);
+
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(3);
+    await expect(page.locator("#rows .comp input[type=number]")).toHaveCount(0);
+    expect(await total()).toBe(100);
+
+    await page.locator("#weightbar").scrollIntoViewIfNeeded();
+    const bar = await page.locator("#weightbar").boundingBox();
+    const grip = await page.locator("#weightbar .grip").first().boundingBox();
+    const y = grip.y + grip.height / 2;
+    await page.mouse.move(grip.x + grip.width / 2, y);
+    await page.mouse.down();
+    await page.mouse.move(bar.x + bar.width * 0.6, y, { steps: 10 });
+    await page.mouse.up();
+
+    const after = await segs();
+    expect(after[0], "the first part grew").toBeGreaterThan(34);
+    expect(after[2], "the part beyond the boundary was left alone").toBe(33);
+    expect(await total()).toBe(100);
+
+    // and the coverage the engine computes follows the new weights
+    await expect(page.locator(".coverline .v").first()).not.toHaveText("50%");
+  });
+
+  test("adding and removing a part keeps the role whole", async ({ page }) => {
+    await page.goto("/price.html");
+    const total = async () =>
+      (await page.$$eval("#weightbar .effortseg", (els) =>
+        els.map((e) => Number(e.dataset.share)))).reduce((a, b) => a + b, 0);
+    await page.locator("#add").click();
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(4);
+    expect(await total()).toBe(100);
+    await page.locator("#rows .comp .iconbtn").last().click();
+    await expect(page.locator("#weightbar .effortseg")).toHaveCount(3);
+    expect(await total()).toBe(100);
+  });
 });
 
 test.describe("perfect team", () => {
@@ -145,11 +189,66 @@ test.describe("perfect team", () => {
     await expect(page.locator("#formula")).not.toContainText("13.36");
   });
 
-  test("adding and removing a role keeps the bar honest", async ({ page }) => {
+  // The shares are a split of one project, so 100% is not a rule the reader
+  // has to keep — it is a property no gesture is allowed to break.
+  // the bar is the only place a share is set, so it is the only place to read one
+  const shares = (page) =>
+    page.$$eval("#effortbar .effortseg", (els) => els.map((e) => Number(e.dataset.share)));
+  const total = async (page) => (await shares(page)).reduce((a, b) => a + b, 0);
+
+  test("adding and removing a role still describes one whole project", async ({ page }) => {
+    expect(await total(page)).toBe(100);
     await page.locator("#add").click();
     await expect(page.locator("#rows .role")).toHaveCount(4);
+    expect(await total(page), "a new role must take its share from the others").toBe(100);
     await page.locator("#rows .role .iconbtn").last().click();
     await expect(page.locator("#rows .role")).toHaveCount(3);
-    await expect(page.locator("#figPeople")).toContainText("37.50");
+    expect(await total(page), "a removed role gives its share back").toBe(100);
+    // the last role standing owns the whole project, and cannot be removed
+    for (let i = 0; i < 5; i++) await page.locator("#rows .role .iconbtn").last().click();
+    await expect(page.locator("#rows .role")).toHaveCount(1);
+    expect(await shares(page)).toEqual([100]);
+  });
+
+  test("dragging a boundary moves effort between two roles, never out of the project", async ({ page }) => {
+    await page.locator("#effortbar").scrollIntoViewIfNeeded();
+    const bar = await page.locator("#effortbar").boundingBox();
+    const grip = await page.locator(".grip").first().boundingBox();
+    const y = grip.y + grip.height / 2;
+
+    await page.mouse.move(grip.x + grip.width / 2, y);
+    await page.mouse.down();
+    await page.mouse.move(bar.x + bar.width * 0.6, y, { steps: 10 });
+    await page.mouse.up();
+
+    const after = await shares(page);
+    expect(after[0], "the first role grew").toBeGreaterThan(30);
+    expect(after[2], "the role beyond the boundary was left alone").toBe(25);
+    expect(await total(page)).toBe(100);
+
+    // dragged past the edge: a share stops at nothing, it never goes negative
+    const g2 = await page.locator(".grip").first().boundingBox();
+    await page.mouse.move(g2.x + g2.width / 2, y);
+    await page.mouse.down();
+    await page.mouse.move(bar.x - 500, y, { steps: 8 });
+    await page.mouse.up();
+    expect((await shares(page))[0]).toBe(0);
+    expect(await total(page)).toBe(100);
+  });
+
+  test("the boundary answers the keyboard too", async ({ page }) => {
+    const grip = page.locator(".grip").first();
+    await grip.focus();
+    await expect(grip).toHaveAttribute("role", "slider");
+    await grip.press("ArrowRight");
+    expect(await shares(page)).toEqual([31, 44, 25]);
+    await grip.press("Shift+ArrowRight");
+    expect(await shares(page)).toEqual([41, 34, 25]);
+    expect(await total(page)).toBe(100);
+  });
+
+  test("a role row carries no share field — the bar owns the split", async ({ page }) => {
+    await expect(page.locator("#rows .role input[type=number]")).toHaveCount(3); // own rates only
+    await expect(page.locator("#effortbar .effortseg")).toHaveCount(3);
   });
 });

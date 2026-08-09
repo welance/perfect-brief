@@ -31,6 +31,18 @@ tracked `.env.*` files hold only deploy placeholders resolved outside git. A
 caller-supplied `X-LLM-Key` is used per request and never stored or logged —
 a code path that stores, logs, or echoes it is a valid report.
 
+That last sentence is a claim, so it is also a test. `tests/test_byok_leak.py`
+drives a real `/v1/score` request with a sentinel key and fails unless the
+sentinel appears in exactly one place: the `Authorization` header of the
+outbound provider call. Not in a log record, not in the response body or
+headers, not in anything handed to Redis. If you are reviewing this area,
+start there — and if you can make it pass while still leaking the key, that
+itself is the report we want.
+
+The reasoning behind each of those assertions, written for a reader who does
+not want to read Python, is at [briefs.welance.com/security.html](https://briefs.welance.com/security.html)
+(source: `site/security.html`).
+
 ## Supported versions
 
 The `main` branch. There are no maintained release lines yet.

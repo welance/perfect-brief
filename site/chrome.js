@@ -12,12 +12,22 @@
 (function () {
   "use strict";
 
+  /* The header carries three: why the model works this way, the things you can
+     compute with it, and how to put it in your own tools. The individual
+     calculators are one click deeper — a menu that lists everything is a menu
+     nobody reads. The footer still names them all. */
+  var NAV = [
+    { href: "method.html", key: "chrome.method", en: "The method" },
+    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
+    { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
+  ];
+
   var PAGES = [
     { href: "method.html", key: "chrome.method", en: "The method" },
+    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "index.html",  key: "chrome.brief",  en: "Perfect Brief" },
     { href: "price.html",  key: "chrome.price",  en: "Perfect Price" },
-    { href: "team.html",   key: "chrome.team",   en: "Perfect Team" },
-    { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
+    { href: "team.html",   key: "chrome.team",   en: "Perfect Team" }
   ];
   // the footer's second column: the things a builder looks for
   var BUILD = [
@@ -61,30 +71,11 @@
     '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="wl-asterisk" aria-hidden="true">' +
     '<path fill="currentColor" fill-rule="evenodd" d="m18.403 16.5 7.951 8.046-2.096 2.121-7.952-8.046V30h-2.965V18.621L5.39 26.667l-2.096-2.121 7.951-8.046H0v-3h11.245L3.294 5.454 5.39 3.333l7.952 8.046V0h2.964v11.379l7.952-8.046 2.096 2.121-7.951 8.046h11.245v3z" clip-rule="evenodd"></path></svg>';
 
-  /* the machine, in welance sticks: raw sticks feed in from the left, the
-     press stamps a brief, three members snap into a team and leave to the
-     right — fast, and checked on the way out. */
-  var MACHINE =
-    '<svg class="wl-machine" viewBox="0 0 96 34" role="img" aria-label="sticks feeding a machine that stamps briefs and sends out checked teams">' +
-    '<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">' +
-    '<path class="wl-m-in" d="M2 9h12M2 17h9M2 25h12"/>' +
-    '<rect class="wl-m-box" x="22" y="5" width="24" height="24" stroke-width="2.8"/>' +
-    '<path class="wl-m-stamp" d="M28 13h12M28 19h8"/>' +
-    '<path class="wl-m-out" d="M50 17h8"/>' +
-    '</g>' +
-    '<g fill="none" stroke-width="2.4">' +
-    '<circle class="wl-m-a" cx="66" cy="11" r="4" stroke="var(--wl-c)"/>' +
-    '<circle class="wl-m-b" cx="78" cy="17" r="4" stroke="var(--wl-p)"/>' +
-    '<circle class="wl-m-c" cx="66" cy="23" r="4" stroke="var(--wl-cy)"/>' +
-    '<path class="wl-m-go" d="M86 17h6" stroke="var(--ink)" stroke-linecap="round"/>' +
-    '<path class="wl-m-tick" d="M88 11l2.5 2.5L95 8" stroke="var(--wl-y)" stroke-width="2.6" stroke-linecap="round"/>' +
-    '</g></svg>';
-
   function renderHeader() {
     var host = document.getElementById("site-header");
     if (!host) return;
     var here = current();
-    var nav = PAGES.map(function (p) {
+    var nav = NAV.map(function (p) {
       var active = p.href === here ? ' aria-current="page"' : "";
       return '<a class="wl-nav-item" href="' + p.href + '"' + active + ">" +
         tt(p.key, p.en) + "</a>";
@@ -92,7 +83,6 @@
     host.innerHTML =
       '<div class="wl-head"><div class="wl-head-in">' +
       '<a class="wl-brandline" href="./">' +
-        MACHINE +
         '<span class="wl-project">Perfect Briefs<span class="b">_</span></span>' +
         '<span class="wl-origin">' + tt("chrome.by", "an open standard, started by") +
         ' <span class="wl-mark">' + LOGO + "</span></span>" +
@@ -100,11 +90,81 @@
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
-      '<button class="wl-theme" type="button" aria-label="' + tt("chrome.theme", "light or dark") + '"></button>' +
+      '<a class="wl-src" href="https://github.com/welance/perfect-brief" ' +
+        'aria-label="' + tt("chrome.source", "the source on GitHub") + '" ' +
+        'title="' + tt("chrome.source", "the source on GitHub") + '">' + GH + "</a>" +
       '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
-      "</div></div></div>";
+      '<button class="wl-burger" type="button" aria-expanded="false" aria-controls="wl-menu" ' +
+        'aria-label="' + tt("chrome.menu", "menu") + '">' +
+        '<span></span><span></span><span></span></button>' +
+      "</div></div>" +
+      // the same pages the footer lists: on a phone the header cannot show
+      // them, but it must still be able to reach them
+      '<nav class="wl-menu" id="wl-menu" hidden aria-label="' + tt("chrome.menu", "menu") + '">' +
+      '<div class="wl-menu-in">' +
+      '<div class="wl-menu-lang" id="wl-menu-lang"></div>' +
+      '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.links", "The model") + "</p>" +
+      menuCol(PAGES) + "</div>" +
+      '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.build", "Build with it") + "</p>" +
+      menuCol(BUILD) + "</div>" +
+      "</div></nav>" +
+      "</div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
-    wireTheme(host);
+    wireMenu(host);
+  }
+
+  function menuCol(items) {
+    var here = current();
+    return items.map(function (p) {
+      var on = p.href === here ? ' aria-current="page"' : "";
+      return '<a href="' + p.href + '"' + on + ">" + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
+    }).join("");
+  }
+
+  /* The phone's way through the site. It closes on Escape, on a click outside,
+     and as soon as the window is wide enough to show the nav again — a panel
+     left open behind a visible menu is a puzzle nobody asked for. */
+  function wireMenu(host) {
+    var btn = host.querySelector(".wl-burger");
+    var panel = host.querySelector(".wl-menu");
+    if (!btn || !panel) return;
+
+    /* On a phone the language switch moves into the panel rather than being
+       duplicated there: one element, one id, one mounted switcher — and the
+       header bar gets its width back for the CTA, which in Spanish needs it. */
+    var sw = document.getElementById("langswitch");
+    var slot = panel.querySelector("#wl-menu-lang");
+    var bar = host.querySelector(".wl-head-right");
+    var src = host.querySelector(".wl-src");
+    var small = window.matchMedia("(max-width: 560px)");
+    function place() {
+      if (!sw || !slot || !bar) return;
+      if (small.matches) { if (sw.parentNode !== slot) slot.appendChild(sw); }
+      else if (sw.parentNode !== bar) bar.insertBefore(sw, src || bar.firstChild);
+    }
+    place();
+    if (small.addEventListener) small.addEventListener("change", place);
+
+    function shut() {
+      panel.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+    }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = btn.getAttribute("aria-expanded") === "true";
+      panel.hidden = open;
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") shut();
+    });
+    document.addEventListener("click", function (e) {
+      if (!panel.hidden && !panel.contains(e.target)) shut();
+    });
+    if (window.matchMedia) {
+      var wide = window.matchMedia("(min-width: 901px)");
+      if (wide.addEventListener) wide.addEventListener("change", shut);
+    }
   }
 
   /* Light or dark, remembered. The system preference decides until someone
@@ -129,10 +189,11 @@
     });
   }
 
+  var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+
   function renderFooter() {
     var host = document.getElementById("site-footer");
     if (!host) return;
-    var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
     var col = function (items) {
       return items.map(function (p) {
         return '<a href="' + p.href + '">' + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
@@ -150,6 +211,7 @@
       '</div></div>' +
       '<div class="wl-foot-in">' +
       '<div class="wl-foot-top">' +
+      '<div class="wl-foot-who">' +
       '<div class="wl-foot-mark">' + ASTERISK + "</div>" +
       '<div class="wl-foot-offices">' +
       '<div class="wl-office"><p class="wl-office-h">🏙️ welance Berlin</p>' +
@@ -160,13 +222,19 @@
       "<p>Via San Michele 18,<br>12050 Lequio Berria (CN)</p>" +
       '<a href="tel:+393475331532">t: +39 347 533 1532</a>' +
       '<a href="mailto:ciao@welance.com">m: ciao@welance.com</a></div></div>' +
-      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The method") + "</p>" + col(PAGES) + "</div>" +
+      "</div>" +
+      '<div class="wl-foot-cols">' +
+      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The model") + "</p>" + col(PAGES) + "</div>" +
       '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.build", "Build with it") + "</p>" + col(BUILD) + "</div>" +
       "</div>" +
+      "</div>" +
       '<div class="wl-foot-bottom"><p>© 2026 · MIT</p>' +
-      '<nav><a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +
+      '<nav><button class="wl-theme" type="button" aria-label="' +
+        tt("chrome.theme", "light or dark") + '"></button><span>|</span>' +
+      '<a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +
       '<a href="https://otto.welance.com" rel="nofollow" target="_blank">' + tt("chrome.login", "Login") + "</a></nav></div>" +
       "</div></footer>";
+    wireTheme(host);
   }
 
   function render() { renderHeader(); renderFooter(); }
