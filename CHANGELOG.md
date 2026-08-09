@@ -6,6 +6,46 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.6.0] - 2026-08-09
+
+The API asks you to send it an `sk-` key, and until now the only answer to
+"why would I do that?" was a paragraph promising we are careful. A promise is
+what a sceptical reader discounts, and nothing in the repository failed if it
+stopped being true. Both halves of that are now fixed.
+
+### Added
+- **`tests/test_byok_leak.py` — the claim as a test.** It drives a real
+  `/v1/score` request with a sentinel key, then hunts that sentinel through
+  every channel the service can emit on — every log record, the response body,
+  the response headers, and everything handed to Redis — and fails unless it
+  appears in exactly one place: the `Authorization` header of the outbound
+  provider call. A second case forces a 401 from the provider and proves the
+  502 error path carries no key. Verified it can fail: a single `log.debug` of
+  the key turns both cases red. Its purpose is not today's audit but the
+  well-meaning debug line somebody adds next year.
+- **`site/security.html`** — the same argument for a reader who does not want
+  to read Python: the four hops a key takes, the four places it provably is
+  not and why each is impossible rather than merely promised, the canary, the
+  honest limits, and what to do instead. Linked from `data.html`,
+  `SECURITY.md`, the README, and the console's key field. Prose is translated
+  into all eight locales; file paths, function names and test names are not,
+  so a drifting translation can soften a sentence but never contradict the
+  code beside it.
+
+### Fixed
+- **The Redis URL is no longer logged.** `cache.connect` printed it at INFO on
+  every boot; if that URL carries a password, our own secret was going to
+  stdout.
+
+### Changed
+- **Both pages now admit that bring-your-own-key verdicts are cached.** The
+  no-cache guard only ever existed on the suggestion path, so a `/v1/score`
+  call made with your key reads and writes the shared verdict cache. No key
+  material reaches Redis and a cache entry can only be hit by somebody who
+  already has the exact brief text — but the verdict you paid for can serve
+  someone else. `data.html` said nothing about this; once a page invites
+  scrutiny, silence reads as concealment.
+
 ## [1.5.1] - 2026-08-02
 
 A release nobody could see. 1.5.0 deployed correctly — right commit, right
