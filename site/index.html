@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
-<meta name="description" content="A small, open service that scores a digital product brief against a public, versioned ruleset. The LLM only judges; code owns the numbers, the gate, and the publish decision.">
+<meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a perfect brief looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -14,14 +14,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 96px}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6;overflow-x:clip}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) 96px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:16px 0 18px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:20px}
-  h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5vw,46px);margin:14px 0 6px;letter-spacing:-.02em}
-  h1 .b{color:var(--accent)}
   .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
   /* the invitation in the middle of the argument: an open ruleset is only
      open if changing it is something a reader can picture themselves doing */
@@ -31,8 +29,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .hl:hover { background: var(--accent); color: var(--paper); text-decoration: none;
     box-shadow: inset 0 -2px 0 0 var(--accent); }
   .hl::after { content: " ↗"; font-family: var(--mono); font-size: .82em; }
-  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin:44px 0 14px}
-  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
   p{max-width:66ch;margin:0 0 14px}
   .cta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
   pre{background:var(--paper-2);border:1px solid var(--rule);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 14px}
@@ -46,11 +42,50 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
   .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
   .triad b{color:var(--accent)}
-  .seam{margin:18px 0 14px;max-width:600px}
+  /* full-bleed, like the Directory rail: the figure leaves the text column so
+     the seam has room to be read at a glance. margin-inline escapes .wrap;
+     overflow-x:clip on body absorbs the scrollbar sliver 100vw would add. */
+  .seam{margin:44px 0 34px;max-width:none;margin-inline:calc(50% - 50vw);
+    padding:44px clamp(16px,4vw,56px) 34px;overflow-x:auto;
+    background:var(--slab);color:var(--on-slab)}
+  /* Re-point the tokens inside the band instead of editing the SVG: every
+     var(--ink) in the figure resolves against the slab automatically. */
+  .seam{--ink:var(--on-slab);--ink-soft:var(--on-slab-soft);
+    --accent:#b18cf0;--pass:#6fce9f;--fail:#ef8a7c}
+  .seam svg{max-width:1400px;margin:0 auto}
+  /* On a phone the whole width would shrink the labels to ~7px. Better to keep
+     them readable and let the band scroll sideways — the band already has
+     overflow-x:auto, and a diagram you can read beats one that fits. */
+  @media(max-width:760px){.seam svg{min-width:760px;margin:0}}
+  .seam figcaption{margin-inline:auto;max-width:66ch}
   .seam svg{display:block;width:100%}
   .seam .sl{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.05em}
   .seam .sl.b{font-size:13px;font-weight:600;fill:var(--ink)}
   .seam .sl.accent{fill:var(--accent)}
+  .seam .sl.pass{fill:var(--pass)}
+  .seam .sl.fail{fill:var(--fail)}
+  .seam .bignum{font-family:var(--disp);font-size:34px;font-weight:600;fill:var(--ink);letter-spacing:-.01em}
+  /* start routes — the snippet IS the pitch; a developer recognises code
+     faster than any sentence describing it. */
+  .starts{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0 10px}
+  @media(min-width:860px){.starts{grid-template-columns:1fr 1fr}}
+  @media(min-width:860px){.start.wide{grid-column:1/-1}}
+  .start{border:1px solid var(--rule);background:var(--paper-2);padding:14px 16px 12px;
+    display:flex;flex-direction:column;gap:9px;min-width:0}
+  .shead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .start .ico{width:20px;height:20px;color:var(--accent);flex:none}
+  .start .tag{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+    border:1px solid var(--accent);padding:1px 7px}
+  .start .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-soft)}
+  .start .code{margin:0;flex:1}
+  .start .code-lang{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--on-slab-soft)}
+  .code-open{font-family:var(--mono);font-size:12px;color:var(--wl-y);
+    text-decoration:none;letter-spacing:.04em}
+  .code-open:hover{text-decoration:underline}
+  .startnote{font-size:14px;color:var(--ink-soft);margin:10px 0 0}
+  .seamcap{font-size:14.5px;color:var(--on-slab-soft);max-width:64ch;margin:22px 0 0}
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
@@ -80,8 +115,20 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div class="head-grid">
       <div class="txt">
         
-        <h1><span data-i18n="index.h1">The Perfect Brief</span><span class="b">_</span></h1>
-        <p class="thesis" data-i18n-html="index.thesis">A brief has never made a project succeed — the team does that. A bad one fails quietly instead: weeks in, when the work comes back wrong. It is also the only part anyone can check before the money moves. <b>20% brief, 80% team</b> — this is a small, open service that scores the 20%.</p>
+        <!-- The motto leads, not the product name: the name is already in the
+             header lockup and the breadcrumb two lines above, and saying it a
+             third time tells a first-time reader nothing. "argue WITH" is
+             load-bearing — drop the preposition and it inverts to "make the
+             case for a clear brief". New key: index.h1 is translated in eight
+             languages as the product name, so reusing it would leave every
+             non-English page with a heading that no longer matches. -->
+        <h1><span data-i18n="index.motto">Hard to argue with a clear brief</span><span class="b">_</span></h1>
+        <!-- The standfirst answers the heading's implied "says who?" before
+             the argument starts: nobody owns the answer, so the invitation
+             comes first and the thesis follows it. index.thesis keeps its key
+             and its eight translations — it only moved down a slot. -->
+        <p class="thesis" data-i18n="index.lede">Nobody has settled what a perfect brief looks like. The rules are open. Help us write them.</p>
+        <p data-i18n-html="index.thesis">A brief has never made a project succeed — the team does that. A bad one fails quietly instead: weeks in, when the work comes back wrong. It is also the only part anyone can check before the money moves. <b>20% brief, 80% team</b> — this is a small, open service that scores the 20%.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
       <svg viewBox="0 0 120 140" aria-hidden="true">
@@ -111,35 +158,141 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
+
+  <div class="eyebrow"><span data-i18n="idx.start.eb">run it in one line</span></div>
+  <div class="starts">
+
+    <div class="start wide">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5.6" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.4" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10h3.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">MCP</span>
+        <span class="who">Claude Desktop · Claude Code · Cursor · <span data-i18n="idx.start.mcp.who">anything that speaks MCP</span></span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">json</div><button class="code-copy">copy</button></div>
+<pre data-lang="json">{"mcpServers": {"perfect-brief": {
+  "command": "uvx",
+  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "perfect-brief-mcp"]
+}}}</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 6l3.6 4-3.6 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.4 14.2h6.1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">curl</span>
+        <span class="who" data-i18n="idx.start.s2.who">no key needed</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
+<pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
+  -H 'content-type: application/json' \
+  -d '{"brief":"Paste your brief here"}'</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l6.4 3.2v5.1c0 3.1-2.6 5.4-6.4 6.5-3.8-1.1-6.4-3.4-6.4-6.5V5.8z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.6 10.1l1.7 1.7 3.3-3.4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">OpenAPI</span>
+        <span class="who" data-i18n="idx.start.docs.who">swagger ui · try every endpoint</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="https://briefs.welance.com/docs" data-i18n="idx.start.open">open →</a></div>
+<pre data-lang="bash">briefs.welance.com/docs</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9l2.4 2.4L6 13.8" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 13.8h3.2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">browser</span>
+        <span class="who" data-i18n="idx.start.s1.who">nothing to install</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="console.html" data-i18n="idx.start.open">open →</a></div>
+<pre data-lang="bash">briefs.welance.com/console.html</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="6" cy="5.2" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="15" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.2" cy="8.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 7.1v5.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.9 5.2h4a2.3 2.3 0 0 1 2.3 2.3" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">git</span>
+        <span class="who">MIT · <span data-i18n="idx.start.s4.who">rules, engine, service, site</span></span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
+<pre data-lang="bash">git clone https://github.com/welance/perfect-brief.git</pre>
+      </div>
+    </div>
+
+  </div>
+  <p class="startnote" data-i18n-html="idx.start.note">All four work without an API key. Every endpoint, the MCP tools and the ruleset format are on <a href="integrate.html">the integrate page</a>.</p>
+
   <div class="band">
   <div class="two">
     <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
-  </div>
     <div class="card"><span class="n f">blocked</span><h3 data-i18n="index.card2.h">…and still not published</h3><p data-i18n="index.card2.p">The same brief names a payment provider and an email address. Quality is not admissibility.</p></div>
+  </div>
   </div>
 
   <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
   <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, <a class="hl" href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">anyone can propose a change</a>. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
   
   <figure class="seam" style="direction:ltr">
-    <svg viewBox="0 0 560 128" aria-label="The LLM only judges; code owns weights, gate and decision">
-      <rect x="10" y="34" width="92" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/>
-      <path d="M28 52 h56 M28 64 h44 M28 76 h50" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
-      <text class="sl" x="56" y="112" text-anchor="middle" data-i18n="idx.seam.b">brief</text>
-      <path d="M104 64 h28 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
-      <rect x="136" y="24" width="140" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
-      <text class="sl b" x="206" y="58" text-anchor="middle" data-i18n="idx.seam.judge1">LLM judge</text>
-      <text class="sl" x="206" y="78" text-anchor="middle" data-i18n="idx.seam.judge2">verdicts only</text>
-      <path d="M278 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
-      <path d="M310 14 v100 M318 14 v100" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
-      <text class="sl accent" x="314" y="10" text-anchor="middle" data-i18n="idx.seam.seam">the seam</text>
-      <path d="M330 64 h18 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
-      <rect x="360" y="24" width="150" height="80" fill="none" stroke="var(--ink)" stroke-width="2"/>
-      <text class="sl b" x="435" y="58" text-anchor="middle" data-i18n="idx.seam.code1">code</text>
-      <text class="sl" x="435" y="78" text-anchor="middle" data-i18n="idx.seam.code2">weights · gate · decision</text>
-      <path d="M512 64 h20 m0 0 l-7 -5 m7 5 l-7 5" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
-      <text class="sl b" x="536" y="46" text-anchor="end" data-i18n="idx.seam.out">score + gate</text>
+    <svg viewBox="0 0 1100 286" role="img" aria-label="A brief goes into a judge slot holding either an LLM or plain word matching. Either one returns the same fourteen verdicts. Only past the seam does code turn those verdicts into a score and a publish decision.">
+      <!-- 1 · the brief -->
+      <rect x="20" y="86" width="150" height="104" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M44 116 h102 M44 132 h78 M44 148 h92 M44 164 h60" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+      <text class="sl" x="95" y="212" text-anchor="middle" data-i18n="idx.seam.b">brief</text>
+      <path d="M176 138 h34 m0 0 l-8 -6 m8 6 l-8 6" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+
+      <!-- 2 · the judge slot — swap either reader in -->
+      <rect x="218" y="44" width="212" height="188" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="6 5"/>
+      <rect x="234" y="60" width="180" height="58" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="324" y="95" text-anchor="middle" data-i18n="idx.seam.judge1">LLM judge</text>
+      <text class="sl" x="324" y="144" text-anchor="middle" data-i18n="idx.seam.or">or</text>
+      <rect x="234" y="158" width="180" height="58" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="324" y="184" text-anchor="middle" data-i18n="idx.seam.judge3">word matching</text>
+      <text class="sl" x="324" y="203" text-anchor="middle" data-i18n="idx.seam.judge4">no AI at all</text>
+      <text class="sl" x="324" y="254" text-anchor="middle" data-i18n="idx.seam.slot">swap either one in</text>
+      <path d="M436 138 h34 m0 0 l-8 -6 m8 6 l-8 6" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+
+      <!-- 3 · what either reader returns -->
+      <rect x="478" y="60" width="238" height="156" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="597" y="90" text-anchor="middle" data-i18n="idx.seam.judge2">verdicts only</text>
+      <path d="M498 104 h198" stroke="var(--ink-soft)" stroke-width="1" fill="none" opacity=".45"/>
+      <text class="sl pass" x="500" y="128">✓</text><text class="sl" x="520" y="128" data-i18n="idx.seam.a1">clear title</text>
+      <text class="sl pass" x="500" y="152">✓</text><text class="sl" x="520" y="152" data-i18n="idx.seam.a2">budget stated</text>
+      <text class="sl fail" x="500" y="176">✗</text><text class="sl" x="520" y="176" data-i18n="idx.seam.a3">not anonymised</text>
+      <text class="sl" x="500" y="200" opacity=".6" data-i18n="idx.seam.a4">…and eleven more</text>
+      <path d="M722 138 h30 m0 0 l-8 -6 m8 6 l-8 6" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+
+      <!-- the seam -->
+      <path d="M770 26 v234 M778 26 v234" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
+      <text class="sl accent" x="774" y="18" text-anchor="middle" data-i18n="idx.seam.seam">the seam</text>
+      <path d="M786 138 h30 m0 0 l-8 -6 m8 6 l-8 6" stroke="var(--ink-soft)" stroke-width="2" fill="none"/>
+
+      <!-- 4 · code alone owns the number -->
+      <rect x="826" y="60" width="254" height="156" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="sl b" x="953" y="88" text-anchor="middle" data-i18n="idx.seam.code1">code</text>
+      <text class="sl" x="953" y="107" text-anchor="middle" data-i18n="idx.seam.code2">weights · gate · decision</text>
+      <path d="M846 124 h214" stroke="var(--ink-soft)" stroke-width="1" fill="none" opacity=".45"/>
+      <text class="bignum" x="953" y="170" text-anchor="middle">92/100</text>
+      <text class="sl fail" x="953" y="196" text-anchor="middle" data-i18n="idx.seam.gate">may publish: no</text>
     </svg>
+    <figcaption class="seamcap" data-i18n="idx.seam.cap">Swap the reader and everything right of the seam is unchanged — same code, same arithmetic, same answer. Which is why a brief still gets scored with no AI switched on at all.</figcaption>
+    <div class="ruleinvite">
+      <p class="rihead" data-i18n="idx.ri.h">The bar is fourteen files. Yours to change.</p>
+      <p data-i18n="idx.ri.p">Every rule is a YAML file with a weight, a criterion and a source. Propose one, reweight one, argue one away — a pull request is the whole process, and it merges on evidence rather than on our say-so. What survives here is what we run on welance/Directory.</p>
+      <p data-i18n="idx.ri.p2">It started with briefs for digital products. Whether the same bar should hold for other kinds of work is precisely the sort of thing to open a rule change about.</p>
+      <div class="rilinks">
+        <a href="https://github.com/welance/perfect-brief/tree/main/perfect_brief/rules" data-i18n="idx.ri.l1">browse the fourteen rules →</a>
+        <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md" data-i18n="idx.ri.l2">how a change gets in →</a>
+        <a href="https://github.com/welance/perfect-brief/issues" data-i18n="idx.ri.l3">argue with the bar →</a>
+      </div>
+    </div>
   </figure>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
@@ -236,5 +389,6 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
 <script src="i18n/zh.js"></script>
 <script src="chrome.js"></script>
 <script src="code.js"></script>
+
 </body>
 </html>
