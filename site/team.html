@@ -411,7 +411,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       own.type = "number"; own.min = "0"; own.step = "0.5"; own.value = String(r.own);
       own.setAttribute("aria-label", "Own rate €/h");
       own.title = ftip("nodeal");
-      own.addEventListener("input", function () { r.own = Number(own.value) || 0; save(); render(); });
+      // paint(), never render(): render() rebuilds #rows from scratch, which
+      // destroys the very input being typed into and drops focus after one
+      // keystroke. paint() updates the ceilings in place, which is all a rate
+      // change affects.
+      own.addEventListener("input", function () { r.own = Number(own.value) || 0; save(); paint(); });
       row.appendChild(own);
 
       // ceiling cell — filled in by render() from the engine's result
