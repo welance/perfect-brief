@@ -6,6 +6,39 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.6.1] - 2026-08-09
+
+1.6.0 shipped a page arguing that a claim about your key is worth nothing
+unless it is checkable. Read back the next morning, the page overclaimed in
+three places and was wrong in one. This fixes all four, because a security page
+that is approximately true is worse than none.
+
+### Fixed
+- **The page said TLS terminates on our server. It does not.**
+  `briefs.welance.com` is behind Cloudflare, so Cloudflare decrypts every
+  request — the caller's key included — before a second hop to our origin.
+  Three parties see the key, not two, and the honest-limits section now says so
+  and names Cloudflare's terms as governing their leg. This was wrong in nine
+  languages on the one paragraph whose entire job is admitting what is
+  uncomfortable.
+- **The canary covered one of the three endpoints that accept `X-LLM-Key`.**
+  `/v1/suggest` and `/v1/suggest/all` take the header too and had no leak test
+  at all. It is now parametrised over all three, on both the success and the
+  provider-rejected path.
+- **The canary could not see `print()`.** It walked `caplog.records` — the
+  `logging` module only — so a bare `print(api_key)`, the single likeliest form
+  of the accidental leak it exists to catch, passed green. It now asserts on
+  `capfd` as well. Verified by injecting exactly that leak and watching it turn
+  red.
+
+### Changed
+- **A 502 no longer echoes the upstream exception to the caller.** It was safe
+  only because the exception that happened to arrive was httpx's
+  `HTTPStatusError`, whose message carries status and URL. That is safety by
+  coincidence of type: swap in an error that quotes the failing request and the
+  caller's key is a header on precisely that request. All three handlers now
+  return a fixed string and log the detail server-side. Safe by construction.
+
 ## [1.6.0] - 2026-08-09
 
 The API asks you to send it an `sk-` key, and until now the only answer to

@@ -88,6 +88,14 @@ ByokHeader = Annotated[
 ]
 
 
+# Upstream failures are logged in full server-side and reported to the caller as
+# a fixed string. Interpolating the exception would be more helpful and is how
+# secrets escape: the caller's key is a header on the failing request, one
+# unlucky exception type away from the response body. Safe by construction, not
+# by which exception happens to arrive.
+UPSTREAM_ERROR = "the judge upstream failed; the error was logged"
+
+
 def _judge_kind(requested: str | None, byok: str | None = None) -> str:
     kind = requested or settings().default_judge
     if kind == "llm" and not llm_client.configured() and not byok:
@@ -164,7 +172,7 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("scoring failed")
-        raise HTTPException(status_code=502, detail=f"judge error: {exc}") from exc
+        raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
 
 
 def _screening_headers(response: Response, meta: dict) -> None:
@@ -189,7 +197,8 @@ async def post_suggest(
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
-        raise HTTPException(status_code=502, detail=f"suggest error: {exc}") from exc
+        log.exception("suggest failed")
+        raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
 
 
 @app.post(
@@ -210,7 +219,8 @@ async def post_suggest_all(
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as exc:  # noqa: BLE001
-        raise HTTPException(status_code=502, detail=f"suggest error: {exc}") from exc
+        log.exception("suggest failed")
+        raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
 
 
 # ---- the public pages (same files GitHub Pages serves) ---------------------
