@@ -115,7 +115,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <tr>
         <td class="k" data-i18n="sec.w3.k">In an error response</td>
         <td>
-          <span data-i18n="sec.w3.a">When the provider rejects a call we return a 502 that includes the underlying error text, which is the kind of shortcut that leaks secrets. It does not here: that error carries the status code and the URL that was called, and never the headers it was called with.</span>
+          <span data-i18n="sec.w3.a">When the provider rejects a call we return a 502. It used to include the underlying error text, which is exactly the shortcut secrets escape through — your key is a header on the very request that just failed. It now returns a fixed string, and the detail is logged server-side instead. That is safe by construction rather than safe because of which exception happened to arrive.</span>
           <span class="ref"><code>post_score()</code> · app/main.py</span>
         </td>
       </tr>
@@ -131,25 +131,28 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   <div class="eyebrow"><span data-i18n="sec.eb4">do not trust this page</span></div>
   <p class="claim" data-i18n="sec.c2">Prose is not a guarantee. A failing build is.</p>
-  <p data-i18n-html="sec.canary">Everything above describes the code as it is today, and a page cannot stop somebody adding a well-meaning debug line next year. So the claim is also a test. It sends a real scoring request with a sentinel key, then hunts that sentinel through every channel this service can emit on — every log record, the response body, the response headers, and everything handed to Redis — and fails unless it appears in exactly one place: the Authorization header of the call to OpenRouter.</p>
+  <p data-i18n-html="sec.canary">Everything above describes the code as it is today, and a page cannot stop somebody adding a well-meaning debug line next year. So the claim is also a test. It sends a real request to <em>every</em> endpoint that accepts your key, each with a sentinel value, then hunts that sentinel through every channel this service can emit on — every log record, anything printed to stdout or stderr, the response body, the response headers, and everything handed to Redis — and fails unless it appears in exactly one place: the Authorization header of the call to OpenRouter.</p>
   <div class="code">
     <div class="code-bar">
       <div class="code-lang">python · <span data-i18n="sec.canaryLabel">the canary</span></div>
       <button class="code-copy">copy</button>
     </div>
-<pre data-lang="python">assert outbound["headers"]["authorization"] == f"Bearer {CANARY}"
+<pre data-lang="python">assert call["headers"]["authorization"] == f"Bearer {CANARY}"
 
-assert CANARY not in r.text
-assert CANARY not in str(dict(r.headers))
+assert CANARY not in response.text
+assert CANARY not in str(dict(response.headers))
 for key, value in redis_writes:
     assert CANARY not in key and CANARY not in str(value)
 for record in caplog.records:
-    assert CANARY not in caplog.handler.format(record)</pre>
+    assert CANARY not in caplog.handler.format(record)
+captured = capfd.readouterr()          # a bare print() leaks past every
+assert CANARY not in captured.out      # log-record assertion above
+assert CANARY not in captured.err</pre>
   </div>
   <p data-i18n-html="sec.canaryref">It runs on every commit, and we check that it can fail: adding a single <code>log.debug</code> of the key turns it red. Read it, or run it yourself — <span class="ref" style="display:inline"><a href="https://github.com/welance/perfect-brief/blob/main/tests/test_byok_leak.py">tests/test_byok_leak.py</a></span>.</p>
 
   <div class="eyebrow"><span data-i18n="sec.eb5">the honest limits</span></div>
-  <p data-i18n-html="sec.limit1"><b>A proxy has to see what it forwards.</b> TLS protects your key in transit, but it terminates on our server, so for the moment your request is in flight the key exists in that machine's memory. Anyone who has compromised the server could read it. That is true of every service that forwards a credential on your behalf, and no amount of care in our code changes it. If that risk is unacceptable for your key, it should be — do not send it, and see the options below.</p>
+  <p data-i18n-html="sec.limit1"><b>Three parties see your key, not one.</b> TLS protects it in transit, but it does not terminate at the code above. <code>briefs.welance.com</code> sits behind Cloudflare, which decrypts every request — your key included — before a second hop to our own server, where it lives in memory for the moment your request is in flight. So it is seen by Cloudflare, by us, and by OpenRouter. Anyone who has compromised either server could read it, and Cloudflare's terms govern their leg of it, not ours. This is true of every service that forwards a credential on your behalf, and no amount of care in our code changes it. If that risk is unacceptable for your key, it should be — do not send it, and see the options below.</p>
   <p data-i18n-html="sec.limit2"><b>Cached verdicts are shared.</b> A scoring call made with your key still reads and writes the shared verdict cache, so an identical brief scored later may be answered from the cache rather than from a fresh call. Nothing about your key is involved, and a cache entry can only be reached by somebody who already has the exact brief text — but it does mean the verdict you paid for may serve someone else, and theirs may serve you. Send <code>no_cache: true</code> and neither happens.</p>
   <p data-i18n-html="sec.limit3"><b>Downstream is not ours.</b> Once the call reaches OpenRouter, their terms and their retention apply, not ours. We can tell you what we do; we cannot make promises on their behalf.</p>
   <p data-i18n-html="sec.limit4"><b>This is a small open-source service.</b> It is rate-limited and served over TLS by people who care about getting this right. It is not an audited compliance product, and we would rather say so here than imply otherwise.</p>

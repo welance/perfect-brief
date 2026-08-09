@@ -1,13 +1,21 @@
 """The canary: a caller's own key must reach exactly one destination.
 
 `site/security.html` tells readers not to trust its prose and to read this file
-instead. So this is not a unit test of a helper — it drives a real `/v1/score`
-request with a sentinel key and then hunts that sentinel through every channel
-the service can emit on: log records, the response body, response headers, and
-everything handed to Redis.
+instead. So this is not a unit test of a helper — it drives every endpoint that
+accepts `X-LLM-Key` with a sentinel key and then hunts that sentinel through
+every channel the service can emit on: log records, raw stdout/stderr, the
+response body, response headers, and everything handed to Redis.
+
+Two things this deliberately does NOT do, because they would weaken it:
+
+- It does not patch `llm_client.complete`. The header construction is the code
+  under test, so the interception happens at the transport.
+- It does not only watch `logging`. The most likely accidental leak is a bare
+  `print()` during debugging, which no log-record assertion can see — hence
+  `capfd` alongside `caplog`.
 
 The point is not that today's code is clean (it is). The point is that the
-well-meaning `log.debug(headers)` someone adds in a year turns this red.
+well-meaning debug line someone adds in a year turns this red.
 """
 
 from __future__ import annotations
@@ -23,27 +31,38 @@ from app import cache, llm_client
 # and shaped like the real thing so no code path treats it as special.
 CANARY = "sk-or-v1-CANARYcanary0000deadbeef0000cafebabe0000"
 
-VERDICTS = '[{"rule_id":"clear-title","status":"pass","confidence":0.9,"quote":"t","note":""}]'
-BRIEF = {"brief": "# T\nProblem: x. Budget 15k.", "judge": "llm"}
+BRIEF = "# T\nProblem: x. Budget 15k."
+
+VERDICTS = '[{"rule_id":"clear-title","status":"fail","confidence":0.9,"quote":"t","note":"n"}]'
+SUGGESTIONS = '[{"rule_id":"clear-title","text":"A title naming the product and the outcome."}]'
+REVIEW = '[{"id":"clear-title","accepted":true,"reason":"satisfies the rule"}]'
+
+# every endpoint that accepts the header, not just the one we thought of first
+ENDPOINTS = [
+    ("/v1/score", {"brief": BRIEF, "judge": "llm"}),
+    ("/v1/suggest", {"brief": BRIEF, "rule_id": "clear-title", "locale": "en-GB"}),
+    ("/v1/suggest/all", {"brief": BRIEF, "rule_ids": ["clear-title"], "locale": "en-GB"}),
+]
 
 
 @pytest.fixture
 def outbound(monkeypatch):
-    """Intercept at the transport, so the real `complete()` builds the header.
-
-    Patching `llm_client.complete` would prove nothing — the header
-    construction is the code under test.
-    """
-    seen: dict = {}
+    """Intercept at the transport, and answer in the shape each prompt expects."""
+    calls: list[dict] = []
+    state: dict = {}
 
     def handler(request: httpx.Request) -> httpx.Response:
-        seen["headers"] = dict(request.headers)
-        seen["url"] = str(request.url)
-        seen["body"] = request.content.decode()
-        status = seen.get("respond_with", 200)
-        if status != 200:
-            return httpx.Response(status, json={"error": {"message": "no credit"}})
-        return httpx.Response(200, json={"choices": [{"message": {"content": VERDICTS}}]})
+        body = request.content.decode()
+        calls.append({"headers": dict(request.headers), "url": str(request.url), "body": body})
+        if state.get("respond_with", 200) != 200:
+            return httpx.Response(state["respond_with"], json={"error": {"message": "no credit"}})
+        if "skeptical reviewer" in body:
+            content = REVIEW
+        elif "You are improving" in body:
+            content = SUGGESTIONS
+        else:
+            content = VERDICTS
+        return httpx.Response(200, json={"choices": [{"message": {"content": content}}]})
 
     class _MockedClient(httpx.AsyncClient):
         def __init__(self, *args, **kwargs):
@@ -51,7 +70,8 @@ def outbound(monkeypatch):
             super().__init__(*args, **kwargs)
 
     monkeypatch.setattr(httpx, "AsyncClient", _MockedClient)
-    return seen
+    state["calls"] = calls
+    return state
 
 
 @pytest.fixture
@@ -71,20 +91,10 @@ def redis_writes(monkeypatch):
     return writes
 
 
-def test_byok_key_reaches_only_the_provider(client, outbound, redis_writes, caplog):
-    caplog.set_level(logging.DEBUG)
-
-    r = client.post("/v1/score", json=BRIEF, headers={"x-llm-key": CANARY})
-    assert r.status_code == 200, r.text
-
-    # It must arrive where it is meant to: the provider, as a bearer token.
-    assert outbound["headers"]["authorization"] == f"Bearer {CANARY}"
-    assert outbound["url"] == llm_client.OPENROUTER_URL
-
-    # ...and nowhere else.
-    assert CANARY not in r.text
-    assert CANARY not in str(dict(r.headers))
-    assert CANARY not in outbound["body"], "the key must not ride in the request body"
+def assert_no_leak(response, redis_writes, caplog, capfd):
+    """The sentinel may live in exactly one place, and this is not it."""
+    assert CANARY not in response.text
+    assert CANARY not in str(dict(response.headers))
 
     for key, value in redis_writes:
         assert CANARY not in key, f"key material in a cache key: {key}"
@@ -95,18 +105,40 @@ def test_byok_key_reaches_only_the_provider(client, outbound, redis_writes, capl
         assert CANARY not in str(record.args or "")
         assert CANARY not in caplog.handler.format(record)
 
+    # a bare print() is the likeliest accidental leak and no log assertion sees it
+    captured = capfd.readouterr()
+    assert CANARY not in captured.out, "key written to stdout"
+    assert CANARY not in captured.err, "key written to stderr"
 
-def test_byok_key_absent_from_the_error_path(client, outbound, redis_writes, caplog):
-    """The 502 handler echoes exception text. Prove the exception is clean."""
+
+@pytest.mark.parametrize("path,body", ENDPOINTS, ids=lambda v: v if isinstance(v, str) else "")
+def test_byok_key_reaches_only_the_provider(
+    client, outbound, redis_writes, caplog, capfd, path, body
+):
+    caplog.set_level(logging.DEBUG)
+
+    r = client.post(path, json=body, headers={"x-llm-key": CANARY})
+    assert r.status_code == 200, r.text
+
+    # It must arrive where it is meant to: the provider, as a bearer token.
+    assert outbound["calls"], f"{path} never called the provider"
+    for call in outbound["calls"]:
+        assert call["headers"]["authorization"] == f"Bearer {CANARY}"
+        assert call["url"] == llm_client.OPENROUTER_URL
+        assert CANARY not in call["body"], "the key must not ride in the request body"
+
+    assert_no_leak(r, redis_writes, caplog, capfd)
+
+
+@pytest.mark.parametrize("path,body", ENDPOINTS, ids=lambda v: v if isinstance(v, str) else "")
+def test_byok_key_absent_from_the_error_path(
+    client, outbound, redis_writes, caplog, capfd, path, body
+):
+    """Error paths echo exception text — the likeliest place for a secret to slip out."""
     caplog.set_level(logging.DEBUG)
     outbound["respond_with"] = 401  # provider rejects the key
 
-    r = client.post("/v1/score", json=BRIEF, headers={"x-llm-key": CANARY})
-    assert r.status_code == 502
-    assert "judge error" in r.json()["detail"]
+    r = client.post(path, json=body, headers={"x-llm-key": CANARY})
+    assert r.status_code >= 400
 
-    # httpx's HTTPStatusError carries status and URL, never headers.
-    assert CANARY not in r.text
-    # log.exception() prints a traceback: source lines, not local values.
-    for record in caplog.records:
-        assert CANARY not in caplog.handler.format(record)
+    assert_no_leak(r, redis_writes, caplog, capfd)
