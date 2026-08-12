@@ -20,7 +20,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   header{padding:16px 0 18px;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:20px}
-  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:10px 0 0}
+  /* the standfirst had no bottom margin because nothing used to follow it;
+     the thesis paragraph does now, and at 3.5px apart the two read as one
+     block of ragged text */
+  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:12px 0 20px}
   /* the invitation in the middle of the argument: an open ruleset is only
      open if changing it is something a reader can picture themselves doing */
   .hl { color: var(--ink); font-weight: 600; text-decoration: none;
@@ -296,7 +299,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </figure>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
-  <div class="code">
+  <div class="code" id="api-req">
     <div class="code-bar">
       <div class="code-tabs">
         <button data-tab="curl" aria-pressed="true">cURL</button>
@@ -320,7 +323,7 @@ r = httpx.post("https://briefs.welance.com/v1/score",
                json={"brief": brief, "judge": "llm"})
 score, decision = r.json()["score"], r.json()["decision"]</pre>
   </div>
-  <div class="code">
+  <div class="code" id="api-res">
     <div class="code-bar">
       <div class="code-lang">json · <span data-i18n="site.response">response</span></div>
       <button class="code-copy">copy</button>

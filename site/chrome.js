@@ -52,24 +52,64 @@
     return p === "" ? "index.html" : p;
   }
 
-  /* the welance wordmark — asterisk + name, paths verbatim from welance.com */
-  var LOGO =
-    '<svg class="wl-logo animated" xmlns="http://www.w3.org/2000/svg" viewBox="26 68 108 26" preserveAspectRatio="xMidYMid meet" role="img" aria-label="welance">' +
-    '<g transform="matrix(0.0833,0,0,0.0833,17.675,60.675)"><g transform="translate(749.325 232)" fill="none" stroke="currentColor" stroke-width="26">' +
-    '<path class="wl-stroke wl-s1" d="M-374.25,22 L-622.25,22"/><path class="wl-stroke wl-s2" d="M-498.25,-102 L-498.25,146"/>' +
-    '<path class="wl-stroke wl-s3" d="M-410.5,109.75 L-586,-65.75"/><path class="wl-stroke wl-s4" d="M-586,109.75 L-410.5,-65.75"/></g></g>' +
-    '<g class="wl-glyph wl-g1" transform="matrix(0.0833,0,0,0.0833,61.3753,82.5643)"><path fill="currentColor" d="M-60.793,67.637 L-36.475,67.637 L-0.384,-37.519 L0.128,-37.519 L36.475,67.637 L60.793,67.637 L92.788,-67.637 L67.96,-67.637 L45.691,31.65 L45.178,31.65 L11.134,-67.637 L-11.134,-67.637 L-45.178,31.65 L-45.69,31.65 L-67.96,-67.637 L-92.788,-67.637 Z"/></g>' +
-    '<g class="wl-glyph wl-g2" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M-119.854,30.837 C-119.854,73.461 -94.257,102.303 -56.63,102.303 C-30.777,102.303 -10.811,90.817 1.219,68.357 L-18.234,55.339 C-29.497,73.461 -39.736,80.097 -56.885,80.097 C-67.892,80.097 -76.851,76.269 -83.762,68.357 C-90.673,60.444 -94.257,50.235 -94.513,38.239 L4.547,38.239 L4.547,27.774 C4.547,-12.809 -20.026,-40.63 -56.885,-40.63 C-94.001,-40.63 -119.854,-11.277 -119.854,30.837 Z M-94.001,19.096 C-93.489,-1.323 -77.363,-18.424 -56.885,-18.424 C-35.384,-18.424 -21.306,-3.11 -20.282,19.096 Z"/></g>' +
-    '<g class="wl-glyph wl-g3" transform="matrix(0.0833,0,0,0.0833,83.6117,80.4382)"><path fill="currentColor" d="M-12.541,93.161 L12.541,93.161 L12.541,-93.161 L-12.541,-93.161 Z"/></g>' +
-    '<g class="wl-glyph wl-g4" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M82.13,63.252 C82.13,86.989 99.8,102.303 126.67,102.303 C143.31,102.303 157.39,95.922 164.81,85.457 L165.32,85.457 L165.32,98.474 L188.36,98.474 L188.36,5.568 C188.36,-23.018 168.91,-40.63 137.42,-40.63 C122.83,-40.63 110.29,-36.546 100.05,-28.634 C90.07,-20.721 83.93,-10.256 81.62,3.016 L105.94,8.121 C109.27,-8.98 120.78,-18.679 137.42,-18.679 C152.78,-18.679 162.25,-11.533 162.25,-0.557 C162.25,9.397 154.57,14.246 130,20.372 C95.44,28.54 82.13,40.536 82.13,63.252 Z M163.53,52.787 C163.53,68.357 149.45,79.842 129.74,79.842 C114.64,79.842 106.71,73.206 106.71,61.72 C106.71,51.511 114.9,45.64 136.4,40.28 C152.78,35.941 160.72,31.858 163.02,25.987 L163.53,25.987 Z"/></g>' +
-    '<g class="wl-glyph wl-g5" transform="matrix(0.0833,0,0,0.0833,102.9065,82.4049)"><path fill="currentColor" d="M-56.7,69.552 L-31.61,69.552 L-31.61,-13.91 C-31.61,-33.308 -18.81,-46.325 0.64,-46.325 C20.1,-46.325 31.61,-34.074 31.61,-13.91 L31.61,69.552 L56.7,69.552 L56.7,-17.739 C56.7,-49.388 36.48,-69.552 5.5,-69.552 C-8.83,-69.552 -23.93,-63.171 -32.12,-53.727 L-32.63,-53.727 L-32.63,-65.723 L-56.7,-65.723 Z"/></g>' +
-    '<g class="wl-glyph wl-g6" transform="matrix(0.0833,0,0,0.0833,114.8272,82.5643)"><path fill="currentColor" d="M-61.685,0 C-61.685,42.369 -35.575,71.466 2.045,71.466 C17.665,71.466 30.975,67.128 41.725,58.195 C52.735,49.261 59.385,37.01 61.685,21.951 L37.625,17.102 C33.785,37.265 21.245,48.24 2.045,48.24 C-21.505,48.24 -36.605,29.607 -36.605,0 C-36.605,-29.608 -21.505,-48.24 2.045,-48.24 C21.245,-48.24 34.305,-36.753 37.625,-17.1 L61.685,-21.951 C59.385,-37.01 52.735,-49.005 41.725,-57.938 C30.975,-66.871 17.665,-71.466 2.045,-71.466 C-35.575,-71.466 -61.685,-42.37 -61.685,0 Z"/></g>' +
-    '<g class="wl-glyph wl-g7" transform="matrix(0.0833,0,0,0.0833,80.0057,79.9957)"><path fill="currentColor" d="M499.32,30.837 C499.32,73.461 524.92,102.303 562.54,102.303 C588.4,102.303 608.36,90.817 620.39,68.357 L600.94,55.339 C589.68,73.461 579.44,80.097 562.29,80.097 C551.28,80.097 542.32,76.269 535.41,68.357 C528.5,60.444 524.92,50.235 524.66,38.239 L623.72,38.239 L623.72,27.774 C623.72,-12.809 599.15,-40.63 562.29,-40.63 C525.17,-40.63 499.32,-11.277 499.32,30.837 Z M525.17,19.096 C525.68,-1.323 541.81,-18.424 562.29,-18.424 C583.79,-18.424 597.87,-3.11 598.89,19.096 Z"/></g></svg>';
+  /* The lockup, the Directory's: two static marks, not one animated one.
+     Paths are welance/directory's own assets/images/weLogo.svg and
+     welanceLogo.svg, verbatim. */
+  var MARK =
+    '<svg class="wl-ast" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" fill="none" aria-hidden="true">' +
+    '<path fill-rule="evenodd" clip-rule="evenodd" d="M18.4027 16.5L26.3542 24.546L24.2578 26.6673L16.3062 18.6213V30H13.3415V18.6213L5.38992 26.6673L3.29351 24.546L11.245 16.5H0L0 13.5H11.2451L3.29369 5.45412L5.3901 3.3328L13.3415 11.3786V0L16.3062 0V11.3786L24.2576 3.3328L26.354 5.45412L18.4026 13.5H29.6477V16.5H18.4027Z" fill="currentColor"/>' +
+    "</svg>";
+
+  var WORDMARK =
+    '<svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 24" fill="none" aria-hidden="true">' +
+    '<path d="M4.20297 23.1771H7.08848L11.3712 10.5582H11.4319L15.745 23.1771H18.6305L22.4272 6.94404H19.481L16.8385 18.8585H16.7777L12.738 6.94404H10.0955L6.05577 18.8585H5.99502L3.3525 6.94404H0.40625L4.20297 23.1771Z" fill="currentColor"/>' +
+    '<path d="M23.734 15.0606C23.734 20.1755 26.7714 23.6365 31.2363 23.6365C34.3041 23.6365 36.6732 22.2583 38.1008 19.563L35.7924 18.0009C34.4559 20.1755 33.241 20.9719 31.2059 20.9719C29.8999 20.9719 28.8368 20.5124 28.0167 19.563C27.1966 18.6135 26.7714 17.3883 26.741 15.9488H38.4956V14.693C38.4956 9.82312 35.5798 6.48462 31.2059 6.48462C26.8018 6.48462 23.734 10.0069 23.734 15.0606ZM26.8018 13.6517C26.8625 11.2014 28.776 9.14929 31.2059 9.14929C33.7573 9.14929 35.4279 10.987 35.5494 13.6517H26.8018Z" fill="currentColor"/>' +
+    '<path d="M41.6047 23.1771H44.5813V0.818359H41.6047V23.1771Z" fill="currentColor"/>' +
+    '<path d="M47.7022 18.9504C47.7022 21.7988 49.798 23.6365 52.9872 23.6365C54.9615 23.6365 56.6321 22.8708 57.5129 21.6151H57.5737V23.1771H60.3073V12.0284C60.3073 8.59798 57.9989 6.48462 54.2629 6.48462C52.5316 6.48462 51.0433 6.97467 49.8284 7.92415C48.6438 8.87364 47.9148 10.1294 47.6415 11.7221L50.527 12.3346C50.9218 10.2825 52.2887 9.11866 54.2629 9.11866C56.0854 9.11866 57.2092 9.97626 57.2092 11.2933C57.2092 12.4878 56.298 13.0697 53.3821 13.8048C49.2817 14.7849 47.7022 16.2245 47.7022 18.9504ZM57.3611 17.6946C57.3611 19.563 55.6905 20.9412 53.3517 20.9412C51.5597 20.9412 50.6181 20.1449 50.6181 18.7666C50.6181 17.5415 51.5901 16.837 54.1415 16.1938C56.0854 15.6731 57.027 15.1831 57.3003 14.4786H57.3611V17.6946Z" fill="currentColor"/>' +
+    '<path d="M63.8511 23.1771H66.8277V13.1616C66.8277 10.8339 68.3464 9.27181 70.6548 9.27181C72.9632 9.27181 74.33 10.742 74.33 13.1616V23.1771H77.3067V12.7022C77.3067 8.90427 74.9071 6.48462 71.2319 6.48462C69.531 6.48462 67.7389 7.25033 66.767 8.38358H66.7062V6.94404H63.8511V23.1771Z" fill="currentColor"/>' +
+    '<path d="M80.2399 15.0606C80.2399 20.1449 83.338 23.6365 87.8029 23.6365C89.6557 23.6365 91.2352 23.1159 92.5108 22.0439C93.8169 20.9719 94.6066 19.5017 94.88 17.6946L92.0249 17.1127C91.5693 19.5323 90.081 20.8494 87.8029 20.8494C85.0085 20.8494 83.2165 18.6135 83.2165 15.0606C83.2165 11.5077 85.0085 9.27181 87.8029 9.27181C90.081 9.27181 91.63 10.6501 92.0249 13.0085L94.88 12.4265C94.6066 10.6195 93.8169 9.17992 92.5108 8.10792C91.2352 7.03593 89.6557 6.48462 87.8029 6.48462C83.338 6.48462 80.2399 9.97626 80.2399 15.0606Z" fill="currentColor"/>' +
+    '<path d="M97.2064 15.0606C97.2064 20.1755 100.244 23.6365 104.709 23.6365C107.777 23.6365 110.146 22.2583 111.573 19.563L109.265 18.0009C107.928 20.1755 106.713 20.9719 104.678 20.9719C103.372 20.9719 102.309 20.5124 101.489 19.563C100.669 18.6135 100.244 17.3883 100.213 15.9488H111.968V14.693C111.968 9.82312 109.052 6.48462 104.678 6.48462C100.274 6.48462 97.2064 10.0069 97.2064 15.0606ZM100.274 13.6517C100.335 11.2014 102.248 9.14929 104.678 9.14929C107.23 9.14929 108.9 10.987 109.022 13.6517H100.274Z" fill="currentColor"/>' +
+    "</svg>";
 
   /* the welance asterisk alone — path verbatim from welance.com's footer */
   var ASTERISK =
     '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="wl-asterisk" aria-hidden="true">' +
     '<path fill="currentColor" fill-rule="evenodd" d="m18.403 16.5 7.951 8.046-2.096 2.121-7.952-8.046V30h-2.965V18.621L5.39 26.667l-2.096-2.121 7.951-8.046H0v-3h11.245L3.294 5.454 5.39 3.333l7.952 8.046V0h2.964v11.379l7.952-8.046 2.096 2.121-7.951 8.046h11.245v3z" clip-rule="evenodd"></path></svg>';
+
+  /* Two lockups, on purpose.
+     The header wears ✳ perfect brief_ — the asterisk without the wordmark.
+     The ruleset is MIT and meant to be common property; a header that
+     co-brands it every time you load a page argues the opposite. The mark
+     stays because it recurs anyway (the colour rule, the footer), so the
+     pages still read as welance work without saying so twice a screen.
+     The footer wears the full ✳ welance / perfect brief_ — provenance
+     belongs where you go looking for it. */
+  function lockupHead() {
+    return '<a class="wl-brandline" href="./" aria-label="perfect brief">' +
+      MARK + '<span class="wl-project"><span class="name">' +
+      tt("chrome.slash", "perfect brief") + '<span class="b">_</span></span></span></a>';
+  }
+
+  function lockupFoot() {
+    return '<a class="wl-foot-lock" href="./" aria-label="welance perfect brief">' +
+      MARK + WORDMARK +
+      '<span class="wl-project"><span class="slash" aria-hidden="true">/</span>' +
+      '<span class="name">' + tt("chrome.slash", "perfect brief") +
+      '<span class="b">_</span></span></span></a>';
+  }
+
+  /* the welance colour rule: five bars, full width, flush under the header.
+     Full weight on the landing page; thinner everywhere else, where it is
+     chrome rather than part of the page. */
+  function rule() {
+    var thin = current() === "index.html" ? "" : " is-thin";
+    return '<div class="wl-rule' + thin + '" aria-hidden="true">' +
+      '<i style="background:var(--wl-c)"></i>' +
+      '<i style="background:var(--wl-y)"></i>' +
+      '<i style="background:var(--wl-cy)"></i>' +
+      '<i style="background:var(--wl-p)"></i>' +
+      '<i style="background:var(--wl-b)"></i></div>';
+  }
 
   function renderHeader() {
     var host = document.getElementById("site-header");
@@ -82,22 +122,29 @@
     }).join("");
     host.innerHTML =
       '<div class="wl-head"><div class="wl-head-in">' +
-      '<a class="wl-brandline" href="./">' +
-        '<span class="wl-project">Perfect Briefs<span class="b">_</span></span>' +
-        '<span class="wl-origin">' + tt("chrome.by", "an open standard, started by") +
-        ' <span class="wl-mark">' + LOGO + "</span></span>" +
-      "</a>" +
+      lockupHead() +
+      // the quiet line leads the right-hand group, as it does on the
+      // Directory: status, then where to go, then the one way out
+      '<span class="wl-status">' + tt("chrome.status", "© 2011–2026 · v1 · live") + "</span>" +
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
       '<a class="wl-src" href="https://github.com/welance/perfect-brief" ' +
         'aria-label="' + tt("chrome.source", "the source on GitHub") + '" ' +
         'title="' + tt("chrome.source", "the source on GitHub") + '">' + GH + "</a>" +
-      '<a class="wl-pill" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + '</a>' +
+      // Not a call to action: a destination, named. It used to be a filled
+      // pill saying "Find a team", which is this site asking you for
+      // something. The site's job is the ruleset; the Directory is one
+      // place that runs it, and saying so quietly is the honest size of
+      // the claim. The name is a proper noun, so it is not translated.
+      '<a class="wl-out" href="https://welance.com/directory" ' +
+        'title="' + tt("chrome.outTitle", "the noticeboard that runs this ruleset") + '">' +
+        'welance/Directory <span aria-hidden="true">↗</span></a>' +
       '<button class="wl-burger" type="button" aria-expanded="false" aria-controls="wl-menu" ' +
         'aria-label="' + tt("chrome.menu", "menu") + '">' +
         '<span></span><span></span><span></span></button>' +
       "</div></div>" +
+      rule() +
       // the same pages the footer lists: on a phone the header cannot show
       // them, but it must still be able to reach them
       '<nav class="wl-menu" id="wl-menu" hidden aria-label="' + tt("chrome.menu", "menu") + '">' +
@@ -191,49 +238,89 @@
 
   var GH = '<svg class="wl-gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
 
+  /* The three doors in. They used to be three links among twelve; given a
+     line of their own each, they are findable. */
+  var STARTS = [
+    { href: "console.html", key: "chrome.ctaBrief", en: "Score a brief",
+      subKey: "chrome.startBriefSub", subEn: "Against the fourteen public rules, in the browser" },
+    { href: "price.html", key: "chrome.ctaPrice", en: "Compute a split",
+      subKey: "chrome.startPriceSub", subEn: "What the work is worth, and to whom" },
+    // named and described, not offered — the ruleset does not belong to the
+    // one noticeboard that happens to run it
+    { href: "https://welance.com/directory", key: "chrome.startDirectory", en: "welance/Directory",
+      subKey: "chrome.startDirectorySub",
+      subEn: "One noticeboard that runs this ruleset. Briefs stay blind until a team takes one." }
+  ];
+
   function renderFooter() {
     var host = document.getElementById("site-footer");
     if (!host) return;
     var col = function (items) {
       return items.map(function (p) {
-        return '<a href="' + p.href + '">' + (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
+        var cls = p.icon ? "wl-foot-link wl-foot-gh" : "wl-foot-link";
+        return '<a class="' + cls + '" href="' + p.href + '">' +
+          (p.icon ? GH : "") + tt(p.key, p.en) + "</a>";
       }).join("");
     };
+    var starts = STARTS.map(function (s) {
+      return '<a class="wl-foot-start" href="' + s.href + '">' +
+        '<span class="wl-foot-start-t">' + tt(s.key, s.en) + "</span>" +
+        '<span class="wl-foot-start-s">' + tt(s.subKey, s.subEn) + "</span></a>";
+    }).join("");
     host.innerHTML =
       '<footer class="wl-foot">' +
-      '<div class="wl-foot-cta"><div class="wl-foot-cta-in">' +
-      '<h2>' + tt("chrome.ctaHead", "The team your goal deserves") + '<span class="b">_</span></h2>' +
-      '<div class="wl-cta-row">' +
-      '<a class="wl-cta-btn ghost" href="console.html">' + tt("chrome.ctaBrief", "Score a brief") + "</a>" +
-      '<a class="wl-cta-btn ghost" href="price.html">' + tt("chrome.ctaPrice", "Compute a split") + "</a>" +
-      '<a class="wl-cta-btn" href="https://welance.com/directory">' + tt("chrome.cta", "Find a team") + ' →</a>' +
+      // the blue half of the two-tone close: two doors on the brand's
+      // second voice, sitting directly on the ink band below
+      '<section class="wl-close">' +
+      '<div class="wl-close-ast" aria-hidden="true">' + ASTERISK + "</div>" +
+      '<div class="wl-close-in"><div>' +
+      '<p class="eyebrow">' + tt("chrome.closeEyebrow", "the ruleset, not the service") + "</p>" +
+      // The heading used to be "The team your goal deserves" — an agency
+      // promise on a page whose whole argument is that the bar belongs to
+      // everyone. It says what the thing is instead. (New key: the old one
+      // is translated into eight languages and would keep saying the old
+      // sentence on those pages.)
+      '<h2 class="h1">' + tt("chrome.closeHead", "Fourteen rules. Yours to run, or to change") + '<span class="b">_</span></h2>' +
+      '<p class="wl-close-note">' + tt("chrome.closeNote",
+        "welance wrote it and runs one noticeboard on it. The rules are MIT — " +
+        "fork them, argue with them, run your own.") + "</p>" +
       "</div>" +
-      '</div></div>' +
-      '<div class="wl-foot-in">' +
-      '<div class="wl-foot-top">' +
-      '<div class="wl-foot-who">' +
-      '<div class="wl-foot-mark">' + ASTERISK + "</div>" +
-      '<div class="wl-foot-offices">' +
-      '<div class="wl-office"><p class="wl-office-h">🏙️ welance Berlin</p>' +
-      "<p>Moosdorfstraße 7-9,<br>12435 Berlin</p>" +
-      '<a href="tel:+493060985775">t: +49 30 60 98 57 75</a>' +
-      '<a href="mailto:hello@welance.com">m: hello@welance.com</a></div>' +
-      '<div class="wl-office"><p class="wl-office-h">🌳 welance Italia</p>' +
-      "<p>Via San Michele 18,<br>12050 Lequio Berria (CN)</p>" +
-      '<a href="tel:+393475331532">t: +39 347 533 1532</a>' +
-      '<a href="mailto:ciao@welance.com">m: ciao@welance.com</a></div></div>' +
-      "</div>" +
-      '<div class="wl-foot-cols">' +
-      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.links", "The model") + "</p>" + col(PAGES) + "</div>" +
-      '<div class="wl-foot-links"><p class="wl-office-h">' + tt("chrome.build", "Build with it") + "</p>" + col(BUILD) + "</div>" +
-      "</div>" +
-      "</div>" +
-      '<div class="wl-foot-bottom"><p>© 2026 · MIT</p>' +
+      '<div class="wl-close-row">' +
+      '<a class="btn accent lg" href="console.html">' + tt("chrome.ctaBrief", "Score a brief") + "</a>" +
+      '<a class="btn lg" href="rules.html">' + tt("chrome.closeRules", "Read the rules") + "</a>" +
+      "</div></div></section>" +
+      // the ink half: a discovery surface — every page linked, the open
+      // ruleset with its GitHub home, who operates it, the legal line
+      '<div class="wl-foot-deep"><div class="wl-foot-in">' +
+      '<div class="wl-foot-grid">' +
+      '<div class="wl-foot-brand">' + lockupFoot() +
+      '<p class="wl-foot-blurb">' + tt("chrome.blurb",
+        "An open ruleset for scoring digital product briefs. Fourteen public rules, " +
+        "four hard requirements, and code that owns every number.") + "</p>" +
+      '<p class="mono-sm wl-foot-contact">' + tt("chrome.contact",
+        "hello@welance.com · Berlin · Torino") + "</p></div>" +
+      '<nav class="wl-foot-col" aria-label="' + tt("chrome.colStart", "Start here") + '">' +
+      '<p class="mono-sm wl-foot-k">' + tt("chrome.colStart", "Start here") + "</p>" +
+      starts + "</nav>" +
+      '<nav class="wl-foot-col" aria-label="' + tt("chrome.links", "The model") + '">' +
+      '<p class="mono-sm wl-foot-k">' + tt("chrome.links", "The model") + "</p>" +
+      col(PAGES) + "</nav>" +
+      '<nav class="wl-foot-col" aria-label="' + tt("chrome.build", "Build with it") + '">' +
+      '<p class="mono-sm wl-foot-k">' + tt("chrome.build", "Build with it") + "</p>" +
+      col(BUILD) + "</nav>" +
+      '<div class="wl-foot-col">' +
+      '<p class="mono-sm wl-foot-k">' + tt("chrome.colOperated", "Operated by") + "</p>" +
+      '<p class="wl-foot-op">welance Ventures GmbH · Berlin<br>Moosdorfstraße 7-9, 12435</p>' +
+      '<p class="wl-foot-op">welance Ventures Italia SRL · Torino<br>Via San Michele 18, 12050 Lequio Berria</p>' +
+      '<a class="wl-foot-link" href="https://welance.com">' + tt("chrome.welanceLink", "welance.com ↗") + "</a>" +
+      "</div></div>" +
+      '<div class="wl-foot-legal mono-sm"><p>' + tt("chrome.legal", "© 2011–2026 welance · MIT") + "</p>" +
       '<nav><button class="wl-theme" type="button" aria-label="' +
-        tt("chrome.theme", "light or dark") + '"></button><span>|</span>' +
-      '<a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a><span>|</span>" +
+        tt("chrome.theme", "light or dark") + '"></button>' +
+      '<a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a>" +
+      '<a href="https://welance.com/privacy">' + tt("chrome.privacy", "Privacy") + "</a>" +
       '<a href="https://otto.welance.com" rel="nofollow" target="_blank">' + tt("chrome.login", "Login") + "</a></nav></div>" +
-      "</div></footer>";
+      "</div></div></footer>";
     wireTheme(host);
   }
 

@@ -44,8 +44,8 @@ test.describe("one origin", () => {
   test("the console can score against the same origin it is served from", async ({ page }) => {
     await page.goto("/console.html");
     await expect(page.locator("#input")).not.toBeEmpty();
-    await page.locator("#run").click();
-    // the mock judge answers instantly; a real number lands in the dial
+    // the mock judge answers instantly and needs no asking — see
+    // console-score-button.spec.mjs for why there is no button to click here
     await expect(page.locator("#vscore")).not.toHaveText("—/100");
     await expect(page.locator("#gatestrip")).not.toBeEmpty();
   });
@@ -57,12 +57,27 @@ test.describe("chrome and navigation", () => {
       await page.goto(path);
       await expect(page.locator(".wl-head")).toBeVisible();
       await expect(page.locator(".wl-foot")).toBeAttached();
-      await expect(page.locator(".wl-cta-btn").last()).toHaveAttribute("href", /welance\.com\/directory/);
+      await expect(page.locator(".wl-out")).toHaveAttribute("href", /welance\.com\/directory/);
       await expect(page.locator(".wl-brandline")).toHaveAttribute("href", "./");
-      // the project leads; welance is a small origin mark, not the headline
-      await expect(page.locator(".wl-project")).toContainText("Perfect Brief");
+      // The header wears the mark and the product name, and NOT the welance
+      // wordmark: the ruleset is MIT and common property, and co-branding it
+      // at the top of every page argues the opposite. Provenance lives in
+      // the footer, where the full lockup does carry the wordmark.
+      await expect(page.locator(".wl-brandline .wl-ast")).toBeAttached();
+      await expect(page.locator(".wl-brandline .wl-logo")).toHaveCount(0);
+      await expect(page.locator(".wl-foot-lock .wl-logo")).toBeAttached();
+      await expect(page.locator(".wl-head .wl-project")).toContainText("perfect brief");
+      // and the welance colour rule sits under it on every page
+      await expect(page.locator(".wl-head .wl-rule i")).toHaveCount(5);
     });
   }
+
+  test("the colour rule is full weight on the landing page, thinner elsewhere", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".wl-rule")).not.toHaveClass(/is-thin/);
+    await page.goto("/method.html");
+    await expect(page.locator(".wl-rule")).toHaveClass(/is-thin/);
+  });
 
   test("every internal link resolves", async ({ page, request }) => {
     const seen = new Set();
@@ -325,17 +340,19 @@ test.describe("the method reads at a glance", () => {
   });
 
   test("the way out of the page survives a phone, in every language", async ({ page }) => {
-    // the pill is the one link that leads somewhere else — it does not get
-    // dropped for being inconvenient at 320px
+    // it is the one link that leads off the site — it does not get dropped
+    // for being inconvenient at 320px. It names its destination rather than
+    // asking for anything, so it is the same length in every language.
     const broken = [];
     for (const lang of ["en", "es", "pt-BR", "ar", "vi"]) {
       for (const width of [320, 390, 412, 560]) {
         await page.setViewportSize({ width, height: 800 });
         await page.goto(`/method.html?lang=${lang}`);
-        const pill = page.locator(".wl-pill");
-        await expect(pill).toBeVisible();
+        const out = page.locator(".wl-out");
+        await expect(out).toBeVisible();
+        await expect(out).toContainText("welance/Directory");
         const fits = await page.evaluate(() => {
-          const b = document.querySelector(".wl-pill").getBoundingClientRect();
+          const b = document.querySelector(".wl-out").getBoundingClientRect();
           const vw = document.documentElement.clientWidth;
           return { inside: b.left >= -0.5 && b.right <= vw + 0.5,
                    over: document.documentElement.scrollWidth - vw };
@@ -363,7 +380,7 @@ test.describe("the method reads at a glance", () => {
     await expect(page).toHaveURL(/\/it\/method\.html$/);
     // and following any relative link keeps you in that language — the footer
     // one, because the header nav is not on a phone
-    await page.locator('.wl-foot-links a[href="calculators.html"]').click();
+    await page.locator('.wl-foot-link[href="calculators.html"]').click();
     await expect(page).toHaveURL(/\/it\/calculators\.html$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
   });
@@ -381,7 +398,9 @@ test.describe("the method reads at a glance", () => {
 
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
-    const blocks = page.locator(".code");
+    // the landing carries start chips in `.code` too, so name the example's
+    // two blocks rather than counting every code block on the page
+    const blocks = page.locator("#api-req, #api-res");
     await expect(blocks).toHaveCount(2);
 
     // highlighting is applied at runtime — the markup stays plain text
@@ -410,7 +429,7 @@ test.describe("the method reads at a glance", () => {
     await expect(src).toBeVisible();
     await expect(src.locator("svg")).toBeVisible();
     await expect(page.locator(".wl-head .wl-theme")).toHaveCount(0);
-    await expect(page.locator(".wl-foot-bottom .wl-theme")).toBeVisible();
+    await expect(page.locator(".wl-foot-legal .wl-theme")).toBeVisible();
   });
 
   test("light and dark, remembered across pages, no flash", async ({ page }) => {
@@ -426,14 +445,54 @@ test.describe("the method reads at a glance", () => {
     expect(await theme(), "the choice follows you").toBe(chosen);
   });
 
-  test("the footer names its two columns and always shows docs and source", async ({ page }) => {
+  test("the footer names its columns and always shows docs and source", async ({ page }) => {
     await page.goto("/");
-    const cols = page.locator(".wl-foot-links");
-    await expect(cols).toHaveCount(2);
-    await expect(page.locator('.wl-foot-links a[href="/docs"]')).toBeVisible();
-    const gh = page.locator('.wl-foot-links a[href*="github.com"]');
+    // brand, the three doors in, the model, build with it, operated by
+    await expect(page.locator(".wl-foot-grid > *")).toHaveCount(5);
+    await expect(page.locator(".wl-foot-k")).toHaveCount(4);
+    await expect(page.locator('.wl-foot-link[href="/docs"]')).toBeVisible();
+    const gh = page.locator('.wl-foot-link[href*="github.com"]');
     await expect(gh).toBeVisible();
     await expect(gh.locator("svg.wl-gh")).toBeVisible();
+    // the three doors in lead a column of their own rather than sitting in a
+    // list of twelve, which is where nobody found them
+    await expect(page.locator(".wl-foot-start")).toHaveCount(3);
+  });
+
+  test("the closing band offers the ruleset, not the service", async ({ page }) => {
+    await page.goto("/");
+    const band = page.locator(".wl-close");
+    // both buttons stay on this site; the Directory is named in the note and
+    // in the footer, never as the band's ask
+    await expect(band.locator(".btn")).toHaveCount(2);
+    await expect(band.locator('.btn[href*="welance.com"]')).toHaveCount(0);
+    await expect(band.locator(".wl-close-note")).toContainText("MIT");
+  });
+
+  test("the page closes blue-on-ink, the Directory's two-tone", async ({ page }) => {
+    await page.goto("/");
+    const band = page.locator(".wl-close");
+    await expect(band).toBeVisible();
+    // the lead door wears the coral on the blue ground
+    await expect(band.locator(".btn.accent")).toBeVisible();
+    const grounds = await page.evaluate(() => ({
+      close: getComputedStyle(document.querySelector(".wl-close")).backgroundColor,
+      deep: getComputedStyle(document.querySelector(".wl-foot-deep")).backgroundColor,
+    }));
+    expect(grounds.close).toBe("rgb(151, 219, 226)");
+    expect(grounds.deep).toBe("rgb(10, 10, 10)");
+  });
+
+  test("both brand surfaces keep their ground in the dark", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    const grounds = await page.evaluate(() => ({
+      close: getComputedStyle(document.querySelector(".wl-close")).backgroundColor,
+      deep: getComputedStyle(document.querySelector(".wl-foot-deep")).backgroundColor,
+    }));
+    // the band went black-on-black once; these two never swap
+    expect(grounds.close).toBe("rgb(151, 219, 226)");
+    expect(grounds.deep).toBe("rgb(10, 10, 10)");
   });
 
   test("every section leads with a short claim", async ({ page }) => {

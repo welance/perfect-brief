@@ -33,8 +33,22 @@ Source of truth, by file:
 1. **Accent: coral.** `--accent` becomes `#ff7b51` everywhere — links, hover,
    section labels, the lead button. Violet survives as `--wl-p`, one of the
    five brand colours, and in the code-block token palette.
-2. **Lockup: Directory lockup, underscore kept.** Asterisk + wordmark + grey
-   slash + `perfect brief_`.
+2. **Lockup: two strengths.** The footer wears the full Directory lockup —
+   asterisk + wordmark + grey slash + `perfect brief_`. The header wears only
+   `✳ perfect brief_`. *(Revised after first review: the ruleset is MIT and
+   meant to be common property, and co-branding it at the top of every page
+   argues the opposite. The mark alone still carries the house, because it
+   recurs in the colour rule and the footer.)*
+
+7. **The way out is a destination, not an ask.** *(Same review.)* The header's
+   filled "Find a team" pill becomes a muted text link naming where it goes —
+   `welance/Directory ↗` — in the nav's register, with the nav's
+   underline-on-hover. The closing band stops promising a team and states what
+   the thing is; both its buttons stay on this site, and welance's role is a
+   note in the small voice. The footer's third door is named and described
+   rather than offered. No "it's free", no imperative: the scoring project is
+   meant to be impartial and common to everyone, and the copy has to sound
+   like it.
 3. **Dark mode: kept.** The Directory is light-only, but perfect-brief's dark
    theme works and is tested. Directory values become the light palette; the
    dark palette is retuned to match.
@@ -119,19 +133,21 @@ use the classes still move. Body stays 16px/1.4.
 ### Lockup
 
 `LOGO` (the animated stroke-and-glyph wordmark) is replaced by the Directory's
-two static SVGs, inlined: `WE_ASTERISK` (30×30 viewBox) and `WE_WORDMARK`
-(112×24 viewBox). The `wl-brandline` two-line block — "an open standard,
-started by" over a small mark — is replaced by the Directory's single-line
-lockup:
+two static SVGs, inlined: `MARK` (30×30 viewBox) and `WORDMARK` (112×24
+viewBox). The `wl-brandline` two-line block — "an open standard, started by"
+over a small mark — goes. There are two lockups:
 
 ```
-[asterisk] [welance] [/] [perfect brief_]
+header:  [asterisk] [perfect brief_]
+footer:  [asterisk] [welance] [/] [perfect brief_]
 ```
 
 - asterisk `22px` → `30px` at ≥1024
-- wordmark `85px` → `112px`, `margin-inline-start` `4px` → `8px`
-- slash `--muted-2`, label `--ink-soft`, both weight 500, `22px` → `30px`,
-  `line-height: 1`, gap `8px`
+- wordmark (footer only) `85px` → `112px`, `margin-inline-start` `4px` → `8px`
+- product name weight 500, `22px` → `30px`, `line-height: 1`; full `--ink` in
+  the header, where it *is* the lockup, and `--ink-soft` in the footer, where
+  it defers to the wordmark beside it
+- slash (footer only) `--muted-2`
 - the trailing `_` keeps `color: var(--accent)`
 
 The animation (`.wl-logo.animated`, `wl-stroke-draw`, `wl-glyph-in`) becomes
@@ -174,12 +190,16 @@ treatment is removed.
 `© 2011–2026 · v1 · live`, mono 11px uppercase `0.06em` in `--ink-soft`, shown
 at ≥1280 only, first item in `.wl-head-right`. New key `chrome.status`.
 
-### Pill
+### The way out
 
-`.wl-pill` is re-cut to Directory `.btn` geometry: height 46px, `1px` border
-(not 2px), `border-radius: var(--radius)`, 15px weight 500, the standard
-invert-on-hover. `.wl-lang-select`, `.wl-theme`, `.wl-src` and `.wl-burger`
-take `border-radius: var(--radius)` so nothing square is left in the bar.
+`.wl-pill` is gone. `.wl-out` replaces it: a muted text link reading
+`welance/Directory ↗`, 15px weight 500 in `--ink-soft`, going to `--ink` on
+hover with a 1px scaleX underline — the nav's gesture, one notch quieter. The
+destination is a proper noun, so it is not translated, which also means the
+header holds at 320px in every language without special-casing.
+
+`.wl-lang-select`, `.wl-theme` and `.wl-burger` take
+`border-radius: var(--radius)` so nothing square is left in the bar.
 
 ## 3. Page close — `site/chrome.js` + `.closing-cta` / `.wl-foot*`
 
@@ -187,15 +207,29 @@ Replaces the black-CTA-band-on-light-footer entirely.
 
 ### Closing band
 
-`.closing-cta`: ground `--accent-2` `#97dbe2`, foreground `#0a0a0a`, padding
+`.wl-close`: ground `--accent-2` `#97dbe2`, foreground `#0a0a0a`, padding
 `clamp(48px, 6vw, 72px) 0`, `position: relative; overflow: hidden`. A 220px
 asterisk at `opacity: .18`, `right: -60px; top: -70px`, `aria-hidden`. Inside:
-a `sec-label` eyebrow, an `.h1` at `max-width: 18ch`, then two `.btn.lg` — the
-lead `.accent` (coral on blue), the second outlined ink. In dark mode the band
-keeps its blue ground and ink text: it is a fixed brand surface, like `--slab`.
+an eyebrow, an `.h1` at `max-width: 18ch`, a `.wl-close-note`, then two
+`.btn.lg` — the lead `.accent` (coral on blue), the second outlined ink. In
+dark mode the band keeps its blue ground and ink text: it is a fixed brand
+surface, like `--slab`.
 
-Copy is the existing footer CTA's: "The team your goal deserves_", with
-"Score a brief" and "Find a team →".
+Copy states what the thing is instead of promising a team:
+
+- eyebrow "the ruleset, not the service"
+- heading "Fourteen rules. Yours to run, or to change_"
+- note "welance wrote it and runs one noticeboard on it. The rules are MIT —
+  fork them, argue with them, run your own."
+- buttons "Score a brief" (accent) and "Read the rules" — **both stay on this
+  site**; the Directory is named in the note and in the footer, never as the
+  band's ask.
+
+New i18n keys throughout (`chrome.closeHead`, `chrome.closeNote`,
+`chrome.closeEyebrow`, `chrome.closeRules`) rather than reusing
+`chrome.ctaHead`: that key is translated into eight languages as "The team
+your goal deserves", so reusing it would keep the old promise on every
+non-English page.
 
 ### Ink footer
 
@@ -206,7 +240,7 @@ Copy is the existing footer CTA's: "The team your goal deserves_", with
 | column | contents |
 |---|---|
 | brand | asterisk + wordmark (`--ink-fg`), a 14px `--ink-muted` blurb at `max-width: 34ch`, mono contact line |
-| Start here | "Score a brief" / "Compute a split" / "Find a team" as `wl-foot-start` two-line blocks (15px weight-500 title + 12.5px muted sub) |
+| Start here | "Score a brief" / "Compute a split" / "welance/Directory" as `wl-foot-start` two-line blocks (15px weight-500 title + 12.5px muted sub). The third is named and described — "One noticeboard that runs this ruleset. Briefs stay blind until a team takes one." — not offered |
 | The model | `PAGES`, as 14px `wl-foot-link` |
 | Build with it | `BUILD`, as 14px `wl-foot-link` |
 | Operated by | the two welance offices as `wl-foot-op` 13px muted lines, plus the `welance.com` link |
