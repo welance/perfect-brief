@@ -6,6 +6,33 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.7.0] - 2026-08-12
+
+The pages take the Directory's branding, and the console stops pretending the
+AI judge answered when it did not.
+
+### Changed
+- **Branding ported from welance/Directory.** The header carries the mark and
+  the project name alone; the full welance lockup lives in the footer, which
+  grows a start-here column, the model, build-with-it, and the two legal
+  entities. An MIT ruleset meant to be common property should not co-brand
+  every page, and the reasoning — including two decisions revised mid-flight —
+  is in `docs/superpowers/specs/2026-08-09-directory-branding-port-design.md`.
+
+### Added
+- **The console separates the judge you asked for from the judge that
+  answered.** When a live call fails it re-runs the keyword judge, warns, and
+  leaves a standing line under the score saying so. It deliberately does not
+  drop the reader out of live mode: that would hide the key field and the model
+  selector, which is exactly what someone whose call just failed reaches for.
+  This matters today — `judge=llm` returns 504 in production on an ingress
+  timeout, and the page used to hide it.
+
+### Fixed
+- `integrate.html` no longer claims a pasted prompt reaches the API from a
+  browser chat — it does not, and saying so was wrong.
+- `PB_CORS_ORIGINS` gained `www.welance.com`.
+
 ## [1.6.2] - 2026-08-09
 
 ### Fixed
