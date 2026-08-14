@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfect Team · one team, one rate — welance</title>
+<title>Team Rate · one team, one rate — welance</title>
 <meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named margin out.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -185,7 +185,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div class="head-grid">
       <div class="txt">
     <p class="eyebrow" data-i18n="team.eyebrow">one team, one rate</p>
-    <h1><span data-i18n="team.h1">Perfect Team</span><span style="color:var(--accent)">_</span></h1>
+    <h1><span data-i18n="team.h1">Team Rate</span><span style="color:var(--accent)">_</span></h1>
     <p class="lede" data-i18n-html="team.lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated <b>margin</b> anyone can check.</p>
       </div>
       <div class="t-ident" role="img" aria-label="Three roles, one blended rate, four visible bands">
@@ -358,7 +358,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
   var state = load();
 
-  /* The shares are a split of one project: see splitbar.js, which Perfect
+  /* The shares are a split of one project: see splitbar.js, which Price Split
      Price uses for exactly the same question about the parts of a role. */
   var SB = window.WelanceSplitBar;
   SB.rescale(state.rows);  // whatever was stored, or edited by hand, is one project

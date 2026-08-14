@@ -5,9 +5,9 @@ WelanceI18n.register("pt-BR", {
   reviewed: false,
   strings: {
 
-    /* ---------- index.html — The Perfect Brief ---------- */
-    "index.crumb": "perfect brief",
-    "index.h1": "O Brief Perfeito",
+    /* ---------- index.html — The Brief Bar ---------- */
+    "index.crumb": "brief bar",
+    "index.h1": "The Brief Bar",
     "index.thesis": "Um brief nunca fez um projeto dar certo — quem faz é o time. Um brief ruim, porém, fracassa em silêncio: semanas depois, quando o trabalho volta errado. E é a única parte que dá para conferir antes de o dinheiro se mover. <b>20% brief, 80% time</b> — este é um pequeno serviço aberto que avalia os 20%.",
     "index.cta.console": "Experimente o console",
     "index.cta.rules": "Leia as regras",
@@ -43,15 +43,15 @@ WelanceI18n.register("pt-BR", {
     "method.p2": "Um time multifuncional montado <em>para</em> o objetivo — pessoas pessoal e profissionalmente inclinadas exatamente àquele problema, não adaptadas a ele — trabalha melhor. Não é slogan; é o único padrão constante em quinze anos de projetos no segmento que servimos: trabalho delimitado, com forma de produto, onde o encaixe vence a escala.",
     "method.eb2": "o método — três passos",
     "method.s1.n": "passo 1",
-    "method.s1.h": "Perfect Brief",
+    "method.s1.h": "Brief Bar",
     "method.s1.p": "O que é o trabalho. Um grande produto é 20% brief e 80% time — mas o brief é os 20% que decidem se um bom time consegue sequer começar bem. Avaliado por regras públicas, com gate antes de publicar.",
     "method.s1.go": "→ avalie um brief",
     "method.s2.n": "passo 2",
-    "method.s2.h": "Perfect Price",
+    "method.s2.h": "Price Split",
     "method.s2.p": "Quanto vale, e quem fica com qual parte. A cota segue de quanto do papel a pessoa cobre — nunca de um julgamento sobre quem ela é. Declarado para que qualquer um possa calcular e conferir a divisão.",
     "method.s2.go": "→ calcule uma divisão",
     "method.s3.n": "passo 3",
-    "method.s3.h": "Perfect Team",
+    "method.s3.h": "Team Rate",
     "method.s3.p": "Quem faz, onde no mundo, a uma única taxa combinada sobre a qual o cliente consegue de fato raciocinar. As margens variam dentro do time por nível; o projeto cumpre um welance margin declarado; ninguém é espremido abaixo da própria taxa.",
     "method.s3.go": "→ encontre um time",
     "method.p3": "Cada passo precisa do anterior. O preço precisa do escopo do brief para saber o que é um papel; o time precisa da aritmética do preço para dar a três pessoas uma taxa honesta. A informação desce em cascata — por isso são passos e não features, e por isso o brief continua sendo o conceito principal: nada rio abaixo sobrevive a um brief desonesto.",
@@ -159,9 +159,9 @@ WelanceI18n.register("pt-BR", {
     "fx.team.plain": "Uma única taxa combinada do cliente, decomposta em quatro bandas visíveis que precisam somar exato.",
 
     /* ---------- rules.html ---------- */
-    "rules.crumbup": "perfect brief",
+    "rules.crumbup": "brief bar",
     "rules.crumb": "regras",
-    "rules.h1": "O Brief Perfeito para um Produto&nbsp;Digital",
+    "rules.h1": "A barra para briefs de produto&nbsp;digital",
     "rules.herosub": "Um bom brief dá ao produto a largada certa. Tornamos o padrão aberto.",
     "rules.ratio": "<span class=\"s\">20%</span> brief · <span class=\"t\">80%</span> time",
     "rules.ratiocap": "de onde vem de verdade o sucesso de um produto digital",
@@ -204,7 +204,7 @@ WelanceI18n.register("pt-BR", {
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
     "team.eyebrow": "um time, uma taxa",
-    "team.h1": "Perfect Team",
+    "team.h1": "Team Rate",
     "team.lede": "Um time multifuncional, precificado como se precifica uma pessoa independente. Os papéis e seus pesos descrevem o projeto; cada papel carrega seu próprio nível e base de custo. O cliente vê <b>uma taxa combinada</b> — não cem diferentes — as margens variam dentro do time por nível, e o projeto como um todo cumpre um <b>margem</b> declarado e nomeado, que qualquer pessoa pode conferir.",
     "team.reset": "Restaurar padrões",
     "team.c1h": "O time, papel por papel",
@@ -251,7 +251,7 @@ WelanceI18n.register("pt-BR", {
     "team.d.target": "alvo",
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
-    "chrome.brief": "Perfect Brief",
+    "chrome.brief": "Brief Bar",
     "int.w.ci": "Seu código · CI · um produto",
     "int.w.ifmcp": "se falar MCP",
     "int.w.other": "Qualquer outro assistente",
@@ -287,9 +287,9 @@ WelanceI18n.register("pt-BR", {
     "calc.t3q": "Quanto custa um time, precificado como um só?",
     "calc.t3p": "Papéis, sua cota de esforço, o nível de entrega de cada um e onde cada pessoa vive — entra; uma taxa única que o cliente vê, e uma checagem de que ninguém fica abaixo da própria — sai.",
     "calc.t3go": "Precifique um time →",
-    "chrome.price": "Perfect Price",
+    "chrome.price": "Price Split",
     "chrome.rules": "As regras",
-    "chrome.team": "Perfect Team",
+    "chrome.team": "Team Rate",
 
     /* ---------- data.html — your brief, your key ---------- */
     "data.crumb": "seu brief, sua chave",

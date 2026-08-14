@@ -5,9 +5,9 @@ WelanceI18n.register("vi", {
   reviewed: false,
   strings: {
 
-    /* ---------- index.html — The Perfect Brief ---------- */
-    "index.crumb": "perfect brief",
-    "index.h1": "Bản Brief Hoàn Hảo",
+    /* ---------- index.html — The Brief Bar ---------- */
+    "index.crumb": "brief bar",
+    "index.h1": "The Brief Bar",
     "index.thesis": "Một bản brief chưa bao giờ làm nên thành công của dự án — đội ngũ mới làm điều đó. Nhưng một bản brief tồi thì thất bại trong im lặng: vài tuần sau, khi công việc trả về sai. Và nó cũng là phần duy nhất có thể kiểm tra trước khi tiền dịch chuyển. <b>20% brief, 80% đội ngũ</b> — đây là một dịch vụ nhỏ, mở, chấm điểm phần 20%.",
     "index.cta.console": "Dùng thử console",
     "index.cta.rules": "Đọc các quy tắc",
@@ -43,15 +43,15 @@ WelanceI18n.register("vi", {
     "method.p2": "Một đội ngũ đa chức năng được dựng <em>cho</em> mục tiêu — những người nghiêng về đúng vấn đề đó cả về cá nhân lẫn nghề nghiệp, không phải bị ép thích nghi — làm việc tốt hơn. Không phải khẩu hiệu; đó là khuôn mẫu nhất quán duy nhất trong mười lăm năm dự án ở phân khúc chúng tôi phục vụ: công việc có ranh giới, mang hình hài sản phẩm, nơi độ phù hợp thắng quy mô.",
     "method.eb2": "phương pháp — ba bước",
     "method.s1.n": "bước 1",
-    "method.s1.h": "Perfect Brief",
+    "method.s1.h": "Brief Bar",
     "method.s1.p": "Công việc là gì. Một sản phẩm tuyệt vời là 20% brief và 80% đội ngũ — nhưng brief là 20% quyết định liệu một đội ngũ giỏi có thể bắt đầu tốt hay không. Được chấm theo quy tắc công khai, có cổng trước khi công bố.",
     "method.s1.go": "→ chấm một brief",
     "method.s2.n": "bước 2",
-    "method.s2.h": "Perfect Price",
+    "method.s2.h": "Price Split",
     "method.s2.p": "Nó đáng giá bao nhiêu, và ai nhận phần nào. Phần chia dựa trên mức độ một người đảm nhận vai trò — không bao giờ dựa trên phán xét về con người họ. Được tuyên bố sao cho ai cũng tính lại và kiểm tra được.",
     "method.s2.go": "→ tính một phần chia",
     "method.s3.n": "bước 3",
-    "method.s3.h": "Perfect Team",
+    "method.s3.h": "Team Rate",
     "method.s3.p": "Ai làm, ở đâu trên thế giới, với một mức giá gộp duy nhất mà khách hàng thực sự suy luận được. Biên lợi nhuận thay đổi trong đội theo cấp độ; dự án đạt một welance margin được tuyên bố; không ai bị ép xuống dưới mức giá của mình.",
     "method.s3.go": "→ tìm đội ngũ",
     "method.p3": "Mỗi bước cần bước trước nó. Giá cần phạm vi của brief để biết một vai trò là gì; đội ngũ cần phép tính của giá để cho ba con người một mức giá trung thực. Thông tin đổ xuống theo tầng — vì thế chúng là các bước chứ không phải tính năng, và vì thế brief vẫn là khái niệm chính: không gì ở hạ nguồn sống sót qua một brief thiếu trung thực.",
@@ -159,9 +159,9 @@ WelanceI18n.register("vi", {
     "fx.team.plain": "Một mức giá khách hàng gộp duy nhất, phân rã thành bốn dải nhìn thấy được và phải cộng lại chính xác.",
 
     /* ---------- rules.html ---------- */
-    "rules.crumbup": "perfect brief",
+    "rules.crumbup": "brief bar",
     "rules.crumb": "quy tắc",
-    "rules.h1": "Bản Brief Hoàn Hảo cho Sản Phẩm&nbsp;Số",
+    "rules.h1": "Thước đo cho brief sản phẩm&nbsp;số",
     "rules.herosub": "Một brief tốt cho sản phẩm khởi đầu đúng. Chúng tôi mở tiêu chuẩn ra.",
     "rules.ratio": "<span class=\"s\">20%</span> brief · <span class=\"t\">80%</span> đội ngũ",
     "rules.ratiocap": "thành công của một sản phẩm số thực sự đến từ đâu",
@@ -204,7 +204,7 @@ WelanceI18n.register("vi", {
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
     "team.eyebrow": "một đội ngũ, một mức giá",
-    "team.h1": "Perfect Team",
+    "team.h1": "Team Rate",
     "team.lede": "Một đội ngũ đa chức năng, được định giá như định giá một người độc lập. Các vai trò và trọng số mô tả dự án; mỗi vai trò mang cấp độ và nền chi phí riêng. Khách hàng thấy <b>một mức giá gộp duy nhất</b> — không phải một trăm mức khác nhau — biên lợi nhuận thay đổi trong đội theo cấp độ, và toàn dự án đạt một <b>biên</b> được tuyên bố, có tên, ai cũng kiểm tra được.",
     "team.reset": "Khôi phục mặc định",
     "team.c1h": "Đội ngũ, theo từng vai trò",
@@ -251,7 +251,7 @@ WelanceI18n.register("vi", {
     "team.d.target": "mục tiêu",
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
-    "chrome.brief": "Perfect Brief",
+    "chrome.brief": "Brief Bar",
     "int.w.ci": "Mã của bạn · CI · một sản phẩm",
     "int.w.ifmcp": "nếu nói được MCP",
     "int.w.other": "Bất kỳ trợ lý nào khác",
@@ -287,9 +287,9 @@ WelanceI18n.register("vi", {
     "calc.t3q": "Một đội tốn bao nhiêu, khi định giá như một?",
     "calc.t3p": "Vai trò, phần công sức, cấp độ thực hiện và nơi mỗi thành viên sống — vào; một mức giá gộp khách hàng thấy, và một kiểm tra rằng không ai bị ép xuống dưới mức của mình — ra.",
     "calc.t3go": "Định giá một đội →",
-    "chrome.price": "Perfect Price",
+    "chrome.price": "Price Split",
     "chrome.rules": "Quy tắc",
-    "chrome.team": "Perfect Team",
+    "chrome.team": "Team Rate",
 
     /* ---------- data.html — your brief, your key ---------- */
     "data.crumb": "brief của bạn, khoá của bạn",

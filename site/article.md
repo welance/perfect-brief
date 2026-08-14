@@ -1,4 +1,4 @@
-# The Perfect Digital Product Brief
+# The bar for digital product briefs
 
 *A modest proposal for starting a build on the right foot.*
 

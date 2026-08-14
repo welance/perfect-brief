@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
-<meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a perfect brief looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
+<title>The Brief Bar — an open ruleset for scoring digital product briefs</title>
+<meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a brief bar looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -112,7 +112,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
 <div id="site-header"></div>
-<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="index.crumb">perfect brief</span></p>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="index.crumb">brief bar</span></p>
 <div class="wrap">
   <header>
     <div class="head-grid">
@@ -130,7 +130,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
              the argument starts: nobody owns the answer, so the invitation
              comes first and the thesis follows it. index.thesis keeps its key
              and its eight translations — it only moved down a slot. -->
-        <p class="thesis" data-i18n="index.lede">Nobody has settled what a perfect brief looks like. The rules are open. Help us write them.</p>
+        <p class="thesis" data-i18n="index.lede">Nobody has settled what a brief bar looks like. The rules are open. Help us write them.</p>
         <p data-i18n-html="index.thesis">A brief has never made a project succeed — the team does that. A bad one fails quietly instead: weeks in, when the work comes back wrong. It is also the only part anyone can check before the money moves. <b>20% brief, 80% team</b> — this is a small, open service that scores the 20%.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
@@ -159,8 +159,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
   <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
   <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
 
   <div class="eyebrow"><span data-i18n="idx.start.eb">run it in one line</span></div>
   <div class="starts">
@@ -298,7 +297,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </figure>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
-  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
+  <p data-i18n="index.p5">The judge runs at temperature zero and verdicts are cached by (ruleset version, model, brief), so the same brief answers identically for as long as that model is served — and every verdict carries its verbatim evidence, which outlives the model. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
   <div class="code" id="api-req">
     <div class="code-bar">
       <div class="code-tabs">
@@ -341,12 +340,14 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
   "ruleset_version": "1.0.0+83107baec655"
 }</pre>
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief, and every verdict carries its verbatim evidence — an audit trail you can re-read long after any particular model is gone. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
   <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
   <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a small collective of independent senior teams, working together since 2011. We run <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. The platform maximises connections, not margin: meeting a team costs a fixed, symbolic token, never a percentage of the relationship. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
-  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p data-i18n-html="index.p7b">The bar doesn't just guard that noticeboard — it helps write for it: the Directory's guided brief builder derives its questions from these fourteen rules, and every draft it produces is scored by this same service before anyone sends anything. One instrument, teaching and judging with the same hand.</p>
   <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
+  <p data-i18n-html="index.p8b">The sharpest edge of it, said plainly: <b>welance also pitches as a team on the Directory</b> — same fees, same blindness, same bar, and the <span style="font-family:var(--mono)">ruleset_version</span> on every verdict is how anyone checks nobody got a different one. And yes, we benefit when your brief improves and lands on our noticeboard. That is why the tool is free, and why every exit stays open: the offline mock, the fork, self-hosting. What binds <em>us</em> — never mining briefs for leads, never training on them — is written out in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
   <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
   </details>
@@ -368,7 +369,8 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js';
+  /* vendored locally (site/vendor/) so these pages make no third-party requests */
+  s.src = 'vendor/lottie_light.min.js';
   s.async = true;
   s.onload = function () {
     var el = document.getElementById('pbIdent');
@@ -376,7 +378,7 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
     el.innerHTML = '';
     el.classList.add('lottie');
     lottie.loadAnimation({ container: el, renderer: 'svg', loop: true,
-      autoplay: true, path: 'animations/the-perfect-brief.json' });
+      autoplay: true, path: 'animations/the-brief-bar.json' });
   };
   document.head.appendChild(s);
 })();
