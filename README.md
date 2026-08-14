@@ -1,13 +1,13 @@
-# Perfect Brief — scoring service (`briefs.welance.com`)
+# Brief Bar — scoring service (`briefs.welance.com`)
 
 ### → **[briefs.welance.com](https://briefs.welance.com)** — the public pages, live
 
 | | |
 |---|---|
 | **[The method](https://briefs.welance.com/method.html)** | brief → price → team, the welance model opened as a blueprint |
-| **[Perfect Brief](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
-| **[Perfect Price](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
-| **[Perfect Team](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
+| **[Brief Bar](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
+| **[Price Split](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
+| **[Team Rate](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
 | **[API docs](https://briefs.welance.com/docs)** | OpenAPI, every field described |
 | **[Integrate](https://briefs.welance.com/integrate.html)** | four routes into your workflow: console · prompt · **MCP** · API |
 | **[Your brief, your key](https://briefs.welance.com/data.html)** | what travels where, what we keep, and how to bring your own key |
@@ -76,8 +76,12 @@ suite. Add the key to unlock the `llm` judge and `/v1/suggest`.
   "judge": "mock", "cached": false }
 ```
 The `ruleset_version` is your audit trail: it pins exactly which bar judged a
-brief, and the score is reproducible against it (LLM judge runs at temperature 0
-and is cached by `(ruleset_version, model, brief)`).
+brief, and every verdict carries a verbatim quote from the brief as evidence —
+**inspectable** by a human long after any particular model is gone. (The mock
+judge is reproducible forever; the LLM judge runs at temperature 0 and is
+cached by `(ruleset_version, model, brief)`, but temperature 0 is not a
+determinism guarantee across provider updates — the quotes are the part of
+the trail that never expires.)
 
 The judge's LLM is either direct Anthropic (`PB_ANTHROPIC_API_KEY` + `PB_MODEL`)
 or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
@@ -134,6 +138,11 @@ same endpoint server-to-server when it needs to persist a verdict.
 - **The gate replaces severity caps.** A critical gap is an explicit publish
   requirement (`clear-title`, `problem-defined`, `budget-floor`, `anonymised`),
   not a quiet penalty on the number.
+- **The Operator Covenant.** The rules judge briefs;
+  [OPERATOR-COVENANT.md](OPERATOR-COVENANT.md) judges us — no lead-mining, no
+  training on briefs, the same bar for welance's own briefs (welance pitches
+  on the Directory as a team), with each commitment labelled by how it is
+  enforced, CI-tested where code can reach.
 - **Governance.** Anyone proposes a rule change via PR; the fixture corpus in CI
   is the immune system — a change that moves the numbers must move the fixtures
   too, in the open. Rule-change PRs run on a 7-day community discussion window
