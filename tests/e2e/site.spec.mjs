@@ -213,6 +213,19 @@ test.describe("the ways in", () => {
     await expect(cfg).toContainText("perfect-brief-mcp");
   });
 
+  test("a brief pasted on the landing arrives in the console, scored", async ({ page }) => {
+    await page.goto("/");
+    const brief = "Title: a booking tool. Problem: reservations are lost on paper.";
+    await page.locator("#hero-brief").fill(brief);
+    await page.locator("#hero-score").click();
+    await page.waitForURL(/console\.html/);
+    await expect(page.locator("#input")).toHaveValue(brief);
+    // scored on arrival: the score readout is not the em-dash placeholder
+    await expect(page.locator("#vscore")).not.toHaveText("—/100");
+    // the handoff key is one-shot
+    expect(await page.evaluate(() => localStorage.getItem("pb-handoff-brief"))).toBeNull();
+  });
+
   test("the console invites you to build the brief on the Directory", async ({ page }) => {
     await page.goto("/console.html");
     const cta = page.locator(".focus-cta");

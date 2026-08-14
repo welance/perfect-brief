@@ -769,7 +769,10 @@ try{
  const st=q||localStorage.getItem("welance-lang");
  if(st){const c=st==="en"?"en-GB":st; if(I18N[c]) initLang=c;}
 }catch(e){}
-buildSelector(); $("#lang").value=initLang; applyLocale(initLang); setPreset("mid");
+buildSelector(); $("#lang").value=initLang; applyLocale(initLang);
+// a brief pasted on the landing rides over in localStorage — one shot, then gone
+let handed=null; try{handed=localStorage.getItem("pb-handoff-brief");localStorage.removeItem("pb-handoff-brief");}catch(e){}
+if(handed&&handed.trim()){$("#input").value=handed;scoreAction();}else{setPreset("mid");}
 // the site chrome's i18n dispatches after boot/switch — re-apply our locale on top
 document.addEventListener("welance:lang",ev=>{
  const c=ev.detail.lang==="en"?"en-GB":ev.detail.lang;
