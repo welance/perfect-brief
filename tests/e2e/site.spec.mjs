@@ -226,6 +226,16 @@ test.describe("the ways in", () => {
     expect(await page.evaluate(() => localStorage.getItem("pb-handoff-brief"))).toBeNull();
   });
 
+  test("the offline mock admits it cannot read a non-English brief", async ({ page }) => {
+    await page.goto("/console.html");
+    const note = page.locator("#offline");
+    await expect(note, "an English brief needs no caveat").not.toBeVisible();
+    await page.locator("#input").fill(
+      "Titolo: prenotazioni per ristoranti. Problema: si perdono prenotazioni perché " +
+      "il personale non aggiorna la disponibilità in tempo reale. Budget: 25k euro.");
+    await expect(note, "the keyword mock reads English only — it must say so").toBeVisible();
+  });
+
   test("the console invites you to build the brief on the Directory", async ({ page }) => {
     await page.goto("/console.html");
     const cta = page.locator(".focus-cta");

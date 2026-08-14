@@ -741,8 +741,42 @@ function applyLocale(code){
  if(lp) lp.hidden=!(I18N[code]&&I18N[code].exampleBrief);
  document.documentElement.lang=code; document.documentElement.dir=meta.dir;
  document.querySelectorAll("[data-i18n]").forEach(el=>{el.textContent=t(el.dataset.i18n);});
- $("#offline").classList.toggle("show",code!=="en-GB");
+ updateOfflineNote();
  renderKnobs(); updateModeBtn(); if(lastVerdicts) reaggregate(); else run();
+}
+/* The keyword mock reads English and nothing else. It used to warn only when
+   the INTERFACE was switched — so an Italian brief pasted with the English UI
+   got a confident, meaningless number instead of a caveat. The brief's own
+   language is what matters, so that is what we look at. Cheap and on purpose:
+   a non-Latin script, or almost no English function words in a text long
+   enough to judge. The live LLM judge reads any language, so the note is a
+   mock-mode concern only. */
+function looksNonEnglish(text){
+ const s=(text||"").slice(0,4000);
+ if(/[Ѐ-ӿ؀-ۿ一-鿿぀-ヿ가-힯]/.test(s)) return true;   // a non-Latin script settles it
+ const w=s.toLowerCase().match(/[a-zà-ÿ]+/g)||[];
+ if(w.length<20) return false;                        // too short to tell — say nothing
+ /* Two signals, not one threshold: a terse English brief has few function
+    words in absolute terms, so counting only English hits flags it wrongly
+    (the "mid" preset scored 1/17 and tripped it). Compare instead — words
+    that are English against words that are unmistakably not, excluding the
+    ones both languages share (a, in, no, come, die, so). */
+ const EN=new Set(["the","of","and","to","is","are","for","with","we","our","that","this","it","as","be","on",
+  "by","from","will","not","you","your","can","should","must","have","has","need","they","their","its",
+  "without","before","after","each","any","all","how","what","who","when","there"]);
+ const XX=new Set(["che","per","con","non","sono","della","delle","dei","degli","nel","nella","sul","anche",
+  "quindi","essere","deve","più","questo","questa","gli","una","uno","dal","alla","agli",
+  "para","por","los","las","del","que","pero","más","sin","son","ser","este","esta","desde",
+  "pour","avec","sans","mais","les","des","une","est","sont","nous","vous","être","cette","dans","leur",
+  "und","oder","nicht","sind","wir","ist","das","den","dem","für","mit","ohne","aber","auch","eine",
+  "einen","muss","soll","werden","haben","sich","auf","bei","nach","über"]);
+ let en=0,xx=0; for(const x of w){ if(EN.has(x))en++; if(XX.has(x))xx++; }
+ return xx>en;
+}
+function updateOfflineNote(){
+ const el=$("#offline"); if(!el) return;
+ const nonEnUi=LOCALE!=="en-GB", nonEnBrief=MODE==="mock"&&looksNonEnglish($("#input").value);
+ el.classList.toggle("show",MODE==="mock"&&(nonEnUi||nonEnBrief));
 }
 function buildSelector(){
  const sel=$("#lang");
@@ -756,11 +790,11 @@ $("#run").addEventListener("click",scoreAction);
 $("#modebtn").addEventListener("click",()=>{MODE=MODE==="live"?"mock":"live";updateModeBtn();scoreAction();});
 $("#vstick").classList.add("collapsed");syncVstickLabel();
 $("#vhandle").addEventListener("click",()=>{$("#vstick").classList.toggle("collapsed");syncVstickLabel();});
-$("#livecta").addEventListener("click",()=>{MODE="live";updateModeBtn();scoreAction();});
+$("#livecta").addEventListener("click",()=>{MODE="live";updateModeBtn();updateOfflineNote();scoreAction();});
 $("#modelsel").addEventListener("change",e=>{MODEL=e.target.value.trim()||null;aiCache={};aiFailed={};scoreAction();});
 $("#byok").addEventListener("input",e=>{BYOK=e.target.value.trim();renderModelSel();});
 $("#byok").addEventListener("change",()=>{if(MODE==="live"){aiCache={};aiFailed={};scoreAction();}});
-$("#input").addEventListener("input",()=>{document.querySelectorAll("#presets .chip").forEach(c=>c.setAttribute("aria-pressed","false"));$("#adv-note").style.display="none";$("#blocked-note").style.display="none";aiCache={};aiFailed={};if(MODE==="mock"){run();}else{stale=true;markStale();}});
+$("#input").addEventListener("input",()=>{document.querySelectorAll("#presets .chip").forEach(c=>c.setAttribute("aria-pressed","false"));$("#adv-note").style.display="none";$("#blocked-note").style.display="none";aiCache={};aiFailed={};updateOfflineNote();if(MODE==="mock"){run();}else{stale=true;markStale();}});
 $("#reset").addEventListener("click",()=>{state=structuredClone(DEFAULTS);$("#gctx").checked=true;renderKnobs();reaggregate();});
 $("#gctx").addEventListener("change",ev=>{state.contexts.directory=ev.target.checked;if(!ev.target.checked)$("#blocked-note").style.display="none";renderKnobs();reaggregate();});
 let initLang="en-GB";
@@ -773,6 +807,7 @@ buildSelector(); $("#lang").value=initLang; applyLocale(initLang);
 // a brief pasted on the landing rides over in localStorage — one shot, then gone
 let handed=null; try{handed=localStorage.getItem("pb-handoff-brief");localStorage.removeItem("pb-handoff-brief");}catch(e){}
 if(handed&&handed.trim()){$("#input").value=handed;scoreAction();}else{setPreset("mid");}
+updateOfflineNote();
 // the site chrome's i18n dispatches after boot/switch — re-apply our locale on top
 document.addEventListener("welance:lang",ev=>{
  const c=ev.detail.lang==="en"?"en-GB":ev.detail.lang;
