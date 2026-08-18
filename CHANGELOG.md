@@ -6,6 +6,22 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [Unreleased]
+
+### Changed
+- **Ruleset 1.1.0 — `anonymised` judges identity, not specificity.** The gate
+  was blocking publishable briefs for naming the compliance regime ("GDPR is a
+  named regulation/brand") while `data-compliance`, in the same run, was
+  passing them for exactly that; it also read a concrete description of the
+  business ("a wholesaler of chilled goods, forty routes, two warehouses") as
+  "company details". Both are what the rest of the ruleset asks a brief to
+  contain. The criteria now says so: laws, standards and certifications are
+  not brands, sector and size and volumes are not identity, and the rule fails
+  only when a reader could tell WHO wrote the brief. Found on nine non-English
+  starter briefs for the Directory, every one of them blocked on this rule
+  alone. `tests/test_anonymised_llm.py` is the live regression — MockJudge
+  cannot exercise a prompt change.
+
 ## [1.7.0] - 2026-08-12
 
 The pages take the Directory's branding, and the console stops pretending the
