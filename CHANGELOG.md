@@ -6,6 +6,30 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.9.0] - 2026-08-19
+
+### Changed
+- **The tone: proposing, not pronouncing.** The method page spoke in a register
+  the rest of the site had already left behind — a verdict on how other people
+  work ("an old model, and an unsustainable one"), a claim asserted as settled
+  ("does better work: it is the one pattern that held"), and a pre-emption of
+  the reader's objection ("that is not a slogan"). It now says what we saw, in
+  whose experience, and what it is evidence of: day-rate staffing prices
+  availability and can work perfectly well; a team picked for the goal has done
+  better work *for us*; there is no controlled trial, there are fifteen years
+  of engagements in one segment. The critique of the day-rate model stays —
+  aimed at the incentive it creates, and labelled as our reading rather than a
+  verdict on the firms that run it.
+- **"The welance method" becomes "How we work".** In the page title, the H1,
+  the breadcrumb, the header nav and the landing CTA, in all nine languages.
+  The claim "We open the model. We curate the membership." becomes the plainer
+  statement of the same fact: "The model is open. The membership is curated."
+- **One softening on the landing.** "We think that's the only honest way to run
+  one" is now "It is the only way we have found to run one honestly."
+- All of the above is translated across de, it, es, pt-BR, vi, zh, ar and ur —
+  the copy that carried the old register is gone in every locale, not only in
+  English.
+
 ## [1.8.0] - 2026-08-19
 
 ### Added
