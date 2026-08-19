@@ -6,7 +6,7 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
-## [Unreleased]
+## [1.8.0] - 2026-08-19
 
 ### Added
 - **The operator covenant — the rules judge briefs, `OPERATOR-COVENANT.md`
@@ -30,6 +30,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   the lockup, ten pages, nine console dictionaries and eight locales. The rules
   page heads "The bar for digital product briefs". Code identifiers, the
   package and the repository keep their names.
+  The MCP server follows in the two places it speaks to a reader: its package
+  description and the prompt it hands an assistant.
 - **The honesty pass that ships with the name.** The conflict of interest
   leaves the fine print and is said where objections land — welance pitches on
   the Directory too, same fees, same blindness, same bar, and the
