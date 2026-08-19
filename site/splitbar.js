@@ -6,7 +6,7 @@
  * on purpose: a number field that means "1" next to another "1" tells you
  * nothing, and re-rendering the list on every keystroke ate the caret.
  *
- * Used by Perfect Price (the parts of a role) and Perfect Team (the roles in a
+ * Used by Price Split (the parts of a role) and Team Rate (the roles in a
  * project). They are the same question — how does this whole divide? — so they
  * are the same control, in one file, instead of two that drift apart.
  *

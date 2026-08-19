@@ -66,7 +66,7 @@ test.describe("chrome and navigation", () => {
       await expect(page.locator(".wl-brandline .wl-ast")).toBeAttached();
       await expect(page.locator(".wl-brandline .wl-logo")).toHaveCount(0);
       await expect(page.locator(".wl-foot-lock .wl-logo")).toBeAttached();
-      await expect(page.locator(".wl-head .wl-project")).toContainText("perfect brief");
+      await expect(page.locator(".wl-head .wl-project")).toContainText("brief bar");
       // and the welance colour rule sits under it on every page
       await expect(page.locator(".wl-head .wl-rule i")).toHaveCount(5);
     });
@@ -93,15 +93,15 @@ test.describe("chrome and navigation", () => {
     }
   });
 
-  // The only hosts the public pages may touch: welance.com (the brand font),
-  // Google Fonts (Noto fallbacks for CJK/Arabic in the console) and the Lottie
-  // CDN on the landing ident. Anything else is a regression — a page that
-  // phones home is a page a forker cannot trust.
+  // The only hosts the public pages may touch: welance.com (the brand font)
+  // and Google Fonts (Noto fallbacks for CJK/Arabic in the console). Lottie is
+  // vendored in site/vendor/ precisely so it is NOT on this list. Anything
+  // else is a regression — a page that phones home is a page a forker cannot
+  // trust, and data.html now promises this list out loud.
   const ALLOWED_HOSTS = [
     "welance.com/fonts/",
     "fonts.googleapis.com",
     "fonts.gstatic.com",
-    "cdnjs.cloudflare.com/ajax/libs/lottie-web",
   ];
 
   test("no page reaches for an unexpected external host", async ({ page }) => {
@@ -213,11 +213,35 @@ test.describe("the ways in", () => {
     await expect(cfg).toContainText("perfect-brief-mcp");
   });
 
-  test("the console offers a calmer place to write", async ({ page }) => {
+  test("a brief pasted on the landing arrives in the console, scored", async ({ page }) => {
+    await page.goto("/");
+    const brief = "Title: a booking tool. Problem: reservations are lost on paper.";
+    await page.locator("#hero-brief").fill(brief);
+    await page.locator("#hero-score").click();
+    await page.waitForURL(/console\.html/);
+    await expect(page.locator("#input")).toHaveValue(brief);
+    // scored on arrival: the score readout is not the em-dash placeholder
+    await expect(page.locator("#vscore")).not.toHaveText("—/100");
+    // the handoff key is one-shot
+    expect(await page.evaluate(() => localStorage.getItem("pb-handoff-brief"))).toBeNull();
+  });
+
+  test("the offline mock admits it cannot read a non-English brief", async ({ page }) => {
+    await page.goto("/console.html");
+    const note = page.locator("#offline");
+    await expect(note, "an English brief needs no caveat").not.toBeVisible();
+    await page.locator("#input").fill(
+      "Titolo: prenotazioni per ristoranti. Problema: si perdono prenotazioni perché " +
+      "il personale non aggiorna la disponibilità in tempo reale. Budget: 25k euro.");
+    await expect(note, "the keyword mock reads English only — it must say so").toBeVisible();
+  });
+
+  test("the console invites you to build the brief on the Directory", async ({ page }) => {
     await page.goto("/console.html");
     const cta = page.locator(".focus-cta");
     await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute("href", /welance\.com\/directory\/brief\/focus/);
+    // the guided flow lives on the Directory homepage, not the old focus editor
+    await expect(cta).toHaveAttribute("href", /welance\.com\/(?:[a-z]{2}\/)?directory(?:\/)?$/);
   });
 });
 

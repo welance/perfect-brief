@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Perfect Brief — an open ruleset for scoring digital product briefs</title>
-<meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a perfect brief looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
+<title>The Brief Bar — an open ruleset for scoring digital product briefs</title>
+<meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a brief bar looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -91,6 +91,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .seamcap{font-size:14.5px;color:var(--on-slab-soft);max-width:64ch;margin:22px 0 0}
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
+  /* the first tap: a paste box that IS the hero action */
+  .hero-paste{margin:18px 0 8px;max-width:720px}
+  .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.6;resize:vertical;box-sizing:border-box}
+  .hero-paste textarea::placeholder{color:var(--ink-soft)}
+  .hero-paste textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
+  .hero-paste-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px}
+  .hero-paste-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--ink-soft)}
+  .hero-nobrief{font-size:14px;color:var(--ink-soft);margin:10px 0 0}
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
   .btn.gh{display:inline-flex;align-items:center;gap:8px}
@@ -112,7 +120,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
 <div id="site-header"></div>
-<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="index.crumb">perfect brief</span></p>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="index.crumb">brief bar</span></p>
 <div class="wrap">
   <header>
     <div class="head-grid">
@@ -130,7 +138,18 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
              the argument starts: nobody owns the answer, so the invitation
              comes first and the thesis follows it. index.thesis keeps its key
              and its eight translations — it only moved down a slot. -->
-        <p class="thesis" data-i18n="index.lede">Nobody has settled what a perfect brief looks like. The rules are open. Help us write them.</p>
+        <p class="thesis" data-i18n="index.lede">Nobody has settled what a brief bar looks like. The rules are open. Help us write them.</p>
+        <!-- The first tap IS the hero: paste, one button, scored. The argument
+             below survives intact for whoever wants it — but nobody should
+             need to read a single paragraph before getting the number. -->
+        <div class="hero-paste">
+          <textarea id="hero-brief" rows="4" placeholder="Paste your brief here — see what a team would ask…" aria-label="Your brief"></textarea>
+          <div class="hero-paste-row">
+            <button class="btn primary lg" id="hero-score" data-i18n="index.paste.btn">Score it — free, instant</button>
+            <span class="hero-paste-note" data-i18n="index.paste.note">14 open rules · nothing stored · no signup</span>
+          </div>
+          <p class="hero-nobrief" data-i18n-html="index.paste.nobrief">No brief yet? <a href="https://welance.com/directory">Build it on the Directory, guided →</a></p>
+        </div>
         <p data-i18n-html="index.thesis">A brief has never made a project succeed — the team does that. A bad one fails quietly instead: weeks in, when the work comes back wrong. It is also the only part anyone can check before the money moves. <b>20% brief, 80% team</b> — this is a small, open service that scores the 20%.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
@@ -146,7 +165,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
     <div class="cta">
       <a class="btn gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
-      <a class="btn primary" href="console.html" data-i18n="index.cta.console">Try the console</a>
       <a class="btn ghost" href="rules.html" data-i18n="index.cta.rules">Read the rules</a>
       <a class="btn ghost" href="method.html" data-i18n="index.cta.method">The method</a>
     </div>
@@ -159,8 +177,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
   <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
   <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p></details>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
 
   <div class="eyebrow"><span data-i18n="idx.start.eb">run it in one line</span></div>
   <div class="starts">
@@ -298,7 +315,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
   </figure>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
-  <p data-i18n="index.p5">The judge runs at temperature zero, so the same brief against the same ruleset version gives the same score, reproducibly. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
+  <p data-i18n="index.p5">The judge runs at temperature zero and verdicts are cached by (ruleset version, model, brief), so the same brief answers identically for as long as that model is served — and every verdict carries its verbatim evidence, which outlives the model. A corpus of labelled example briefs runs in CI: a rule change that moves the numbers has to move those fixtures too, in the open, in the same commit.</p></details>
   <div class="code" id="api-req">
     <div class="code-bar">
       <div class="code-tabs">
@@ -341,12 +358,14 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
   "ruleset_version": "1.0.0+83107baec655"
 }</pre>
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief — an audit trail you can re-run. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief, and every verdict carries its verbatim evidence — an audit trail you can re-read long after any particular model is gone. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
 
   <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
   <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a small collective of independent senior teams, working together since 2011. We run <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. The platform maximises connections, not margin: meeting a team costs a fixed, symbolic token, never a percentage of the relationship. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
-  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
+  <p data-i18n-html="index.p7b">The bar doesn't just guard that noticeboard — it helps write for it: the Directory's guided brief builder derives its questions from these fourteen rules, and every draft it produces is scored by this same service before anyone sends anything. One instrument, teaching and judging with the same hand.</p>
   <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. We think that's the only honest way to run one.</p>
+  <p data-i18n-html="index.p8b">The sharpest edge of it, said plainly: <b>welance also pitches as a team on the Directory</b> — same fees, same blindness, same bar, and the <span style="font-family:var(--mono)">ruleset_version</span> on every verdict is how anyone checks nobody got a different one. And yes, we benefit when your brief improves and lands on our noticeboard. That is why the tool is free, and why every exit stays open: the offline mock, the fork, self-hosting. What binds <em>us</em> — never mining briefs for leads, never training on them — is written out in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
+  <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
   <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, reproducible scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
   </details>
@@ -365,10 +384,21 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
 /* the perfect-brief ident: hand-authored Lottie in the welance house style
    (same palette/format as welance.com's directory animations). The inline
    CSS stroke-draw SVG above stays as the no-JS / reduced-motion fallback. */
+/* the landing's paste box hands the brief to the console via localStorage —
+   one key, read once and removed on the console's boot */
+(function () {
+  var b = document.getElementById('hero-score');
+  if (!b) return;
+  b.addEventListener('click', function () {
+    try { localStorage.setItem('pb-handoff-brief', document.getElementById('hero-brief').value); } catch (e) {}
+    location.href = 'console.html';
+  });
+})();
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js';
+  /* vendored locally (site/vendor/) so these pages make no third-party requests */
+  s.src = 'vendor/lottie_light.min.js';
   s.async = true;
   s.onload = function () {
     var el = document.getElementById('pbIdent');
@@ -376,7 +406,7 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
     el.innerHTML = '';
     el.classList.add('lottie');
     lottie.loadAnimation({ container: el, renderer: 'svg', loop: true,
-      autoplay: true, path: 'animations/the-perfect-brief.json' });
+      autoplay: true, path: 'animations/the-brief-bar.json' });
   };
   document.head.appendChild(s);
 })();

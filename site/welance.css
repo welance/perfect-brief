@@ -214,7 +214,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .wl-theme svg { width: 15px; height: 15px; fill: currentColor; }
 .wl-theme:hover { color: var(--ink); border-color: var(--ink); }
 
-/* --- breadcrumbs: ✳ welance / perfect brief / <page> ------------------ */
+/* --- breadcrumbs: ✳ welance / brief bar / <page> ------------------ */
 .crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono);
   font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
 .crumbs a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
@@ -226,10 +226,10 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .crumbs .gh svg { width: 15px; height: 15px; fill: currentColor; display: block; }
 
 /* --- brand: the Directory's lockup, at two strengths -------------------
-   The footer wears the full ✳ welance / perfect brief_ — the same two
+   The footer wears the full ✳ welance / brief bar_ — the same two
    static marks the Directory header uses (weLogo.svg, welanceLogo.svg),
    at the same sizes, with the same dim slash before the product name.
-   The header wears only ✳ perfect brief_. The ruleset is MIT and meant to
+   The header wears only ✳ brief bar_. The ruleset is MIT and meant to
    be common property; co-branding it at the top of every page argues the
    opposite. The mark alone is enough — it recurs in the colour rule and
    the footer, so the pages still read as welance work.
@@ -300,7 +300,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .wl-lang-select:hover { border-color: var(--ink); }
 .wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* --- the split bar (splitbar.js): shared by Perfect Price and Perfect Team
+/* --- the split bar (splitbar.js): shared by Price Split and Team Rate
    ------------------------------------------------------------------- */
 /* the whole split, at a glance and under the thumb: one bar, one segment per
    role, and a handle on every boundary. Dragging a handle moves effort from
@@ -619,3 +619,10 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
    the same treatment the Directory gives its closing band */
 .band.cy .eyebrow::before, .band.y .eyebrow::before,
 .band.c .eyebrow::before { color: #0a0a0a; }
+
+/* --- air after the masthead ---------------------------------------------
+   The hero used to sit tight on the first section; a page reads better when
+   the header can breathe. Margin (not padding) so each page's own inline
+   header padding stays untouched. */
+.wl-crumb { margin-top: clamp(14px, 2.5vw, 26px); }
+.wrap > header { margin-bottom: clamp(26px, 4vw, 54px); }

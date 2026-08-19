@@ -15,12 +15,25 @@ context: directory
 applies_to: [brief]
 criteria: >
   The brief contains no company/brand names, no named individuals, no contact
-  details (emails, phones, URLs), and no personal data. Pass only if fully
-  clean. Fail if any identifying or personal information is present.
+  details (emails, phones, URLs), and no personal data. Judge identity, not
+  specificity: describing what the business does, its sector, its size, its
+  volumes, or its numbers is REQUIRED elsewhere in this ruleset and never
+  fails here — "we distribute chilled goods on forty daily routes" names no
+  one. Laws, regulations, standards and certifications are not brands: GDPR,
+  the AVG/RGPD/DSGVO translations of it, WCAG, HACCP, ISO numbers, RGAA and
+  their national equivalents all pass, and naming the compliance regime is
+  what the data-compliance rule asks for. Public authorities and regulators
+  named generically ("the national food authority") pass; naming the specific
+  company, its brands, its products or its people fails. Commodity tools the
+  team happens to use (a spreadsheet, a messenger) are noise, not identity —
+  prefer them written generically, but they do not fail this rule on their
+  own. Fail only when a reader could identify WHO wrote the brief.
 pass_examples:
   - "Integrates with the existing payment provider; the client is a regional hospitality group."
+  - "We distribute chilled goods on forty daily routes from two warehouses to about a thousand shops; signatures are personal data and handled under GDPR; the screens target WCAG 2.2 AA."
 fail_examples:
   - "We're Acme Srl; contact mara.rossi@acme.it; integrates with our Stripe account."
+  - "The rota for our two Bergamo sites is kept by Giulia in reception; ask her for it."
 references:
   - tier: practice
     title: "Blind review reduces bias"
@@ -31,4 +44,4 @@ references:
     locator: "don't expose personal data you don't need"
     url: https://gdpr-info.eu/art-5-gdpr/
 owners: ["@welance/perfect-brief"]
-version: 1
+version: 2

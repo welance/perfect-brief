@@ -6,9 +6,9 @@ WelanceI18n.register("de", {
   reviewed: false,
   strings: {
 
-    /* ---------- index.html — The Perfect Brief ---------- */
-    "index.crumb": "perfect brief",
-    "index.h1": "Das perfekte Briefing",
+    /* ---------- index.html — The Brief Bar ---------- */
+    "index.crumb": "brief bar",
+    "index.h1": "The Brief Bar",
     "index.thesis": "Ein Briefing hat noch nie ein Projekt zum Erfolg geführt — das tut das Team. Ein schlechtes scheitert dafür leise: Wochen später, wenn die Arbeit falsch zurückkommt. Und es ist der einzige Teil, den man prüfen kann, bevor Geld fließt. <b>20% Briefing, 80% Team</b> — dies ist ein kleiner, offener Dienst, der die 20% bewertet.",
     "index.cta.console": "Konsole ausprobieren",
     "index.cta.rules": "Die Regeln lesen",
@@ -44,15 +44,15 @@ WelanceI18n.register("de", {
     "method.p2": "Ein cross-funktionales Team, das <em>für</em> das Ziel aufgestellt wurde — Menschen, die persönlich und fachlich genau zu diesem Problem neigen, statt daran angepasst zu sein — arbeitet besser. Das ist kein Slogan; es ist das eine konstante Muster aus fünfzehn Jahren Engagements in dem Segment, das wir bedienen: begrenzte, produktförmige Arbeit, in der Passung Skalierung schlägt.",
     "method.eb2": "die Methode — drei Schritte",
     "method.s1.n": "Schritt 1",
-    "method.s1.h": "Perfect Brief",
+    "method.s1.h": "Brief Bar",
     "method.s1.p": "Was die Arbeit ist. Ein großartiges Produkt ist 20% Briefing und 80% Team — aber das Briefing ist die 20%, die entscheiden, ob ein gutes Team überhaupt gut starten kann. Bewertet nach öffentlichen Regeln, mit Gate vor der Veröffentlichung.",
     "method.s1.go": "→ ein Briefing bewerten",
     "method.s2.n": "Schritt 2",
-    "method.s2.h": "Perfect Price",
+    "method.s2.h": "Price Split",
     "method.s2.p": "Was es wert ist, und wer welchen Teil bekommt. Der Anteil folgt daraus, wie viel der Rolle jemand abdeckt — nie aus einem Urteil darüber, wer er ist. So formuliert, dass jeder die Aufteilung nachrechnen und prüfen kann.",
     "method.s2.go": "→ eine Aufteilung berechnen",
     "method.s3.n": "Schritt 3",
-    "method.s3.h": "Perfect Team",
+    "method.s3.h": "Team Rate",
     "method.s3.p": "Wer es macht, wo auf der Welt, zu einem gemischten Satz, mit dem der Kunde wirklich rechnen kann. Margen variieren im Team nach Stufe; das Projekt hält eine erklärte welance-Marge; niemand wird unter seinen Satz gedrückt.",
     "method.s3.go": "→ Team finden",
     "method.p3": "Jeder Schritt braucht den davor. Der Preis braucht den Umfang des Briefings, um zu wissen, was eine Rolle überhaupt ist; das Team braucht die Arithmetik des Preises, um drei Menschen einen ehrlichen Satz zu geben. Information fällt kaskadenförmig — deshalb sind es Schritte und keine Features, und deshalb bleibt das Briefing das Hauptkonzept: nichts stromabwärts überlebt ein unehrliches.",
@@ -160,9 +160,9 @@ WelanceI18n.register("de", {
     "fx.team.plain": "Ein gemischter Kundensatz, zerlegt in vier sichtbare Bänder, die exakt aufgehen müssen.",
 
     /* ---------- rules.html ---------- */
-    "rules.crumbup": "perfect brief",
+    "rules.crumbup": "brief bar",
     "rules.crumb": "Regeln",
-    "rules.h1": "Das perfekte Briefing für ein digitales&nbsp;Produkt",
+    "rules.h1": "Die Messlatte für digitale&nbsp;Produkt-Briefings",
     "rules.herosub": "Ein gutes Briefing gibt einem Produkt den richtigen Start. Wir haben den Standard geöffnet.",
     "rules.ratio": "<span class=\"s\">20%</span> Briefing · <span class=\"t\">80%</span> Team",
     "rules.ratiocap": "wo der Erfolg eines digitalen Produkts wirklich herkommt",
@@ -205,7 +205,7 @@ WelanceI18n.register("de", {
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
     "team.eyebrow": "ein Team, ein Satz",
-    "team.h1": "Perfect Team",
+    "team.h1": "Team Rate",
     "team.lede": "Ein cross-funktionales Team, bepreist wie eine einzelne unabhängige Person. Die Rollen und ihre Gewichte beschreiben das Projekt; jede Rolle trägt ihre eigene Stufe und Kostenbasis. Der Kunde sieht <b>einen gemischten Satz</b> — nicht hundert verschiedene — Margen variieren im Team nach Stufe, und das Projekt als Ganzes hält eine erklärte, benannte <b>Marge</b>, die jeder prüfen kann.",
     "team.reset": "Auf Standard zurücksetzen",
     "team.c1h": "Das Team, Rolle für Rolle",
@@ -252,7 +252,7 @@ WelanceI18n.register("de", {
     "team.d.target": "Ziel",
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
-    "chrome.brief": "Perfect Brief",
+    "chrome.brief": "Brief Bar",
     "int.w.ci": "Dein Code · CI · ein Produkt",
     "int.w.ifmcp": "wenn er MCP spricht",
     "int.w.other": "Jeder andere Assistent",
@@ -288,9 +288,9 @@ WelanceI18n.register("de", {
     "calc.t3q": "Was kostet ein Team, als eines bepreist?",
     "calc.t3p": "Rollen, ihr Anteil am Aufwand, die Stufe je Rolle und wo jedes Mitglied lebt — hinein; ein Mischsatz, den der Kunde sieht, und eine Prüfung, dass niemand unter den eigenen Satz gedrückt wird — heraus.",
     "calc.t3go": "Team bepreisen →",
-    "chrome.price": "Perfect Price",
+    "chrome.price": "Price Split",
     "chrome.rules": "Die Regeln",
-    "chrome.team": "Perfect Team",
+    "chrome.team": "Team Rate",
 
     /* ---------- data.html — your brief, your key ---------- */
     "data.crumb": "dein Briefing, dein Schlüssel",

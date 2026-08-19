@@ -1,4 +1,4 @@
-# Perfect Brief — an open bar for digital product briefs
+# Brief Bar — an open bar for digital product briefs
 
 > Scores a digital product brief against 14 public, versioned rules and returns
 > a separate publish gate. A language model only judges — per-rule verdicts with
@@ -69,8 +69,8 @@ pins a case the bar was getting away with.
 ## The wider model
 
 - The method: https://briefs.welance.com/method.html — brief → price → team
-- Perfect Price: https://briefs.welance.com/price.html — how a collaboration is
+- Price Split: https://briefs.welance.com/price.html — how a collaboration is
   priced, formula by formula
-- Perfect Team: https://briefs.welance.com/team.html — one blended client rate
+- Team Rate: https://briefs.welance.com/team.html — one blended client rate
   decomposed into four visible bands
 - The engine, readable: https://github.com/welance/perfect-brief/blob/main/site/pricing.js

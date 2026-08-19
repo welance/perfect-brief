@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your key, and why we can be checked — Perfect Brief</title>
+<title>Your key, and why we can be checked — Brief Bar</title>
 <meta name="description" content="Sending your own model key to someone else's server is a real risk. Here is every line of ours that touches it, where it provably is not, and the test that fails if that ever changes.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -149,6 +149,7 @@ assert CANARY not in captured.err</pre>
   <p data-i18n-html="sec.limit2"><b>Cached verdicts are shared.</b> A scoring call made with your key still reads and writes the shared verdict cache, so an identical brief scored later may be answered from the cache rather than from a fresh call. Nothing about your key is involved, and a cache entry can only be reached by somebody who already has the exact brief text — but it does mean the verdict you paid for may serve someone else, and theirs may serve you. Send <code>no_cache: true</code> and neither happens.</p>
   <p data-i18n-html="sec.limit3"><b>Downstream is not ours.</b> Once the call reaches OpenRouter, their terms and their retention apply, not ours. We can tell you what we do; we cannot make promises on their behalf.</p>
   <p data-i18n-html="sec.limit4"><b>This is a small open-source service.</b> It is rate-limited and served over TLS by people who care about getting this right. It is not an audited compliance product, and we would rather say so here than imply otherwise.</p>
+  <p data-i18n-html="sec.limit5"><b>And we have an interest to declare.</b> This bar gates welance's own Directory, and welance pitches there as a team like any other. What that obliges us to — no lead-mining from briefs, no training, the same bar for our own briefs, provably — is written out in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
 
   <div class="eyebrow"><span data-i18n="sec.eb6">what we would do in your place</span></div>
   <p data-i18n-html="sec.do1"><b>Send a spend-capped key.</b> OpenRouter lets you mint a key with its own credit limit. Use one here rather than your main key: it turns the worst case from an open-ended loss into a known, small number, and it costs you nothing.</p>

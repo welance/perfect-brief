@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your brief, your key — Perfect Brief</title>
+<title>Your brief, your key — Brief Bar</title>
 <meta name="description" content="Exactly what travels where when you score a brief: what we send, what we keep and for how long, what we never keep — and how to bring your own model key.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
@@ -62,7 +62,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <tr>
         <td class="k" data-i18n="data.r1.k">The brief text</td>
         <td data-i18n="data.r1.a">To our service, then to the model provider that judges it — Anthropic by default, or OpenRouter when you bring a key.</td>
-        <td><span class="no" data-i18n="data.r1.b">never stored</span></td>
+        <td><span class="no" data-i18n="data.r1.b">never stored as a document — only its verdict survives, one row down, for a day</span></td>
       </tr>
       <tr>
         <td class="k" data-i18n="data.r2.k">The verdicts</td>
@@ -76,12 +76,16 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       </tr>
       <tr>
         <td class="k" data-i18n="data.r4.k">Who you are</td>
-        <td data-i18n="data.r4.a">Nowhere. There are no accounts, no cookies, no analytics on these pages.</td>
-        <td><span class="no" data-i18n="data.r4.b">nothing to keep</span></td>
+        <td data-i18n="data.r4.a">Nowhere. No accounts, no cookies, no analytics. The pages fetch fonts (welance.com, Google's Noto for non-Latin scripts) and nothing else — a test fails if any page reaches any other host.</td>
+        <td><span class="no" data-i18n="data.r4.b">one per-IP rate counter in Redis, expiring with its window — nothing else</span></td>
       </tr>
     </tbody>
   </table>
-  <p data-i18n="data.cache">The cache exists for one reason: the judge is deterministic at temperature 0, so scoring the same brief twice should cost once and answer identically. It holds verdicts — status, confidence, a short quote — never the brief itself, and it expires in a day.</p>
+  <p data-i18n="data.cache">The cache exists for one reason: the judge is deterministic at temperature 0, so scoring the same brief twice should cost once and answer identically. Honestly stated, that means fragments of your brief do survive for a day: each cached verdict carries its short verbatim quote, keyed by a hash of the full text. Never the document itself, never past 24 hours — and no_cache: true skips it entirely.</p>
+
+  <div class="eyebrow"><span data-i18n="data.eb5">what binds us — the operator covenant</span></div>
+  <p data-i18n-html="data.cov1">The rules on this site judge briefs. The <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a> judges us — it exists because welance runs the Directory this bar gates <em>and</em> pitches on it as a team. In short: we never mine briefs for leads, never train on them, never contact anyone because of what a scored brief contained, and our own briefs pass the same gate, same model, same version.</p>
+  <p data-i18n="data.cov2">Where code can enforce a promise, it does: the key-leak canary already fails the build if a key ever reaches a log, a cache, or a response, and the same treatment for brief bodies is next. Where code can't reach — we do run the servers — the covenant names the limit plainly instead of hiding it, and self-hosting remains the exit that needs no trust at all.</p>
 
   <div class="eyebrow"><span data-i18n="data.eb2">bring your own key</span></div>
   <p class="claim" data-i18n="data.c1">With your key, we run no model for you.</p>

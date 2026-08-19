@@ -6,7 +6,7 @@ def test_healthz(client):
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok"
-    assert body["ruleset_version"].startswith("1.0.0+")
+    assert body["ruleset_version"].startswith("1.1.0+")
     assert body["llm_configured"] is False
 
 
@@ -40,7 +40,7 @@ def test_score_accepted(client):
     assert body["decision"] == "accepted"
     assert body["gate"]["passed"] is True
     assert body["score"] >= 85
-    assert body["ruleset_version"].startswith("1.0.0+")
+    assert body["ruleset_version"].startswith("1.1.0+")
 
 
 def test_high_score_but_gate_blocked(client):

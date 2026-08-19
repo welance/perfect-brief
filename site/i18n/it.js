@@ -5,9 +5,9 @@ WelanceI18n.register("it", {
   reviewed: false,
   strings: {
 
-    /* ---------- index.html — The Perfect Brief ---------- */
-    "index.crumb": "perfect brief",
-    "index.h1": "Il Brief Perfetto",
+    /* ---------- index.html — The Brief Bar ---------- */
+    "index.crumb": "brief bar",
+    "index.h1": "The Brief Bar",
     "index.thesis": "Un brief non ha mai fatto riuscire un progetto — lo fa il team. Uno brutto invece fallisce in silenzio: settimane dopo, quando il lavoro torna sbagliato. Ed è anche l'unica parte che si può controllare prima che i soldi si muovano. <b>20% brief, 80% team</b> — questo è un piccolo servizio aperto che valuta il 20%.",
     "index.cta.console": "Prova la console",
     "index.cta.rules": "Leggi le regole",
@@ -43,15 +43,15 @@ WelanceI18n.register("it", {
     "method.p2": "Un team cross-funzionale montato <em>per</em> l'obiettivo — persone personalmente e professionalmente inclini esattamente a quel problema, non adattate ad esso — lavora meglio. Non è uno slogan; è l'unico pattern costante in quindici anni di ingaggi nel segmento che serviamo: lavoro delimitato, a forma di prodotto, dove l'adeguatezza batte la scala.",
     "method.eb2": "il metodo — tre passi",
     "method.s1.n": "passo 1",
-    "method.s1.h": "Perfect Brief",
+    "method.s1.h": "Brief Bar",
     "method.s1.p": "Cos'è il lavoro. Un grande prodotto è 20% brief e 80% team — ma il brief è il 20% che decide se un buon team può almeno partire bene. Valutato su regole pubbliche, con un gate prima di pubblicare.",
     "method.s1.go": "→ valuta un brief",
     "method.s2.n": "passo 2",
-    "method.s2.h": "Perfect Price",
+    "method.s2.h": "Price Split",
     "method.s2.p": "Quanto vale, e chi prende quale parte. La quota segue da quanta parte del ruolo una persona copre — mai da un giudizio su chi è. Dichiarato così che chiunque possa calcolare e verificare la ripartizione.",
     "method.s2.go": "→ calcola una ripartizione",
     "method.s3.n": "passo 3",
-    "method.s3.h": "Perfect Team",
+    "method.s3.h": "Team Rate",
     "method.s3.p": "Chi lo fa, dove nel mondo, a un'unica tariffa media su cui il cliente può davvero ragionare. I margini variano dentro il team per livello; il progetto supera un welance margin dichiarato; nessuno viene compresso sotto la propria tariffa.",
     "method.s3.go": "→ trova un team",
     "method.p3": "Ogni passo ha bisogno del precedente. Il prezzo ha bisogno del perimetro del brief per sapere cosa sia un ruolo; il team ha bisogno dell'aritmetica del prezzo per dare a tre persone una tariffa onesta. Le informazioni scendono a cascata — per questo sono passi e non feature, e per questo il brief resta il concetto principale: niente a valle sopravvive a un brief disonesto.",
@@ -159,9 +159,9 @@ WelanceI18n.register("it", {
     "fx.team.plain": "Un'unica tariffa cliente media, scomposta in quattro bande visibili che devono sommare esattamente.",
 
     /* ---------- rules.html ---------- */
-    "rules.crumbup": "perfect brief",
+    "rules.crumbup": "brief bar",
     "rules.crumb": "regole",
-    "rules.h1": "Il Brief Perfetto per un Prodotto&nbsp;Digitale",
+    "rules.h1": "La barra per i brief di prodotto&nbsp;digitale",
     "rules.herosub": "Un buon brief dà a un prodotto la partenza giusta. Abbiamo reso aperto lo standard.",
     "rules.ratio": "<span class=\"s\">20%</span> brief · <span class=\"t\">80%</span> team",
     "rules.ratiocap": "da dove viene davvero il successo di un prodotto digitale",
@@ -204,7 +204,7 @@ WelanceI18n.register("it", {
     /* ---------- team.html ---------- */
     "team.crumb": "perfect team",
     "team.eyebrow": "un team, una tariffa",
-    "team.h1": "Perfect Team",
+    "team.h1": "Team Rate",
     "team.lede": "Un team cross-funzionale, prezzato come si prezza un singolo independent. I ruoli e i loro pesi descrivono il progetto; ogni ruolo porta il suo livello e la sua base di costo. Il cliente vede <b>un'unica tariffa media</b> — non cento diverse — i margini variano dentro il team per livello, e il progetto nel suo insieme supera un <b>margine</b> dichiarato, nominato, che chiunque può verificare.",
     "team.reset": "Ripristina i valori iniziali",
     "team.c1h": "Il team, ruolo per ruolo",
@@ -251,7 +251,7 @@ WelanceI18n.register("it", {
     "team.d.target": "target",
 
     /* ---------- site chrome (header/footer, chrome.js) ---------- */
-    "chrome.brief": "Perfect Brief",
+    "chrome.brief": "Brief Bar",
     "int.w.ci": "Il tuo codice · CI · un prodotto",
     "int.w.ifmcp": "se parla MCP",
     "int.w.other": "Qualsiasi altro assistente",
@@ -328,9 +328,9 @@ WelanceI18n.register("it", {
     "calc.t3q": "Quanto costa un team, prezzato come uno solo?",
     "calc.t3p": "Ruoli, la loro quota di impegno, il livello a cui ognuno consegna e dove vive ogni membro — dentro; una tariffa unica che il cliente vede, e una verifica che nessuno finisca sotto la propria — fuori.",
     "calc.t3go": "Prezza un team →",
-    "chrome.price": "Perfect Price",
+    "chrome.price": "Price Split",
     "chrome.rules": "Le regole",
-    "chrome.team": "Perfect Team",
+    "chrome.team": "Team Rate",
 
     /* ---------- data.html — your brief, your key ---------- */
     "data.crumb": "il tuo brief, la tua chiave",

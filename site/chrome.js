@@ -25,9 +25,9 @@
   var PAGES = [
     { href: "method.html", key: "chrome.method", en: "The method" },
     { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
-    { href: "index.html",  key: "chrome.brief",  en: "Perfect Brief" },
-    { href: "price.html",  key: "chrome.price",  en: "Perfect Price" },
-    { href: "team.html",   key: "chrome.team",   en: "Perfect Team" }
+    { href: "index.html",  key: "chrome.brief",  en: "Brief Bar" },
+    { href: "price.html",  key: "chrome.price",  en: "Price Split" },
+    { href: "team.html",   key: "chrome.team",   en: "Team Rate" }
   ];
   // the footer's second column: the things a builder looks for
   var BUILD = [
@@ -77,24 +77,24 @@
     '<path fill="currentColor" fill-rule="evenodd" d="m18.403 16.5 7.951 8.046-2.096 2.121-7.952-8.046V30h-2.965V18.621L5.39 26.667l-2.096-2.121 7.951-8.046H0v-3h11.245L3.294 5.454 5.39 3.333l7.952 8.046V0h2.964v11.379l7.952-8.046 2.096 2.121-7.951 8.046h11.245v3z" clip-rule="evenodd"></path></svg>';
 
   /* Two lockups, on purpose.
-     The header wears ✳ perfect brief_ — the asterisk without the wordmark.
+     The header wears ✳ brief bar_ — the asterisk without the wordmark.
      The ruleset is MIT and meant to be common property; a header that
      co-brands it every time you load a page argues the opposite. The mark
      stays because it recurs anyway (the colour rule, the footer), so the
      pages still read as welance work without saying so twice a screen.
-     The footer wears the full ✳ welance / perfect brief_ — provenance
+     The footer wears the full ✳ welance / brief bar_ — provenance
      belongs where you go looking for it. */
   function lockupHead() {
-    return '<a class="wl-brandline" href="./" aria-label="perfect brief">' +
+    return '<a class="wl-brandline" href="./" aria-label="brief bar">' +
       MARK + '<span class="wl-project"><span class="name">' +
-      tt("chrome.slash", "perfect brief") + '<span class="b">_</span></span></span></a>';
+      tt("chrome.slash", "brief bar") + '<span class="b">_</span></span></span></a>';
   }
 
   function lockupFoot() {
-    return '<a class="wl-foot-lock" href="./" aria-label="welance perfect brief">' +
+    return '<a class="wl-foot-lock" href="./" aria-label="welance brief bar">' +
       MARK + WORDMARK +
       '<span class="wl-project"><span class="slash" aria-hidden="true">/</span>' +
-      '<span class="name">' + tt("chrome.slash", "perfect brief") +
+      '<span class="name">' + tt("chrome.slash", "brief bar") +
       '<span class="b">_</span></span></span></a>';
   }
 

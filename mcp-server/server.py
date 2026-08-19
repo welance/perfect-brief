@@ -1,4 +1,4 @@
-"""Perfect Brief — MCP server.
+"""The Brief Bar — MCP server.
 
 Gives an assistant one thing it cannot give itself: a bar it does not control.
 The score is computed by code from per-rule verdicts against a public,
@@ -146,7 +146,7 @@ async def bar_status() -> dict:
 @server.prompt()
 def improve_brief(brief: str = "") -> str:
     """A working order for turning a draft into a publishable brief."""
-    return f"""Help me get this brief past the Perfect Brief bar. Work in this order
+    return f"""Help me get this brief past The Brief Bar. Work in this order
 and do not skip steps:
 
 1. Call `get_rules` and read the criteria. They are the bar; your opinion is not.

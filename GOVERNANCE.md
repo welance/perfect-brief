@@ -5,6 +5,12 @@ consequences has to be hard to game *and* hard to capture. We get there not by
 controlling who may speak, but by separating three gestures that are usually
 collapsed into one — and letting evidence, not authority, do the deciding.
 
+**Who this is for.** Not, first of all, for contributors — the gate judges
+*people*: the posters and teams subject to it. The 7-day window, the public
+PRs, the fixtures that must move with the rules exist so that anyone governed
+by this bar can see it change, object to the change, and name the evidence.
+Due process is owed to the judged, whether or not anyone ever sends a PR.
+
 ## The three gestures
 
 **1. Anyone proposes.**
@@ -48,26 +54,44 @@ mergeable PR contains.
 
 ## Why open, when welance runs both sides
 
-welance operates the Directory *and* the bar that gates entry to it. That is a
-genuine conflict of interest, and pretending otherwise would be the dishonest
-move. Open-sourcing the bar is the structural answer: a metric you can read,
+welance operates the Directory *and* the bar that gates entry to it — and
+welance also **pitches as a team on that Directory**, at the same fees, behind
+the same anonymity. Judge, gatekeeper, and contestant. That is a genuine
+conflict of interest, and pretending otherwise would be the dishonest move.
+Open-sourcing the bar is the structural answer: a metric you can read,
 contest, test against public examples, and fork cannot be quietly rigged in the
 operator's favour. The openness is not decoration — it is what makes the gate
-*trustworthy* given that we have skin in the game.
+*trustworthy* given that we have skin in the game. What the openness cannot
+reach — what the operator does with what the service sees — is bound separately
+by the [Operator Covenant](OPERATOR-COVENANT.md).
 
 ## What is policy, and therefore contestable
 
 Nothing about the bar is hardcoded conviction. All of it is diffable config,
 reviewed like any rule:
 
-- **Rule weights and severities** live in each rule file.
-- **Thresholds** — the 75 (accept) and 40 (reserve) publication bands, the
-  severity caps, the confidence threshold — live in `scoring.yaml`.
+- **Rule weights** live in each rule file.
+- **Thresholds** — the publication accept mark (85), the descriptive bands
+  (45 / 68 / 85), the confidence threshold, the €10k budget floor — live in
+  `scoring.yaml`. (There are no severity caps any more; the gate replaced
+  them.)
 
 "We should care more about measurable outcomes" is a one-line weight change with
 a rationale, not a mood buried in a prompt. If you think a threshold is wrong,
 the disagreement has an address: a PR to `scoring.yaml`, decided against the
 corpus.
+
+**Two classes of rule, honestly separated.** Twelve of the fourteen rules
+describe what a good digital-product brief is; they are fully open to
+community debate, and the corpus decides. Two — `budget-floor` and
+`anonymised` — are **welance/Directory noticeboard policy**, tagged
+`context: directory` in the ruleset and deactivatable per request
+(`gate_contexts: []` drops them from gate *and* score). PRs may contest their
+tagging, their wording, and their fixtures like anything else — but their
+*values* encode the Directory's own commercial and blindness policy, and the
+operator holds the pen on its own policy. Labelling that boundary is what
+keeps the rest of the bar genuinely open: you always know which kind of rule
+you are arguing with.
 
 ## The one invariant
 
