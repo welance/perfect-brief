@@ -8,7 +8,37 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+### Added
+- **The operator covenant — the rules judge briefs, `OPERATOR-COVENANT.md`
+  judges us.** welance writes the bar, runs the noticeboard it gates, and
+  pitches on that noticeboard as a team. Openness constrains the bar; nothing
+  constrained the operator. Eight commitments now do — no lead-mining, no
+  training on briefs, no reading-room on the cache, the same bar for our own
+  briefs, fees at cost — each labelled with how it is enforced: CI-tested where
+  code can reach it, named plainly where it cannot. It is linked from every
+  page that asks for trust.
+- **The landing is the first tap, not an argument.** The hero carries a paste
+  box and one button; the brief rides to the console in a single localStorage
+  key, read once and removed on boot, and arrives already scored by the offline
+  mock. No new scoring surface, no signup, nothing stored — and the box says so
+  in its own margin. Whoever has no brief yet gets the other door in the same
+  breath: build it on the Directory, guided.
+
 ### Changed
+- **The name drops "perfect": The Brief Bar.** The copy always called it the
+  bar; the name now agrees — The Brief Bar · Price Split · Team Rate, across
+  the lockup, ten pages, nine console dictionaries and eight locales. The rules
+  page heads "The bar for digital product briefs". Code identifiers, the
+  package and the repository keep their names.
+- **The honesty pass that ships with the name.** The conflict of interest
+  leaves the fine print and is said where objections land — welance pitches on
+  the Directory too, same fees, same blindness, same bar, and the
+  `ruleset_version` on every verdict proves nobody got a different one.
+  `data.html` stops claiming "never stored" where quotes survive 24h, owns the
+  per-IP counters, and pins its no-third-party claim to a test (lottie is
+  vendored; the e2e host allowlist tightened to match). The reproducibility
+  overclaim becomes the inspectable truth: temperature 0 is not determinism,
+  and the verbatim evidence is what never expires.
 - **Ruleset 1.1.0 — `anonymised` judges identity, not specificity.** The gate
   was blocking publishable briefs for naming the compliance regime ("GDPR is a
   named regulation/brand") while `data-compliance`, in the same run, was
@@ -21,6 +51,18 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   starter briefs for the Directory, every one of them blocked on this rule
   alone. `tests/test_anonymised_llm.py` is the live regression — MockJudge
   cannot exercise a prompt change.
+
+### Fixed
+- **The offline mock admits, in any language, that it reads English.** The
+  keyword mock warned only when the interface language was switched, so a brief
+  pasted in Italian under the English UI got a confident, meaningless number
+  from a matcher that had read nothing. It now looks at the brief's own
+  language — a non-Latin script, or unmistakably-not-English function words
+  outnumbering English ones — using two signals rather than one threshold,
+  because a terse English brief has few function words in absolute terms.
+  Validated against both presets and five languages. This matters more now that
+  the landing is paste-first: the first thing a visitor does is paste, in
+  whatever language they think in.
 
 ## [1.7.0] - 2026-08-12
 
