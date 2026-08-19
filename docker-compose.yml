@@ -9,6 +9,12 @@ services:
       PB_REDIS_URL: redis://redis:6379/0
     ports:
       - "8000:8000"
+    volumes:
+      # The image bakes in a copy of site/ (COPY site ./site), so without this
+      # every front-end edit needs a full rebuild to be visible. Read-only bind:
+      # a refresh is the whole feedback loop. Production runs the baked copy —
+      # nothing mounts this — so the two never disagree about what shipped.
+      - ./site:/srv/site:ro
     depends_on:
       redis:
         condition: service_healthy

@@ -36,58 +36,152 @@
 }
 
 :root {
-  /* Some surfaces are dark on purpose in both themes — the CTA band, the code
-     block. They cannot be built from --ink/--paper, which swap: that is how
-     the band ended up black-on-black in the dark. These three never move. */
-  --slab: #0d0d0d;
-  --on-slab: #f2f2f2;
-  --on-slab-soft: #9a9a9a;
+  /* Some surfaces are dark on purpose in both themes — the closing band's
+     neighbour, the code block. They cannot be built from --ink/--paper, which
+     swap: that is how the band ended up black-on-black in the dark. These
+     three never move, and they agree with the Directory's --ink* set. */
+  --slab: #0a0a0a;
+  --on-slab: #f2f2ef;
+  --on-slab-soft: #9a978d;
+  /* the Directory's names for the same three, so its CSS pastes in as-is */
+  --ink-fg: var(--on-slab);
+  --ink-muted: var(--on-slab-soft);
+  --ink-line: #262626;
 
-  /* Directory tokens, mapped onto the token names these pages already use */
-  --maxw: 1200px;  /* one container width for every page: a notch above the old console (1080) */
+  /* Directory tokens, mapped onto the token names these pages already use.
+     Values are the Directory's, verbatim — assets/css/directory/directory.css */
+  --maxw: 1320px;               /* Directory --maxw */
+  --pad-x: clamp(16px, 4vw, 56px);
+  --radius: 999px;              /* the pill, everywhere something is rounded */
   --paper: #ffffff;
-  --paper-2: #f7f7f5;      /* Directory --surface */
+  --paper-2: #f7f7f5;           /* Directory --surface */
+  --paper-3: #efefec;           /* Directory --surface-2 */
   --ink: #0a0a0a;
-  --ink-soft: #4a4a4a;     /* Directory --muted (AA at small mono sizes) */
-  --rule: #e6e6e6;         /* Directory --line: the hairline */
-  --rule-strong: #0a0a0a;  /* Directory --line-strong: black, for emphasis only */
-  /* welance accents = the house Lottie palette */
+  --ink-soft: #4a4a4a;          /* Directory --muted (AA at small mono sizes) */
+  --ink-soft-2: #6e6e6e;        /* Directory --muted-2: the lockup's slash */
+  --rule: #e6e6e6;              /* Directory --line: the hairline */
+  --rule-strong: #0a0a0a;       /* Directory --line-strong: black, for emphasis */
+  /* welance accents = the house Lottie palette. Five, not four: --wl-b is the
+     fifth bar of the rule under the header and had no token here before. */
   --wl-y: #eecc5d;
   --wl-c: #ff7b51;
   --wl-p: #8856cd;
-  --wl-cy: #96dbe3;
+  --wl-cy: #97dbe2;
+  --wl-b: #b8c5d6;
   /* semantic colors (functional, not brand) retuned for white */
   --pass: #2d6a4f;    --pass-bg: #e7f3ec;
   --partial: #9c7415; --partial-bg: #f6edd5;
   --fail: #a8392c;    --fail-bg: #f7e4e0;
-  --accent: var(--wl-p); --accent-bg: #ede4f8;
+  /* the one accent is the Directory's coral. The light blue is the second
+     voice: big grounds (the closing band), never small text. */
+  --accent: var(--wl-c);    --accent-bg: #ffeee8; --accent-fg: #0a0a0a;
+  --accent-2: var(--wl-cy); --accent-2-fg: #0a0a0a;
+  --verified: #1d9bf0;
   /* type: Maison Neue from welance.com; the Mono cut is not published
      there yet, so mono degrades to the system stack */
-  --disp: "Maison Neue", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --disp: "Maison Neue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "Maison Neue Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* --- the Directory's own token names, as aliases -----------------------
+     Three rules below (.effortbar and its grip) already reached for
+     --line-strong / --surface / --surface-2 and got nothing, because those
+     names were never defined here: the bar has been drawing with no border
+     and no ground since it was written. Defining the aliases fixes that and
+     means Directory CSS can be copied across without a rename pass. */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --muted: var(--ink-soft);
+  --muted-2: var(--ink-soft-2);
+  --line: var(--rule);
+  --line-strong: var(--rule-strong);
+  --surface: var(--paper-2);
+  --surface-2: var(--paper-3);
+  --ff-sans: var(--disp);
+  --ff-mono: var(--mono);
+  --y: var(--wl-y); --c: var(--wl-c); --p: var(--wl-p);
+  --a: var(--wl-cy); --b: var(--wl-b);
 }
 
 :root[data-theme="dark"] {
   --paper: #0d0d0d;
   --paper-2: #171717;
+  --paper-3: #1f1f1f;
   --ink: #f2f2f2;
   --ink-soft: #a2a2a2;
+  --ink-soft-2: #8a8a8a;
   --rule: #2a2a2a;
   --rule-strong: #f2f2f2;
   --pass: #6fce9f;    --pass-bg: #12241a;
   --partial: #e0b95c; --partial-bg: #2a2113;
   --fail: #ef8a7c;    --fail-bg: #2b1614;
-  --accent: #b18cf0;  --accent-bg: #221a33;
+  /* coral holds its own on #0d0d0d; it only needs lifting a little so small
+     text and hairlines keep AA against the dark paper */
+  --accent: #ff8f6b;  --accent-bg: #2b1710; --accent-fg: #0a0a0a;
 }
 :root[data-theme="dark"] .band.cy,
 :root[data-theme="dark"] .band.y { color: #0a0a0a; }
 :root[data-theme="dark"] .code { border-color: var(--rule); }
 :root[data-theme="dark"] img, :root[data-theme="dark"] .wl-asterisk { filter: none; }
 
+/* --- the type scale, from the Directory -------------------------------
+   Every page used to set its own h1 and its own .eyebrow in a <style>
+   block, so there were eight nearly-identical scales and no way to change
+   one. This is the Directory's scale (directory.css), and it is the only
+   one now: weight 500 — not 600 — with the tracking that goes with it. */
+.h-display { font-weight: 500; font-size: clamp(44px, 7vw, 116px);
+  line-height: .98; letter-spacing: -.028em; margin: 0; }
+.h1, h1 { font-family: var(--disp); font-weight: 500;
+  font-size: clamp(32px, 4.2vw, 60px); line-height: 1.04;
+  letter-spacing: -.022em; margin: 0; }
+.h2, h2 { font-family: var(--disp); font-weight: 500;
+  font-size: clamp(26px, 3vw, 42px); line-height: 1.08;
+  letter-spacing: -.015em; margin: 0; }
+.h3, h3 { font-family: var(--disp); font-weight: 500;
+  font-size: clamp(19px, 1.6vw, 25px); line-height: 1.2;
+  letter-spacing: -.005em; margin: 0; }
+.lead { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.45; }
+/* the underscore that ends a heading is the one place violet used to live
+   in the type; it follows the accent now, like everything else */
+h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
+
+/* the mono voice: eyebrows, counts, keys */
+.eyebrow, .mono { font-family: var(--mono); font-size: 12px;
+  letter-spacing: .04em; text-transform: uppercase; }
+.mono-sm { font-family: var(--mono); font-size: 12px; color: var(--muted);
+  letter-spacing: .02em; }
+/* Section label — asterisk-prefixed mono eyebrow. The asterisk replaces the
+   hairline that used to run off the right of every eyebrow here: the
+   Directory marks a section by naming it, not by ruling it off. */
+.eyebrow, .sec-label { display: flex; align-items: baseline; gap: 12px;
+  letter-spacing: .08em; color: var(--muted); margin: 44px 0 22px; }
+.eyebrow::before, .sec-label::before { content: "*"; color: var(--accent);
+  font-size: 15px; line-height: 1; }
+.band .eyebrow { color: var(--ink); }
+
+/* --- layout primitives, from the Directory ----------------------------- */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x); }
+.hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
+.grid { display: grid; gap: 24px; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.row-between { display: flex; justify-content: space-between;
+  align-items: center; gap: 24px; }
+@media (max-width: 760px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+/* --- badge, from the Directory ----------------------------------------- */
+.badge { display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: .07em; padding: 5px 10px; border: 1px solid currentColor; }
+.badge.dot::before { content: ""; width: 6px; height: 6px;
+  background: var(--accent); border-radius: 50%; }
+
 /* three lines, and the panel they open — only where the nav cannot fit */
 .wl-burger { display: none; flex-direction: column; justify-content: center; gap: 4px;
   width: 34px; height: 34px; padding: 0 6px; flex: none; cursor: pointer;
-  background: none; border: 1px solid var(--rule); color: var(--ink); }
+  background: none; border: 1px solid var(--rule); border-radius: var(--radius);
+  color: var(--ink); }
 .wl-burger span { display: block; height: 2px; background: currentColor; }
 .wl-burger[aria-expanded="true"] { background: var(--ink); color: var(--paper);
   border-color: var(--ink); }
@@ -116,12 +210,13 @@
 @media (min-width: 1180px) { .wl-src svg { width: 23px; height: 23px; } }
 .wl-theme { display: inline-flex; align-items: center; cursor: pointer;
   background: transparent; color: var(--ink-soft); border: 1px solid var(--rule);
-  padding: 8px 9px; line-height: 0; }
+  border-radius: var(--radius); padding: 8px 9px; line-height: 0; }
 .wl-theme svg { width: 15px; height: 15px; fill: currentColor; }
 .wl-theme:hover { color: var(--ink); border-color: var(--ink); }
 
 /* --- breadcrumbs: ✳ welance / perfect brief / <page> ------------------ */
-.crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+.crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono);
+  font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
 .crumbs a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
 .crumbs a:hover { color: var(--accent); text-decoration: none; }
 .crumbs .sep { color: var(--ink-soft); opacity: .5; }
@@ -130,34 +225,39 @@
 .crumbs .gh:hover { color: var(--accent); }
 .crumbs .gh svg { width: 15px; height: 15px; fill: currentColor; display: block; }
 
-/* --- brand: asterisk + wordmark, as on welance.com ------------------- */
-.brand { display: inline-flex; align-items: center; gap: 6px; line-height: 1; text-decoration: none; color: var(--ink); }
-.brand:hover { text-decoration: none; }
+/* --- brand: the Directory's lockup, at two strengths -------------------
+   The footer wears the full ✳ welance / perfect brief_ — the same two
+   static marks the Directory header uses (weLogo.svg, welanceLogo.svg),
+   at the same sizes, with the same dim slash before the product name.
+   The header wears only ✳ perfect brief_. The ruleset is MIT and meant to
+   be common property; co-branding it at the top of every page argues the
+   opposite. The mark alone is enough — it recurs in the colour rule and
+   the footer, so the pages still read as welance work.
+   ------------------------------------------------------------------- */
+.brand, .wl-brandline { display: inline-flex; align-items: center; flex: none;
+  line-height: 1; text-decoration: none; color: var(--ink); min-width: 0; }
+.brand:hover, .wl-brandline:hover { text-decoration: none; }
 
-.wl-logo { display: block; color: var(--ink); overflow: visible; }
-.wl-logo .wl-stroke { stroke-dasharray: 260; stroke-dashoffset: 0; }
-.wl-logo .wl-glyph { opacity: 1; }
-@keyframes wl-stroke-draw { from { stroke-dashoffset: 260; } to { stroke-dashoffset: 0; } }
-@keyframes wl-glyph-in { from { opacity: 0; } to { opacity: 1; } }
-.wl-logo.animated .wl-stroke {
-  stroke-dashoffset: 260;
-  animation: wl-stroke-draw 380ms cubic-bezier(.55, 0, .2, 1) forwards;
-}
-.wl-logo.animated .wl-s1 { animation-delay: 0ms; }
-.wl-logo.animated .wl-s2 { animation-delay: 90ms; }
-.wl-logo.animated .wl-s3 { animation-delay: 180ms; }
-.wl-logo.animated .wl-s4 { animation-delay: 270ms; }
-.wl-logo.animated .wl-glyph { opacity: 0; animation: wl-glyph-in 220ms ease-out forwards; }
-.wl-logo.animated .wl-g1 { animation-delay: 520ms; }
-.wl-logo.animated .wl-g2 { animation-delay: 580ms; }
-.wl-logo.animated .wl-g3 { animation-delay: 640ms; }
-.wl-logo.animated .wl-g4 { animation-delay: 700ms; }
-.wl-logo.animated .wl-g5 { animation-delay: 760ms; }
-.wl-logo.animated .wl-g6 { animation-delay: 820ms; }
-.wl-logo.animated .wl-g7 { animation-delay: 880ms; }
-@media (prefers-reduced-motion: reduce) {
-  .wl-logo.animated .wl-stroke,
-  .wl-logo.animated .wl-glyph { animation: none; stroke-dashoffset: 0; opacity: 1; }
+.wl-ast { display: block; width: 22px; height: 22px; flex: none;
+  fill: currentColor; }
+.wl-logo { display: block; width: 85px; height: auto; margin-inline-start: 4px;
+  flex: none; color: currentColor; overflow: visible; }
+/* In the footer the product name sits beside the wordmark and is greyed to
+   match it, so the lockup reads as one thing. In the header there is no
+   wordmark to defer to, so the product name IS the lockup: full ink. */
+.wl-project { display: flex; align-items: baseline; gap: 8px;
+  margin-inline-start: 8px; font-family: var(--disp); font-size: 22px;
+  font-weight: 500; line-height: 1; letter-spacing: -.01em;
+  color: var(--ink-soft); min-width: 0; }
+.wl-brandline .wl-project { color: var(--ink); }
+.wl-project .slash { color: var(--ink-soft-2); flex: none; }
+.wl-project .name { white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; }
+.wl-project .b { color: var(--accent); }
+@media (min-width: 1024px) {
+  .wl-ast { width: 30px; height: 30px; }
+  .wl-logo { width: 112px; margin-inline-start: 8px; }
+  .wl-project { font-size: 30px; margin-inline-start: 12px; gap: 10px; }
 }
 
 /* --- buttons: Directory style ---------------------------------------- */
@@ -165,11 +265,12 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 44px;
-  padding: 0 22px;
-  border: 1px solid var(--rule-strong);
+  height: 46px;
+  padding: 0 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
   background: transparent;
-  color: var(--ink);
+  color: var(--fg);
   font-family: var(--disp);
   font-weight: 500;
   font-size: 15px;
@@ -178,18 +279,23 @@
   white-space: nowrap;
   text-decoration: none;
 }
-.btn:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
-.btn.primary { background: var(--ink); color: var(--paper); }
-.btn.primary:hover { background: transparent; color: var(--ink); }
-.btn.sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.btn:hover { background: var(--fg); color: var(--bg); text-decoration: none; }
+.btn.primary { background: var(--fg); color: var(--bg); }
+.btn.primary:hover { background: transparent; color: var(--fg); }
+/* the one warm button — the lead door, wherever a page has two */
+.btn.accent { background: var(--accent); color: var(--accent-fg);
+  border-color: var(--accent); }
+.btn.accent:hover { background: transparent; color: var(--accent); }
+.btn.lg { height: 56px; padding: 0 30px; font-size: 16px; }
+.btn.sm { height: 36px; padding: 0 16px; font-size: 13px; }
 .btn.ghost { border-color: transparent; }
-.btn.ghost:hover { background: var(--paper-2); color: var(--ink); }
+.btn.ghost:hover { background: var(--surface-2); color: var(--fg); }
 
 /* --- language switcher: one dropdown with flags (rendered by i18n.js) --- */
 #langswitch { display: flex; align-items: center; }
 .wl-lang-select { font-family: var(--disp); font-size: 14px; font-weight: 500;
-  padding: 8px 10px; cursor: pointer; background: var(--paper); color: var(--ink);
-  border: 1px solid var(--rule); max-width: 150px; }
+  padding: 8px 14px; cursor: pointer; background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: var(--radius); max-width: 150px; }
 @media (min-width: 1440px) { .wl-lang-select { max-width: 190px; } }
 .wl-lang-select:hover { border-color: var(--ink); }
 .wl-lang-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -221,98 +327,127 @@
 .grip.dragging::before { background: var(--accent); width: 6px; }
 @media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
 
-/* --- site header, copied from welance.com's (chrome.js) ----------------- */
-.wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper);
-  border-bottom: 1px solid var(--rule); }
+/* --- site header, the Directory's (chrome.js) ---------------------------
+   Two heights, not three — 76 / 106 at 1024, the same two the Directory
+   uses. Its header is fixed with a matching body offset; ours is sticky,
+   which gets the same result without a magic number to keep in sync.
+   ------------------------------------------------------------------- */
+.wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper); }
 .wl-head-in { height: 76px; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
-@media (min-width: 1180px) { .wl-head-in { height: 92px; padding: 0 32px; gap: 20px; } }
-/* welance.com carries three nav items; we carry five plus a language select,
-   so each step up in size waits until five names, the select and the pill all
-   genuinely fit on one line — 1024 is a tablet, and there they do not */
-@media (min-width: 1440px) { .wl-head-in { height: 100px; padding: 0 48px; gap: 24px; } }
-.wl-brandline { display: flex; flex-direction: column; justify-content: center;
-  gap: 3px; flex: none; color: var(--ink); text-decoration: none; }
-.wl-brandline:hover { text-decoration: none; }
-.wl-project { font-family: var(--disp); font-size: 22px; font-weight: 600; line-height: 1;
-  letter-spacing: -.02em; }
-@media (min-width: 1180px) { .wl-project { font-size: 24px; } }
-@media (min-width: 1440px) { .wl-project { font-size: 28px; } }
-.wl-project .b { color: var(--accent); }
-.wl-origin { display: flex; align-items: center; gap: 5px; font-family: var(--mono);
-  font-size: 10.5px; letter-spacing: .04em; color: var(--ink-soft); }
-.wl-mark { display: inline-flex; }
-.wl-mark .wl-logo { width: 60px; height: 15px; }
-@media (max-width: 760px) { .wl-origin { display: none; } }
-/* small screens: the name shrinks so the header never widens the document
-   (the band test catches this) */
-@media (max-width: 640px) {
-  .wl-head-in { gap: 8px; padding: 0 12px; }
-  .wl-brandline { min-width: 0; }
-  .wl-project { font-size: 14.5px; }
-  .wl-head-right { gap: 6px; min-width: 0; }
-  /* the select keeps the flag and the code; the full name needs room it
-     does not have on a phone */
-  .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 4px; }
+@media (min-width: 1024px) { .wl-head-in { height: 106px; padding: 0 48px; gap: 24px; } }
+
+/* the welance colour rule, flush under the header: five bars, full width,
+   the site's clearest signature. 3px on the landing page and 2px everywhere
+   else — off-home it reads as chrome rather than as part of the page. */
+.wl-rule { display: grid; grid-template-columns: repeat(5, 1fr); height: 3px; }
+.wl-rule.is-thin { height: 2px; }
+.wl-rule i { display: block; }
+
+/* the mono status line — the header's quietest voice, and the first thing
+   to go when the bar runs out of room */
+.wl-status { font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-soft); white-space: nowrap;
+  display: none; }
+/* It leads the right-hand group, so it carries the auto margin that pushes
+   everything after it over — and hands that job to the nav when it hides.
+   It is the last thing to earn room: three nav names, a language select, the
+   source mark and the pill are all ahead of it in the queue. */
+@media (min-width: 1440px) {
+  .wl-status { display: inline-block; margin-inline-start: auto; }
+  .wl-status + .wl-nav { margin-inline-start: 0; }
 }
+
 .wl-nav { display: flex; align-items: center; gap: 26px; margin-inline-start: auto; }
-@media (min-width: 1180px) { .wl-nav { gap: 22px; } }
-@media (min-width: 1440px) { .wl-nav { gap: 40px; } }
-.wl-nav-item { font-family: var(--disp); font-size: 17px; font-weight: 600;
-  line-height: 1; color: var(--ink); text-decoration: none; padding: 8px 0; }
-@media (min-width: 1180px) { .wl-nav-item { font-size: 16.5px; } }
-@media (min-width: 1440px) { .wl-nav-item { font-size: 18px; } }
-.wl-nav-item:hover { color: var(--accent); text-decoration: none; }
-.wl-nav-item[aria-current="page"] { box-shadow: 0 2px 0 0 var(--ink); }
+@media (min-width: 1024px) { .wl-nav { gap: 28px; } }
+.wl-nav-item { position: relative; font-family: var(--disp); font-size: 18px;
+  font-weight: 600; line-height: 1; color: var(--ink); text-decoration: none;
+  padding: 8px 0; white-space: nowrap; }
+/* the Directory's underline: a bar that grows from nothing rather than a
+   colour change — the same gesture welance.com's own header makes */
+.wl-nav-item::before { content: ""; position: absolute; display: block;
+  width: 100%; height: 2px; bottom: .1em; inset-inline-start: 0;
+  background: currentColor; transform: scaleX(0);
+  transition: transform .2s ease; }
+.wl-nav-item:hover, .wl-nav-item[aria-current="page"] { text-decoration: none; }
+.wl-nav-item:hover::before,
+.wl-nav-item[aria-current="page"]::before { transform: scaleX(1); }
+
 .wl-head-right { display: flex; align-items: center; gap: 12px; margin-inline-start: 8px; }
-.wl-pill { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
-  border: 2px solid var(--ink); border-radius: 999px; padding: 11px 20px;
-  color: var(--ink); text-decoration: none; white-space: nowrap;
-  transition: background 150ms ease, color 150ms ease; }
-.wl-pill:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
-@media (max-width: 900px) {
+@media (min-width: 1024px) { .wl-head-right { gap: 20px; } }
+/* The way out is a destination, not an offer. It was a filled pill reading
+   "Find a team" — this site asking the reader for something, at the top of
+   a page arguing that the bar belongs to everyone. Now it names where it
+   goes, in the nav's register but muted, with the same underline the nav
+   items grow on hover. Nothing here shouts. */
+.wl-out { position: relative; display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--disp); font-size: 15px; font-weight: 500; line-height: 1;
+  color: var(--ink-soft); text-decoration: none; white-space: nowrap;
+  padding: 8px 0; transition: color 150ms ease; }
+.wl-out::before { content: ""; position: absolute; display: block; width: 100%;
+  height: 1px; bottom: .1em; inset-inline-start: 0; background: currentColor;
+  transform: scaleX(0); transition: transform .2s ease; }
+.wl-out:hover { color: var(--ink); text-decoration: none; }
+.wl-out:hover::before { transform: scaleX(1); }
+
+/* The awkward middle. welance.com carries three nav items and no language
+   select; we carry three plus a select, the source mark and the pill, and the
+   lockup ahead of them is now the Directory's full-size one. Between the
+   tablet and the large laptop everything tightens rather than the navigation
+   being dropped — the full Directory sizes only start once they genuinely
+   fit on one line, which is not at 1024 and not at 1280. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .wl-head-in { padding: 0 24px; gap: 14px; }
+  .wl-ast { width: 26px; height: 26px; }
+  .wl-logo { width: 92px; margin-inline-start: 6px; }
+  .wl-project { font-size: 20px; margin-inline-start: 8px; gap: 7px; }
+  .wl-nav { gap: 16px; }
+  .wl-nav-item { font-size: 15px; }
+  .wl-head-right { gap: 10px; }
+  .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 10px; }
+  .wl-out { font-size: 14px; }
+}
+@media (max-width: 1023px) {
   .wl-nav { display: none; }
   .wl-head-right { margin-inline-start: auto; }
   /* the switch shows the flag and the code from here down (see i18n.js), so it
      no longer needs room for "Português (BR)" */
-  .wl-lang-select { width: 82px; max-width: 82px; font-size: 13px; padding: 8px 4px; }
-  .wl-pill { font-size: 14px; padding: 9px 14px; }
+  .wl-lang-select { width: 82px; max-width: 82px; font-size: 13px; padding: 8px 10px; }
+  .wl-out { font-size: 14px; }
 }
-/* the awkward middle: five names, a language select and the pill all want to
-   be on one line and there is not quite room. Rather than drop the navigation
-   on a tablet, everything tightens and the origin line stands down. */
-@media (min-width: 901px) and (max-width: 1100px) {
-  .wl-head-in { gap: 10px; padding: 0 16px; }
-  .wl-origin { display: none; }
-  .wl-nav { gap: 14px; }
-  .wl-nav-item { font-size: 14.5px; }
-  .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 6px; }
-  .wl-pill { font-size: 14px; padding: 9px 15px; }
+/* small screens: the lockup gives way first — the asterisk and the wordmark
+   are the brand, the product name is the part that can go. The header must
+   never widen the document (the band test catches this). */
+@media (max-width: 640px) {
+  .wl-head-in { gap: 8px; padding: 0 12px; }
+  .wl-project { font-size: 15px; margin-inline-start: 6px; gap: 6px; }
+  .wl-head-right { gap: 6px; min-width: 0; }
+  .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 8px; }
 }
 /* the pill is the one thing on the page that leads somewhere else: it earns
-   its room on a phone, and the rest of the header gives way for it */
+   its room on a phone, and the rest of the header gives way for it. Below
+   here the lockup keeps the asterisk and the wordmark — the part that has to
+   be right — and lets the product name go. */
 @media (max-width: 560px) {
-  .wl-pill { font-size: 13px; padding: 8px 12px; }
+  .wl-project { display: none; }
+  .wl-out { font-size: 13px; }
   /* an explicit width, or the select sizes itself to its longest option even
      though the closed label is now two letters */
-  .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 2px; }
+  .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 6px; }
 }
 @media (max-width: 400px) {
-  .wl-project { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis;
-    white-space: nowrap; }
-  .wl-brandline { min-width: 0; flex: 0 1 auto; }
-  .wl-pill { font-size: 11.5px; padding: 7px 8px; letter-spacing: -.01em; }
-  .wl-src { margin-inline: -2px; }
+  .wl-logo { width: 76px; }
+  .wl-out { font-size: 12px; letter-spacing: -.01em; }
   /* only the flag: the list still names every language when you open it */
   .wl-lang-select { width: 46px; max-width: 46px; font-size: 12px; padding: 6px 0; }
-  .wl-head-in { gap: 4px; padding: 0 6px; }
+  .wl-head-in { gap: 4px; padding: 0 8px; }
   /* the header has to hold in every language, not in English: "Encontre um
      time" is a third longer than "Find a team", and at 320px that decides it */
-  .wl-src { padding: 2px; }
+  .wl-src { padding: 2px; margin-inline: -2px; }
   .wl-src svg { width: 18px; height: 18px; }
 }
 
 /* --- breadcrumb line under the header ---------------------------------- */
-.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px 0;
+.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px var(--pad-x) 0;
   font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-soft);
   display: flex; align-items: center; gap: 8px; }
@@ -322,56 +457,111 @@
 .wl-crumb .sep { opacity: .5; }
 .wl-crumb .cur { color: var(--ink); }
 
-/* --- site footer, copied from welance.com's (chrome.js) ----------------- */
+/* --- the close of every page: blue band on ink (chrome.js) --------------
+   The Directory's two-tone close, verbatim in register: the brand's second
+   voice (the light blue) as a big ground for the two doors in, sitting
+   directly on the ink discovery band. Both are fixed brand surfaces — they
+   do not swap with the theme, which is why they are built from literals
+   and the never-moving --slab set rather than from --paper/--ink.
+   ------------------------------------------------------------------- */
 .wl-foot { display: block; margin-top: 72px; padding: 0; border: 0; max-width: none;
-  background: var(--paper); color: var(--ink); font-family: var(--disp); font-size: 16px; }
-.wl-foot-cta { background: var(--slab); color: var(--on-slab); }
-.wl-foot-cta-in { max-width: var(--maxw); margin: 0 auto; padding: 44px 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; }
-.wl-foot-cta h2 { font-family: var(--disp); font-weight: 600; margin: 0;
-  font-size: clamp(24px, 3.6vw, 36px); letter-spacing: -.01em; }
-.wl-foot-cta h2 .b { color: var(--wl-y); }
-.wl-cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.wl-cta-btn { font-family: var(--disp); font-size: 16px; font-weight: 600; line-height: 1;
-  border: 2px solid var(--on-slab); background: var(--on-slab); color: var(--slab);
-  padding: 14px 24px; text-decoration: none; white-space: nowrap;
-  transition: background 150ms ease, color 150ms ease; }
-.wl-cta-btn:hover { background: transparent; color: var(--on-slab); text-decoration: none; }
-.wl-cta-btn.ghost { background: transparent; color: var(--on-slab); border-color: #6a6a6a; }
-.wl-cta-btn.ghost:hover { border-color: var(--on-slab); background: transparent; color: var(--on-slab); }
-.wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 26px; }
-/* Two columns: who we are on one side, where to go on the other — and the
-   links split in two again, because one list of twelve is a list nobody
-   finishes reading. */
-.wl-foot-top { display: grid; gap: 40px; align-items: start; }
-@media (min-width: 900px) { .wl-foot-top { grid-template-columns: 1.1fr 1fr; gap: 48px; } }
-.wl-foot-who { display: grid; gap: 24px; }
-.wl-foot-cols { display: grid; gap: 28px; }
-@media (min-width: 480px) { .wl-foot-cols { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
-.wl-foot-mark { flex: none; color: var(--ink); }
+  font-family: var(--disp); font-size: 16px; }
+
+.wl-close { position: relative; overflow: hidden; background: var(--accent-2);
+  color: var(--accent-2-fg); padding: clamp(48px, 6vw, 72px) 0; }
+/* the signature — an asterisk cropped by the band's own edge */
+.wl-close-ast { position: absolute; right: -60px; top: -70px; opacity: .18;
+  pointer-events: none; color: #0a0a0a; }
+.wl-close-ast .wl-asterisk { width: 220px; height: 220px; }
+html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
+.wl-close-in { position: relative; max-width: var(--maxw); margin: 0 auto;
+  padding: 0 var(--pad-x); display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.wl-close h2 { max-width: 18ch; margin: 0; color: #0a0a0a; }
+.wl-close h2 .b { color: var(--wl-c); }
+/* who made it and on what terms, said once, in the small voice — the band
+   states a fact about the ruleset rather than making an offer */
+.wl-close-note { max-width: 46ch; margin: 14px 0 0; font-size: 14.5px;
+  line-height: 1.5; color: #0a0a0a; opacity: .72; }
+.wl-close .eyebrow { color: #0a0a0a; opacity: .75; margin: 0 0 14px; }
+.wl-close .eyebrow::before { color: #0a0a0a; }
+.wl-close-row { display: flex; gap: 12px; flex-wrap: wrap; }
+/* on the blue ground the lead door wears the coral — warm on cool, the two
+   brand voices in one band — and the second stays outlined ink */
+.wl-close .btn { border-color: #0a0a0a; color: #0a0a0a; }
+.wl-close .btn:hover { background: #0a0a0a; color: var(--accent-2); }
+.wl-close .btn.accent { background: var(--wl-c); border-color: var(--wl-c); color: #0a0a0a; }
+.wl-close .btn.accent:hover { background: #0a0a0a; border-color: #0a0a0a; color: var(--wl-c); }
+
+.wl-foot-deep { background: var(--slab); color: var(--on-slab);
+  padding: clamp(36px, 5vw, 64px) 0 28px; }
+.wl-foot-in { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x); }
+/* Five columns: who we are, then the ways in, then everything else. The old
+   footer split twelve links across two columns and buried the three doors
+   among them; here they lead a column of their own. */
+.wl-foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+  gap: clamp(24px, 4vw, 56px); }
+@media (max-width: 1100px) { .wl-foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
+@media (max-width: 900px) { .wl-foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .wl-foot-grid { grid-template-columns: 1fr; } }
+
+.wl-foot-brand { color: var(--on-slab); }
+.wl-foot-brand .wl-ast { width: 26px; height: 26px; }
+.wl-foot-brand .wl-logo { width: 100px; }
+/* the lockup is a link, and every page styles bare links with the accent —
+   which turned the asterisk coral while the wordmark beside it stayed light.
+   The mark is not a link colour; it is the brand. */
+.wl-foot-lock { display: inline-flex; align-items: center; color: var(--on-slab); }
+.wl-foot-lock:hover { color: var(--on-slab); text-decoration: none; }
+.wl-foot-lock .wl-project { color: var(--on-slab-soft); font-size: 20px; }
+.wl-foot-lock .wl-project .slash { color: var(--on-slab-soft); opacity: .6; }
+.wl-foot-blurb { color: var(--on-slab-soft); font-size: 14px; line-height: 1.55;
+  margin: 14px 0 10px; max-width: 34ch; }
+.wl-foot-contact { color: var(--on-slab-soft); margin: 0; }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
-.wl-foot-offices { display: grid; grid-template-columns: 1fr; gap: 18px; }
-@media (min-width: 640px) { .wl-foot-offices { grid-template-columns: 1fr 1fr; gap: 12px 48px; } }
-.wl-office { display: flex; flex-direction: column; gap: 2px; }
-.wl-office p { margin: 0; font-size: 15.5px; line-height: 1.45; }
-.wl-office-h { font-weight: 600; font-size: 17px !important; margin-bottom: 4px !important; }
-.wl-office a { color: var(--ink); font-size: 15.5px; text-decoration: underline;
-  text-underline-offset: .125em; }
-.wl-office a:hover { color: var(--accent); }
-.wl-foot-links { display: flex; flex-direction: column; gap: 4px; }
 
-.wl-foot-links a { display: inline-flex; align-items: center; gap: 7px; }
+.wl-foot-k { color: var(--on-slab-soft); text-transform: uppercase;
+  letter-spacing: .05em; margin: 0 0 12px; }
+.wl-foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.wl-foot-link { color: var(--on-slab); font-size: 14px; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px; }
+.wl-foot-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .wl-gh { width: 14px; height: 14px; fill: currentColor; flex: none; }
-.wl-foot-links a { color: var(--ink); font-size: 15.5px; text-decoration: none; }
-.wl-foot-links a:hover { color: var(--accent); text-decoration: underline; }
+/* the repo link wears the open-blue — "this part you can change" */
+.wl-foot-gh { padding: 5px 10px; border: 1px solid var(--wl-cy);
+  background: color-mix(in oklab, var(--wl-cy), var(--slab) 82%); }
+.wl-foot-op { color: var(--on-slab-soft); font-size: 13px; margin: 0; line-height: 1.5; }
 
-.wl-foot-bottom { display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13.5px; }
-.wl-foot-bottom p { margin: 0; }
-.wl-foot-bottom nav { display: flex; gap: 8px; align-items: center; }
-.wl-foot-bottom .wl-theme { padding: 5px 8px; }
-.wl-foot-bottom a { color: var(--ink); text-decoration: none; }
-.wl-foot-bottom a:hover { color: var(--accent); }
+/* the three doors in, given a two-line block each rather than a list row */
+.wl-foot-start { display: block; padding: 7px 0; text-decoration: none; }
+.wl-foot-start-t { display: block; color: var(--on-slab); font-weight: 500;
+  font-size: 15px; line-height: 1.25; }
+.wl-foot-start:hover .wl-foot-start-t { text-decoration: underline;
+  text-underline-offset: 3px; }
+.wl-foot-start-s { display: block; margin-top: 2px; color: var(--on-slab-soft);
+  font-size: 12.5px; line-height: 1.4; }
+
+.wl-foot-legal { display: flex; justify-content: space-between; align-items: center;
+  gap: 14px; flex-wrap: wrap; color: var(--on-slab-soft);
+  border-top: 1px solid color-mix(in oklab, var(--on-slab), transparent 82%);
+  margin-top: clamp(28px, 4vw, 44px); padding-top: 16px; }
+.wl-foot-legal p { margin: 0; }
+/* the language select is the one control in an otherwise text-only row, so it
+   leads — and wraps to its own line first on narrow */
+.wl-foot-legal-lang { display: inline-flex; flex: none; }
+.wl-foot-legal nav { display: inline-flex; gap: 14px; align-items: center; }
+.wl-foot-legal a { color: var(--on-slab-soft); text-decoration: none; }
+.wl-foot-legal a:hover { color: var(--on-slab); text-decoration: underline;
+  text-underline-offset: 3px; }
+/* the footer is a fixed dark surface in both themes, so its controls are
+   styled against ink rather than against paper */
+.wl-foot-deep .wl-theme { color: var(--on-slab-soft); border-color: var(--ink-line);
+  padding: 5px 8px; }
+.wl-foot-deep .wl-theme:hover { color: var(--on-slab); border-color: var(--on-slab); }
+.wl-foot-deep .wl-lang-select { background: transparent; color: var(--on-slab);
+  border-color: var(--ink-line); font-size: 13px; }
+.wl-foot-deep .wl-lang-select:hover { border-color: var(--on-slab); }
+.wl-foot-deep .wl-lang-select option { background: var(--slab); color: var(--on-slab); }
 
 /* --- the fine print: depth one click away --------------------------------- */
 details.fineprint { border-left: 2px solid var(--rule); margin: 6px 0 18px; padding-left: 14px; }
@@ -396,7 +586,7 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
   letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
   color: var(--on-slab-soft); padding: 10px 14px; }
 .code-tabs button:hover, .code-copy:hover { color: var(--on-slab); }
-.code-tabs button[aria-pressed="true"] { color: var(--on-slab); box-shadow: inset 0 -2px 0 var(--wl-y); }
+.code-tabs button[aria-pressed="true"] { color: var(--on-slab); box-shadow: inset 0 -2px 0 var(--wl-c); }
 .code-copy { white-space: nowrap; }
 .code-copy.done { color: var(--wl-cy); }
 .code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
@@ -425,5 +615,7 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 .band.y  { --bandbg: var(--wl-y); }
 .band.c  { --bandbg: var(--wl-c); }
 .band.ink { --bandbg: var(--ink); color: var(--paper); }
-.band .eyebrow { color: var(--ink); }
-.band .eyebrow::after { background: rgba(10,10,10,.25); }
+/* on a brand-colour ground the asterisk would vanish into it — it goes ink,
+   the same treatment the Directory gives its closing band */
+.band.cy .eyebrow::before, .band.y .eyebrow::before,
+.band.c .eyebrow::before { color: #0a0a0a; }

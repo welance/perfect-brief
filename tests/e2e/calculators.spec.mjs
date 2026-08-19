@@ -58,12 +58,12 @@ test.describe("perfect price", () => {
     await expect(page.locator("#rows .comp input[type=text]").first()).toHaveValue("CraftCMS");
   });
 
-  test("internal work: no margin — what is not covered alone is welance support", async ({ page }) => {
+  test("internal work: no margin — what is not covered alone is a colleague's support", async ({ page }) => {
     await page.locator("#w-internal").click();
 
     // full autonomy: the person keeps the whole cap, support is zero
     await expect(page.locator("#figShare")).toHaveText("100%");
-    await expect(page.locator("#t-f-margin")).toHaveText("welance support");
+    await expect(page.locator("#t-f-margin")).toHaveText("support");
     await expect(page.locator("#figMargin")).toHaveText("0%");
     await expect(page.locator("#figPay")).toContainText("50.00");
     await expect(page.locator("#formula")).not.toContainText("70%");
@@ -76,7 +76,7 @@ test.describe("perfect price", () => {
     await expect(page.locator("#levelname")).toHaveText("WITH SUPPORT");
     await expect(page.locator("#figShare")).toHaveText("71%");
     await expect(page.locator("#figMargin")).toHaveText("29%");
-    await expect(page.locator("#splitkey")).toContainText("welance support");
+    await expect(page.locator("#splitkey")).toContainText("support");
     await expect(page.locator("#figPay")).toContainText("35.71");
 
     // the two bands fill the bar: nothing hides

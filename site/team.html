@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfect Team · one team, one rate — welance</title>
-<meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named welance margin out.">
+<meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named margin out.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
@@ -45,12 +45,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--disp); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) 72px; }
   .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
-  .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
-    color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
-  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(29px, 4.4vw, 42px);
-    line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
   .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
   .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
@@ -190,7 +186,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <div class="txt">
     <p class="eyebrow" data-i18n="team.eyebrow">one team, one rate</p>
     <h1><span data-i18n="team.h1">Perfect Team</span><span style="color:var(--accent)">_</span></h1>
-    <p class="lede" data-i18n-html="team.lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated, named <b>welance margin</b> anyone can check.</p>
+    <p class="lede" data-i18n-html="team.lede">A cross-functional team, priced the way a single independent is priced. The roles and their weights describe the project; each role carries its own level and cost base. The client sees <b>one blended rate</b> — not a hundred different ones — margins vary inside the team by level, and the project as a whole clears a stated <b>margin</b> anyone can check.</p>
       </div>
       <div class="t-ident" role="img" aria-label="Three roles, one blended rate, four visible bands">
         <svg viewBox="0 0 220 130" aria-hidden="true">
@@ -272,11 +268,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <span><span class="sw" style="background:var(--person)"></span><span data-i18n="team.key1">to the people</span></span>
           <span><span class="sw" style="background:var(--head)"></span><span data-i18n="team.key2">headroom</span></span>
           <span><span class="sw" style="background:var(--geo)"></span><span data-i18n="team.key3">geographic differential</span></span>
-          <span><span class="sw" style="background:var(--company)"></span><span data-i18n="team.key4">welance margin</span></span>
+          <span><span class="sw" style="background:var(--company)"></span><span data-i18n="team.key4">margin</span></span>
         </div>
         <div class="figures">
           <div class="fig"><div class="k" data-i18n="team.fig1">To the people</div><div class="v" id="figPeople">—</div></div>
-          <div class="fig"><div class="k" data-i18n="team.fig2">welance margin · target</div><div class="v" id="figMargin">—</div></div>
+          <div class="fig"><div class="k" data-i18n="team.fig2">margin · target</div><div class="v" id="figMargin">—</div></div>
           <div class="fig"><div class="k" data-i18n="team.fig3">Minimum viable rate</div><div class="v" id="figMinR">—</div></div>
           <div class="fig"><div class="k" data-i18n="team.fig4">Client rate</div><div class="v" id="figRate">—</div></div>
         </div>
@@ -506,7 +502,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
     $("figPeople").innerHTML = eur(res.payouts) + " <small>" + tt("team.d.blended", "/h blended") + "</small>";
     $("figPeople").title = ftip("team");
-    // the welance margin is ONLY its own band — headroom and the geo
+    // the margin is ONLY its own band — headroom and the geo
     // differential are never counted into it (PERFECT-PRICE.md §7, spec §5a)
     $("figMargin").innerHTML = pct(R > 0 ? res.welanceMargin / R : 0) +
       " <small>· " + tt("team.d.target", "target") + " " + pct(res.marginTarget) + "</small>";

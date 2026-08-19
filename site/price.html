@@ -48,7 +48,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 72px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) 72px; }
   .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
 
   /* Directory DNA is square */
@@ -77,11 +77,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
   .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
-
-  .eyebrow { font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
-    color: var(--ink-3); font-weight: 600; margin: 0 0 10px; }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(29px, 4.4vw, 42px);
-    line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
   .lede { margin: 0 0 28px; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
   .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
@@ -416,7 +411,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "How to move up",
       growthhint: "The level is not a label, it is a map. Every uncovered part has a value per hour.",
       resulth: "Result", coverk: "Role coverage",
-      fShare: "Person share", fMargin: "structure & risk", fSupport: "welance support", keySupport: "welance support", fPay: "To the person", fRate: "Client rate",
+      fShare: "Person share", fMargin: "structure & risk", fSupport: "support", keySupport: "support", fPay: "To the person", fRate: "Client rate",
       levelsh: "The three levels",
       levelshint: "They describe how the role is delivered, not who delivers it.",
       cLevel: "Level", cCov: "Coverage", cShare: "Share", cMargin: "structure & risk",
@@ -438,7 +433,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>The level belongs to the person-and-role pair</b>, not the person. The same person can be autonomous in one role and work with support in another. Reviewed at each renewal.",
       f5: "<b>Coefficients are editable defaults and need a real source</b> (OECD PPP, World Bank ICP, Numbeo) before anyone is paid from them. Translations should be checked by native speakers.",
       f6: "<b>This split is welance’s full-service price</b> — for finding, assembling and answering for the team. On <a href='https://welance.com/directory'>Directory</a> the platform takes no share at all: meeting a team costs a fixed, symbolic token, and the relationship belongs to the people in it. The rate prices the person; the share prices the delivery risk — compression is never the fix, the client rate is.",
-      f7: "<b>welance support</b>. Internal work has no client, so nothing is taken as margin. What the person does not yet cover alone, a colleague covers — training or verification, real internal time — and that is the share you see beside theirs. Cover the whole role and the support goes to zero.",
+      f7: "<b>Support</b>. Internal work has no client, so nothing is taken as margin. What the person does not yet cover alone, a colleague covers — training or verification, real internal time — and that is the share you see beside theirs. Cover the whole role and the support goes to zero.",
       finePrint: "the fine print"
     },
     de: {
@@ -472,7 +467,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "Wie man aufsteigt",
       growthhint: "Die Stufe ist kein Etikett, sondern eine Karte. Jeder nicht abgedeckte Bestandteil hat einen Stundenwert.",
       resulth: "Ergebnis", coverk: "Rollenabdeckung",
-      fShare: "Anteil Person", fMargin: "Struktur & Risiko", fSupport: "welance-Unterstützung", keySupport: "welance-Unterstützung", fPay: "An die Person", fRate: "Kundensatz",
+      fShare: "Anteil Person", fMargin: "Struktur & Risiko", fSupport: "Unterstützung", keySupport: "Unterstützung", fPay: "An die Person", fRate: "Kundensatz",
       levelsh: "Die drei Stufen",
       levelshint: "Sie beschreiben, wie die Rolle geliefert wird, nicht wer sie liefert.",
       cLevel: "Stufe", cCov: "Abdeckung", cShare: "Anteil", cMargin: "Struktur & Risiko",
@@ -494,7 +489,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>Die Stufe gehört dem Paar Person-und-Rolle</b>, nicht der Person. Dieselbe Person kann in einer Rolle eigenständig sein und in einer anderen mit Unterstützung arbeiten. Überprüfung bei jeder Verlängerung.",
       f5: "<b>Die Koeffizienten sind editierbare Vorgaben und brauchen eine echte Quelle</b> (OECD PPP, Weltbank ICP, Numbeo), bevor jemand danach bezahlt wird. Übersetzungen sollten von Muttersprachler:innen geprüft werden.",
       f6: "<b>Diese Aufteilung ist welances Full-Service-Preis</b> — für das Finden, Aufstellen und Einstehen für das Team. Auf <a href='https://welance.com/directory'>Directory</a> nimmt die Plattform gar keinen Anteil: ein Team zu treffen kostet einen festen, symbolischen Token, und die Beziehung gehört den Menschen darin. Der Satz bepreist die Person; der Anteil bepreist das Lieferrisiko — Kompression ist nie die Lösung, der Kundensatz ist es.",
-      f7: "<b>welance-Unterstützung</b>. Interne Arbeit hat keinen Kunden, also wird nichts als Marge genommen. Was die Person noch nicht allein abdeckt, deckt ein Kollege ab — Einarbeitung oder Prüfung, echte interne Zeit — und das ist der Anteil neben ihrem. Wer die ganze Rolle abdeckt, braucht keine Unterstützung mehr.",
+      f7: "<b>Unterstützung</b>. Interne Arbeit hat keinen Kunden, also wird nichts als Marge genommen. Was die Person noch nicht allein abdeckt, deckt ein Kollege ab — Einarbeitung oder Prüfung, echte interne Zeit — und das ist der Anteil neben ihrem. Wer die ganze Rolle abdeckt, braucht keine Unterstützung mehr.",
       finePrint: "das Kleingedruckte"
     },
     it: {
@@ -528,7 +523,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "Come si sale",
       growthhint: "Il livello non è un'etichetta: è una mappa. Ogni componente non coperta ha un valore in euro l'ora.",
       resulth: "Risultato", coverk: "Copertura del ruolo",
-      fShare: "Quota persona", fMargin: "struttura e rischio", fSupport: "supporto welance", keySupport: "supporto welance", fPay: "Alla persona", fRate: "Tariffa cliente",
+      fShare: "Quota persona", fMargin: "struttura e rischio", fSupport: "supporto", keySupport: "supporto", fPay: "Alla persona", fRate: "Tariffa cliente",
       levelsh: "I tre livelli",
       levelshint: "Descrivono come il ruolo viene consegnato, non chi lo consegna.",
       cLevel: "Livello", cCov: "Copertura", cShare: "Quota", cMargin: "struttura e rischio",
@@ -550,7 +545,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>Il livello appartiene alla coppia persona-ruolo</b>, non alla persona. La stessa persona può essere autonoma su un ruolo e lavorare con supporto su un altro. Si rivede a ogni rinnovo.",
       f5: "<b>I coefficienti sono valori di default modificabili e servono una fonte vera</b> (PPP OCSE, ICP Banca Mondiale, Numbeo) prima di pagarci qualcuno. Le traduzioni vanno controllate da madrelingua.",
       f6: "<b>Questa ripartizione è il prezzo full-service di welance</b> — per trovare, assemblare e rispondere del team. Su <a href='https://welance.com/directory'>Directory</a> la piattaforma non prende alcuna quota: incontrare un team costa un token fisso e simbolico, e la relazione appartiene alle persone che la compongono. La tariffa prezza la persona; la quota prezza il rischio di delivery — comprimere non è mai la soluzione, alzare la tariffa cliente sì.",
-      f7: "<b>supporto welance</b>. Il lavoro interno non ha cliente, quindi nulla viene preso come margine. Quello che la persona non copre ancora da sola lo copre un collega — formazione o verifica, tempo interno vero — ed è la quota che vedi accanto alla sua. Coprendo tutto il ruolo, il supporto va a zero.",
+      f7: "<b>Supporto</b>. Il lavoro interno non ha cliente, quindi nulla viene preso come margine. Quello che la persona non copre ancora da sola lo copre un collega — formazione o verifica, tempo interno vero — ed è la quota che vedi accanto alla sua. Coprendo tutto il ruolo, il supporto va a zero.",
       finePrint: "per esteso"
     },
     ur: {
@@ -584,7 +579,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "آگے کیسے بڑھیں",
       growthhint: "درجہ ایک لیبل نہیں، ایک نقشہ ہے۔ ہر غیر محیط جزو کی فی گھنٹہ قیمت ہے۔",
       resulth: "نتیجہ", coverk: "کردار کی کوریج",
-      fShare: "فرد کا حصہ", fMargin: "ڈھانچہ اور خطرہ", fSupport: "ویلانس معاونت", keySupport: "ویلانس معاونت", fPay: "فرد کو", fRate: "کلائنٹ ریٹ",
+      fShare: "فرد کا حصہ", fMargin: "ڈھانچہ اور خطرہ", fSupport: "معاونت", keySupport: "معاونت", fPay: "فرد کو", fRate: "کلائنٹ ریٹ",
       levelsh: "تین درجے",
       levelshint: "یہ بتاتے ہیں کہ کردار کیسے ادا ہوتا ہے، یہ نہیں کہ کون ادا کرتا ہے۔",
       cLevel: "درجہ", cCov: "کوریج", cShare: "حصہ", cMargin: "ڈھانچہ اور خطرہ",
@@ -606,7 +601,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>درجہ فرد اور کردار کے جوڑے کا ہے</b>، صرف فرد کا نہیں۔ ایک ہی شخص ایک کردار میں خود مختار اور دوسرے میں معاونت کے ساتھ ہو سکتا ہے۔ ہر تجدید پر نظرثانی۔",
       f5: "<b>عوامل قابلِ ترمیم ابتدائی قدریں ہیں اور کسی کو ان کے مطابق ادائیگی سے پہلے مستند ماخذ درکار ہے</b> (OECD PPP، ورلڈ بینک ICP، Numbeo)۔ تراجم اہلِ زبان سے جانچوائے جائیں۔",
       f6: "<b>یہ تقسیم ویلانس کی فل سروس قیمت ہے</b> — ٹیم کو ڈھونڈنے، جوڑنے اور اس کی ذمہ داری اٹھانے کی۔ <a href='https://welance.com/directory'>Directory</a> پر پلیٹ فارم کوئی حصہ نہیں لیتا: ٹیم سے ملاقات کی قیمت ایک مقررہ، علامتی ٹوکن ہے، اور رشتہ ان لوگوں کا ہوتا ہے جو اس میں ہیں۔ ریٹ فرد کی قیمت ہے؛ حصہ ڈیلیوری کے خطرے کی — دبانا کبھی حل نہیں، کلائنٹ ریٹ بڑھانا حل ہے۔",
-      f7: "<b>ویلانس معاونت</b>. اندرونی کام کا کوئی کلائنٹ نہیں، اس لیے مارجن کے طور پر کچھ نہیں لیا جاتا۔ جو فرد ابھی خود نہیں سنبھالتا وہ ایک ساتھی سنبھالتا ہے — تربیت یا جانچ، حقیقی اندرونی وقت — اور یہی وہ حصہ ہے جو آپ اُس کے ساتھ دیکھتے ہیں۔ پورا کردار سنبھال لیں تو معاونت صفر ہو جاتی ہے۔",
+      f7: "<b>معاونت</b>. اندرونی کام کا کوئی کلائنٹ نہیں، اس لیے مارجن کے طور پر کچھ نہیں لیا جاتا۔ جو فرد ابھی خود نہیں سنبھالتا وہ ایک ساتھی سنبھالتا ہے — تربیت یا جانچ، حقیقی اندرونی وقت — اور یہی وہ حصہ ہے جو آپ اُس کے ساتھ دیکھتے ہیں۔ پورا کردار سنبھال لیں تو معاونت صفر ہو جاتی ہے۔",
       finePrint: "تفصیل"
     },
     pt: {
@@ -640,7 +635,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "Como subir",
       growthhint: "O nível não é um rótulo, é um mapa. Cada componente não coberto tem um valor por hora.",
       resulth: "Resultado", coverk: "Cobertura do papel",
-      fShare: "Parte da pessoa", fMargin: "estrutura e risco", fSupport: "suporte welance", keySupport: "suporte welance", fPay: "Para a pessoa", fRate: "Taxa do cliente",
+      fShare: "Parte da pessoa", fMargin: "estrutura e risco", fSupport: "suporte", keySupport: "suporte", fPay: "Para a pessoa", fRate: "Taxa do cliente",
       levelsh: "Os três níveis",
       levelshint: "Descrevem como o papel é entregue, não quem o entrega.",
       cLevel: "Nível", cCov: "Cobertura", cShare: "Parte", cMargin: "estrutura e risco",
@@ -662,7 +657,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>O nível pertence ao par pessoa-e-papel</b>, não à pessoa. A mesma pessoa pode ser autônoma num papel e trabalhar com apoio em outro. Revisto a cada renovação.",
       f5: "<b>Os coeficientes são padrões editáveis e precisam de uma fonte real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar alguém com base neles. As traduções devem ser checadas por falantes nativos.",
       f6: "<b>Esta divisão é o preço full-service da welance</b> — por encontrar, montar e responder pelo time. No <a href='https://welance.com/directory'>Directory</a> a plataforma não fica com parte nenhuma: conhecer um time custa um token fixo e simbólico, e a relação pertence às pessoas que a compõem. A taxa precifica a pessoa; a cota precifica o risco de entrega — espremer nunca é a solução, subir a taxa do cliente é.",
-      f7: "<b>suporte welance</b>. Trabalho interno não tem cliente, então nada é tirado como margem. O que a pessoa ainda não cobre sozinha, um colega cobre — treinamento ou verificação, tempo interno real — e é essa a fatia que você vê ao lado da dela. Cobrindo o papel inteiro, o suporte vai a zero.",
+      f7: "<b>Suporte</b>. Trabalho interno não tem cliente, então nada é tirado como margem. O que a pessoa ainda não cobre sozinha, um colega cobre — treinamento ou verificação, tempo interno real — e é essa a fatia que você vê ao lado da dela. Cobrindo o papel inteiro, o suporte vai a zero.",
       finePrint: "as letras miúdas"
     },
     es: {
@@ -696,7 +691,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "Cómo se sube",
       growthhint: "El nivel no es una etiqueta: es un mapa. Cada componente sin cubrir tiene un valor por hora.",
       resulth: "Resultado", coverk: "Cobertura del rol",
-      fShare: "Cuota persona", fMargin: "estructura y riesgo", fSupport: "soporte welance", keySupport: "soporte welance", fPay: "A la persona", fRate: "Tarifa cliente",
+      fShare: "Cuota persona", fMargin: "estructura y riesgo", fSupport: "soporte", keySupport: "soporte", fPay: "A la persona", fRate: "Tarifa cliente",
       levelsh: "Los tres niveles",
       levelshint: "Describen cómo se entrega el rol, no quién lo entrega.",
       cLevel: "Nivel", cCov: "Cobertura", cShare: "Cuota", cMargin: "estructura y riesgo",
@@ -718,7 +713,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>El nivel pertenece al par persona-rol</b>, no a la persona. La misma persona puede ser autónoma en un rol y trabajar con apoyo en otro. Se revisa en cada renovación.",
       f5: "<b>Los coeficientes son valores por defecto editables y necesitan una fuente real</b> (PPP OCDE, ICP Banco Mundial, Numbeo) antes de pagar a alguien con ellos. Las traducciones deben revisarlas hablantes nativos.",
       f6: "<b>Este reparto es el precio full-service de welance</b> — por encontrar, montar y responder por el equipo. En <a href='https://welance.com/directory'>Directory</a> la plataforma no toma parte alguna: conocer a un equipo cuesta un token fijo y simbólico, y la relación pertenece a las personas que la componen. La tarifa tasa a la persona; la cuota tasa el riesgo de entrega — comprimir nunca es la solución, subir la tarifa del cliente sí.",
-      f7: "<b>soporte welance</b>. El trabajo interno no tiene cliente, así que nada se toma como margen. Lo que la persona aún no cubre sola lo cubre un colega — formación o verificación, tiempo interno real — y esa es la parte que ves junto a la suya. Al cubrir todo el rol, el soporte llega a cero.",
+      f7: "<b>Soporte</b>. El trabajo interno no tiene cliente, así que nada se toma como margen. Lo que la persona aún no cubre sola lo cubre un colega — formación o verificación, tiempo interno real — y esa es la parte que ves junto a la suya. Al cubrir todo el rol, el soporte llega a cero.",
       finePrint: "la letra pequeña"
     },
     vi: {
@@ -752,7 +747,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "Cách đi lên",
       growthhint: "Cấp độ không phải nhãn dán, mà là bản đồ. Mỗi thành phần chưa bao phủ có giá trị theo giờ.",
       resulth: "Kết quả", coverk: "Bao phủ vai trò",
-      fShare: "Phần của người đó", fMargin: "cấu trúc & rủi ro", fSupport: "hỗ trợ welance", keySupport: "hỗ trợ welance", fPay: "Cho người đó", fRate: "Giá khách hàng",
+      fShare: "Phần của người đó", fMargin: "cấu trúc & rủi ro", fSupport: "hỗ trợ", keySupport: "hỗ trợ", fPay: "Cho người đó", fRate: "Giá khách hàng",
       levelsh: "Ba cấp độ",
       levelshint: "Chúng mô tả cách vai trò được thực hiện, không phải ai thực hiện.",
       cLevel: "Cấp độ", cCov: "Bao phủ", cShare: "Phần", cMargin: "cấu trúc & rủi ro",
@@ -774,7 +769,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>Cấp độ thuộc về cặp người-và-vai-trò</b>, không thuộc về người. Cùng một người có thể tự chủ ở vai trò này và cần hỗ trợ ở vai trò khác. Xem lại ở mỗi lần gia hạn.",
       f5: "<b>Các hệ số là mặc định chỉnh sửa được và cần nguồn thật</b> (OECD PPP, World Bank ICP, Numbeo) trước khi trả lương ai đó theo chúng. Bản dịch nên được người bản ngữ kiểm tra.",
       f6: "<b>Phần chia này là giá full-service của welance</b> — cho việc tìm, dựng và chịu trách nhiệm về đội ngũ. Trên <a href='https://welance.com/directory'>Directory</a> nền tảng không lấy phần nào: gặp một đội ngũ chỉ tốn một token cố định, tượng trưng, và mối quan hệ thuộc về những người trong đó. Mức giá định giá con người; phần chia định giá rủi ro bàn giao — ép giá không bao giờ là lời giải, nâng giá khách hàng mới là.",
-      f7: "<b>hỗ trợ welance</b>. Việc nội bộ không có khách hàng, nên không có gì bị lấy làm biên lợi nhuận. Phần người đó chưa tự đảm nhận thì một đồng nghiệp đảm nhận — đào tạo hoặc rà soát, thời gian nội bộ thật — và đó là phần bạn thấy bên cạnh phần của họ. Đảm nhận trọn vai trò thì phần hỗ trợ về 0.",
+      f7: "<b>Hỗ trợ</b>. Việc nội bộ không có khách hàng, nên không có gì bị lấy làm biên lợi nhuận. Phần người đó chưa tự đảm nhận thì một đồng nghiệp đảm nhận — đào tạo hoặc rà soát, thời gian nội bộ thật — và đó là phần bạn thấy bên cạnh phần của họ. Đảm nhận trọn vai trò thì phần hỗ trợ về 0.",
       finePrint: "phần chi tiết"
     },
     zh: {
@@ -808,7 +803,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "怎么往上走",
       growthhint: "层级不是一个标签：它是一张地图。每一个还没覆盖的组成部分，都有一个以欧元每小时计的价值。",
       resulth: "结果", coverk: "角色覆盖度",
-      fShare: "个人份额", fMargin: "结构与风险", fSupport: "welance 支持", keySupport: "welance 支持", fPay: "给到人", fRate: "客户费率",
+      fShare: "个人份额", fMargin: "结构与风险", fSupport: "支持", keySupport: "支持", fPay: "给到人", fRate: "客户费率",
       levelsh: "三个层级",
       levelshint: "它们描述的是这个角色如何被交付，而不是谁来交付。",
       cLevel: "层级", cCov: "覆盖度", cShare: "份额", cMargin: "结构与风险",
@@ -830,7 +825,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>层级属于「人—角色」这一对</b>，而不属于这个人。同一个人可以在一个角色上自主，在另一个角色上需要支持。每次续约时重新评估。",
       f5: "<b>这些系数是可编辑的默认值，在用它们给人付钱之前需要一个真实来源</b>（OECD PPP、世界银行 ICP、Numbeo）。译文需要由母语者校订。",
       f6: "<b>这套分配是 welance 的全服务价格</b>——用于寻找、组建团队并为其负责。在 <a href='https://welance.com/directory'>Directory</a> 上平台完全不抽成：认识一支团队只需一笔固定的象征性费用，而这段关系属于组成它的人。费率给人定价；份额给交付风险定价——压缩从来不是解法，提高客户费率才是。",
-      f7: "<b>welance 支持</b>。内部工作没有客户，所以不会有任何东西被当作利润拿走。这个人还没能独自覆盖的部分由同事覆盖——培训或复核，是真实的内部时间——这就是你在他份额旁边看到的那一块。当他覆盖了整个角色，支持就归零。",
+      f7: "<b>支持</b>。内部工作没有客户，所以不会有任何东西被当作利润拿走。这个人还没能独自覆盖的部分由同事覆盖——培训或复核，是真实的内部时间——这就是你在他份额旁边看到的那一块。当他覆盖了整个角色，支持就归零。",
       finePrint: "展开细则"
     },
     ar: {
@@ -864,7 +859,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       growthh: "كيف تصعد",
       growthhint: "المستوى ليس ملصقًا بل خريطة. كل جزء غير مغطى له قيمة بالساعة.",
       resulth: "النتيجة", coverk: "تغطية الدور",
-      fShare: "حصة الشخص", fMargin: "البنية والمخاطرة", fSupport: "دعم ويلانس", keySupport: "دعم ويلانس", fPay: "إلى الشخص", fRate: "سعر العميل",
+      fShare: "حصة الشخص", fMargin: "البنية والمخاطرة", fSupport: "دعم", keySupport: "دعم", fPay: "إلى الشخص", fRate: "سعر العميل",
       levelsh: "المستويات الثلاثة",
       levelshint: "تصف كيف يؤدى الدور، لا من يؤديه.",
       cLevel: "المستوى", cCov: "التغطية", cShare: "الحصة", cMargin: "البنية والمخاطرة",
@@ -886,7 +881,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       f4: "<b>المستوى للثنائي شخص-ودور</b>، لا للشخص. الشخص نفسه قد يكون مستقلًا في دور ويعمل بدعم في آخر. يراجَع عند كل تجديد.",
       f5: "<b>المعاملات قيم افتراضية قابلة للتحرير وتحتاج مصدرًا حقيقيًا</b> (OECD PPP، البنك الدولي ICP، Numbeo) قبل أن يُدفع لأحد بناءً عليها. وينبغي أن يراجع الترجمات ناطقون أصليون.",
       f6: "<b>هذه القسمة هي سعر الخدمة الكاملة لدى ويلانس</b> — مقابل إيجاد الفريق وتجميعه وتحمّل مسؤوليته. على <a href='https://welance.com/directory'>Directory</a> لا تأخذ المنصة أي حصة: لقاء فريق يكلف رمزًا ثابتًا رمزيًا، والعلاقة ملك لمن فيها. السعر يقيّم الشخص؛ والحصة تقيّم مخاطرة التسليم — الضغط ليس الحل أبدًا، رفع سعر العميل هو الحل.",
-      f7: "<b>دعم ويلانس</b>. العمل الداخلي بلا عميل، فلا يُؤخذ شيء كهامش. وما لا يغطيه الشخص وحده بعد يغطيه زميل — تدريب أو تحقّق، وقت داخلي حقيقي — وتلك هي الحصة التي تراها بجانب حصته. وبتغطية الدور كاملًا يصير الدعم صفرًا.",
+      f7: "<b>دعم</b>. العمل الداخلي بلا عميل، فلا يُؤخذ شيء كهامش. وما لا يغطيه الشخص وحده بعد يغطيه زميل — تدريب أو تحقّق، وقت داخلي حقيقي — وتلك هي الحصة التي تراها بجانب حصته. وبتغطية الدور كاملًا يصير الدعم صفرًا.",
       finePrint: "التفاصيل الدقيقة"
     }
   };

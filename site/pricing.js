@@ -93,7 +93,10 @@
    *   payouts        what the people actually asked for
    *   headroom       ceiling minus asked — visible, never silently margin
    *   geo band       the cost-of-living differential — same rule as §7
-   *   welance margin Σ wᵢ · m(levelᵢ) · R — the named recipe
+   *   margin         Σ wᵢ · m(levelᵢ) · R — the named recipe. The field is
+   *                  still welanceMargin: renaming the returned key would
+   *                  touch both calculators and the engine tests for a
+   *                  word no reader ever sees.
    *
    * rows: [{ weight, levelIndex, coef, floor, ownRate }]
    * Weights are normalised over their sum, so 30/45/25 and 0.3/0.45/0.25
@@ -155,7 +158,7 @@
     { id: "margin",   n: 5, name: "The margin rule",   formula: "(R − payout) / R ≥ m(level)",                                  plain: "What the collective retains, priced as the risk it actually carries at that level.",                       source: "PERFECT-PRICE.md §3", url: "https://github.com/welance/perfect-brief/blob/main/docs/perfect-price/PERFECT-PRICE.md#3-the-rule" },
     { id: "col",      n: 6, name: "Cost of living",    formula: "payout_local = payout_role × max(coeff, floor)",               plain: "A stated, floored geographic adjustment — always shown as its own band, never hidden in margin.",          source: "PERFECT-PRICE.md §7", url: "https://github.com/welance/perfect-brief/blob/main/docs/perfect-price/PERFECT-PRICE.md#7-cost-of-living" },
     { id: "nodeal",   n: 7, name: "No-deal",           formula: "client < payout/(1−m) → the engagement does not happen",       plain: "Nobody is squeezed below their own rate to make a margin work.",                                           source: "PERFECT-PRICE.md §8", url: "https://github.com/welance/perfect-brief/blob/main/docs/perfect-price/PERFECT-PRICE.md#8-the-no-deal-rule" },
-    { id: "team",     n: 8, name: "The team equation", formula: "R = payouts + headroom + geo differential + welance margin",   plain: "One blended client rate, decomposed into four visible bands that must sum exactly.",                       source: "spec §5", url: "https://github.com/welance/perfect-brief/blob/main/site/pricing.js#L101" }
+    { id: "team",     n: 8, name: "The team equation", formula: "R = payouts + headroom + geo differential + margin",   plain: "One blended client rate, decomposed into four visible bands that must sum exactly.",                       source: "spec §5", url: "https://github.com/welance/perfect-brief/blob/main/site/pricing.js#L101" }
   ];
 
   var API = {
