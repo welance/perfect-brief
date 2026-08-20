@@ -6,6 +6,19 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.9.2] - 2026-08-20
+
+### Fixed
+- **The judge is asked to think briefly, because its thinking is billed from
+  the same ceiling.** 1.9.1 raised `PB_LLM_MAX_TOKENS` to 8000 and production
+  still returned nothing: the same brief develop had just scored in 28s burned
+  the whole 8000 on reasoning before writing a character of JSON. Raising the
+  ceiling alone is a race against a model's mood. The judge's task is
+  extraction, not deliberation — read fourteen rules, quote the brief, answer —
+  so the OpenRouter call now carries `reasoning: {effort: "low"}`
+  (`PB_LLM_REASONING_EFFORT`; empty sends no field and takes the provider
+  default), and the ceiling goes to 16000 as headroom rather than as the fix.
+
 ## [1.9.1] - 2026-08-20
 
 ### Fixed

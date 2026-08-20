@@ -23,6 +23,8 @@ is worse than a refusal.
 
 from __future__ import annotations
 
+import json
+
 import httpx
 import pytest
 from fastapi.testclient import TestClient
@@ -46,6 +48,7 @@ def openrouter(monkeypatch):
     state = {"content": TRUNCATED, "finish_reason": "length"}
 
     def handler(request: httpx.Request) -> httpx.Response:
+        state["last_body"] = request.content.decode()
         return httpx.Response(
             200,
             json={
@@ -111,3 +114,12 @@ def test_the_ceiling_fits_the_ruleset_this_service_ships():
         f"{len(rules)} rules need room for a quote and a note each; "
         f"{settings().llm_max_tokens} tokens is below the {floor} floor"
     )
+
+
+def test_the_judge_asks_for_short_reasoning_since_it_is_billed_from_the_ceiling(client, openrouter):
+    """Extraction, not deliberation — and thinking is spent before any JSON."""
+    openrouter["content"] = COMPLETE
+    openrouter["finish_reason"] = "stop"
+    client.post("/v1/score", json={"brief": BRIEF, "judge": "llm"})
+    sent = json.loads(openrouter["last_body"])
+    assert sent.get("reasoning") == {"effort": "low"}, sent.get("reasoning")

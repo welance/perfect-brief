@@ -32,7 +32,14 @@ class Settings(BaseSettings):
     # JSON appears. Measured on develop, one brief in a pair tripped 4000 while
     # its shorter sibling passed. Unused headroom costs nothing — only generated
     # tokens are billed — while a ceiling hit costs the whole call and a 503.
-    llm_max_tokens: int = 8000
+    llm_max_tokens: int = 16000
+
+    # OpenRouter's unified reasoning control. The judge does not need deep
+    # thinking to emit fourteen verdicts, and on a reasoning model that thinking
+    # is spent from llm_max_tokens before any JSON appears — production burned
+    # 8000 on it and returned nothing, while develop finished the same brief in
+    # 28s. Empty string sends no reasoning field at all (provider default).
+    llm_reasoning_effort: str = "low"
 
     # Redis (verdict cache + rate limit)
     redis_url: str = "redis://redis:6379/0"

@@ -194,9 +194,7 @@ async def suggest(
     raw = await llm_client.complete(prompt, model, api_key)
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
-    items = [
-        {"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)
-    ]
+    items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
     review = await _review_items(items, brief, verifier, api_key)
 
     out: list[Suggestion] = []
@@ -212,7 +210,11 @@ async def suggest(
             )
         )
     screened = review is not None and all(s.review and s.review.accepted for s in out)
-    return out, {"screened": screened, "iterations": 1, "verifier_model": verifier if review is not None else None}
+    return out, {
+        "screened": screened,
+        "iterations": 1,
+        "verifier_model": verifier if review is not None else None,
+    }
 
 
 async def suggest_all(

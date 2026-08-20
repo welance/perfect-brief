@@ -70,6 +70,19 @@ def _sampling_kwargs(model: str) -> dict:
     return {"temperature": 0}
 
 
+def _reasoning_kwargs() -> dict:
+    """Keep a reasoning model's thinking short; it is billed against max_tokens.
+
+    The task is extraction, not deliberation: read fourteen rules, quote the
+    brief, answer. A model that reasons at length about it can spend the whole
+    ceiling before writing a character of JSON — which is exactly how
+    production returned nothing on a brief develop had just scored in 28s.
+    Unset the setting to send no reasoning field and take the provider default.
+    """
+    effort = settings().llm_reasoning_effort.strip()
+    return {"reasoning": {"effort": effort}} if effort else {}
+
+
 def _vendor(slug: str) -> str:
     return slug.split("/", 1)[0]
 
@@ -140,6 +153,7 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
                     "model": use,
                     "max_tokens": cfg.llm_max_tokens,
                     **_sampling_kwargs(use),
+                    **_reasoning_kwargs(),
                     "messages": [{"role": "user", "content": prompt}],
                 },
             )
