@@ -9,15 +9,15 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 ## [1.9.2] - 2026-08-20
 
 ### Fixed
-- **The judge is asked to think briefly, because its thinking is billed from
-  the same ceiling.** 1.9.1 raised `PB_LLM_MAX_TOKENS` to 8000 and production
-  still returned nothing: the same brief develop had just scored in 28s burned
-  the whole 8000 on reasoning before writing a character of JSON. Raising the
-  ceiling alone is a race against a model's mood. The judge's task is
-  extraction, not deliberation — read fourteen rules, quote the brief, answer —
-  so the OpenRouter call now carries `reasoning: {effort: "low"}`
-  (`PB_LLM_REASONING_EFFORT`; empty sends no field and takes the provider
-  default), and the ceiling goes to 16000 as headroom rather than as the fix.
+- **More headroom, and a reasoning knob that stays off.**
+  `PB_LLM_MAX_TOKENS` goes to 16000: 8000 was still not enough in production,
+  where a brief develop had just scored in 28s spent the whole budget on
+  reasoning before writing a character of JSON. Asking the provider for less of
+  it was the obvious next move and it backfired — `reasoning: {effort: "low"}`
+  made deepseek-v4-pro *slower*, three runs at ~50s against ~28s without the
+  field, which is over the ~50s cut the edge applies. So the knob ships
+  (`PB_LLM_REASONING_EFFORT`) and ships **off**: empty sends no reasoning field
+  at all. The measurement is the point; the default is the provider's own.
 
 ## [1.9.1] - 2026-08-20
 

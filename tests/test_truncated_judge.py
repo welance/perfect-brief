@@ -116,10 +116,15 @@ def test_the_ceiling_fits_the_ruleset_this_service_ships():
     )
 
 
-def test_the_judge_asks_for_short_reasoning_since_it_is_billed_from_the_ceiling(client, openrouter):
-    """Extraction, not deliberation — and thinking is spent before any JSON."""
+def test_no_reasoning_field_is_sent_unless_someone_asks_for_one(client, openrouter):
+    """The knob exists; it is off.
+
+    Asking deepseek-v4-pro for effort "low" made the call slower, not cheaper —
+    ~50s against ~28s for the same brief on develop, which is over the edge's
+    cut. So the default sends no reasoning field and takes the provider's own.
+    """
     openrouter["content"] = COMPLETE
     openrouter["finish_reason"] = "stop"
     client.post("/v1/score", json={"brief": BRIEF, "judge": "llm"})
     sent = json.loads(openrouter["last_body"])
-    assert sent.get("reasoning") == {"effort": "low"}, sent.get("reasoning")
+    assert "reasoning" not in sent, sent.get("reasoning")

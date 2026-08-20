@@ -34,12 +34,11 @@ class Settings(BaseSettings):
     # tokens are billed — while a ceiling hit costs the whole call and a 503.
     llm_max_tokens: int = 16000
 
-    # OpenRouter's unified reasoning control. The judge does not need deep
-    # thinking to emit fourteen verdicts, and on a reasoning model that thinking
-    # is spent from llm_max_tokens before any JSON appears — production burned
-    # 8000 on it and returned nothing, while develop finished the same brief in
-    # 28s. Empty string sends no reasoning field at all (provider default).
-    llm_reasoning_effort: str = "low"
+    # OpenRouter's unified reasoning control, kept as a knob and DEFAULTED OFF.
+    # Asking deepseek-v4-pro for effort "low" made the call slower, not cheaper:
+    # measured on develop, three runs at ~50s and cut at the edge, against ~28s
+    # for the same brief with no reasoning field at all. Empty sends no field.
+    llm_reasoning_effort: str = ""
 
     # Redis (verdict cache + rate limit)
     redis_url: str = "redis://redis:6379/0"
