@@ -67,9 +67,22 @@ Return ONLY a JSON array, no markdown:
 [{{"rule_id":"...","status":"pass|partial|fail|not_applicable","confidence":0.0-1.0,"quote":"...","note":"..."}}]"""
 
 
+class JudgeUnparsable(ValueError):
+    """The judge's answer is not the JSON array the prompt asked for.
+
+    In practice this is a cut-off answer that carried no length signal: the
+    array simply stops mid-string. Either way the verdicts are incomplete, and
+    incomplete verdicts must not be scored.
+    """
+
+
 def parse_judge(rules: dict[str, Rule], raw: str) -> list[Verdict]:
     by: dict[str, dict] = {}
-    for v in json.loads(_strip_fence(raw)):
+    try:
+        parsed = json.loads(_strip_fence(raw))
+    except json.JSONDecodeError as exc:
+        raise JudgeUnparsable(f"the judge's answer was cut off or malformed: {exc}") from exc
+    for v in parsed:
         if isinstance(v, dict) and v.get("rule_id"):
             by[v["rule_id"]] = v
     out: list[Verdict] = []
@@ -170,8 +183,7 @@ def parse_suggestions_all(raw: str) -> dict[str, str]:
 def render_review_prompt(items: list[dict], brief: str) -> str:
     """items: [{"id","requirement","text"}] — the suggestions under review."""
     listing = "\n".join(
-        f'- id "{i["id"]}" (must satisfy: {i["requirement"]})\n  SUGGESTION: {i["text"]}'
-        for i in items
+        f'- id "{i["id"]}" (must satisfy: {i["requirement"]})\n  SUGGESTION: {i["text"]}' for i in items
     )
     return f"""You are a skeptical reviewer of suggestions written to improve a product brief. Reject fluff.
 

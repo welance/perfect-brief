@@ -22,7 +22,17 @@ class Settings(BaseSettings):
     # to a different same-vendor model, then to the judge itself).
     verifier_model: str = "auto"
     model: str = "claude-sonnet-4-6"
-    llm_max_tokens: int = 1500
+    # Fourteen verdicts, each with a verbatim quote and a note, do not fit in
+    # 1500 — production cut off mid-string at 1569 characters once the gateway
+    # timeout stopped hiding it. A non-Latin script needs more tokens per
+    # character again, so the ceiling is sized for the ruleset, not the sample.
+    #
+    # 4000 was still not enough: the judges are reasoning models, and their
+    # thinking is billed against this same ceiling before a single character of
+    # JSON appears. Measured on develop, one brief in a pair tripped 4000 while
+    # its shorter sibling passed. Unused headroom costs nothing — only generated
+    # tokens are billed — while a ceiling hit costs the whole call and a 503.
+    llm_max_tokens: int = 8000
 
     # Redis (verdict cache + rate limit)
     redis_url: str = "redis://redis:6379/0"

@@ -6,6 +6,35 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.9.1] - 2026-08-20
+
+### Fixed
+- **The judge no longer runs out of room mid-answer.** `PB_LLM_MAX_TOKENS` was
+  1500, which does not hold fourteen verdicts that each carry a verbatim quote
+  — production cut off at 1569 characters, mid-string, and `parse_judge` died
+  on `Unterminated string`. The ceiling is now 4000, sized for the ruleset this
+  service ships rather than for the sample it was set against, with headroom
+  for non-Latin scripts, which spend more tokens per character. A test pins the
+  ceiling to the rule count, so growing the ruleset cannot quietly re-create
+  this.
+- **A cut-off answer says so, instead of blaming the provider.** Both providers
+  announce it — OpenRouter with `finish_reason: "length"`, Anthropic with
+  `stop_reason: "max_tokens"` — and nothing read either. The response was a
+  generic `502 the judge upstream failed`, which sends the reader to the model
+  vendor when the cause is a local setting. Truncation is now its own condition
+  (`JudgeTruncated`, and `JudgeUnparsable` for an answer that stops without a
+  length signal) and returns `503` naming the ceiling, on `/v1/score`,
+  `/v1/suggest` and `/v1/suggest/all` alike. A partial answer is never scored:
+  missing verdicts default to `not_applicable`, which would silently change the
+  number, and a wrong score is worse than a refusal.
+
+### Note
+- This surfaced only because the platform fix landed. welance-charts !143 plus
+  welance-prod !13 gave `briefs.welance.com` a 300s Gateway API route timeout,
+  replacing the inert nginx `proxy-*-timeout` annotations that the Gateway API
+  path ignores. The 15s Envoy default had been cutting every LLM call before it
+  could reach this bug. The 504 is gone; what remained was ours.
+
 ## [1.9.0] - 2026-08-19
 
 ### Changed

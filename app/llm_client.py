@@ -28,6 +28,16 @@ class ModelNotAllowed(LookupError):
     pass
 
 
+class JudgeTruncated(RuntimeError):
+    """The model stopped because it ran out of room, not because it was done.
+
+    Both providers say so and both were being ignored: OpenRouter sends
+    ``finish_reason: "length"``, Anthropic ``stop_reason: "max_tokens"``. A
+    partial answer must never reach the scorer — missing verdicts default to
+    not_applicable, which would quietly change the number.
+    """
+
+
 def _use_openrouter() -> bool:
     return bool(settings().openrouter_api_key)
 
@@ -135,7 +145,10 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
             )
             resp.raise_for_status()
             data = resp.json()
-            return data["choices"][0]["message"]["content"] or ""
+            choice = data["choices"][0]
+            if choice.get("finish_reason") == "length":
+                raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")
+            return choice["message"]["content"] or ""
     if not cfg.anthropic_api_key:
         raise LLMNotConfigured(
             "set PB_OPENROUTER_API_KEY or PB_ANTHROPIC_API_KEY; the LLM judge is unavailable."
@@ -146,4 +159,6 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
         **_sampling_kwargs(use),
         messages=[{"role": "user", "content": prompt}],
     )
+    if getattr(msg, "stop_reason", None) == "max_tokens":
+        raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")
     return "".join(block.text for block in msg.content if getattr(block, "type", None) == "text")
