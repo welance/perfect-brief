@@ -15,8 +15,10 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
+from perfect_brief.llm import JudgeUnparsable
+
 from . import cache, llm_client, scorer
-from .llm_client import LLMNotConfigured, ModelNotAllowed
+from .llm_client import JudgeTruncated, LLMNotConfigured, ModelNotAllowed
 from .models import (
     Health,
     ModelsResponse,
@@ -94,6 +96,10 @@ ByokHeader = Annotated[
 # unlucky exception type away from the response body. Safe by construction, not
 # by which exception happens to arrive.
 UPSTREAM_ERROR = "the judge upstream failed; the error was logged"
+TRUNCATED_ERROR = (
+    "the judge's answer was cut off before it finished, so no score was "
+    "computed; retry, or raise PB_LLM_MAX_TOKENS"
+)
 
 
 def _judge_kind(requested: str | None, byok: str | None = None) -> str:
@@ -170,6 +176,11 @@ async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreRe
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except LLMNotConfigured as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except (JudgeTruncated, JudgeUnparsable) as exc:
+        # Not the provider's fault and not a timeout: our ceiling. Say which,
+        # and refuse rather than score a partial answer.
+        log.warning("judge answer incomplete: %s", exc)
+        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("scoring failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
@@ -196,6 +207,9 @@ async def post_suggest(
         raise HTTPException(status_code=404, detail=f"unknown rule: {req.rule_id}") from None
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except (JudgeTruncated, JudgeUnparsable) as exc:
+        log.warning("suggestion answer incomplete: %s", exc)
+        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("suggest failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
@@ -218,6 +232,9 @@ async def post_suggest_all(
         return suggestions
     except ModelNotAllowed as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except (JudgeTruncated, JudgeUnparsable) as exc:
+        log.warning("suggestion answer incomplete: %s", exc)
+        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("suggest failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc

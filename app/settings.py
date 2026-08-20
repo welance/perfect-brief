@@ -22,7 +22,11 @@ class Settings(BaseSettings):
     # to a different same-vendor model, then to the judge itself).
     verifier_model: str = "auto"
     model: str = "claude-sonnet-4-6"
-    llm_max_tokens: int = 1500
+    # Fourteen verdicts, each with a verbatim quote and a note, do not fit in
+    # 1500 — production cut off mid-string at 1569 characters once the gateway
+    # timeout stopped hiding it. A non-Latin script needs more tokens per
+    # character again, so the ceiling is sized for the ruleset, not the sample.
+    llm_max_tokens: int = 4000
 
     # Redis (verdict cache + rate limit)
     redis_url: str = "redis://redis:6379/0"
