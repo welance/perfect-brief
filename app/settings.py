@@ -32,7 +32,13 @@ class Settings(BaseSettings):
     # JSON appears. Measured on develop, one brief in a pair tripped 4000 while
     # its shorter sibling passed. Unused headroom costs nothing — only generated
     # tokens are billed — while a ceiling hit costs the whole call and a 503.
-    llm_max_tokens: int = 8000
+    llm_max_tokens: int = 4000
+
+    # OpenRouter's unified reasoning control, kept as a knob and DEFAULTED OFF.
+    # Asking deepseek-v4-pro for effort "low" made the call slower, not cheaper:
+    # measured on develop, three runs at ~50s and cut at the edge, against ~28s
+    # for the same brief with no reasoning field at all. Empty sends no field.
+    llm_reasoning_effort: str = ""
 
     # Redis (verdict cache + rate limit)
     redis_url: str = "redis://redis:6379/0"

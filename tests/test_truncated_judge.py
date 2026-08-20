@@ -23,6 +23,8 @@ is worse than a refusal.
 
 from __future__ import annotations
 
+import json
+
 import httpx
 import pytest
 from fastapi.testclient import TestClient
@@ -46,6 +48,7 @@ def openrouter(monkeypatch):
     state = {"content": TRUNCATED, "finish_reason": "length"}
 
     def handler(request: httpx.Request) -> httpx.Response:
+        state["last_body"] = request.content.decode()
         return httpx.Response(
             200,
             json={
@@ -111,3 +114,17 @@ def test_the_ceiling_fits_the_ruleset_this_service_ships():
         f"{len(rules)} rules need room for a quote and a note each; "
         f"{settings().llm_max_tokens} tokens is below the {floor} floor"
     )
+
+
+def test_no_reasoning_field_is_sent_unless_someone_asks_for_one(client, openrouter):
+    """The knob exists; it is off.
+
+    Asking deepseek-v4-pro for effort "low" made the call slower, not cheaper —
+    ~50s against ~28s for the same brief on develop, which is over the edge's
+    cut. So the default sends no reasoning field and takes the provider's own.
+    """
+    openrouter["content"] = COMPLETE
+    openrouter["finish_reason"] = "stop"
+    client.post("/v1/score", json={"brief": BRIEF, "judge": "llm"})
+    sent = json.loads(openrouter["last_body"])
+    assert "reasoning" not in sent, sent.get("reasoning")

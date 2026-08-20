@@ -1,6 +1,6 @@
 [project]
 name = "perfect-brief-mcp"
-version = "1.9.1"
+version = "1.9.2"
 description = "MCP server for The Brief Bar — score a digital product brief against an open, versioned ruleset your assistant cannot bend."
 readme = "README.md"
 requires-python = ">=3.10"

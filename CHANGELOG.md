@@ -6,6 +6,36 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.9.2] - 2026-08-20
+
+### Fixed
+- **More room for the judge, and a reasoning knob that ships off.**
+  `PB_LLM_MAX_TOKENS` goes from 1500 to 4000 — enough for fourteen verdicts
+  with verbatim quotes, and pinned to the rule count by a test.
+  `PB_LLM_REASONING_EFFORT` is new and empty by default: it sends no reasoning
+  field at all, leaving the provider's own behaviour untouched. It exists
+  because the next model may need it, not because this one did.
+
+### Known — `judge=llm` is still not reachable from the internet
+The 15s gateway cut is genuinely gone (welance-charts !143 + welance-prod !13;
+the live HTTPRoute carries `request: 300s`). Two facts remain, measured today
+and neither of them fixed here:
+
+- **Something cuts at ~50s, before the 300s the route grants.** Nine requests
+  across develop and production returned Cloudflare `520` at 50.10–50.18s,
+  while the pod log shows the OpenRouter call returning `200 OK` at the same
+  moment — the answer arrives just as the edge has already hung up. Which layer
+  applies that ~50s is not established; it is not Envoy's 15s default and not
+  the route timeout.
+- **Upstream latency moved under us.** The same brief, same model, same
+  endpoint scored twice in 27.7s and 28.9s at 15:31, and has taken over 50s on
+  every attempt since — at ceilings of 4000, 8000 and 16000, with and without a
+  reasoning field. The ceiling and the reasoning knob were each tested against
+  it and neither is the variable.
+
+What this release does buy: when the judge does answer and the answer is cut
+off, the service now says so honestly instead of blaming the provider.
+
 ## [1.9.1] - 2026-08-20
 
 ### Fixed
