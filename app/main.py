@@ -7,6 +7,7 @@ the gate, and the decision. The bundled console at / is the playground.
 
 from __future__ import annotations
 
+import hashlib
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -32,6 +33,7 @@ from .models import (
     SuggestRequest,
 )
 from .settings import settings
+from .version import SERVICE_VERSION
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("perfect_brief.api")
@@ -50,8 +52,11 @@ async def lifespan(app: FastAPI):
         len(scorer.rules()),
         llm_client.configured(),
     )
-    yield
-    await cache.close()
+    try:
+        yield
+    finally:
+        await llm_client.close_openrouter_client()
+        await cache.close()
 
 
 app = FastAPI(
@@ -69,10 +74,37 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    return response
+
+
 async def rate_limit(request: Request) -> None:
     bucket = request.headers.get("x-api-key") or (request.client.host if request.client else "anon")
+    # Caller-controlled material never becomes part of a Redis key verbatim.
+    bucket = hashlib.sha256(bucket.encode("utf-8", errors="replace")).hexdigest()
     if not await cache.allow(bucket):
         raise HTTPException(status_code=429, detail="rate limit exceeded — try again shortly")
+
+
+async def paid_llm_rate_limit(request: Request, byok: str | None) -> None:
+    """Protect the service-owned model account independently from free calls.
+
+    An arbitrary X-API-Key is useful as a general quota label but is not
+    authentication, so paid spend is always bucketed by the network client.
+    BYOK calls spend the caller's provider account and skip this budget.
+    """
+    if byok:
+        return
+    client = request.client.host if request.client else "anon"
+    bucket = "paid:" + hashlib.sha256(client.encode("utf-8", errors="replace")).hexdigest()
+    if not await cache.allow(bucket, settings().paid_llm_rate_limit_per_minute):
+        raise HTTPException(status_code=429, detail="LLM rate limit exceeded — try again shortly")
 
 
 def _guard(brief: str) -> None:
@@ -80,6 +112,11 @@ def _guard(brief: str) -> None:
         raise HTTPException(status_code=422, detail="brief is empty")
     if len(brief) > settings().request_max_chars:
         raise HTTPException(status_code=413, detail=f"brief exceeds {settings().request_max_chars} chars")
+
+
+def _guard_byok(key: str | None) -> None:
+    if key is not None and len(key) > settings().byok_max_chars:
+        raise HTTPException(status_code=400, detail="x-llm-key is too long")
 
 
 # A caller-supplied OpenRouter key (bring your own key): used for that call
@@ -115,9 +152,11 @@ def _judge_kind(requested: str | None, byok: str | None = None) -> str:
 @app.get("/v1/healthz", response_model=Health, tags=["meta"])
 async def healthz() -> Health:
     return Health(
+        release_version=SERVICE_VERSION,
         ruleset_version=scorer.version(),
         engine=scorer.engine(),
         llm_configured=llm_client.configured(),
+        redis_connected=cache.connected(),
     )
 
 
@@ -159,9 +198,12 @@ async def get_rules() -> RulesResponse:
 
 
 @app.post("/v1/score", response_model=ScoreResponse, tags=["score"], dependencies=[Depends(rate_limit)])
-async def post_score(req: ScoreRequest, x_llm_key: ByokHeader = None) -> ScoreResponse:
+async def post_score(req: ScoreRequest, request: Request, x_llm_key: ByokHeader = None) -> ScoreResponse:
+    _guard_byok(x_llm_key)
     _guard(req.brief)
     kind = _judge_kind(req.judge, x_llm_key)
+    if kind == "llm":
+        await paid_llm_rate_limit(request, x_llm_key)
     try:
         return await scorer.score(
             req.brief,
@@ -190,15 +232,27 @@ def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Screened"] = "true" if meta["screened"] else "false"
     response.headers["X-PB-Iterations"] = str(meta["iterations"])
     response.headers["X-PB-Verifier-Model"] = meta["verifier_model"] or "none"
+    response.headers["X-PB-Generation-Ms"] = str(meta.get("generation_ms", 0))
+    response.headers["X-PB-Verification-Ms"] = str(meta.get("verification_ms", 0))
+    response.headers["X-PB-Cached"] = "true" if meta.get("cached") else "false"
+    response.headers["X-PB-Cache-Ms"] = str(meta.get("cache_ms", 0))
+    response.headers["X-PB-Model"] = meta.get("model") or "none"
+    response.headers["Server-Timing"] = (
+        f'cache;dur={meta.get("cache_ms", 0)}, '
+        f'generation;dur={meta.get("generation_ms", 0)}, '
+        f'verification;dur={meta.get("verification_ms", 0)}'
+    )
 
 
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
 async def post_suggest(
-    req: SuggestRequest, response: Response, x_llm_key: ByokHeader = None
+    req: SuggestRequest, request: Request, response: Response, x_llm_key: ByokHeader = None
 ) -> list[Suggestion]:
+    _guard_byok(x_llm_key)
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
+    await paid_llm_rate_limit(request, x_llm_key)
     try:
         suggestions, meta = await scorer.suggest(req.brief, req.rule_id, req.locale, req.model, x_llm_key)
         _screening_headers(response, meta)
@@ -219,11 +273,13 @@ async def post_suggest(
     "/v1/suggest/all", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)]
 )
 async def post_suggest_all(
-    req: SuggestAllRequest, response: Response, x_llm_key: ByokHeader = None
+    req: SuggestAllRequest, request: Request, response: Response, x_llm_key: ByokHeader = None
 ) -> list[Suggestion]:
+    _guard_byok(x_llm_key)
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
         raise HTTPException(status_code=503, detail="suggestions require the LLM; not configured")
+    await paid_llm_rate_limit(request, x_llm_key)
     try:
         suggestions, meta = await scorer.suggest_all(
             req.brief, req.rule_ids, req.locale, req.model, x_llm_key
@@ -243,7 +299,6 @@ async def post_suggest_all(
 # ---- the public pages (same files GitHub Pages serves) ---------------------
 
 if SITE.exists():
-    import hashlib
     import re
 
     from fastapi.responses import HTMLResponse

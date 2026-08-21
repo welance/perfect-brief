@@ -12,18 +12,14 @@
 (function () {
   "use strict";
 
-  /* The header carries three: why the model works this way, the things you can
-     compute with it, and how to put it in your own tools. The individual
-     calculators are one click deeper — a menu that lists everything is a menu
-     nobody reads. The footer still names them all. */
+  /* Keep the header about things visitors can do. The individual calculators
+     stay one click deeper — a menu that lists everything is a menu nobody reads. */
   var NAV = [
-    { href: "method.html", key: "chrome.method", en: "How we work" },
     { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
   ];
 
   var PAGES = [
-    { href: "method.html", key: "chrome.method", en: "How we work" },
     { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "index.html",  key: "chrome.brief",  en: "Brief Bar" },
     { href: "price.html",  key: "chrome.price",  en: "Price Split" },
@@ -125,7 +121,7 @@
       lockupHead() +
       // the quiet line leads the right-hand group, as it does on the
       // Directory: status, then where to go, then the one way out
-      '<span class="wl-status">' + tt("chrome.status", "© 2011–2026 · v1 · live") + "</span>" +
+      '<span class="wl-status" id="wl-release">© 2011–2026 · live</span>' +
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
@@ -157,7 +153,30 @@
       "</div></nav>" +
       "</div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
+    loadRelease();
     wireMenu(host);
+  }
+
+  var releaseVersion = null;
+  var releaseRequest = null;
+  function paintRelease() {
+    var el = document.getElementById("wl-release");
+    if (!el) return;
+    el.textContent = "© 2011–2026" + (releaseVersion ? " · v" + releaseVersion : "") + " · live";
+  }
+  function loadRelease() {
+    paintRelease();
+    if (releaseVersion || releaseRequest || !window.fetch) return;
+    releaseRequest = fetch("/v1/healthz", { headers: { accept: "application/json" } })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (body) {
+        if (body && /^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$/.test(body.release_version || "")) {
+          releaseVersion = body.release_version;
+          paintRelease();
+        }
+      })
+      .catch(function () {})
+      .then(function () { releaseRequest = null; });
   }
 
   function menuCol(items) {

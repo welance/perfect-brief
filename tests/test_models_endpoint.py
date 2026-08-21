@@ -31,10 +31,45 @@ def test_disallowed_model_rejected(monkeypatch):
         llm_client.resolve_model("openai/gpt-4o")
 
 
+def test_operator_can_restrict_byok_models(monkeypatch):
+    stub = Settings(
+        openrouter_models="deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash",
+        byok_models="deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash",
+    )
+    monkeypatch.setattr(llm_client, "settings", lambda: stub)
+
+    assert llm_client.resolve_model("deepseek/deepseek-v4-pro", allow_any=True)
+    import pytest
+
+    with pytest.raises(llm_client.ModelNotAllowed, match="not enabled for BYOK"):
+        llm_client.resolve_model("anthropic/claude-sonnet-4.5", allow_any=True)
+
+
+def test_suggestions_can_use_a_cheaper_model(monkeypatch):
+    stub = Settings(
+        openrouter_api_key="or-test",
+        openrouter_models="deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash",
+        suggest_model="deepseek/deepseek-v4-flash",
+    )
+    monkeypatch.setattr(llm_client, "settings", lambda: stub)
+    assert llm_client.default_model() == "deepseek/deepseek-v4-pro"
+    assert llm_client.resolve_suggest_model(None) == "deepseek/deepseek-v4-flash"
+
+
 def test_byok_header_enables_llm_judge(client, monkeypatch):
     async def fake_complete(prompt, model=None, api_key=None):
+        import json
+
+        from perfect_brief import load_bundled
+
         assert api_key == "sk-or-user-key"
-        return '[{"rule_id":"clear-title","status":"pass","confidence":0.9,"quote":"t","note":""}]'
+        rules, _ = load_bundled()
+        return json.dumps(
+            [
+                {"rule_id": rid, "status": "pass", "confidence": 0.9, "quote": "", "note": ""}
+                for rid in rules
+            ]
+        )
 
     monkeypatch.setattr(llm_client, "complete", fake_complete)
     body = {"brief": "# T\nProblem: x. Budget 15k.", "judge": "llm"}

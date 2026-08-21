@@ -9,12 +9,14 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import logging
+import time
 
 from perfect_brief import aggregate, judge_all, llm, load_bundled, loader
 from perfect_brief.judge import MockJudge
 from perfect_brief.llm import FIXHINT
-from perfect_brief.score import Finding, Status, Verdict
+from perfect_brief.score import Status, Verdict
 
 from . import cache, llm_client
 from .models import (
@@ -66,16 +68,11 @@ def _verdicts_to_cache(verdicts: list[Verdict]) -> list[dict]:
     ]
 
 
-def _verdicts_from_cache(data: list[dict]) -> list[Verdict]:
-    return [
-        Verdict(
-            d["rule_id"],
-            Status(d["status"]),
-            float(d["confidence"]),
-            (Finding(d.get("quote", ""), d.get("note", "")),),
-        )
-        for d in data
-    ]
+def _verdicts_from_cache(data: list[dict], brief: str) -> list[Verdict]:
+    # Cache content crosses a trust boundary too: Redis may hold an old shape,
+    # a partial write, or data written by a misconfigured peer. Reuse the exact
+    # strict parser used for provider output, including verbatim evidence.
+    return llm.parse_judge(_RULES, json.dumps(data), brief)
 
 
 async def _judge(
@@ -88,16 +85,52 @@ async def _judge(
 
     use = llm_client.resolve_model(model, allow_any=bool(api_key))
     # a verdict is reproducible only against (ruleset_version, model)
-    key = f"pb:v:{_VERSION}:llm:{use}:{_sha(brief)}"
-    if not no_cache:
+    strategy = f"batch-{settings().judge_batch_size or 'all'}"
+    key = f"pb:v:{_VERSION}:llm:{_sha(use)}:{strategy}:{_sha(brief)}"
+    # A caller supplying their own key reasonably expects a fresh call billed
+    # to that key, not an answer produced earlier on somebody else's account.
+    cache_allowed = not no_cache and not api_key
+    if cache_allowed:
         hit = await cache.get_json(key)
         if hit:
-            return _verdicts_from_cache(hit), True, use
+            try:
+                return _verdicts_from_cache(hit, brief), True, use
+            except (KeyError, TypeError, ValueError) as exc:
+                log.warning("discarding invalid verdict cache entry: %s", exc)
 
-    prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
-    raw = await llm_client.complete(prompt, use, api_key)
-    verdicts = llm.parse_judge(_RULES, raw)
-    if not no_cache:
+    batch_size = settings().judge_batch_size
+    if batch_size <= 0 or batch_size >= len(_RULES):
+        prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
+        raw = await llm_client.complete(prompt, use, api_key)
+        verdicts = llm.parse_judge(_RULES, raw, brief)
+    else:
+        items = list(_RULES.items())
+        batches = [dict(items[i : i + batch_size]) for i in range(0, len(items), batch_size)]
+        semaphore = asyncio.Semaphore(max(1, settings().judge_concurrency))
+
+        async def judge_batch(batch: dict) -> list[Verdict]:
+            async with semaphore:
+                prompt = llm.render_judge_prompt(batch, brief, _CFG.budget_floor)
+                raw = await llm_client.complete(prompt, use, api_key)
+                return llm.parse_judge(batch, raw, brief)
+
+        # If one batch fails, cancel its siblings instead of continuing to
+        # spend tokens on a score that can no longer be returned. Keep the
+        # original exception type so the API can distinguish truncation from
+        # an upstream failure (TaskGroup would wrap it in ExceptionGroup).
+        tasks = [asyncio.create_task(judge_batch(batch)) for batch in batches]
+        done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+        failure = next((task.exception() for task in done if task.exception() is not None), None)
+        if failure is not None:
+            for task in pending:
+                task.cancel()
+            await asyncio.gather(*pending, return_exceptions=True)
+            raise failure
+        await asyncio.gather(*pending)
+        verdicts = [verdict for task in tasks for verdict in task.result()]
+        if {v.rule_id for v in verdicts} != set(_RULES) or len(verdicts) != len(_RULES):
+            raise llm.JudgeUnparsable("the merged judge batches are incomplete")
+    if cache_allowed:
         await cache.set_json(key, _verdicts_to_cache(verdicts), settings().cache_ttl_seconds)
     return verdicts, False, use
 
@@ -167,16 +200,58 @@ def _requirement(rule) -> str:
 
 async def _review_items(
     items: list[dict], brief: str, verifier_model: str, api_key: str | None
-) -> dict[str, dict] | None:
+) -> tuple[dict[str, dict] | None, int]:
     """items: [{"id","requirement","text"}] → id → {"accepted","reason"}; None = verifier down."""
     if not items:
-        return {}
+        return {}, 0
+    started = time.monotonic()
     try:
-        raw = await llm_client.complete(llm.render_review_prompt(items, brief), verifier_model, api_key)
-        return llm.parse_review(raw)
+        raw = await llm_client.complete(
+            llm.render_review_prompt(items, brief),
+            verifier_model,
+            api_key,
+            max_tokens=settings().verifier_max_tokens,
+            purpose="verify",
+        )
+        return llm.parse_review(raw), round((time.monotonic() - started) * 1000)
     except Exception as exc:  # noqa: BLE001 — degradation, never failure
         log.warning("suggestion review failed (%s); returning unscreened", exc)
+        return None, round((time.monotonic() - started) * 1000)
+
+
+def _suggestions_from_cache(hit: object, cache_ms: int) -> tuple[list[Suggestion], dict] | None:
+    """Validate ephemeral Redis data before returning it across the API boundary."""
+    try:
+        if not isinstance(hit, dict) or not isinstance(hit["suggestions"], list):
+            raise TypeError("unexpected suggestion cache shape")
+        raw_meta = hit["meta"]
+        if not isinstance(raw_meta, dict):
+            raise TypeError("unexpected suggestion cache metadata")
+        out = [Suggestion(**item) for item in hit["suggestions"]]
+        meta = {
+            "screened": bool(raw_meta["screened"]),
+            "iterations": int(raw_meta["iterations"]),
+            "verifier_model": raw_meta.get("verifier_model"),
+            "model": raw_meta.get("model"),
+            "cached": True,
+            "cache_ms": cache_ms,
+            "generation_ms": 0,
+            "verification_ms": 0,
+        }
+        return out, meta
+    except (KeyError, TypeError, ValueError) as exc:
+        log.warning("discarding invalid suggestion cache entry: %s", exc)
         return None
+
+
+async def _get_suggestion_cache(key: str, enabled: bool) -> tuple[tuple[list[Suggestion], dict] | None, int]:
+    """Return a validated hit and lookup time; BYOK disables both read and write."""
+    if not enabled:
+        return None, 0
+    started = time.monotonic()
+    hit = await cache.get_json(key)
+    cache_ms = round((time.monotonic() - started) * 1000)
+    return _suggestions_from_cache(hit, cache_ms), cache_ms
 
 
 async def suggest(
@@ -187,15 +262,28 @@ async def suggest(
     rule = _RULES.get(rule_id)
     if rule is None:
         raise KeyError(rule_id)
-    judge_model = llm_client.resolve_model(model, allow_any=bool(api_key))
-    verifier = llm_client.resolve_verifier_model(judge_model)
+    suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
+    verifier = llm_client.resolve_verifier_model(suggest_model)
+
+    cache_key = "pb:s2:one:" + ":".join([_VERSION, suggest_model, verifier, _sha(brief), rule_id, locale])
+    cached, cache_ms = await _get_suggestion_cache(cache_key, not api_key)
+    if cached is not None:
+        return cached
 
     prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
-    raw = await llm_client.complete(prompt, model, api_key)
+    started = time.monotonic()
+    raw = await llm_client.complete(
+        prompt,
+        suggest_model,
+        api_key,
+        max_tokens=settings().suggest_max_tokens,
+        purpose="suggest",
+    )
+    generation_ms = round((time.monotonic() - started) * 1000)
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
     items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
-    review = await _review_items(items, brief, verifier, api_key)
+    review, verification_ms = await _review_items(items, brief, verifier, api_key)
 
     out: list[Suggestion] = []
     for i, s in enumerate(opts):
@@ -210,11 +298,23 @@ async def suggest(
             )
         )
     screened = review is not None and all(s.review and s.review.accepted for s in out)
-    return out, {
+    meta = {
         "screened": screened,
         "iterations": 1,
         "verifier_model": verifier if review is not None else None,
+        "model": suggest_model,
+        "cached": False,
+        "cache_ms": cache_ms,
+        "generation_ms": generation_ms,
+        "verification_ms": verification_ms,
     }
+    if not api_key and review is not None:
+        await cache.set_json(
+            cache_key,
+            {"suggestions": [s.model_dump() for s in out], "meta": meta},
+            settings().cache_ttl_seconds,
+        )
+    return out, meta
 
 
 async def suggest_all(
@@ -237,37 +337,57 @@ async def suggest_all(
         ]
     subset = [_RULES[i] for i in rule_ids if i in _RULES]
     if not subset:
-        return [], {"screened": True, "iterations": 0, "verifier_model": None}
+        return [], {
+            "screened": True,
+            "iterations": 0,
+            "verifier_model": None,
+            "model": None,
+            "cached": False,
+            "cache_ms": 0,
+            "generation_ms": 0,
+            "verification_ms": 0,
+        }
 
-    judge_model = llm_client.resolve_model(model, allow_any=bool(api_key))
-    verifier = llm_client.resolve_verifier_model(judge_model)
+    suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
+    verifier = llm_client.resolve_verifier_model(suggest_model)
     locale_name = LOCALE_NAMES.get(locale)
 
-    cache_key = "pb:s:" + ":".join(
-        [_VERSION, judge_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
+    cache_key = "pb:s2:all:" + ":".join(
+        [_VERSION, suggest_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
     )
-    if not api_key:  # BYOK responses are never cached (caller-specific spend)
-        hit = await cache.get_json(cache_key)
-        if hit is not None:
-            return [Suggestion(**s) for s in hit["suggestions"]], hit["meta"]
+    cached, cache_ms = await _get_suggestion_cache(cache_key, not api_key)
+    if cached is not None:
+        return cached
 
     done: dict[str, Suggestion] = {}
     critiques: dict[str, str] = {}
     pending = list(subset)
     iterations = 0
     verifier_up = True
+    generation_ms = 0
+    verification_ms = 0
 
     while pending and iterations < 1 + MAX_REVIEW_RETRIES:
         iterations += 1
         last_round = iterations >= 1 + MAX_REVIEW_RETRIES
         prompt = llm.render_suggest_all_prompt(pending, brief, locale_name, critiques or None)
-        by = llm.parse_suggestions_all(await llm_client.complete(prompt, model, api_key))
+        started = time.monotonic()
+        raw = await llm_client.complete(
+            prompt,
+            suggest_model,
+            api_key,
+            max_tokens=settings().suggest_all_max_tokens,
+            purpose="suggest-all",
+        )
+        generation_ms += round((time.monotonic() - started) * 1000)
+        by = llm.parse_suggestions_all(raw)
         batch = [r for r in pending if r.id in by and _sane(by[r.id])]
         if not batch:
             break
 
         items = [{"id": r.id, "requirement": _requirement(r), "text": by[r.id]} for r in batch]
-        review = await _review_items(items, brief, verifier, api_key)
+        review, review_ms = await _review_items(items, brief, verifier, api_key)
+        verification_ms += review_ms
         if review is None:  # verifier down: ship this round unscreened
             verifier_up = False
             for r in batch:
@@ -297,8 +417,13 @@ async def suggest_all(
         "screened": screened,
         "iterations": iterations,
         "verifier_model": verifier if verifier_up else None,
+        "model": suggest_model,
+        "cached": False,
+        "cache_ms": cache_ms,
+        "generation_ms": generation_ms,
+        "verification_ms": verification_ms,
     }
-    if not api_key:
+    if not api_key and screened:
         await cache.set_json(
             cache_key,
             {"suggestions": [s.model_dump() for s in out], "meta": meta},

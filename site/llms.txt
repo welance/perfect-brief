@@ -30,7 +30,14 @@ brief as evidence, and the rule's `weight`. Use the quote: it is the evidence,
 not a paraphrase.
 
 `ruleset_version` pins exactly which bar judged the brief — the same brief on
-the same version reproduces the same score (the judge runs at temperature 0).
+the same version uses the same deterministic arithmetic. Model verdicts run at
+temperature 0 but may still change across provider updates; verbatim evidence
+and the returned model make each result inspectable.
+
+welance model policy: DeepSeek V4 Pro for authoritative publish scoring;
+DeepSeek V4 Flash for suggestion generation and verification; never Sonnet.
+Incomplete, duplicate, malformed or invented-evidence verdict sets fail closed
+and produce no score.
 
 Optional: `gate_contexts: []` drops the two welance/Directory-only rules
 (`anonymised`, the €10k budget floor) to score a generic brief; `model` picks a
@@ -40,14 +47,18 @@ judge from `GET /v1/models`; `locale` sets the language of fix suggestions.
 
 - `GET https://briefs.welance.com/v1/rules` — all 14 rules with weights,
   criteria (exactly what the judge reads), gate requirements and pinned sources.
-- `GET https://briefs.welance.com/v1/healthz` — ruleset version, engine, whether
-  a real judge is configured.
+- `GET https://briefs.welance.com/v1/healthz` — deployed release, ruleset
+  version, engine and whether a real judge is configured.
 - `GET https://briefs.welance.com/docs` — OpenAPI, every field described.
 
 ## Improve a brief
 
 `POST /v1/suggest` (one rule) or `POST /v1/suggest/all` (every failing rule)
 return concrete, ready-to-paste insertions, each reviewed by a second model.
+
+The API accepts text only. Clients may locally extract supported documents and
+place their bounded text in `brief` as untrusted context. This service does not
+receive original file bytes, images, arbitrary binaries or multipart uploads.
 
 ## If you are helping someone write a brief
 
@@ -66,9 +77,10 @@ addition takes weight from the rest — a longer checklist is a weaker one. Bett
 contributions are usually sharper criteria, a better source, or a fixture that
 pins a case the bar was getting away with.
 
-## The wider model
+## Related Welance tools
 
-- The method: https://briefs.welance.com/method.html — brief → price → team
+- Welance Directory: https://welance.com/directory — the guided brief builder
+  and marketplace whose publishing bar this service powers
 - Price Split: https://briefs.welance.com/price.html — how a collaboration is
   priced, formula by formula
 - Team Rate: https://briefs.welance.com/team.html — one blended client rate

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **[The method](https://briefs.welance.com/method.html)** | brief → price → team, the welance model opened as a blueprint |
+| **[Welance Directory](https://welance.com/directory)** | guided brief builder and marketplace powered by this scoring service |
 | **[Brief Bar](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
 | **[Price Split](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
 | **[Team Rate](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
@@ -48,7 +48,7 @@ docker-compose.yml   api + redis (the only stateful dependency: ephemeral cache)
 ## Quick start
 
 ```bash
-cp .env.example .env          # add PB_ANTHROPIC_API_KEY to enable the LLM judge
+cp .env.example .env          # add a spend-capped PB_OPENROUTER_API_KEY
 make up                       # docker compose up --build -d  (api + redis)
 make health                   # GET /v1/healthz
 open http://localhost:8000    # the console (mock judge works with no key)
@@ -83,16 +83,37 @@ cached by `(ruleset_version, model, brief)`, but temperature 0 is not a
 determinism guarantee across provider updates — the quotes are the part of
 the trail that never expires.)
 
-The judge's LLM is either direct Anthropic (`PB_ANTHROPIC_API_KEY` + `PB_MODEL`)
-or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
+Welance uses OpenRouter (`PB_OPENROUTER_API_KEY`). Publish scoring runs on
+`deepseek/deepseek-v4-pro`; suggestion generation and verification run on
+`deepseek/deepseek-v4-flash`. No Welance path selects Sonnet. Self-hosters may
+still configure the optional direct-Anthropic adapter, but it is not part of
+the Welance deployment. With OpenRouter, requests may pick a
 `model` from the server's allowlist (`PB_OPENROUTER_MODELS`, exact
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
+Suggestion generation may use a cheaper model selected by `PB_SUGGEST_MODEL`;
+Welance runs scoring on DeepSeek V4 Pro and generation plus verification on
+DeepSeek V4 Flash. Suggestion responses already name their verifier model.
+The service reuses its OpenRouter connection pool and applies separate bounded
+output ceilings (`PB_SUGGEST_MAX_TOKENS`, `PB_SUGGEST_ALL_MAX_TOKENS`, and
+`PB_VERIFIER_MAX_TOKENS`) because short suggestion JSON does not need the
+judge's larger allowance. Successful service-funded suggestions are cached;
+BYOK calls always bypass that shared cache.
+
+The judge normally asks for all fourteen verdicts in one provider call.
+`PB_JUDGE_BATCH_SIZE=5` instead runs deterministic 5/5/4 rule batches with at
+most `PB_JUDGE_CONCURRENCY=3` calls in flight, then merges them before the same
+deterministic aggregation. It is an operational latency option, not a scoring
+mode: any incomplete or failed batch refuses the entire score. Keep it at its
+default `0` until the live `make test-llm-batching` comparison has passed for
+the deployed model.
 
 Bring your own key: send `X-LLM-Key: <your OpenRouter key>` and the call runs
-on your key — any model allowed (you pay), used per request, never stored or
-logged. Use a spend-capped key. The console exposes this as an optional field
-in live mode.
+on your key — any valid OpenRouter model slug is allowed unless this deployment
+sets `PB_BYOK_MODELS` (you pay), used per request, never stored or logged. BYOK
+scoring deliberately bypasses the shared
+verdict cache, so the supplied key always funds a fresh call. Use a spend-capped
+key. The console exposes this as an optional field in live mode.
 
 Sending a key to somebody else's server deserves more than that paragraph.
 Every line that touches it, where it provably is not, and the honest limits are
@@ -106,8 +127,14 @@ Other endpoints:
 - `POST /v1/suggest/all` `{brief, rule_ids?, locale, model?}` → one fix per failing gap; omit `rule_ids` to auto-detect (LLM).
 - `GET /v1/rules` → the full catalogue (id, title, weight, gate, criteria, references) for the directory UI.
 - `GET /v1/models` → the enabled judge models (`default` + `available`) for a model picker.
-- `GET /v1/healthz` → status + ruleset version + whether the LLM is configured.
+- `GET /v1/healthz` → service release, ruleset version, engine + LLM availability.
 - `GET /` → the interactive console.
+
+Suggestion responses include `X-PB-Generation-Ms`, `X-PB-Verification-Ms`,
+`X-PB-Cached`, `X-PB-Cache-Ms`, `X-PB-Model`, and the standard `Server-Timing` header, so callers
+can distinguish model latency from network/UI latency without exposing prompts
+or document contents. `/v1/healthz` also reports whether the optional Redis
+cache/rate-limit store is currently connected.
 
 ## How `welance.com/directory` consumes it
 
@@ -181,11 +208,14 @@ probe — a standard `Deployment` + `Service` + `Ingress`, plus a small Redis
 `Secret`/`ConfigMap`; lock `PB_CORS_ORIGINS` to the directory's origin. Scale the
 API horizontally; the cache is shared through Redis.
 
-## Note on the console's live judge
+## Text and document boundary
 
-The bundled console defaults to the **mock** judge (offline, instant). Its
-optional *live* toggle currently calls the Anthropic API directly from the
-browser, which only works where a key is available (e.g. claude.ai previews);
-when served from this backend it falls back to mock. Wiring the console's live
-mode to this service's `/v1/score` + `/v1/suggest` (so the key stays server-side)
-is the intended small follow-up.
+The API accepts text, not uploads: `brief` is one bounded string. The Directory
+may read supported PDF, DOCX and text-family documents locally in the browser
+and include their extracted text as untrusted context. Original bytes, images
+and arbitrary binaries are not sent to this service, stored by it, or published
+as attachments. Multipart publication to Directus is a separate Directory flow.
+
+The bundled console defaults to the **mock** judge (offline, instant). Its live
+mode calls this service's `/v1/score` and `/v1/suggest`; provider credentials
+stay server-side unless a caller explicitly supplies a per-request BYOK key.

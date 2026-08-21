@@ -30,8 +30,9 @@ class ScoreRequest(BaseModel):
     )
     model: str | None = Field(
         None,
+        max_length=200,
         description="LLM for the judge; must appear in GET /v1/models. Part of the cache key.",
-        examples=["claude-sonnet-4-6"],
+        examples=["deepseek/deepseek-v4-pro"],
     )
     gate_contexts: list[str] | None = Field(
         None,
@@ -64,7 +65,7 @@ class SuggestRequest(BaseModel):
     brief: str = Field(..., description="The brief as it stands now.")
     rule_id: str = Field(..., description="The failing rule to fix.", examples=["success-metrics"])
     locale: str = Field("en-GB", description="Suggestions come back in this language.")
-    model: str | None = Field(None, description="LLM override; must be in GET /v1/models.")
+    model: str | None = Field(None, max_length=200, description="LLM override; must be in GET /v1/models.")
 
 
 class SuggestAllRequest(BaseModel):
@@ -75,7 +76,7 @@ class SuggestAllRequest(BaseModel):
         examples=[["success-metrics", "timeline"]],
     )
     locale: str = Field("en-GB", description="Suggestions come back in this language.")
-    model: str | None = Field(None, description="LLM override; must be in GET /v1/models.")
+    model: str | None = Field(None, max_length=200, description="LLM override; must be in GET /v1/models.")
 
 
 class VerdictOut(BaseModel):
@@ -170,6 +171,8 @@ class ModelsResponse(BaseModel):
 
 class Health(BaseModel):
     status: str = Field(default="ok", description="Liveness.")
+    release_version: str = Field(description="Deployed service release/tag version.")
     ruleset_version: str = Field(description="Bar currently loaded.")
     engine: str = Field(description="Engine version string.")
     llm_configured: bool = Field(description="Is a real judge available?")
+    redis_connected: bool = Field(description="Is the optional cache/rate-limit store connected?")

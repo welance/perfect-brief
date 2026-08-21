@@ -1,4 +1,4 @@
-.PHONY: up down logs build test test-site test-e2e test-all test-llm-multilingual lint fmt typecheck dev score rules health
+.PHONY: up down logs build test test-site test-e2e test-all test-llm-multilingual test-llm-batching lint fmt typecheck dev score rules health
 COMPOSE ?= docker compose
 # use the project venv when it exists, so `make test` works without activating
 PYTEST ?= $(shell [ -x .venv/bin/pytest ] && echo .venv/bin/pytest || echo pytest)
@@ -25,6 +25,8 @@ test-all:      ## everything that runs offline: python + engine + e2e
 	$(MAKE) test && $(MAKE) test-site && $(MAKE) test-e2e
 test-llm-multilingual: ## the judge's language guarantee (needs PB_ANTHROPIC_API_KEY; not in offline CI)
 	$(PYTEST) tests/test_multilingual_llm.py -v
+test-llm-batching: ## compare one call with concurrent 5/5/4 (needs a real key)
+	$(PYTEST) tests/test_batched_llm.py -v -s
 lint:
 	ruff check .
 fmt:

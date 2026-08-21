@@ -36,6 +36,22 @@
   var dicts = {};
   var current = "en";
   var warned = {};
+  // These operational/security claims changed in 1.10.0. Until each native
+  // translation is re-reviewed, keep the current English source instead of
+  // showing a fluent but false pre-1.10 claim in another language.
+  var NEEDS_RETRANSLATION = {
+    "index.p5": true,
+    "index.p10": true,
+    "int.r1.p": true,
+    "data.r1.a": true,
+    "data.byok": true,
+    "data.limits": true,
+    "sec.w2.a": true,
+    "sec.limit2": true,
+    "sec.do2": true,
+    "rules.p6": true,
+    "calc.note": true
+  };
 
   function meta(code) {
     return LANGS.filter(function (l) { return l.code === code; })[0] || null;
@@ -44,6 +60,7 @@
   function register(code, dict) { dicts[code] = dict; }
 
   function t(key) {
+    if (current !== "en" && NEEDS_RETRANSLATION[key]) return null;
     var d = dicts[current];
     if (d && d.strings && Object.prototype.hasOwnProperty.call(d.strings, key)) {
       return d.strings[key];
@@ -157,7 +174,7 @@
     return null;
   }
 
-  /* /it/method.html — the language is part of the address.
+  /* /it/rules.html — the language is part of the address.
      English keeps the bare paths: it is the content of record, the copy every
      translation is made from, and giving it a prefix of its own would move
      every existing URL for nothing. */
