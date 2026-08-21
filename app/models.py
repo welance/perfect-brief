@@ -32,7 +32,7 @@ class ScoreRequest(BaseModel):
         None,
         max_length=200,
         description="LLM for the judge; must appear in GET /v1/models. Part of the cache key.",
-        examples=["claude-sonnet-4-6"],
+        examples=["deepseek/deepseek-v4-pro"],
     )
     gate_contexts: list[str] | None = Field(
         None,
