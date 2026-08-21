@@ -219,11 +219,11 @@ async def suggest(
     rule = _RULES.get(rule_id)
     if rule is None:
         raise KeyError(rule_id)
-    judge_model = llm_client.resolve_model(model, allow_any=bool(api_key))
-    verifier = llm_client.resolve_verifier_model(judge_model)
+    suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
+    verifier = llm_client.resolve_verifier_model(suggest_model)
 
     prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
-    raw = await llm_client.complete(prompt, model, api_key)
+    raw = await llm_client.complete(prompt, suggest_model, api_key)
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
     items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
@@ -271,12 +271,12 @@ async def suggest_all(
     if not subset:
         return [], {"screened": True, "iterations": 0, "verifier_model": None}
 
-    judge_model = llm_client.resolve_model(model, allow_any=bool(api_key))
-    verifier = llm_client.resolve_verifier_model(judge_model)
+    suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
+    verifier = llm_client.resolve_verifier_model(suggest_model)
     locale_name = LOCALE_NAMES.get(locale)
 
     cache_key = "pb:s:" + ":".join(
-        [_VERSION, judge_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
+        [_VERSION, suggest_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
     )
     if not api_key:  # BYOK responses are never cached (caller-specific spend)
         hit = await cache.get_json(cache_key)
@@ -293,7 +293,7 @@ async def suggest_all(
         iterations += 1
         last_round = iterations >= 1 + MAX_REVIEW_RETRIES
         prompt = llm.render_suggest_all_prompt(pending, brief, locale_name, critiques or None)
-        by = llm.parse_suggestions_all(await llm_client.complete(prompt, model, api_key))
+        by = llm.parse_suggestions_all(await llm_client.complete(prompt, suggest_model, api_key))
         batch = [r for r in pending if r.id in by and _sane(by[r.id])]
         if not batch:
             break

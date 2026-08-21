@@ -111,6 +111,11 @@ def resolve_verifier_model(judge_model: str) -> str:
     return judge_model
 
 
+def resolve_suggest_model(requested: str | None, allow_any: bool = False) -> str:
+    """Resolve suggestion generation separately from authoritative judging."""
+    return resolve_model(requested or settings().suggest_model or None, allow_any=allow_any)
+
+
 def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     """Validate a per-request model against the server's allowlist.
 

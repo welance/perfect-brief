@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     # public BYOK unrestricted; Welance tiers pin this to the two DeepSeek V4
     # models so an internal proxy cannot accidentally select an expensive lab.
     byok_models: str = ""
+    # Suggestions are cheaper extraction/generation work than final scoring.
+    # Empty inherits the default judge; Welance tiers explicitly use V4 Flash.
+    suggest_model: str = ""
     # Verifier for the suggestion loop: explicit slug, or "auto" = first
     # allowlist model whose vendor prefix differs from the judge's (falls back
     # to a different same-vendor model, then to the judge itself).

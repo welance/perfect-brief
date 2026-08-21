@@ -44,6 +44,9 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   DeepSeek V4 Pro/Flash via `PB_BYOK_MODELS`. This prevents an internal proxy
   with a server-held OpenRouter key from accidentally selecting an expensive
   model; public deployments may leave the setting empty for unrestricted BYOK.
+- Model duties are explicit: Welance tiers keep publish scoring on DeepSeek V4
+  Pro and set `PB_SUGGEST_MODEL` plus `PB_VERIFIER_MODEL` to DeepSeek V4 Flash.
+  Suggestion traffic no longer inherits the more expensive scoring model.
 
 ### Security
 - Added adversarial regression coverage for incomplete, duplicate, unknown,

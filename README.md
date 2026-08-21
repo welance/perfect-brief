@@ -88,6 +88,9 @@ or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
 `model` from the server's allowlist (`PB_OPENROUTER_MODELS`, exact
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
+Suggestion generation may use a cheaper model selected by `PB_SUGGEST_MODEL`;
+Welance runs scoring on DeepSeek V4 Pro and generation plus verification on
+DeepSeek V4 Flash. Suggestion responses already name their verifier model.
 
 The judge normally asks for all fourteen verdicts in one provider call.
 `PB_JUDGE_BATCH_SIZE=5` instead runs deterministic 5/5/4 rule batches with at

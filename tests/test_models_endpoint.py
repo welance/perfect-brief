@@ -45,6 +45,17 @@ def test_operator_can_restrict_byok_models(monkeypatch):
         llm_client.resolve_model("anthropic/claude-sonnet-4.5", allow_any=True)
 
 
+def test_suggestions_can_use_a_cheaper_model(monkeypatch):
+    stub = Settings(
+        openrouter_api_key="or-test",
+        openrouter_models="deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash",
+        suggest_model="deepseek/deepseek-v4-flash",
+    )
+    monkeypatch.setattr(llm_client, "settings", lambda: stub)
+    assert llm_client.default_model() == "deepseek/deepseek-v4-pro"
+    assert llm_client.resolve_suggest_model(None) == "deepseek/deepseek-v4-flash"
+
+
 def test_byok_header_enables_llm_judge(client, monkeypatch):
     async def fake_complete(prompt, model=None, api_key=None):
         import json
