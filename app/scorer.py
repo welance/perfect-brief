@@ -9,12 +9,13 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import logging
 
 from perfect_brief import aggregate, judge_all, llm, load_bundled, loader
 from perfect_brief.judge import MockJudge
 from perfect_brief.llm import FIXHINT
-from perfect_brief.score import Finding, Status, Verdict
+from perfect_brief.score import Status, Verdict
 
 from . import cache, llm_client
 from .models import (
@@ -66,16 +67,11 @@ def _verdicts_to_cache(verdicts: list[Verdict]) -> list[dict]:
     ]
 
 
-def _verdicts_from_cache(data: list[dict]) -> list[Verdict]:
-    return [
-        Verdict(
-            d["rule_id"],
-            Status(d["status"]),
-            float(d["confidence"]),
-            (Finding(d.get("quote", ""), d.get("note", "")),),
-        )
-        for d in data
-    ]
+def _verdicts_from_cache(data: list[dict], brief: str) -> list[Verdict]:
+    # Cache content crosses a trust boundary too: Redis may hold an old shape,
+    # a partial write, or data written by a misconfigured peer. Reuse the exact
+    # strict parser used for provider output, including verbatim evidence.
+    return llm.parse_judge(_RULES, json.dumps(data), brief)
 
 
 async def _judge(
@@ -88,16 +84,52 @@ async def _judge(
 
     use = llm_client.resolve_model(model, allow_any=bool(api_key))
     # a verdict is reproducible only against (ruleset_version, model)
-    key = f"pb:v:{_VERSION}:llm:{use}:{_sha(brief)}"
-    if not no_cache:
+    strategy = f"batch-{settings().judge_batch_size or 'all'}"
+    key = f"pb:v:{_VERSION}:llm:{_sha(use)}:{strategy}:{_sha(brief)}"
+    # A caller supplying their own key reasonably expects a fresh call billed
+    # to that key, not an answer produced earlier on somebody else's account.
+    cache_allowed = not no_cache and not api_key
+    if cache_allowed:
         hit = await cache.get_json(key)
         if hit:
-            return _verdicts_from_cache(hit), True, use
+            try:
+                return _verdicts_from_cache(hit, brief), True, use
+            except (KeyError, TypeError, ValueError) as exc:
+                log.warning("discarding invalid verdict cache entry: %s", exc)
 
-    prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
-    raw = await llm_client.complete(prompt, use, api_key)
-    verdicts = llm.parse_judge(_RULES, raw)
-    if not no_cache:
+    batch_size = settings().judge_batch_size
+    if batch_size <= 0 or batch_size >= len(_RULES):
+        prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
+        raw = await llm_client.complete(prompt, use, api_key)
+        verdicts = llm.parse_judge(_RULES, raw, brief)
+    else:
+        items = list(_RULES.items())
+        batches = [dict(items[i : i + batch_size]) for i in range(0, len(items), batch_size)]
+        semaphore = asyncio.Semaphore(max(1, settings().judge_concurrency))
+
+        async def judge_batch(batch: dict) -> list[Verdict]:
+            async with semaphore:
+                prompt = llm.render_judge_prompt(batch, brief, _CFG.budget_floor)
+                raw = await llm_client.complete(prompt, use, api_key)
+                return llm.parse_judge(batch, raw, brief)
+
+        # If one batch fails, cancel its siblings instead of continuing to
+        # spend tokens on a score that can no longer be returned. Keep the
+        # original exception type so the API can distinguish truncation from
+        # an upstream failure (TaskGroup would wrap it in ExceptionGroup).
+        tasks = [asyncio.create_task(judge_batch(batch)) for batch in batches]
+        done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+        failure = next((task.exception() for task in done if task.exception() is not None), None)
+        if failure is not None:
+            for task in pending:
+                task.cancel()
+            await asyncio.gather(*pending, return_exceptions=True)
+            raise failure
+        await asyncio.gather(*pending)
+        verdicts = [verdict for task in tasks for verdict in task.result()]
+        if {v.rule_id for v in verdicts} != set(_RULES) or len(verdicts) != len(_RULES):
+            raise llm.JudgeUnparsable("the merged judge batches are incomplete")
+    if cache_allowed:
         await cache.set_json(key, _verdicts_to_cache(verdicts), settings().cache_ttl_seconds)
     return verdicts, False, use
 

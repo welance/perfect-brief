@@ -13,11 +13,15 @@ verdict is only reproducible against (ruleset_version, model).
 
 from __future__ import annotations
 
+import logging
+import re
+import time
 from functools import lru_cache
 
 from .settings import settings
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+log = logging.getLogger("perfect_brief.llm")
 
 
 class LLMNotConfigured(RuntimeError):
@@ -115,6 +119,10 @@ def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     """
     if not requested:
         return default_model()
+    # OpenRouter model identifiers are vendor/name-like slugs. Reject control
+    # characters and URL-ish payloads before they reach logs or an upstream.
+    if len(requested) > 200 or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]*", requested):
+        raise ModelNotAllowed("model is not a valid provider slug")
     if allow_any:
         return requested
     allowed = available_models()
@@ -132,7 +140,7 @@ def _anthropic():
         import anthropic
     except ImportError as exc:  # pragma: no cover
         raise LLMNotConfigured("the 'anthropic' package is not installed.") from exc
-    return anthropic.AsyncAnthropic(api_key=cfg.anthropic_api_key)
+    return anthropic.AsyncAnthropic(api_key=cfg.anthropic_api_key, timeout=cfg.llm_timeout_seconds)
 
 
 async def complete(prompt: str, model: str | None = None, api_key: str | None = None) -> str:
@@ -145,7 +153,8 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
     if api_key or _use_openrouter():
         import httpx
 
-        async with httpx.AsyncClient(timeout=120) as client:
+        started = time.monotonic()
+        async with httpx.AsyncClient(timeout=cfg.llm_timeout_seconds) as client:
             resp = await client.post(
                 OPENROUTER_URL,
                 headers={"Authorization": f"Bearer {api_key or cfg.openrouter_api_key}"},
@@ -160,6 +169,13 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
             resp.raise_for_status()
             data = resp.json()
             choice = data["choices"][0]
+            log.info(
+                "judge provider=openrouter model=%s status=%s finish_reason=%s duration_ms=%d",
+                use,
+                resp.status_code,
+                choice.get("finish_reason"),
+                round((time.monotonic() - started) * 1000),
+            )
             if choice.get("finish_reason") == "length":
                 raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")
             return choice["message"]["content"] or ""
@@ -167,11 +183,18 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
         raise LLMNotConfigured(
             "set PB_OPENROUTER_API_KEY or PB_ANTHROPIC_API_KEY; the LLM judge is unavailable."
         )
+    started = time.monotonic()
     msg = await _anthropic().messages.create(
         model=use,
         max_tokens=cfg.llm_max_tokens,
         **_sampling_kwargs(use),
         messages=[{"role": "user", "content": prompt}],
+    )
+    log.info(
+        "judge provider=anthropic model=%s stop_reason=%s duration_ms=%d",
+        use,
+        getattr(msg, "stop_reason", None),
+        round((time.monotonic() - started) * 1000),
     )
     if getattr(msg, "stop_reason", None) == "max_tokens":
         raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")

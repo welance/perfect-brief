@@ -30,6 +30,7 @@ class ScoreRequest(BaseModel):
     )
     model: str | None = Field(
         None,
+        max_length=200,
         description="LLM for the judge; must appear in GET /v1/models. Part of the cache key.",
         examples=["claude-sonnet-4-6"],
     )
@@ -64,7 +65,7 @@ class SuggestRequest(BaseModel):
     brief: str = Field(..., description="The brief as it stands now.")
     rule_id: str = Field(..., description="The failing rule to fix.", examples=["success-metrics"])
     locale: str = Field("en-GB", description="Suggestions come back in this language.")
-    model: str | None = Field(None, description="LLM override; must be in GET /v1/models.")
+    model: str | None = Field(None, max_length=200, description="LLM override; must be in GET /v1/models.")
 
 
 class SuggestAllRequest(BaseModel):
@@ -75,7 +76,7 @@ class SuggestAllRequest(BaseModel):
         examples=[["success-metrics", "timeline"]],
     )
     locale: str = Field("en-GB", description="Suggestions come back in this language.")
-    model: str | None = Field(None, description="LLM override; must be in GET /v1/models.")
+    model: str | None = Field(None, max_length=200, description="LLM override; must be in GET /v1/models.")
 
 
 class VerdictOut(BaseModel):

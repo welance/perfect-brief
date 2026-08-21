@@ -76,24 +76,53 @@ class JudgeUnparsable(ValueError):
     """
 
 
-def parse_judge(rules: dict[str, Rule], raw: str) -> list[Verdict]:
-    by: dict[str, dict] = {}
+def parse_judge(rules: dict[str, Rule], raw: str, source_text: str | None = None) -> list[Verdict]:
+    """Parse an all-or-nothing set of verdicts.
+
+    Scoring is deliberately stricter than suggestion parsing: a syntactically
+    valid but incomplete array is still a partial answer and must never reach
+    ``aggregate``.  ``source_text`` enables the audit-trail invariant that a
+    claimed evidence quote really came from the submitted document.
+    """
     try:
         parsed = json.loads(_strip_fence(raw))
     except json.JSONDecodeError as exc:
         raise JudgeUnparsable(f"the judge's answer was cut off or malformed: {exc}") from exc
-    for v in parsed:
-        if isinstance(v, dict) and v.get("rule_id"):
-            by[v["rule_id"]] = v
+    if not isinstance(parsed, list):
+        raise JudgeUnparsable("the judge's answer is not a JSON array")
+
+    expected = set(rules)
+    by: dict[str, dict] = {}
+    for index, value in enumerate(parsed):
+        if not isinstance(value, dict):
+            raise JudgeUnparsable(f"verdict {index} is not an object")
+        rid = value.get("rule_id")
+        if not isinstance(rid, str) or rid not in expected:
+            raise JudgeUnparsable(f"verdict {index} has an unknown rule_id")
+        if rid in by:
+            raise JudgeUnparsable(f"the judge returned rule '{rid}' more than once")
+        by[rid] = value
+
+    missing = expected - set(by)
+    if missing:
+        raise JudgeUnparsable("the judge omitted rules: " + ", ".join(sorted(missing)))
+
     out: list[Verdict] = []
     for rid in rules:
-        v = by.get(rid, {})
+        v = by[rid]
         status = v.get("status")
         if status not in ("pass", "partial", "fail", "not_applicable"):
-            status = "not_applicable"
+            raise JudgeUnparsable(f"rule '{rid}' has an invalid status")
         conf = v.get("confidence")
-        conf = float(conf) if isinstance(conf, (int, float)) else 0.7
-        findings = (Finding(str(v.get("quote", "")), str(v.get("note", ""))),)
+        if isinstance(conf, bool) or not isinstance(conf, (int, float)) or not 0 <= conf <= 1:
+            raise JudgeUnparsable(f"rule '{rid}' has invalid confidence")
+        quote = v.get("quote", "")
+        note = v.get("note", "")
+        if not isinstance(quote, str) or not isinstance(note, str):
+            raise JudgeUnparsable(f"rule '{rid}' has non-text evidence")
+        if source_text is not None and quote and quote not in source_text:
+            raise JudgeUnparsable(f"rule '{rid}' quote is not verbatim evidence")
+        findings = (Finding(quote, note),)
         out.append(Verdict(rid, Status(status), conf, findings))
     return out
 

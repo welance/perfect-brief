@@ -89,10 +89,19 @@ or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
 
+The judge normally asks for all fourteen verdicts in one provider call.
+`PB_JUDGE_BATCH_SIZE=5` instead runs deterministic 5/5/4 rule batches with at
+most `PB_JUDGE_CONCURRENCY=3` calls in flight, then merges them before the same
+deterministic aggregation. It is an operational latency option, not a scoring
+mode: any incomplete or failed batch refuses the entire score. Keep it at its
+default `0` until the live `make test-llm-batching` comparison has passed for
+the deployed model.
+
 Bring your own key: send `X-LLM-Key: <your OpenRouter key>` and the call runs
-on your key — any model allowed (you pay), used per request, never stored or
-logged. Use a spend-capped key. The console exposes this as an optional field
-in live mode.
+on your key — any valid OpenRouter model slug is allowed (you pay), used per
+request, never stored or logged. BYOK scoring deliberately bypasses the shared
+verdict cache, so the supplied key always funds a fresh call. Use a spend-capped
+key. The console exposes this as an optional field in live mode.
 
 Sending a key to somebody else's server deserves more than that paragraph.
 Every line that touches it, where it provably is not, and the honest limits are

@@ -30,6 +30,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from perfect_brief import load_bundled
 
 BRIEF = "# Portal\nProblem: bookings by phone. Users: dispatchers. Budget 120000 EUR."
 
@@ -39,7 +40,19 @@ TRUNCATED = (
     '{"rule_id":"problem-defined","status":"pass","confidence":0.9,"quote":"bookings by ph'
 )
 
-COMPLETE = '[{"rule_id":"clear-title","status":"pass","confidence":0.9,"quote":"Portal","note":"ok"}]'
+_RULES, _ = load_bundled()
+COMPLETE = json.dumps(
+    [
+        {
+            "rule_id": rid,
+            "status": "pass",
+            "confidence": 0.9,
+            "quote": "Portal" if rid == "clear-title" else "",
+            "note": "ok",
+        }
+        for rid in _RULES
+    ]
+)
 
 
 @pytest.fixture

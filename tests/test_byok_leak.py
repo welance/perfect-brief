@@ -20,12 +20,14 @@ well-meaning debug line someone adds in a year turns this red.
 
 from __future__ import annotations
 
+import json
 import logging
 
 import httpx
 import pytest
 
 from app import cache, llm_client
+from perfect_brief import load_bundled
 
 # Distinctive enough that a substring search cannot produce a false negative,
 # and shaped like the real thing so no code path treats it as special.
@@ -33,7 +35,13 @@ CANARY = "sk-or-v1-CANARYcanary0000deadbeef0000cafebabe0000"
 
 BRIEF = "# T\nProblem: x. Budget 15k."
 
-VERDICTS = '[{"rule_id":"clear-title","status":"fail","confidence":0.9,"quote":"t","note":"n"}]'
+_RULES, _ = load_bundled()
+VERDICTS = json.dumps(
+    [
+        {"rule_id": rid, "status": "fail", "confidence": 0.9, "quote": "", "note": "n"}
+        for rid in _RULES
+    ]
+)
 SUGGESTIONS = '[{"rule_id":"clear-title","text":"A title naming the product and the outcome."}]'
 REVIEW = '[{"id":"clear-title","accepted":true,"reason":"satisfies the rule"}]'
 

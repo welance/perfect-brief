@@ -6,6 +6,55 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.10.0] - 2026-08-21
+
+### Added
+- **Bounded concurrent judging, ready for measured rollout.**
+  `PB_JUDGE_BATCH_SIZE=5` partitions the fourteen independent rules into
+  deterministic 5/5/4 calls, bounded by `PB_JUDGE_CONCURRENCY` and merged
+  before deterministic aggregation. It remains off by default (`0`) until a
+  live single-versus-batched quality and cost comparison passes in develop.
+  One failed batch cancels its siblings and refuses the whole score.
+- **Safe provider-call telemetry.** Provider, resolved model, duration and
+  finish reason are logged without prompts, briefs or credentials. Anthropic
+  and OpenRouter now share the bounded `PB_LLM_TIMEOUT_SECONDS` setting.
+- **A separate service-funded LLM budget.** Anonymous calls charged to the
+  service account have an IP-based `PB_PAID_LLM_RATE_LIMIT_PER_MINUTE` limit;
+  caller-funded BYOK requests do not consume it. Provider-side spend caps and
+  gateway limits remain required because Redis deliberately fails open.
+- Baseline browser hardening headers on every response: no MIME sniffing, no
+  framing, a strict-origin referrer policy and disabled camera/microphone/
+  geolocation permissions.
+
+### Fixed
+- **A valid but incomplete judge array can no longer become a score.** The
+  parser now requires exactly one verdict for every requested rule, rejects
+  duplicate and unknown IDs, invalid statuses, non-finite/out-of-range
+  confidence, non-text evidence and quotes not copied verbatim from the brief.
+  The same validation applies to Redis cache hits and concurrently merged
+  batches. Any violation returns the named incomplete-answer 503.
+- **BYOK does what it says.** A caller supplying and funding a key always gets
+  a fresh provider call; it can no longer receive a shared cached verdict made
+  under another account. Keys remain absent from logs, responses and Redis.
+- Caller-controlled model names and rate-limit labels can no longer inject
+  control characters or become raw Redis/cache key material. Model and BYOK
+  input lengths, concurrency, timeouts, token ceilings and cache TTLs are now
+  bounded configuration rather than unchecked integers.
+
+### Security
+- Added adversarial regression coverage for incomplete, duplicate, unknown,
+  malformed and invented-evidence model output; corrupt cache entries; batch
+  cancellation; model/log injection; oversized BYOK headers; browser headers;
+  and separation of caller-funded from service-funded rate limits.
+
+### Deployment note
+- Ship first with `PB_JUDGE_BATCH_SIZE=0`. Run
+  `tests/test_anonymised_llm.py` and the multilingual/live comparison with a
+  real provider key in develop, then evaluate `PB_JUDGE_BATCH_SIZE=5` against
+  latency, cost, per-rule verdict changes and gate decisions before enabling
+  it in production. The independent ~50-second production edge cutoff still
+  requires a platform fix.
+
 ## [1.9.2] - 2026-08-20
 
 ### Fixed

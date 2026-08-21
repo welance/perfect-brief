@@ -56,9 +56,9 @@ async def set_json(key: str, value, ttl: int) -> None:
         log.warning("cache set failed: %s", exc)
 
 
-async def allow(bucket: str) -> bool:
+async def allow(bucket: str, limit: int | None = None) -> bool:
     """Fixed-window rate limit. True = allowed. Fails open if Redis is down."""
-    limit = settings().rate_limit_per_minute
+    limit = settings().rate_limit_per_minute if limit is None else limit
     if limit <= 0 or _redis is None:
         return True
     try:

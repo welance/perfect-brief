@@ -33,8 +33,18 @@ def test_disallowed_model_rejected(monkeypatch):
 
 def test_byok_header_enables_llm_judge(client, monkeypatch):
     async def fake_complete(prompt, model=None, api_key=None):
+        import json
+
+        from perfect_brief import load_bundled
+
         assert api_key == "sk-or-user-key"
-        return '[{"rule_id":"clear-title","status":"pass","confidence":0.9,"quote":"t","note":""}]'
+        rules, _ = load_bundled()
+        return json.dumps(
+            [
+                {"rule_id": rid, "status": "pass", "confidence": 0.9, "quote": "", "note": ""}
+                for rid in rules
+            ]
+        )
 
     monkeypatch.setattr(llm_client, "complete", fake_complete)
     body = {"brief": "# T\nProblem: x. Budget 15k.", "judge": "llm"}

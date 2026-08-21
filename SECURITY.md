@@ -39,6 +39,29 @@ headers, not in anything handed to Redis. If you are reviewing this area,
 start there — and if you can make it pass while still leaking the key, that
 itself is the report we want.
 
+BYOK score requests deliberately bypass the shared verdict cache: a caller
+who supplies and funds a key gets a fresh provider call, never a result made
+earlier under another account. Keys and caller-controlled rate-limit buckets
+are never used verbatim as Redis keys.
+
+## Untrusted model output
+
+The model is outside the scoring trust boundary. A score is computed only when
+its response contains exactly one valid verdict for every requested rule, with
+no unknown or duplicate rule IDs. Evidence quotes must occur verbatim in the
+submitted brief. Malformed, partial, or invented-evidence responses fail the
+whole request; missing rules are never converted to `not_applicable`.
+
+## Abuse and spend
+
+All scoring and suggestion routes have a general request limit. Calls charged
+to the service's own model account also have a smaller IP-based budget
+(`PB_PAID_LLM_RATE_LIMIT_PER_MINUTE`); an arbitrary `X-API-Key` cannot select
+that paid bucket. BYOK calls do not consume the service-funded budget because
+the provider charges the caller's account. Redis-backed limits fail open for
+availability, so the provider key must also carry a hard spend cap and the
+edge/gateway remains the right place for a second, independent limit.
+
 The reasoning behind each of those assertions, written for a reader who does
 not want to read Python, is at [briefs.welance.com/security.html](https://briefs.welance.com/security.html)
 (source: `site/security.html`).
