@@ -156,7 +156,7 @@ def test_the_model_never_sets_a_number(client):
 
 def test_a_page_is_never_cached(client):
     """A page is how a new build announces itself: it must always be fresh."""
-    for path in ["/", "/method.html", "/price.html"]:
+    for path in ["/", "/calculators.html", "/price.html"]:
         r = client.get(path)
         assert r.status_code == 200, path
         assert r.headers["cache-control"] == "no-cache", path
@@ -203,12 +203,12 @@ def test_a_new_build_moves_every_asset(client):
 
 
 def test_a_language_is_part_of_the_address(client):
-    """/it/method.html is a page you can send someone, not a session state."""
+    """/it/calculators.html is a page you can send, not session state."""
     import re
 
     for path, lang, direction in [
-        ("/method.html", "en", "ltr"),
-        ("/it/method.html", "it", "ltr"),
+        ("/calculators.html", "en", "ltr"),
+        ("/it/calculators.html", "it", "ltr"),
         ("/ar/team.html", "ar", "rtl"),
         ("/pt-BR/price.html", "pt-BR", "ltr"),
         ("/it/", "it", "ltr"),
@@ -220,18 +220,18 @@ def test_a_language_is_part_of_the_address(client):
 
 def test_english_keeps_the_bare_paths(client):
     """It is the content of record; giving it a prefix would move every URL."""
-    assert client.get("/en/method.html").status_code == 404
-    assert client.get("/xx/method.html").status_code == 404
+    assert client.get("/en/calculators.html").status_code == 404
+    assert client.get("/xx/calculators.html").status_code == 404
 
 
 def test_every_page_names_its_translations(client):
     """A crawler finds the other languages without running any script."""
     import re
 
-    html = client.get("/it/method.html").text
+    html = client.get("/it/calculators.html").text
     langs = set(re.findall(r'rel="alternate" hreflang="([\w-]+)"', html))
     assert {"en", "it", "de", "ar", "pt-BR", "vi", "ur", "es", "x-default"} <= langs
-    assert '<link rel="canonical" href="/it/method.html">' in html
+    assert '<link rel="canonical" href="/it/calculators.html">' in html
 
 
 def test_the_brand_is_never_capitalised(client):

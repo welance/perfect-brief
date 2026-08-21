@@ -6,6 +6,12 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.10.1] - 2026-08-21
+
+### Fixed
+- Release contracts now follow the intentional removal of `method.html`, and
+  the two new `llms.txt` labels keep the lowercase welance brand invariant.
+
 ## [1.10.0] - 2026-08-21
 
 ### Added
