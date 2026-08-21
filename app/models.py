@@ -175,3 +175,4 @@ class Health(BaseModel):
     ruleset_version: str = Field(description="Bar currently loaded.")
     engine: str = Field(description="Engine version string.")
     llm_configured: bool = Field(description="Is a real judge available?")
+    redis_connected: bool = Field(description="Is the optional cache/rate-limit store connected?")

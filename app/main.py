@@ -156,6 +156,7 @@ async def healthz() -> Health:
         ruleset_version=scorer.version(),
         engine=scorer.engine(),
         llm_configured=llm_client.configured(),
+        redis_connected=cache.connected(),
     )
 
 
@@ -234,6 +235,11 @@ def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Generation-Ms"] = str(meta.get("generation_ms", 0))
     response.headers["X-PB-Verification-Ms"] = str(meta.get("verification_ms", 0))
     response.headers["X-PB-Cached"] = "true" if meta.get("cached") else "false"
+    response.headers["X-PB-Model"] = meta.get("model") or "none"
+    response.headers["Server-Timing"] = (
+        f'generation;dur={meta.get("generation_ms", 0)}, '
+        f'verification;dur={meta.get("verification_ms", 0)}'
+    )
 
 
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])

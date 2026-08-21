@@ -13,6 +13,7 @@ def test_healthz(client):
         "project"
     ]["version"]
     assert body["release_version"] == expected_release
+    assert body["redis_connected"] is False
     assert body["ruleset_version"].startswith("1.1.0+")
     assert body["llm_configured"] is False
 
