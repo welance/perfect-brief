@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     # vendor-prefixed — e.g. "anthropic/claude-sonnet-4.5,openai/gpt-4o").
     # First entry is the default when OpenRouter is active. Empty = PB_MODEL only.
     openrouter_models: str = ""
+    # Optional operator policy for caller-supplied OpenRouter keys. Empty keeps
+    # public BYOK unrestricted; Welance tiers pin this to the two DeepSeek V4
+    # models so an internal proxy cannot accidentally select an expensive lab.
+    byok_models: str = ""
     # Verifier for the suggestion loop: explicit slug, or "auto" = first
     # allowlist model whose vendor prefix differs from the judge's (falls back
     # to a different same-vendor model, then to the judge itself).

@@ -114,8 +114,9 @@ def resolve_verifier_model(judge_model: str) -> str:
 def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     """Validate a per-request model against the server's allowlist.
 
-    allow_any=True (bring-your-own-key requests): the caller pays, so any
-    model is accepted — it is still recorded in the cache key and response.
+    allow_any=True denotes a bring-your-own-key request. It accepts any valid
+    slug unless the operator sets PB_BYOK_MODELS; Welance tiers use that
+    defense-in-depth allowlist for server-held keys forwarded by p007-16.
     """
     if not requested:
         return default_model()
@@ -124,6 +125,12 @@ def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     if len(requested) > 200 or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]*", requested):
         raise ModelNotAllowed("model is not a valid provider slug")
     if allow_any:
+        byok_allowed = [m.strip() for m in settings().byok_models.split(",") if m.strip()]
+        if byok_allowed and requested not in byok_allowed:
+            raise ModelNotAllowed(
+                f"model '{requested}' is not enabled for BYOK on this server; choose one of: "
+                + ", ".join(byok_allowed)
+            )
         return requested
     allowed = available_models()
     if requested not in allowed:

@@ -40,6 +40,10 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   control characters or become raw Redis/cache key material. Model and BYOK
   input lengths, concurrency, timeouts, token ceilings and cache TTLs are now
   bounded configuration rather than unchecked integers.
+- Welance dev, staging and production now restrict the caller-key path to
+  DeepSeek V4 Pro/Flash via `PB_BYOK_MODELS`. This prevents an internal proxy
+  with a server-held OpenRouter key from accidentally selecting an expensive
+  model; public deployments may leave the setting empty for unrestricted BYOK.
 
 ### Security
 - Added adversarial regression coverage for incomplete, duplicate, unknown,

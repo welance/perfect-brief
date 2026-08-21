@@ -98,8 +98,9 @@ default `0` until the live `make test-llm-batching` comparison has passed for
 the deployed model.
 
 Bring your own key: send `X-LLM-Key: <your OpenRouter key>` and the call runs
-on your key — any valid OpenRouter model slug is allowed (you pay), used per
-request, never stored or logged. BYOK scoring deliberately bypasses the shared
+on your key — any valid OpenRouter model slug is allowed unless this deployment
+sets `PB_BYOK_MODELS` (you pay), used per request, never stored or logged. BYOK
+scoring deliberately bypasses the shared
 verdict cache, so the supplied key always funds a fresh call. Use a spend-capped
 key. The console exposes this as an optional field in live mode.
 
