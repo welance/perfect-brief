@@ -42,3 +42,19 @@ Re-evaluate this ADR when any of: (a) Claude Sonnet 5 intro pricing ends
 positive/negative rate observed on real briefs argues for the premium tier;
 (d) cross-lab verification (ADR 0001) is re-enabled. Record each re-evaluation
 as a dated addendum here rather than editing the snapshot above.
+
+## Addendum — 2026-08-21
+
+The role split is now explicit rather than inherited:
+
+- authoritative publish scoring: `deepseek/deepseek-v4-pro`;
+- suggestion generation: `deepseek/deepseek-v4-flash`;
+- suggestion verification: `deepseek/deepseek-v4-flash`;
+- Sonnet: not enabled on Welance deployments, including the caller-key path.
+
+OpenRouter's public model metadata on this date lists V4 Pro at $1.60/M input
+and $3.20/M output tokens, and V4 Flash at $0.08106/M input and $0.16212/M
+output tokens. These values supersede the old estimate for operational planning
+without rewriting the historical snapshot above. The service returns the
+resolved model, enforces an operator allowlist, and keeps paid-provider spend
+caps as the final cost boundary.

@@ -61,7 +61,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <tbody>
       <tr>
         <td class="k" data-i18n="data.r1.k">The brief text</td>
-        <td data-i18n="data.r1.a">To our service, then to the model provider that judges it — Anthropic by default, or OpenRouter when you bring a key.</td>
+        <td data-i18n="data.r1.a">To our service, then through OpenRouter to the DeepSeek provider that judges it. The API receives the assembled text, not original files.</td>
         <td><span class="no" data-i18n="data.r1.b">never stored as a document — only its verdict survives, one row down, for a day</span></td>
       </tr>
       <tr>
@@ -89,7 +89,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   <div class="eyebrow"><span data-i18n="data.eb2">bring your own key</span></div>
   <p class="claim" data-i18n="data.c1">With your key, we run no model for you.</p>
-  <p data-i18n-html="data.byok">Send an OpenRouter key in the <code>x-llm-key</code> header and the judgement runs on your account, against any model you choose. We forward the call and hand you the result — no model of ours is invoked, and nothing about the key is retained.</p>
+  <p data-i18n-html="data.byok">Send an OpenRouter key in the <code>x-llm-key</code> header and the judgement runs on your account. welance still restricts that path to DeepSeek V4 Pro or Flash, so an internal proxy cannot accidentally select Sonnet. We forward the call and hand you the result — no service-funded model is invoked, nothing about the key is retained, and BYOK scoring bypasses the shared verdict cache.</p>
   <div class="code">
     <div class="code-bar">
       <div class="code-lang">bash · <span data-i18n="data.byokLabel">your own judge</span></div>
@@ -98,7 +98,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
   -H 'x-llm-key: sk-or-…' \
-  -d '{"brief":"…","judge":"llm","model":"anthropic/claude-sonnet-4.6","no_cache":true}'</pre>
+  -d '{"brief":"…","judge":"llm","model":"deepseek/deepseek-v4-pro","no_cache":true}'</pre>
   </div>
   <p data-i18n-html="data.mcpkey">The <a href="integrate.html#mcp">MCP server</a> reads the same key from <code>PB_LLM_KEY</code>, so an assistant on your machine can score briefs entirely on your own account.</p>
   <p data-i18n-html="data.secpage">Handing your key to somebody else's server deserves more than our word for it. <a href="security.html">Every line of ours that touches it</a> — and the test that fails if that ever changes — is written out on its own page.</p>
@@ -107,7 +107,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <p data-i18n-html="data.custom">Some briefs cannot leave a perimeter, and some organisations need a data-processing agreement, a named model, or the whole thing running somewhere else. That is a conversation, not a checkbox: write to <a href="mailto:hello@welance.com">hello@welance.com</a> and we will tell you plainly what is possible — including running it on models we select, or handing you the deployment to run yourself. It is MIT-licensed; self-hosting is a right, not a favour.</p>
 
   <div class="eyebrow"><span data-i18n="data.eb4">the honest limits</span></div>
-  <p data-i18n="data.limits">We do not control the provider's own retention: once a brief reaches Anthropic or OpenRouter, their terms apply, and you should read them if the content is sensitive. The public service is rate-limited per IP and served over TLS, but it is a small open-source service, not a compliance product. For anything genuinely confidential, bring your own key, send no_cache, or run your own copy.</p>
+  <p data-i18n="data.limits">We do not control OpenRouter or its routed provider's retention; their terms apply once a brief leaves this service. The API receives text only, not original document bytes or attachments. It is rate-limited and served over TLS, but it is a small open-source service, not a compliance product. For genuinely confidential material, use a spend-capped key or run your own copy.</p>
 </div>
 <div id="site-footer"></div>
 </body>

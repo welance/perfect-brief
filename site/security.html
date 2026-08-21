@@ -101,7 +101,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <tr>
         <td class="k" data-i18n="sec.w2.k">In the cache</td>
         <td>
-          <span data-i18n-html="sec.w2.a">Cached verdicts are keyed by <code>ruleset_version : model : sha256(brief)</code>. No key material is an input to that key, and none is stored in the value, so nothing about your key can be recovered from our Redis — not even by us.</span>
+          <span data-i18n-html="sec.w2.a">A BYOK score never reads or writes the shared verdict cache. Service-funded cached verdicts are keyed by <code>ruleset_version : model : strategy : sha256(brief)</code>; no key material is stored in either keys or values.</span>
           <span class="ref"><code>_judge()</code> · app/scorer.py</span>
         </td>
       </tr>
@@ -146,14 +146,14 @@ assert CANARY not in captured.err</pre>
 
   <div class="eyebrow"><span data-i18n="sec.eb5">the honest limits</span></div>
   <p data-i18n-html="sec.limit1"><b>Three parties see your key, not one.</b> TLS protects it in transit, but it does not terminate at the code above. <code>briefs.welance.com</code> sits behind Cloudflare, which decrypts every request — your key included — before a second hop to our own server, where it lives in memory for the moment your request is in flight. So it is seen by Cloudflare, by us, and by OpenRouter. Anyone who has compromised either server could read it, and Cloudflare's terms govern their leg of it, not ours. This is true of every service that forwards a credential on your behalf, and no amount of care in our code changes it. If that risk is unacceptable for your key, it should be — do not send it, and see the options below.</p>
-  <p data-i18n-html="sec.limit2"><b>Cached verdicts are shared.</b> A scoring call made with your key still reads and writes the shared verdict cache, so an identical brief scored later may be answered from the cache rather than from a fresh call. Nothing about your key is involved, and a cache entry can only be reached by somebody who already has the exact brief text — but it does mean the verdict you paid for may serve someone else, and theirs may serve you. Send <code>no_cache: true</code> and neither happens.</p>
+  <p data-i18n-html="sec.limit2"><b>BYOK scores are always fresh.</b> Supplying your key bypasses both reads and writes to the shared verdict cache. Service-funded calls may use the 24-hour cache unless they send <code>no_cache: true</code>.</p>
   <p data-i18n-html="sec.limit3"><b>Downstream is not ours.</b> Once the call reaches OpenRouter, their terms and their retention apply, not ours. We can tell you what we do; we cannot make promises on their behalf.</p>
   <p data-i18n-html="sec.limit4"><b>This is a small open-source service.</b> It is rate-limited and served over TLS by people who care about getting this right. It is not an audited compliance product, and we would rather say so here than imply otherwise.</p>
   <p data-i18n-html="sec.limit5"><b>And we have an interest to declare.</b> This bar gates welance's own Directory, and welance pitches there as a team like any other. What that obliges us to — no lead-mining from briefs, no training, the same bar for our own briefs, provably — is written out in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
 
   <div class="eyebrow"><span data-i18n="sec.eb6">what we would do in your place</span></div>
   <p data-i18n-html="sec.do1"><b>Send a spend-capped key.</b> OpenRouter lets you mint a key with its own credit limit. Use one here rather than your main key: it turns the worst case from an open-ended loss into a known, small number, and it costs you nothing.</p>
-  <p data-i18n-html="sec.do2"><b>Or send no key at all.</b> Leave the header off and the call runs on our key, against our model allowlist. You lose free model choice; you keep your credentials.</p>
+  <p data-i18n-html="sec.do2"><b>Or send no key at all.</b> Leave the header off and the call runs on our spend-capped key. welance uses V4 Pro for authoritative scoring and V4 Flash for suggestions and verification; Sonnet is not enabled.</p>
   <p data-i18n-html="sec.do3"><b>Or run the whole thing yourself.</b> It is MIT-licensed and the container is one command. Then the only server that sees your key is yours — <a href="https://github.com/welance/perfect-brief">github.com/welance/perfect-brief</a>.</p>
 
   <div class="eyebrow"><span data-i18n="sec.eb7">if we got this wrong</span></div>

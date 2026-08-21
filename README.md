@@ -48,7 +48,7 @@ docker-compose.yml   api + redis (the only stateful dependency: ephemeral cache)
 ## Quick start
 
 ```bash
-cp .env.example .env          # add PB_ANTHROPIC_API_KEY to enable the LLM judge
+cp .env.example .env          # add a spend-capped PB_OPENROUTER_API_KEY
 make up                       # docker compose up --build -d  (api + redis)
 make health                   # GET /v1/healthz
 open http://localhost:8000    # the console (mock judge works with no key)
@@ -83,8 +83,11 @@ cached by `(ruleset_version, model, brief)`, but temperature 0 is not a
 determinism guarantee across provider updates — the quotes are the part of
 the trail that never expires.)
 
-The judge's LLM is either direct Anthropic (`PB_ANTHROPIC_API_KEY` + `PB_MODEL`)
-or OpenRouter (`PB_OPENROUTER_API_KEY`). With OpenRouter, requests may pick a
+Welance uses OpenRouter (`PB_OPENROUTER_API_KEY`). Publish scoring runs on
+`deepseek/deepseek-v4-pro`; suggestion generation and verification run on
+`deepseek/deepseek-v4-flash`. No Welance path selects Sonnet. Self-hosters may
+still configure the optional direct-Anthropic adapter, but it is not part of
+the Welance deployment. With OpenRouter, requests may pick a
 `model` from the server's allowlist (`PB_OPENROUTER_MODELS`, exact
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
@@ -119,7 +122,7 @@ Other endpoints:
 - `POST /v1/suggest/all` `{brief, rule_ids?, locale, model?}` → one fix per failing gap; omit `rule_ids` to auto-detect (LLM).
 - `GET /v1/rules` → the full catalogue (id, title, weight, gate, criteria, references) for the directory UI.
 - `GET /v1/models` → the enabled judge models (`default` + `available`) for a model picker.
-- `GET /v1/healthz` → status + ruleset version + whether the LLM is configured.
+- `GET /v1/healthz` → service release, ruleset version, engine + LLM availability.
 - `GET /` → the interactive console.
 
 ## How `welance.com/directory` consumes it
@@ -194,11 +197,14 @@ probe — a standard `Deployment` + `Service` + `Ingress`, plus a small Redis
 `Secret`/`ConfigMap`; lock `PB_CORS_ORIGINS` to the directory's origin. Scale the
 API horizontally; the cache is shared through Redis.
 
-## Note on the console's live judge
+## Text and document boundary
 
-The bundled console defaults to the **mock** judge (offline, instant). Its
-optional *live* toggle currently calls the Anthropic API directly from the
-browser, which only works where a key is available (e.g. claude.ai previews);
-when served from this backend it falls back to mock. Wiring the console's live
-mode to this service's `/v1/score` + `/v1/suggest` (so the key stays server-side)
-is the intended small follow-up.
+The API accepts text, not uploads: `brief` is one bounded string. The Directory
+may read supported PDF, DOCX and text-family documents locally in the browser
+and include their extracted text as untrusted context. Original bytes, images
+and arbitrary binaries are not sent to this service, stored by it, or published
+as attachments. Multipart publication to Directus is a separate Directory flow.
+
+The bundled console defaults to the **mock** judge (offline, instant). Its live
+mode calls this service's `/v1/score` and `/v1/suggest`; provider credentials
+stay server-side unless a caller explicitly supplies a per-request BYOK key.

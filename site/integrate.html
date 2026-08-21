@@ -79,7 +79,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div class="route">
       <span class="who" data-i18n="int.r1.who">anyone · no setup</span>
       <h3 data-i18n="int.r1.h">Use the console</h3>
-      <p data-i18n="int.r1.p">Paste a brief, press score, read what fails and fix it in place. Works offline on a keyword stub, and with the real judge in eight languages. Nothing to install, nothing to sign.</p>
+      <p data-i18n="int.r1.p">Paste a brief, press score, read what fails and fix it in place. Works offline on a keyword stub, and the live judge reads the meaning of any language. Nothing to install, nothing to sign.</p>
       <span class="effort" data-i18n="int.r1.e">2 minutes</span>
       <a class="go" href="console.html" data-i18n="int.r1.go">→ open the console</a>
     </div>
@@ -145,6 +145,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </div>
   <div class="step"><span class="n">3</span><p data-i18n="int.s3">Ask it to score a brief. It will read the rules first, report the decision, and fix the gate before anything else — that order is built into the server's own prompt.</p></div>
   <p data-i18n-html="int.byok">Optional: set <code>PB_LLM_KEY</code> to your own OpenRouter key and the judge runs on your account — we forward the call and run no model for you. See <a href="data.html">your brief, your key</a> for exactly what travels where.</p>
+  <p>The public API accepts one bounded <code>brief</code> string. It does not accept multipart uploads, original file bytes, images or arbitrary binaries. A client may extract supported documents locally and include that text as untrusted context; attachment publishing is a separate concern.</p>
 
   <div class="eyebrow"><span data-i18n="int.eb4">or just call it</span></div>
   <div class="code">

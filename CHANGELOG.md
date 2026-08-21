@@ -9,6 +9,10 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 ## [1.10.0] - 2026-08-21
 
 ### Added
+- Public documentation and site copy now state the deployed model split
+  explicitly: V4 Pro scores; V4 Flash generates and verifies suggestions;
+  Welance never routes these duties to Sonnet. Text/document and BYOK cache
+  boundaries are described consistently across the site, README and llms.txt.
 - **Bounded concurrent judging, ready for measured rollout.**
   `PB_JUDGE_BATCH_SIZE=5` partitions the fourteen independent rules into
   deterministic 5/5/4 calls, bounded by `PB_JUDGE_CONCURRENCY` and merged
