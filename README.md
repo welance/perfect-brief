@@ -131,7 +131,7 @@ Other endpoints:
 - `GET /` → the interactive console.
 
 Suggestion responses include `X-PB-Generation-Ms`, `X-PB-Verification-Ms`,
-`X-PB-Cached`, `X-PB-Model`, and the standard `Server-Timing` header, so callers
+`X-PB-Cached`, `X-PB-Cache-Ms`, `X-PB-Model`, and the standard `Server-Timing` header, so callers
 can distinguish model latency from network/UI latency without exposing prompts
 or document contents. `/v1/healthz` also reports whether the optional Redis
 cache/rate-limit store is currently connected.

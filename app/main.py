@@ -235,8 +235,10 @@ def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Generation-Ms"] = str(meta.get("generation_ms", 0))
     response.headers["X-PB-Verification-Ms"] = str(meta.get("verification_ms", 0))
     response.headers["X-PB-Cached"] = "true" if meta.get("cached") else "false"
+    response.headers["X-PB-Cache-Ms"] = str(meta.get("cache_ms", 0))
     response.headers["X-PB-Model"] = meta.get("model") or "none"
     response.headers["Server-Timing"] = (
+        f'cache;dur={meta.get("cache_ms", 0)}, '
         f'generation;dur={meta.get("generation_ms", 0)}, '
         f'verification;dur={meta.get("verification_ms", 0)}'
     )

@@ -219,7 +219,7 @@ async def _review_items(
         return None, round((time.monotonic() - started) * 1000)
 
 
-def _suggestions_from_cache(hit: object) -> tuple[list[Suggestion], dict] | None:
+def _suggestions_from_cache(hit: object, cache_ms: int) -> tuple[list[Suggestion], dict] | None:
     """Validate ephemeral Redis data before returning it across the API boundary."""
     try:
         if not isinstance(hit, dict) or not isinstance(hit["suggestions"], list):
@@ -234,6 +234,7 @@ def _suggestions_from_cache(hit: object) -> tuple[list[Suggestion], dict] | None
             "verifier_model": raw_meta.get("verifier_model"),
             "model": raw_meta.get("model"),
             "cached": True,
+            "cache_ms": cache_ms,
             "generation_ms": 0,
             "verification_ms": 0,
         }
@@ -241,6 +242,16 @@ def _suggestions_from_cache(hit: object) -> tuple[list[Suggestion], dict] | None
     except (KeyError, TypeError, ValueError) as exc:
         log.warning("discarding invalid suggestion cache entry: %s", exc)
         return None
+
+
+async def _get_suggestion_cache(key: str, enabled: bool) -> tuple[tuple[list[Suggestion], dict] | None, int]:
+    """Return a validated hit and lookup time; BYOK disables both read and write."""
+    if not enabled:
+        return None, 0
+    started = time.monotonic()
+    hit = await cache.get_json(key)
+    cache_ms = round((time.monotonic() - started) * 1000)
+    return _suggestions_from_cache(hit, cache_ms), cache_ms
 
 
 async def suggest(
@@ -255,10 +266,9 @@ async def suggest(
     verifier = llm_client.resolve_verifier_model(suggest_model)
 
     cache_key = "pb:s2:one:" + ":".join([_VERSION, suggest_model, verifier, _sha(brief), rule_id, locale])
-    if not api_key:
-        cached = _suggestions_from_cache(await cache.get_json(cache_key))
-        if cached is not None:
-            return cached
+    cached, cache_ms = await _get_suggestion_cache(cache_key, not api_key)
+    if cached is not None:
+        return cached
 
     prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
     started = time.monotonic()
@@ -294,6 +304,7 @@ async def suggest(
         "verifier_model": verifier if review is not None else None,
         "model": suggest_model,
         "cached": False,
+        "cache_ms": cache_ms,
         "generation_ms": generation_ms,
         "verification_ms": verification_ms,
     }
@@ -332,6 +343,7 @@ async def suggest_all(
             "verifier_model": None,
             "model": None,
             "cached": False,
+            "cache_ms": 0,
             "generation_ms": 0,
             "verification_ms": 0,
         }
@@ -343,10 +355,9 @@ async def suggest_all(
     cache_key = "pb:s2:all:" + ":".join(
         [_VERSION, suggest_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
     )
-    if not api_key:  # BYOK responses are never cached (caller-specific spend)
-        cached = _suggestions_from_cache(await cache.get_json(cache_key))
-        if cached is not None:
-            return cached
+    cached, cache_ms = await _get_suggestion_cache(cache_key, not api_key)
+    if cached is not None:
+        return cached
 
     done: dict[str, Suggestion] = {}
     critiques: dict[str, str] = {}
@@ -408,6 +419,7 @@ async def suggest_all(
         "verifier_model": verifier if verifier_up else None,
         "model": suggest_model,
         "cached": False,
+        "cache_ms": cache_ms,
         "generation_ms": generation_ms,
         "verification_ms": verification_ms,
     }
