@@ -14,7 +14,9 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   ceilings, and `/v1/suggest` now shares the safe Redis suggestion cache.
   Response headers expose generation time, verification time, resolved model,
   and cache hits. Redis now reconnects after a sidecar startup race or outage
-  instead of remaining disabled for the lifetime of the API process.
+  instead of remaining disabled for the lifetime of the API process. Noprod
+  environments now use their chart's actual `redis` Service DNS name;
+  production keeps its intentional in-pod `localhost` sidecar.
 - Public documentation and site copy now state the deployed model split
   explicitly: V4 Pro scores; V4 Flash generates and verifies suggestions;
   Welance never routes these duties to Sonnet. Text/document and BYOK cache
