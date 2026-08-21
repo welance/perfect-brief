@@ -17,6 +17,11 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   instead of remaining disabled for the lifetime of the API process. Noprod
   environments now use their chart's actual `redis` Service DNS name;
   production keeps its intentional in-pod `localhost` sidecar.
+
+### Removed
+- The overextended `method.html` narrative. The service site now links directly
+  to Directory, calculators, rules, and readable source instead of presenting
+  a product philosophy as a proprietary method.
 - Public documentation and site copy now state the deployed model split
   explicitly: V4 Pro scores; V4 Flash generates and verifies suggestions;
   Welance never routes these duties to Sonnet. Text/document and BYOK cache

@@ -77,9 +77,10 @@ addition takes weight from the rest — a longer checklist is a weaker one. Bett
 contributions are usually sharper criteria, a better source, or a fixture that
 pins a case the bar was getting away with.
 
-## The wider model
+## Related Welance tools
 
-- The method: https://briefs.welance.com/method.html — brief → price → team
+- Welance Directory: https://welance.com/directory — the guided brief builder
+  and marketplace whose publishing bar this service powers
 - Price Split: https://briefs.welance.com/price.html — how a collaboration is
   priced, formula by formula
 - Team Rate: https://briefs.welance.com/team.html — one blended client rate

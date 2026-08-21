@@ -6,7 +6,7 @@
  */
 import { test, expect } from "@playwright/test";
 
-const PAGES = ["/", "/method.html", "/price.html", "/team.html", "/rules.html",
+const PAGES = ["/", "/calculators.html", "/price.html", "/team.html", "/rules.html",
   "/console.html", "/integrate.html", "/data.html", "/security.html"];
 
 
@@ -23,7 +23,7 @@ async function chooseLanguage(page, code) {
 
 test.describe("one origin", () => {
   test("the site and the API are served together", async ({ request }) => {
-    expect((await request.get("/method.html")).status()).toBe(200);
+    expect((await request.get("/calculators.html")).status()).toBe(200);
     const health = await (await request.get("/v1/healthz")).json();
     expect(health.status).toBe("ok");
     const scored = await request.post("/v1/score", {
@@ -75,7 +75,7 @@ test.describe("chrome and navigation", () => {
   test("the colour rule is full weight on the landing page, thinner elsewhere", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator(".wl-rule")).not.toHaveClass(/is-thin/);
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await expect(page.locator(".wl-rule")).toHaveClass(/is-thin/);
   });
 
@@ -118,7 +118,7 @@ test.describe("chrome and navigation", () => {
 
 test.describe("nine languages, one choice", () => {
   test("the switcher offers every language with a flag", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     const options = page.locator("#langswitch option");
     const { LANGS } = await page.evaluate(() => ({ LANGS: WelanceI18n.LANGS.map((l) => l.code) }));
     await expect(options).toHaveCount(LANGS.length);
@@ -129,7 +129,7 @@ test.describe("nine languages, one choice", () => {
 
   test("every declared language actually has a dictionary", async ({ page }) => {
     // a flag in the switcher with no strings behind it is worse than no flag
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     const thin = await page.evaluate(async () => {
       const out = [];
       for (const l of WelanceI18n.LANGS) {
@@ -145,7 +145,7 @@ test.describe("nine languages, one choice", () => {
   });
 
   test("choosing a language follows you across pages", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await chooseLanguage(page, "it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
     await page.goto("/team.html");
@@ -155,23 +155,23 @@ test.describe("nine languages, one choice", () => {
 
   test("Urdu and Arabic mirror the page", async ({ page }) => {
     for (const code of ["ur", "ar"]) {
-      await page.goto(`/method.html?lang=${code}`);
+      await page.goto(`/calculators.html?lang=${code}`);
       await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
     }
-    await page.goto("/method.html?lang=vi");
+    await page.goto("/calculators.html?lang=vi");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   });
 
   test("English is restored exactly — the markup is the content of record", async ({ page }) => {
-    await page.goto("/method.html?lang=en");
-    const before = await page.locator("[data-i18n='method.eb1']").textContent();
+    await page.goto("/calculators.html?lang=en");
+    const before = await page.locator("[data-i18n='calc.h1']").textContent();
     await chooseLanguage(page, "de");
     await chooseLanguage(page, "en");
-    await expect(page.locator("[data-i18n='method.eb1']")).toHaveText(before);
+    await expect(page.locator("[data-i18n='calc.h1']")).toHaveText(before);
   });
 
   test("unreviewed languages are labelled draft, English never is", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     const en = await page.locator("#langswitch option").first().textContent();
     expect(en).not.toContain("draft");
     const it = await page.locator("#langswitch option[value=it]").textContent();
@@ -251,7 +251,7 @@ test.describe("the language a visitor expects", () => {
     const page = await ctx.newPage();
     const responses = [];
     page.on("response", (r) => responses.push(r.status()));
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     expect(responses.filter((s) => s >= 300 && s < 400), "no redirects").toHaveLength(0);
     await ctx.close();
@@ -260,7 +260,7 @@ test.describe("the language a visitor expects", () => {
   test("a regional variant falls back to the closest we have", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "pt-PT" });
     const page = await ctx.newPage();
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
     await ctx.close();
   });
@@ -268,7 +268,7 @@ test.describe("the language a visitor expects", () => {
   test("an explicit choice always beats the browser, and is remembered", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "de-DE" });
     const page = await ctx.newPage();
-    await page.goto("/method.html?lang=it");
+    await page.goto("/calculators.html?lang=it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
     await page.goto("/team.html");
     await expect(page.locator("html"), "the choice sticks").toHaveAttribute("lang", "it");
@@ -278,36 +278,13 @@ test.describe("the language a visitor expects", () => {
   test("an unknown language lands on English, not on nothing", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "ja-JP" });
     const page = await ctx.newPage();
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await ctx.close();
   });
 });
 
-test.describe("the method reads at a glance", () => {
-  test("the map, the ledger and the loop are all drawn", async ({ page }, testInfo) => {
-    await page.goto("/method.html");
-    // the hero map is a wide-screen affordance: hidden under 700px on purpose
-    const wide = (page.viewportSize()?.width ?? 0) >= 700;
-    await expect(page.locator(".m-ident svg")).toBeVisible({ visible: wide });
-    await expect(page.locator(".bloop svg")).toBeVisible();
-    await expect(page.locator(".fxrow")).toHaveCount(8);
-    await expect(page.locator("#fxHead")).toContainText("8");
-  });
-
-  test("every formula opens to its plain line and links to where it is defined", async ({ page }) => {
-    await page.goto("/method.html");
-    const rows = page.locator(".fxrow");
-    await expect(rows).toHaveCount(8);
-    for (let i = 0; i < 8; i++) {
-      const row = rows.nth(i);
-      await row.locator("summary").click();
-      await expect(row.locator(".fxbody")).toBeVisible();
-      const link = row.locator(".src a");
-      await expect(link, "a formula must say where it is defined").toHaveAttribute(
-        "href", /github\.com\/welance\/perfect-brief\/blob\/main\//);
-    }
-  });
+test.describe("the public site stays compact", () => {
 
   test("the fine print starts closed and opens on demand", async ({ page }) => {
     await page.goto("/");
@@ -321,7 +298,7 @@ test.describe("the method reads at a glance", () => {
      the section, ONE paragraph supports it, depth lives in the fine print.
      Prolixity is a UX bug — this test is how it stays fixed. */
   test("no paragraph on the surface runs longer than the style allows", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     const long = await page.evaluate(() => {
       const out = [];
       document.querySelectorAll(".wrap p, .wrap .door p, .wrap .step p").forEach((el) => {
@@ -335,17 +312,15 @@ test.describe("the method reads at a glance", () => {
     expect(long, `too long on the surface: ${long.join(" | ")}`).toHaveLength(0);
   });
 
-  test("brand bands break the page without breaking the layout", async ({ page }) => {
-    for (const path of ["/method.html", "/"]) {
-      await page.goto(path);
-      await expect(page.locator(".band").first()).toBeVisible();
-      // the band paints past the container; it must never widen the document
-      const { scroll, client } = await page.evaluate(() => ({
-        scroll: document.documentElement.scrollWidth,
-        client: document.documentElement.clientWidth,
-      }));
-      expect(scroll, `${path} gained a horizontal scrollbar`).toBeLessThanOrEqual(client);
-    }
+  test("the brand band breaks the page without breaking the layout", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".band").first()).toBeVisible();
+    // The band paints past the container; it must never widen the document.
+    const { scroll, client } = await page.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      client: document.documentElement.clientWidth,
+    }));
+    expect(scroll, "the landing gained a horizontal scrollbar").toBeLessThanOrEqual(client);
   });
 
   test("the header holds at every width, not only the two we test on", async ({ page }) => {
@@ -354,7 +329,7 @@ test.describe("the method reads at a glance", () => {
     const broken = [];
     for (const width of [412, 560, 640, 768, 900, 960, 1024, 1100, 1180, 1280, 1440, 1600]) {
       await page.setViewportSize({ width, height: 800 });
-      await page.goto("/method.html");
+      await page.goto("/calculators.html");
       const over = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
       );
@@ -371,7 +346,7 @@ test.describe("the method reads at a glance", () => {
     for (const lang of ["en", "es", "pt-BR", "ar", "vi"]) {
       for (const width of [320, 390, 412, 560]) {
         await page.setViewportSize({ width, height: 800 });
-        await page.goto(`/method.html?lang=${lang}`);
+        await page.goto(`/calculators.html?lang=${lang}`);
         const out = page.locator(".wl-out");
         await expect(out).toBeVisible();
         await expect(out).toContainText("welance/Directory");
@@ -387,9 +362,9 @@ test.describe("the method reads at a glance", () => {
     expect(broken, broken.join(" ")).toHaveLength(0);
   });
 
-  test("the header carries three ways in, and the rest lives in the footer", async ({ page }) => {
+  test("the header stays focused, and the rest lives in the footer", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(3);
+    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(2);
     await expect(page.locator(".wl-nav")).toContainText("The calculators");
     // the calculators page is the index the menu no longer has to be
     await page.goto("/calculators.html");
@@ -399,9 +374,9 @@ test.describe("the method reads at a glance", () => {
   });
 
   test("choosing a language writes it into the address", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     await chooseLanguage(page, "it");
-    await expect(page).toHaveURL(/\/it\/method\.html$/);
+    await expect(page).toHaveURL(/\/it\/calculators\.html$/);
     // and following any relative link keeps you in that language — the footer
     // one, because the header nav is not on a phone
     await page.locator('.wl-foot-link[href="calculators.html"]').click();
@@ -457,7 +432,7 @@ test.describe("the method reads at a glance", () => {
   });
 
   test("light and dark, remembered across pages, no flash", async ({ page }) => {
-    await page.goto("/method.html");
+    await page.goto("/calculators.html");
     const theme = () => page.evaluate(() => document.documentElement.getAttribute("data-theme"));
     // the inline script decides before paint: the attribute is there immediately
     expect(await theme()).toMatch(/light|dark/);
@@ -517,13 +492,6 @@ test.describe("the method reads at a glance", () => {
     // the band went black-on-black once; these two never swap
     expect(grounds.close).toBe("rgb(151, 219, 226)");
     expect(grounds.deep).toBe("rgb(10, 10, 10)");
-  });
-
-  test("every section leads with a short claim", async ({ page }) => {
-    await page.goto("/method.html");
-    const claims = await page.locator(".claim").allTextContents();
-    expect(claims.length).toBeGreaterThanOrEqual(4);
-    for (const c of claims) expect(c.length, `claim too long: ${c}`).toBeLessThan(70);
   });
 
   test("the score × gate quadrant is on the rules page", async ({ page }) => {

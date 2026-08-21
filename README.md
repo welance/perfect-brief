@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **[The method](https://briefs.welance.com/method.html)** | brief → price → team, the welance model opened as a blueprint |
+| **[Welance Directory](https://welance.com/directory)** | guided brief builder and marketplace powered by this scoring service |
 | **[Brief Bar](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
 | **[Price Split](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
 | **[Team Rate](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |

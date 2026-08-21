@@ -12,18 +12,14 @@
 (function () {
   "use strict";
 
-  /* The header carries three: why the model works this way, the things you can
-     compute with it, and how to put it in your own tools. The individual
-     calculators are one click deeper — a menu that lists everything is a menu
-     nobody reads. The footer still names them all. */
+  /* Keep the header about things visitors can do. The individual calculators
+     stay one click deeper — a menu that lists everything is a menu nobody reads. */
   var NAV = [
-    { href: "method.html", key: "chrome.method", en: "How we work" },
     { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
   ];
 
   var PAGES = [
-    { href: "method.html", key: "chrome.method", en: "How we work" },
     { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "index.html",  key: "chrome.brief",  en: "Brief Bar" },
     { href: "price.html",  key: "chrome.price",  en: "Price Split" },

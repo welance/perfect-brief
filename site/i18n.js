@@ -49,7 +49,8 @@
     "sec.w2.a": true,
     "sec.limit2": true,
     "sec.do2": true,
-    "rules.p6": true
+    "rules.p6": true,
+    "calc.note": true
   };
 
   function meta(code) {
@@ -173,7 +174,7 @@
     return null;
   }
 
-  /* /it/method.html — the language is part of the address.
+  /* /it/rules.html — the language is part of the address.
      English keeps the bare paths: it is the content of record, the copy every
      translation is made from, and giving it a prefix of its own would move
      every existing URL for nothing. */
