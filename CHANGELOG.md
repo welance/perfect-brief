@@ -31,6 +31,9 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   geolocation permissions.
 
 ### Fixed
+- Welance tiers explicitly disable optional V4 Pro reasoning for rubric
+  extraction. The release canary completed in 15.97s with all 14 verdicts;
+  provider-default reasoning returned no HTTP response inside 90 seconds.
 - The shared site header now shows the deployed service release (for example
   `v1.10.0`) from `/v1/healthz`, instead of the stale hard-coded `v1` label.
 - **A valid but incomplete judge array can no longer become a score.** The

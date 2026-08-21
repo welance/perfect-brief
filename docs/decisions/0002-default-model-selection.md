@@ -52,6 +52,11 @@ The role split is now explicit rather than inherited:
 - suggestion verification: `deepseek/deepseek-v4-flash`;
 - Sonnet: not enabled on Welance deployments, including the caller-key path.
 
+V4 Pro is invoked with `reasoning.effort: none` for scoring. On the same
+develop brief this returned all fourteen verdicts in 15.97 seconds; the
+provider-default reasoning path produced no HTTP response inside 90 seconds.
+This is an extraction/rubric task, and deterministic code still owns scoring.
+
 OpenRouter's public model metadata on this date lists V4 Pro at $1.60/M input
 and $3.20/M output tokens, and V4 Flash at $0.08106/M input and $0.16212/M
 output tokens. These values supersede the old estimate for operational planning

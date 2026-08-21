@@ -56,9 +56,9 @@ class Settings(BaseSettings):
     llm_max_tokens: Annotated[int, Field(ge=500, le=32_000)] = 4000
 
     # OpenRouter's unified reasoning control, kept as a knob and DEFAULTED OFF.
-    # Asking deepseek-v4-pro for effort "low" made the call slower, not cheaper:
-    # measured on develop, three runs at ~50s and cut at the edge, against ~28s
-    # for the same brief with no reasoning field at all. Empty sends no field.
+    # "low" made V4 Pro slower, while "none" made the same live score complete
+    # in 15.97s versus no HTTP response inside 90s at the provider default.
+    # Welance tiers therefore set "none"; empty remains a self-hoster option.
     llm_reasoning_effort: str = ""
     # 0 keeps the legacy single call. A positive value partitions the rules
     # into deterministic batches and runs them with bounded concurrency.
