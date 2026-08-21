@@ -94,6 +94,11 @@ The resolved model is returned in every score for a reproducible audit trail.
 Suggestion generation may use a cheaper model selected by `PB_SUGGEST_MODEL`;
 Welance runs scoring on DeepSeek V4 Pro and generation plus verification on
 DeepSeek V4 Flash. Suggestion responses already name their verifier model.
+The service reuses its OpenRouter connection pool and applies separate bounded
+output ceilings (`PB_SUGGEST_MAX_TOKENS`, `PB_SUGGEST_ALL_MAX_TOKENS`, and
+`PB_VERIFIER_MAX_TOKENS`) because short suggestion JSON does not need the
+judge's larger allowance. Successful service-funded suggestions are cached;
+BYOK calls always bypass that shared cache.
 
 The judge normally asks for all fourteen verdicts in one provider call.
 `PB_JUDGE_BATCH_SIZE=5` instead runs deterministic 5/5/4 rule batches with at
@@ -124,6 +129,10 @@ Other endpoints:
 - `GET /v1/models` → the enabled judge models (`default` + `available`) for a model picker.
 - `GET /v1/healthz` → service release, ruleset version, engine + LLM availability.
 - `GET /` → the interactive console.
+
+Suggestion responses include `X-PB-Generation-Ms`, `X-PB-Verification-Ms`,
+and `X-PB-Cached`, so callers can distinguish model latency from network/UI
+latency without exposing prompts or document contents.
 
 ## How `welance.com/directory` consumes it
 

@@ -52,8 +52,11 @@ async def lifespan(app: FastAPI):
         len(scorer.rules()),
         llm_client.configured(),
     )
-    yield
-    await cache.close()
+    try:
+        yield
+    finally:
+        await llm_client.close_openrouter_client()
+        await cache.close()
 
 
 app = FastAPI(
@@ -228,6 +231,9 @@ def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Screened"] = "true" if meta["screened"] else "false"
     response.headers["X-PB-Iterations"] = str(meta["iterations"])
     response.headers["X-PB-Verifier-Model"] = meta["verifier_model"] or "none"
+    response.headers["X-PB-Generation-Ms"] = str(meta.get("generation_ms", 0))
+    response.headers["X-PB-Verification-Ms"] = str(meta.get("verification_ms", 0))
+    response.headers["X-PB-Cached"] = "true" if meta.get("cached") else "false"
 
 
 @app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])

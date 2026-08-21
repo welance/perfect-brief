@@ -9,6 +9,10 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 ## [1.10.0] - 2026-08-21
 
 ### Added
+- Faster, observable suggestions without weakening their verifier: OpenRouter
+  connections are pooled, generation and verification use task-specific output
+  ceilings, and `/v1/suggest` now shares the safe Redis suggestion cache.
+  Response headers expose generation time, verification time, and cache hits.
 - Public documentation and site copy now state the deployed model split
   explicitly: V4 Pro scores; V4 Flash generates and verifies suggestions;
   Welance never routes these duties to Sonnet. Text/document and BYOK cache

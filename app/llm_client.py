@@ -22,6 +22,9 @@ from .settings import settings
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 log = logging.getLogger("perfect_brief.llm")
+_openrouter_client = None
+_openrouter_client_factory = None
+_openrouter_client_timeout = None
 
 
 class LLMNotConfigured(RuntimeError):
@@ -85,6 +88,36 @@ def _reasoning_kwargs() -> dict:
     """
     effort = settings().llm_reasoning_effort.strip()
     return {"reasoning": {"effort": effort}} if effort else {}
+
+
+async def _get_openrouter_client():
+    """Reuse one connection pool without ever storing a caller's API key."""
+    import httpx
+
+    global _openrouter_client, _openrouter_client_factory, _openrouter_client_timeout
+    timeout = settings().llm_timeout_seconds
+    factory = httpx.AsyncClient
+    if (
+        _openrouter_client is None
+        or _openrouter_client_factory is not factory
+        or _openrouter_client_timeout != timeout
+    ):
+        if _openrouter_client is not None:
+            await _openrouter_client.aclose()
+        _openrouter_client = factory(timeout=timeout)
+        _openrouter_client_factory = factory
+        _openrouter_client_timeout = timeout
+    return _openrouter_client
+
+
+async def close_openrouter_client() -> None:
+    """Close the shared pool during application shutdown."""
+    global _openrouter_client, _openrouter_client_factory, _openrouter_client_timeout
+    if _openrouter_client is not None:
+        await _openrouter_client.aclose()
+    _openrouter_client = None
+    _openrouter_client_factory = None
+    _openrouter_client_timeout = None
 
 
 def _vendor(slug: str) -> str:
@@ -155,42 +188,49 @@ def _anthropic():
     return anthropic.AsyncAnthropic(api_key=cfg.anthropic_api_key, timeout=cfg.llm_timeout_seconds)
 
 
-async def complete(prompt: str, model: str | None = None, api_key: str | None = None) -> str:
+async def complete(
+    prompt: str,
+    model: str | None = None,
+    api_key: str | None = None,
+    *,
+    max_tokens: int | None = None,
+    purpose: str = "judge",
+) -> str:
     """api_key: an optional caller-supplied OpenRouter key (bring your own key).
 
     Used for this call only — never logged, never stored.
     """
     cfg = settings()
     use = resolve_model(model, allow_any=bool(api_key))
+    ceiling = max_tokens or cfg.llm_max_tokens
     if api_key or _use_openrouter():
-        import httpx
-
         started = time.monotonic()
-        async with httpx.AsyncClient(timeout=cfg.llm_timeout_seconds) as client:
-            resp = await client.post(
-                OPENROUTER_URL,
-                headers={"Authorization": f"Bearer {api_key or cfg.openrouter_api_key}"},
-                json={
-                    "model": use,
-                    "max_tokens": cfg.llm_max_tokens,
-                    **_sampling_kwargs(use),
-                    **_reasoning_kwargs(),
-                    "messages": [{"role": "user", "content": prompt}],
-                },
-            )
-            resp.raise_for_status()
-            data = resp.json()
-            choice = data["choices"][0]
-            log.info(
-                "judge provider=openrouter model=%s status=%s finish_reason=%s duration_ms=%d",
-                use,
-                resp.status_code,
-                choice.get("finish_reason"),
-                round((time.monotonic() - started) * 1000),
-            )
-            if choice.get("finish_reason") == "length":
-                raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")
-            return choice["message"]["content"] or ""
+        client = await _get_openrouter_client()
+        resp = await client.post(
+            OPENROUTER_URL,
+            headers={"Authorization": f"Bearer {api_key or cfg.openrouter_api_key}"},
+            json={
+                "model": use,
+                "max_tokens": ceiling,
+                **_sampling_kwargs(use),
+                **_reasoning_kwargs(),
+                "messages": [{"role": "user", "content": prompt}],
+            },
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        choice = data["choices"][0]
+        log.info(
+            "llm purpose=%s provider=openrouter model=%s status=%s finish_reason=%s duration_ms=%d",
+            purpose,
+            use,
+            resp.status_code,
+            choice.get("finish_reason"),
+            round((time.monotonic() - started) * 1000),
+        )
+        if choice.get("finish_reason") == "length":
+            raise JudgeTruncated(f"the model stopped at the {ceiling}-token ceiling")
+        return choice["message"]["content"] or ""
     if not cfg.anthropic_api_key:
         raise LLMNotConfigured(
             "set PB_OPENROUTER_API_KEY or PB_ANTHROPIC_API_KEY; the LLM judge is unavailable."
@@ -198,16 +238,17 @@ async def complete(prompt: str, model: str | None = None, api_key: str | None = 
     started = time.monotonic()
     msg = await _anthropic().messages.create(
         model=use,
-        max_tokens=cfg.llm_max_tokens,
+        max_tokens=ceiling,
         **_sampling_kwargs(use),
         messages=[{"role": "user", "content": prompt}],
     )
     log.info(
-        "judge provider=anthropic model=%s stop_reason=%s duration_ms=%d",
+        "llm purpose=%s provider=anthropic model=%s stop_reason=%s duration_ms=%d",
+        purpose,
         use,
         getattr(msg, "stop_reason", None),
         round((time.monotonic() - started) * 1000),
     )
     if getattr(msg, "stop_reason", None) == "max_tokens":
-        raise JudgeTruncated(f"the judge stopped at the {cfg.llm_max_tokens}-token ceiling")
+        raise JudgeTruncated(f"the model stopped at the {ceiling}-token ceiling")
     return "".join(block.text for block in msg.content if getattr(block, "type", None) == "text")

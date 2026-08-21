@@ -11,6 +11,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import time
 
 from perfect_brief import aggregate, judge_all, llm, load_bundled, loader
 from perfect_brief.judge import MockJudge
@@ -199,15 +200,45 @@ def _requirement(rule) -> str:
 
 async def _review_items(
     items: list[dict], brief: str, verifier_model: str, api_key: str | None
-) -> dict[str, dict] | None:
+) -> tuple[dict[str, dict] | None, int]:
     """items: [{"id","requirement","text"}] → id → {"accepted","reason"}; None = verifier down."""
     if not items:
-        return {}
+        return {}, 0
+    started = time.monotonic()
     try:
-        raw = await llm_client.complete(llm.render_review_prompt(items, brief), verifier_model, api_key)
-        return llm.parse_review(raw)
+        raw = await llm_client.complete(
+            llm.render_review_prompt(items, brief),
+            verifier_model,
+            api_key,
+            max_tokens=settings().verifier_max_tokens,
+            purpose="verify",
+        )
+        return llm.parse_review(raw), round((time.monotonic() - started) * 1000)
     except Exception as exc:  # noqa: BLE001 — degradation, never failure
         log.warning("suggestion review failed (%s); returning unscreened", exc)
+        return None, round((time.monotonic() - started) * 1000)
+
+
+def _suggestions_from_cache(hit: object) -> tuple[list[Suggestion], dict] | None:
+    """Validate ephemeral Redis data before returning it across the API boundary."""
+    try:
+        if not isinstance(hit, dict) or not isinstance(hit["suggestions"], list):
+            raise TypeError("unexpected suggestion cache shape")
+        raw_meta = hit["meta"]
+        if not isinstance(raw_meta, dict):
+            raise TypeError("unexpected suggestion cache metadata")
+        out = [Suggestion(**item) for item in hit["suggestions"]]
+        meta = {
+            "screened": bool(raw_meta["screened"]),
+            "iterations": int(raw_meta["iterations"]),
+            "verifier_model": raw_meta.get("verifier_model"),
+            "cached": True,
+            "generation_ms": 0,
+            "verification_ms": 0,
+        }
+        return out, meta
+    except (KeyError, TypeError, ValueError) as exc:
+        log.warning("discarding invalid suggestion cache entry: %s", exc)
         return None
 
 
@@ -222,12 +253,26 @@ async def suggest(
     suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
     verifier = llm_client.resolve_verifier_model(suggest_model)
 
+    cache_key = "pb:s2:one:" + ":".join([_VERSION, suggest_model, verifier, _sha(brief), rule_id, locale])
+    if not api_key:
+        cached = _suggestions_from_cache(await cache.get_json(cache_key))
+        if cached is not None:
+            return cached
+
     prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
-    raw = await llm_client.complete(prompt, suggest_model, api_key)
+    started = time.monotonic()
+    raw = await llm_client.complete(
+        prompt,
+        suggest_model,
+        api_key,
+        max_tokens=settings().suggest_max_tokens,
+        purpose="suggest",
+    )
+    generation_ms = round((time.monotonic() - started) * 1000)
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
     items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
-    review = await _review_items(items, brief, verifier, api_key)
+    review, verification_ms = await _review_items(items, brief, verifier, api_key)
 
     out: list[Suggestion] = []
     for i, s in enumerate(opts):
@@ -242,11 +287,21 @@ async def suggest(
             )
         )
     screened = review is not None and all(s.review and s.review.accepted for s in out)
-    return out, {
+    meta = {
         "screened": screened,
         "iterations": 1,
         "verifier_model": verifier if review is not None else None,
+        "cached": False,
+        "generation_ms": generation_ms,
+        "verification_ms": verification_ms,
     }
+    if not api_key and review is not None:
+        await cache.set_json(
+            cache_key,
+            {"suggestions": [s.model_dump() for s in out], "meta": meta},
+            settings().cache_ttl_seconds,
+        )
+    return out, meta
 
 
 async def suggest_all(
@@ -269,37 +324,56 @@ async def suggest_all(
         ]
     subset = [_RULES[i] for i in rule_ids if i in _RULES]
     if not subset:
-        return [], {"screened": True, "iterations": 0, "verifier_model": None}
+        return [], {
+            "screened": True,
+            "iterations": 0,
+            "verifier_model": None,
+            "cached": False,
+            "generation_ms": 0,
+            "verification_ms": 0,
+        }
 
     suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
     verifier = llm_client.resolve_verifier_model(suggest_model)
     locale_name = LOCALE_NAMES.get(locale)
 
-    cache_key = "pb:s:" + ":".join(
+    cache_key = "pb:s2:all:" + ":".join(
         [_VERSION, suggest_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
     )
     if not api_key:  # BYOK responses are never cached (caller-specific spend)
-        hit = await cache.get_json(cache_key)
-        if hit is not None:
-            return [Suggestion(**s) for s in hit["suggestions"]], hit["meta"]
+        cached = _suggestions_from_cache(await cache.get_json(cache_key))
+        if cached is not None:
+            return cached
 
     done: dict[str, Suggestion] = {}
     critiques: dict[str, str] = {}
     pending = list(subset)
     iterations = 0
     verifier_up = True
+    generation_ms = 0
+    verification_ms = 0
 
     while pending and iterations < 1 + MAX_REVIEW_RETRIES:
         iterations += 1
         last_round = iterations >= 1 + MAX_REVIEW_RETRIES
         prompt = llm.render_suggest_all_prompt(pending, brief, locale_name, critiques or None)
-        by = llm.parse_suggestions_all(await llm_client.complete(prompt, suggest_model, api_key))
+        started = time.monotonic()
+        raw = await llm_client.complete(
+            prompt,
+            suggest_model,
+            api_key,
+            max_tokens=settings().suggest_all_max_tokens,
+            purpose="suggest-all",
+        )
+        generation_ms += round((time.monotonic() - started) * 1000)
+        by = llm.parse_suggestions_all(raw)
         batch = [r for r in pending if r.id in by and _sane(by[r.id])]
         if not batch:
             break
 
         items = [{"id": r.id, "requirement": _requirement(r), "text": by[r.id]} for r in batch]
-        review = await _review_items(items, brief, verifier, api_key)
+        review, review_ms = await _review_items(items, brief, verifier, api_key)
+        verification_ms += review_ms
         if review is None:  # verifier down: ship this round unscreened
             verifier_up = False
             for r in batch:
@@ -329,8 +403,11 @@ async def suggest_all(
         "screened": screened,
         "iterations": iterations,
         "verifier_model": verifier if verifier_up else None,
+        "cached": False,
+        "generation_ms": generation_ms,
+        "verification_ms": verification_ms,
     }
-    if not api_key:
+    if not api_key and screened:
         await cache.set_json(
             cache_key,
             {"suggestions": [s.model_dump() for s in out], "meta": meta},
