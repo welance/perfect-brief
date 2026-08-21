@@ -1,11 +1,18 @@
 """Endpoint tests on the mock judge — deterministic, no network."""
 
+import tomllib
+from pathlib import Path
+
 
 def test_healthz(client):
     r = client.get("/v1/healthz")
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok"
+    expected_release = tomllib.loads((Path(__file__).parent.parent / "pyproject.toml").read_text())[
+        "project"
+    ]["version"]
+    assert body["release_version"] == expected_release
     assert body["ruleset_version"].startswith("1.1.0+")
     assert body["llm_configured"] is False
 

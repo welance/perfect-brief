@@ -27,6 +27,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   geolocation permissions.
 
 ### Fixed
+- The shared site header now shows the deployed service release (for example
+  `v1.10.0`) from `/v1/healthz`, instead of the stale hard-coded `v1` label.
 - **A valid but incomplete judge array can no longer become a score.** The
   parser now requires exactly one verdict for every requested rule, rejects
   duplicate and unknown IDs, invalid statuses, non-finite/out-of-range

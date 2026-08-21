@@ -171,6 +171,7 @@ class ModelsResponse(BaseModel):
 
 class Health(BaseModel):
     status: str = Field(default="ok", description="Liveness.")
+    release_version: str = Field(description="Deployed service release/tag version.")
     ruleset_version: str = Field(description="Bar currently loaded.")
     engine: str = Field(description="Engine version string.")
     llm_configured: bool = Field(description="Is a real judge available?")

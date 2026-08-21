@@ -33,6 +33,7 @@ from .models import (
     SuggestRequest,
 )
 from .settings import settings
+from .version import SERVICE_VERSION
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("perfect_brief.api")
@@ -148,6 +149,7 @@ def _judge_kind(requested: str | None, byok: str | None = None) -> str:
 @app.get("/v1/healthz", response_model=Health, tags=["meta"])
 async def healthz() -> Health:
     return Health(
+        release_version=SERVICE_VERSION,
         ruleset_version=scorer.version(),
         engine=scorer.engine(),
         llm_configured=llm_client.configured(),

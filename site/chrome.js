@@ -125,7 +125,7 @@
       lockupHead() +
       // the quiet line leads the right-hand group, as it does on the
       // Directory: status, then where to go, then the one way out
-      '<span class="wl-status">' + tt("chrome.status", "© 2011–2026 · v1 · live") + "</span>" +
+      '<span class="wl-status" id="wl-release">© 2011–2026 · live</span>' +
       '<nav class="wl-nav" aria-label="Main">' + nav + "</nav>" +
       '<div class="wl-head-right">' +
       (host.hasAttribute("data-own-lang") ? "" : '<nav id="langswitch" aria-label="language"></nav>') +
@@ -157,7 +157,30 @@
       "</div></nav>" +
       "</div>";
     if (window.WelanceI18n && window.WelanceI18n.mountSwitcher) window.WelanceI18n.mountSwitcher();
+    loadRelease();
     wireMenu(host);
+  }
+
+  var releaseVersion = null;
+  var releaseRequest = null;
+  function paintRelease() {
+    var el = document.getElementById("wl-release");
+    if (!el) return;
+    el.textContent = "© 2011–2026" + (releaseVersion ? " · v" + releaseVersion : "") + " · live";
+  }
+  function loadRelease() {
+    paintRelease();
+    if (releaseVersion || releaseRequest || !window.fetch) return;
+    releaseRequest = fetch("/v1/healthz", { headers: { accept: "application/json" } })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (body) {
+        if (body && /^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$/.test(body.release_version || "")) {
+          releaseVersion = body.release_version;
+          paintRelease();
+        }
+      })
+      .catch(function () {})
+      .then(function () { releaseRequest = null; });
   }
 
   function menuCol(items) {
