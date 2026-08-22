@@ -499,4 +499,13 @@ test.describe("the public site stays compact", () => {
     await expect(page.locator(".quad svg")).toBeVisible();
     await expect(page.locator(".quad")).toContainText("92/100");
   });
+
+  test("the ruleset appears before the explanatory method", async ({ page }) => {
+    await page.goto("/rules.html");
+    const order = await page.locator("#ruleset, .pull").evaluateAll((nodes) =>
+      nodes.map((node) => node.id || node.className),
+    );
+    expect(order).toEqual(["ruleset", "pull"]);
+    await expect(page.locator("#ruleset > .rule")).toHaveCount(14);
+  });
 });

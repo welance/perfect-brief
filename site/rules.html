@@ -106,6 +106,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <a class="navlink" href="console.html" data-i18n="rules.navlink">→ score a brief in the live console</a>
   </header>
 
+  <!-- RULESET — the page's primary content, before the explanatory material -->
+  <div class="eyebrow"><span data-i18n="rules.eb3">the ruleset · 14 rules</span></div>
+  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p7">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests. Numbers (R01–R14) are for easy reference in discussion — link any rule directly, e.g. <code>rules.html#anonymised</code>; the <code>id</code> is the canonical name in PRs and API verdicts.</p>
+  <p class="body" style="font-size:13.5px;color:var(--ink-soft)" data-i18n="rules.cannote">The rule texts below stay in their canonical English on purpose: the criteria are the exact files the judge reads, and the sample report above shows the judge's real output. Translating this page changes nothing about the bar itself.</p>
+  <div id="ruleset"></div>
+
   <p class="body" style="margin-top:34px" data-i18n-html="rules.p1">We put together teams for a living, so we see it constantly: a product's outcome is mostly the team — but the brief is the 20% that decides whether that team starts on solid ground or spends the first month untangling what was meant. Usually that untangling happens in workshops: expensive, slow, and dependent on us being in the room.</p>
   <p class="body" data-i18n-html="rules.p2">So we're proposing something more modest and more useful: a way to check a brief for <b>grip on reality, doability, and scalability</b> before anyone starts — and we're publishing the whole standard openly, so it isn't ours to gatekeep. This page is the standard. The console scores against it. The rules live on GitHub, and anyone can change them.</p>
 
@@ -155,12 +161,6 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </svg>
   </figure>
   <p class="body" style="margin-top:16px" data-i18n-html="rules.p6">The <b>gate</b> is four hard requirements that must all hold: a clear <b>title</b>, a stated <b>problem</b>, a <b>budget</b> at or above the €10k floor, and a fully <b>anonymised</b> (blind-safe) brief. Miss any and the brief is <b>blocked</b>, with the unmet ones named — even at a high score. Gate passed with score ≥ 85 → published; gate passed below 85 → published with reservation; gate failed → blocked. So a brief can read <b>Directory-ready</b> (say 92/100) and still be blocked because it names a payment provider and an email: quality is not the same as admissibility. The deterministic arithmetic is reproducible from the returned verdicts; model judgement itself is inspectable rather than guaranteed identical, so every verdict names its model and carries verbatim evidence. Two requirements are scoped rather than universal: anonymisation and the €10k floor exist for the blind noticeboard, so both rules carry a <code>context: directory</code> tag — a caller scoring a generic digital-product brief deactivates that context (<code>gate_contexts: []</code>) and they drop out entirely: no gate, no score weight, the average renormalised over the twelve rules that apply anywhere.</p>
-
-  <!-- RULESET -->
-  <div class="eyebrow"><span data-i18n="rules.eb3">the ruleset · 14 rules</span></div>
-  <p class="body" style="margin-top:-4px" data-i18n-html="rules.p7">Each rule is one contestable file. <code>criteria</code> and the examples are all the model reads; <code>weight</code> steers the score in code; ★ marks a rule that is also a <b>gate</b> requirement. The examples are also the rule's regression tests. Numbers (R01–R14) are for easy reference in discussion — link any rule directly, e.g. <code>rules.html#anonymised</code>; the <code>id</code> is the canonical name in PRs and API verdicts.</p>
-  <p class="body" style="font-size:13.5px;color:var(--ink-soft)" data-i18n="rules.cannote">The rule texts below stay in their canonical English on purpose: the criteria are the exact files the judge reads, and the sample report above shows the judge's real output. Translating this page changes nothing about the bar itself.</p>
-  <div id="ruleset"></div>
 
   <!-- CITATION TIERS -->
   <div class="eyebrow"><span data-i18n="rules.eb4">why every line cites a source</span></div>
