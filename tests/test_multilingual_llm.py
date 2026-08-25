@@ -42,7 +42,7 @@ def _judge_live(brief: str):
     import anthropic
 
     client = anthropic.Anthropic(api_key=os.environ["PB_ANTHROPIC_API_KEY"])
-    model = os.environ.get("PB_MODEL", "claude-sonnet-4-6")
+    model = os.environ.get("PB_MODEL", "deepseek/deepseek-v4-pro")
     prompt = llm.render_judge_prompt(RULES, brief, CFG.budget_floor)
     msg = client.messages.create(
         model=model,

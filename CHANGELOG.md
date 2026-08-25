@@ -6,6 +6,50 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.11.0] - 2026-08-25
+
+### Added
+- **The rules explainer is drawn rather than argued.** The material below the
+  ruleset was six blocks of body copy carrying the page's whole case; it is now
+  one diagram language. The invariant is a slab panel with the model's verdicts
+  on one side, `score.py`'s arithmetic on the other and the seam between them;
+  the sample report becomes a progress bar toward publication with the 85 line
+  notched in; the score bands and the quadrant merge into a single score x gate
+  matrix; the four gate requirements leave the prose and become tiles. Copy is
+  roughly 40% shorter. Rewritten strings use new `rules.v2.*` keys and fall back
+  to English in the other eight languages until a translation pass.
+
+### Fixed
+- **A caller-funded key can no longer buy a lab model.** `PB_BYOK_MODELS`
+  defaulted to empty — unrestricted — with the guarantee resting on every
+  deployment remembering to set it. It now defaults to DeepSeek V4 Pro and
+  Flash, so "never a lab model" is a fence rather than an intention; a tier that
+  wants otherwise still says so. `PB_SUGGEST_MODEL` and `PB_VERIFIER_MODEL` stop
+  inheriting the most expensive model in the pipeline, and two live-LLM tests no
+  longer default to the model ADR 0002 rejected.
+- **The price split bar kept a stale width.** A cost-of-living coefficient above
+  1 pays more than the role alone earns, so the differential went negative and
+  the band was written as a negative `flex-basis` — not a CSS value, so the
+  assignment was dropped and the band kept its previous width. The three bands
+  are now derived from money, clamped and always written: an uplift is paid out
+  of structure & risk and labelled with its sign, the panel reports what is
+  actually left instead of the level's nominal share, and paying past the client
+  rate is named in words instead of drawn as a bar that cannot exist.
+- The cost-of-living coefficient is editable and can disagree with the country
+  beside it (they restore independently); it now says so instead of letting the
+  country label read as a lie.
+
+### Changed
+- The public Rules page now puts the fourteen canonical rules immediately below
+  its introduction; scoring rationale and governance remain available after the
+  rules instead of obscuring the page's primary content. Release contracts
+  follow the intentional removal of `method.html`. (Prepared as 1.10.1, which
+  reached staging but never production; it ships here.)
+
+### Fixed
+- Release contracts now follow the intentional removal of `method.html`, and
+  the two new `llms.txt` labels keep the lowercase welance brand invariant.
+
 ## [1.10.0] - 2026-08-21
 
 ### Added

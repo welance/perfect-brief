@@ -494,9 +494,24 @@ test.describe("the public site stays compact", () => {
     expect(grounds.deep).toBe("rgb(10, 10, 10)");
   });
 
-  test("the score × gate quadrant is on the rules page", async ({ page }) => {
+  test("the score × gate matrix is on the rules page", async ({ page }) => {
     await page.goto("/rules.html");
-    await expect(page.locator(".quad svg")).toBeVisible();
-    await expect(page.locator(".quad")).toContainText("92/100");
+    // the quadrant SVG became a 3x2 matrix: bands down the side, the gate
+    // across the top, and the example that makes the point pinned in a cell
+    await expect(page.locator(".matrix")).toBeVisible();
+    await expect(page.locator(".matrix")).toContainText("92/100");
+    // the gate decides the column: blocked all the way down the failed side
+    await expect(page.locator(".matrix .mx-c.blk")).toHaveCount(3);
+  });
+
+  test("the ruleset appears before the explanatory method", async ({ page }) => {
+    await page.goto("/rules.html");
+    // the pull-quote is a slab diagram now, but the ordering promise is the same:
+    // the fourteen rules come before the material that explains them
+    const order = await page.locator("#ruleset, .seam").evaluateAll((nodes) =>
+      nodes.map((node) => node.id || node.className),
+    );
+    expect(order).toEqual(["ruleset", "seam"]);
+    await expect(page.locator("#ruleset > .rule")).toHaveCount(14);
   });
 });

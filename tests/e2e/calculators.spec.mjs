@@ -49,6 +49,40 @@ test.describe("perfect price", () => {
     await expect(page.locator("#geonote")).toContainText("25.00");
   });
 
+  test("a coefficient above 1 is paid out of margin, and the bar still divides one rate", async ({ page }) => {
+    // Switzerland is 1.35: the coefficient lifts pay ABOVE role-only, so the
+    // differential comes out of structure & risk instead of off the person.
+    // It used to be written as a negative width — silently ignored, leaving the
+    // violet band at whatever size it happened to have last.
+    await page.locator("#usegeo").check();
+    await page.locator("#country").selectOption("CH");
+
+    // defaults: WITH SUPPORT (share 50%) -> EUR 50 role-only, x1.35 -> EUR 67.50
+    await expect(page.locator("#figPay")).toContainText("67.50");
+    await expect(page.locator("#barGeo")).toContainText("+");
+    // the panel reports what is actually left, not the level's nominal 50%
+    await expect(page.locator("#figMargin")).toHaveText("33%");
+
+    const fills = () => page.evaluate(() => {
+      const bar = document.querySelector(".splitbar").getBoundingClientRect().width;
+      const sum = ["barPerson", "barGeo", "barCompany"].reduce(
+        (t, id) => t + document.getElementById(id).getBoundingClientRect().width, 0);
+      return { bar, sum, geo: document.getElementById("barGeo").getBoundingClientRect().width };
+    });
+    const up = await fills();
+    expect(Math.abs(up.sum - up.bar)).toBeLessThan(4);
+
+    // and the band reacts to the field, rather than keeping a stale width
+    await page.locator("#coef").fill("0.7");
+    await expect(page.locator("#barGeo")).toContainText("\u2212");
+    const down = await fills();
+    expect(Math.abs(down.sum - down.bar)).toBeLessThan(4);
+    expect(down.geo).not.toBe(up.geo);
+
+    // editing the coefficient makes the country label stop speaking for it
+    await expect(page.locator("#coefcustom")).not.toHaveText("");
+  });
+
   test("edits survive a reload, reset restores the defaults", async ({ page }) => {
     const first = page.locator("#rows .comp input[type=text]").first();
     await first.fill("EDITED PART");

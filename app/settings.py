@@ -19,10 +19,18 @@ class Settings(BaseSettings):
     # vendor-prefixed — e.g. "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash").
     # First entry is the default when OpenRouter is active. Empty = PB_MODEL only.
     openrouter_models: str = ""
-    # Optional operator policy for caller-supplied OpenRouter keys. Empty keeps
-    # public BYOK unrestricted; Welance tiers pin this to the two DeepSeek V4
-    # models so an internal proxy cannot accidentally select an expensive lab.
-    byok_models: str = ""
+    # Operator policy for caller-supplied OpenRouter keys, and the only fence
+    # that makes "never a lab model" true rather than merely intended.
+    #
+    # It used to default to empty — unrestricted — with a comment saying
+    # Welance tiers pin it. A guarantee that depends on every deployment
+    # remembering to set an env var is not a guarantee: the default IS the
+    # policy, and a tier that wants something else can still say so.
+    #
+    # BYOK is exactly where this matters. A caller brings a key and names a
+    # model, and without an allowlist the service will faithfully spend that
+    # key on the most expensive tier on OpenRouter.
+    byok_models: str = "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash"
     # Suggestions are cheaper extraction/generation work than final scoring, so
     # they run on Flash while the published score runs on Pro. Empty would
     # inherit the judge, which is the more expensive model — the split is the
