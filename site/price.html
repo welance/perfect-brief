@@ -309,7 +309,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <div class="field grow"><label id="t-l-country" for="country"></label>
             <select id="country"></select></div>
           <div class="field"><label id="t-l-coef" for="coef"></label>
-            <input type="number" id="coef" class="w-rate" min="0.1" max="2" step="0.01"></div>
+            <input type="number" id="coef" class="w-rate" min="0.1" max="2" step="0.01">
+            <span class="subnote" id="coefcustom"></span></div>
           <div class="field"><label id="t-l-floor" for="floorc"></label>
             <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0.5"></div>
         </div>
@@ -427,6 +428,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       geoOff: "Coefficient off: the share depends on role coverage alone, wherever the person lives.",
       geoOn: "Role-only pay would be <b>{full}</b>/h. With the coefficient it is <b>{local}</b>/h — a geographic differential of <b>{diff}</b>/h, {pctdiff} of what the role alone earns.",
       geoFloor: "The floor is binding: without it the coefficient would give {raw}/h.",
+      geoOver: "The coefficient pays {local}/h out of a {rate}/h client rate: nothing is left for structure & risk. Raise the client rate or lower the coefficient.",
+      coefCustom: "edited \u2014 no longer the country's value",
       f1: "<b>Where the differential goes matters.</b> If it silently becomes margin, the collective profits from where someone lives. Name its destination — reserve, solidarity pool, reinvestment — so it can be argued about rather than assumed.",
       f2: "<b>It is not profit.</b> The retained share keeps the structure standing — finding the work, assembling the team, invoicing, the hours nobody bills — and carries the client-side risk: if a delivery goes wrong, a replacement is needed or an invoice is never paid, the collective absorbs it, not the person. It is deliberately thin.",
       f3: "<b>Rounding.</b> Where the two views differ by one step, coverage rounds toward the person. A two-step gap is not averaged: it is discussed.",
@@ -1195,14 +1198,36 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     // from 100% is not margin, it is welance support — the colleague who
     // trains or verifies the uncovered part until the person carries it alone.
     var base = work === "internal" ? (Number($("capr").value) || INTERNAL_MAX) : rate;
-    var pShare = base > 0 ? pay / base : 0;
-    var gShare = base > 0 ? diff / base : 0;
-    $("barPerson").style.flexBasis = (pShare * 100) + "%";
-    $("barGeo").style.flexBasis = (gShare * 100) + "%";
-    $("barCompany").style.flexBasis = ((1 - pShare - gShare) * 100) + "%";
-    $("barPerson").textContent = pct(pShare);
-    $("barGeo").textContent = gShare > 0.06 ? pct(gShare) : "";
-    $("barCompany").textContent = pct(Math.max(0, 1 - pShare - gShare));
+    // The three bands divide ONE client rate, so they are derived from money and
+    // always sum to 100%. A coefficient above 1 (Switzerland is 1.35) lifts pay
+    // above the role-only figure: the differential is then paid OUT OF structure
+    // & risk instead of being taken off the person, so the band changes side, not
+    // sign. It used to be written straight through as a negative flex-basis —
+    // not a CSS value, so the assignment was dropped and the band silently kept
+    // whatever width it had last. That is the stale violet band.
+    var gUp = diff < 0;
+    var pShare = base > 0 ? (gUp ? roleOnly : pay) / base : 0;
+    var gShare = base > 0 ? Math.abs(diff) / base : 0;
+    var cShare = 1 - pShare - gShare;
+    // Past the client rate there is no room left to draw in: keep the bar a
+    // valid division of the rate and let the note below carry what overflowed.
+    if (cShare < 0) { gShare = Math.max(0, 1 - pShare); cShare = 0; }
+    function band(id, w) {
+      var v = Math.max(0, Math.min(1, w));
+      $(id).style.flexBasis = (v * 100) + "%";
+      return v;
+    }
+    var pv = band("barPerson", pShare), gv = band("barGeo", gShare), cv = band("barCompany", cShare);
+    $("barPerson").textContent = pct(pv);
+    $("barGeo").textContent = gv > 0.06 ? (gUp ? "+" : "\u2212") + pct(gv) : "";
+    $("barCompany").textContent = pct(cv);
+
+    // The coefficient box is editable on purpose, so it can disagree with the
+    // country next to it. Say so, rather than letting the label read as a lie.
+    var selC = COUNTRIES.filter(function (x) { return x.code === $("country").value; })[0];
+    $("coefcustom").textContent =
+      selC && Math.abs((Number($("coef").value) || 0) - selC.coef) > 0.001
+        ? (d.coefCustom || T.en.coefCustom) : "";
 
     var key = $("splitkey");
     key.textContent = "";
@@ -1225,7 +1250,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     $("figShare").textContent = work === "internal"
       ? pct(lv.share / LEVELS[0].share) : pct(lv.share);
     $("t-f-margin").textContent = work === "internal" ? d.fSupport : d.fMargin;
-    $("figMargin").textContent = work === "internal" ? pct(supportShare) : pct(1 - lv.share);
+    // The rule's share per level is already shown in the levels table; this panel
+    // describes THIS calculation, so it reports what is actually left over.
+    $("figMargin").textContent = work === "internal" ? pct(supportShare) : pct(cv);
     $("figPay").innerHTML = eur(pay) + " <small>/h</small>";
     $("t-f-rate").textContent = work === "internal" ? d.fCap : d.fRate;
     $("figRate").innerHTML = work === "internal"
@@ -1265,15 +1292,28 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     } else {
       var raw = Number($("coef").value) || 1;
       var floor = Number($("floorc").value) || 0;
+      // diff is role-only minus paid: positive when geography takes off, negative
+      // when it adds. Only the uplift needs a sign — a reduction already reads
+      // as one in every translation.
+      var up = v.diff < 0;
       p.innerHTML = fill(d.geoOn, {
-        full: eur(v.roleOnly), local: eur(v.pay), diff: eur(v.diff),
-        pctdiff: v.roleOnly > 0 ? pct(v.diff / v.roleOnly) : "—"
+        full: eur(v.roleOnly), local: eur(v.pay),
+        diff: (up ? "+" : "") + eur(Math.abs(v.diff)),
+        pctdiff: v.roleOnly > 0 ? (up ? "+" : "") + pct(Math.abs(v.diff) / v.roleOnly) : "—"
       });
       if (raw < floor) {
         var s = document.createElement("div");
         s.style.marginTop = "7px";
         s.textContent = fill(d.geoFloor, { raw: eur(v.roleOnly * raw) });
         p.appendChild(s);
+      }
+      // Nothing in the model stops a coefficient from paying out more than the
+      // client pays in. Say it plainly instead of drawing a bar that cannot be.
+      if (v.rate > 0 && v.pay > v.rate) {
+        var o = document.createElement("div");
+        o.style.marginTop = "7px";
+        o.textContent = fill(d.geoOver || T.en.geoOver, { rate: eur(v.rate), local: eur(v.pay) });
+        p.appendChild(o);
       }
     }
     host.appendChild(p);

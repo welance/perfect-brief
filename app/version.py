@@ -1,3 +1,3 @@
 """Service release version, kept in sync with publishable artifacts by tests."""
 
-SERVICE_VERSION = "1.10.1"
+SERVICE_VERSION = "1.11.0"
