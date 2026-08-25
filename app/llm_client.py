@@ -153,7 +153,7 @@ def resolve_model(requested: str | None, allow_any: bool = False) -> str:
     """Validate a per-request model against the server's allowlist.
 
     allow_any=True denotes a bring-your-own-key request. It accepts any valid
-    slug unless the operator sets PB_BYOK_MODELS; Welance tiers use that
+    slug unless the operator sets PB_BYOK_MODELS; welance tiers use that
     defense-in-depth allowlist for server-held keys forwarded by p007-16.
     """
     if not requested:
