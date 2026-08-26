@@ -6,6 +6,12 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.11.2] - 2026-08-26
+
+### Fixed
+- The verifier-loop tests now pin their suggestion model explicitly, keeping
+  clean CI environments independent from developer `.env` state.
+
 ## [1.11.1] - 2026-08-26
 
 ### Changed
