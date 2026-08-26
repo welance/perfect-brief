@@ -30,20 +30,29 @@ class Settings(BaseSettings):
     # BYOK is exactly where this matters. A caller brings a key and names a
     # model, and without an allowlist the service will faithfully spend that
     # key on the most expensive tier on OpenRouter.
-    byok_models: str = "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash"
-    # Suggestions are cheaper extraction/generation work than final scoring, so
-    # they run on Flash while the published score runs on Pro. Empty would
-    # inherit the judge, which is the more expensive model — the split is the
-    # whole point, so the default names Flash rather than relying on every tier
-    # remembering to set it.
-    suggest_model: str = "deepseek/deepseek-v4-flash"
+    byok_models: str = (
+        "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash,"
+        "google/gemini-3.5-flash-lite,google/gemini-3.1-flash-lite,"
+        "openai/gpt-5-nano,anthropic/claude-haiku-4.5"
+    )
+    # Suggestions are interactive draft generation, separate from published
+    # scoring. The multilingual production-shaped eval selects Gemini 3.1
+    # Flash-Lite; the authoritative judge remains DeepSeek V4 Pro.
+    suggest_model: str = "google/gemini-3.1-flash-lite"
     # Verifier for the suggestion loop: explicit slug, or "auto" = first
     # allowlist model whose vendor prefix differs from the judge's (falls back
     # to a different same-vendor model, then to the judge itself).
-    # The suggestion loop's verifier: Flash as well. "auto" would reach for a
-    # DIFFERENT vendor than the judge, which is a sensible default in a mixed
-    # allowlist and the wrong one here, where the policy is DeepSeek only.
+    # The all-gaps endpoint still uses this verifier. The interactive
+    # single-rule path only does so when PB_SUGGEST_VERIFY=true.
     verifier_model: str = "deepseek/deepseek-v4-flash"
+    # Single-rule suggestions are editable choices, not an authoritative
+    # verdict. A second LLM pass doubled their latency without even catching a
+    # wrong-language response. Keep it available for conservative deployments;
+    # the scored/published brief still uses the full judge independently.
+    suggest_verify: bool = False
+    # OpenRouter otherwise prioritises price. Suggestions are interactive, so
+    # route them using recent provider latency telemetry.
+    suggest_provider_sort: str = "latency"
     # The judge that produces a published score. DeepSeek V4 Pro by operator
     # policy, and a DeepSeek slug for a second reason: this default is what a
     # caller gets when it supplies a key and names no model, and an
@@ -112,3 +121,17 @@ LOCALE_NAMES = {
     "zh-Hans": "中文（简体）",
     "ja": "日本語",
 }
+
+
+def locale_name(locale: str) -> str | None:
+    """Resolve both shipped base locales and browser region variants.
+
+    The website correctly sends values such as ``it-IT`` and ``de-DE``.
+    Previously those missed this exact-key table and removed the language
+    instruction from the prompt altogether.
+    """
+    clean = locale.strip()
+    if clean in LOCALE_NAMES:
+        return LOCALE_NAMES[clean]
+    base = clean.split("-", 1)[0].lower()
+    return LOCALE_NAMES.get(base)

@@ -84,16 +84,19 @@ determinism guarantee across provider updates — the quotes are the part of
 the trail that never expires.)
 
 Welance uses OpenRouter (`PB_OPENROUTER_API_KEY`). Publish scoring runs on
-`deepseek/deepseek-v4-pro`; suggestion generation and verification run on
-`deepseek/deepseek-v4-flash`. No Welance path selects Sonnet. Self-hosters may
+`deepseek/deepseek-v4-pro`; interactive suggestion generation runs on
+`google/gemini-3.1-flash-lite`. Self-hosters may
 still configure the optional direct-Anthropic adapter, but it is not part of
 the Welance deployment. With OpenRouter, requests may pick a
 `model` from the server's allowlist (`PB_OPENROUTER_MODELS`, exact
 vendor-prefixed slugs, comma-separated); anything else is rejected with 422.
 The resolved model is returned in every score for a reproducible audit trail.
-Suggestion generation may use a cheaper model selected by `PB_SUGGEST_MODEL`;
-Welance runs scoring on DeepSeek V4 Pro and generation plus verification on
-DeepSeek V4 Flash. Suggestion responses already name their verifier model.
+Suggestion generation may use a lower-latency model selected by
+`PB_SUGGEST_MODEL`. Single-rule suggestions are editable human choices and
+default to one generation call; set `PB_SUGGEST_VERIFY=true` to restore a
+second LLM review. The authoritative score and the multi-gap repair loop keep
+their verification behavior. Suggestion responses name their verifier model
+when one ran.
 The service reuses its OpenRouter connection pool and applies separate bounded
 output ceilings (`PB_SUGGEST_MAX_TOKENS`, `PB_SUGGEST_ALL_MAX_TOKENS`, and
 `PB_VERIFIER_MAX_TOKENS`) because short suggestion JSON does not need the

@@ -21,6 +21,9 @@ def llm_on(monkeypatch):
     monkeypatch.setenv("PB_OPENROUTER_API_KEY", "test-key")
     monkeypatch.setenv("PB_OPENROUTER_MODELS", "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash")
     monkeypatch.setenv("PB_VERIFIER_MODEL", "deepseek/deepseek-v4-flash")
+    # Most tests below exercise the optional conservative verifier path. The
+    # interactive production default is covered separately.
+    monkeypatch.setenv("PB_SUGGEST_VERIFY", "true")
 
     async def cache_miss(key):
         return None
@@ -142,6 +145,30 @@ def test_single_rule_suggest_reviews_by_index(monkeypatch):
     assert len(out) == 3
     assert [s.review.accepted for s in out] == [True, True, False]
     assert meta["verifier_model"] == "deepseek/deepseek-v4-flash"
+
+
+def test_single_rule_default_returns_after_generation(monkeypatch):
+    monkeypatch.setenv("PB_SUGGEST_VERIFY", "false")
+    settings.cache_clear()
+    calls = []
+
+    async def stub(prompt, model=None, api_key=None, **kwargs):
+        calls.append(kwargs["purpose"])
+        return json.dumps(
+            [
+                {"label": "State the budget", "text": "Budget is 12000 EUR."},
+                {"label": "Name the deadline", "text": "Deadline is end of October."},
+                {"label": "Name the users", "text": "Bakery managers use it daily."},
+            ]
+        )
+
+    monkeypatch.setattr(scorer.llm_client, "complete", stub)
+    out, meta = asyncio.run(scorer.suggest(BRIEF, "budget-floor", "en-GB", None, None))
+    assert len(out) == 3
+    assert calls == ["suggest"]
+    assert all(item.review is None for item in out)
+    assert meta["verification_ms"] == 0
+    assert meta["verifier_model"] is None
 
 
 def test_single_rule_cache_avoids_both_model_calls(monkeypatch):

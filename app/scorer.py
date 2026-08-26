@@ -26,7 +26,7 @@ from .models import (
     Suggestion,
     VerdictOut,
 )
-from .settings import LOCALE_NAMES, settings
+from .settings import locale_name, settings
 
 log = logging.getLogger("perfect_brief.scorer")
 
@@ -257,20 +257,22 @@ async def _get_suggestion_cache(key: str, enabled: bool) -> tuple[tuple[list[Sug
 async def suggest(
     brief: str, rule_id: str, locale: str, model: str | None = None, api_key: str | None = None
 ) -> tuple[list[Suggestion], dict]:
-    """Single-rule options. One review pass, no retries: the human picks among
-    the options, and a rejected one shown with its objection is informative."""
+    """Single-rule editable options, optionally screened by a second model."""
     rule = _RULES.get(rule_id)
     if rule is None:
         raise KeyError(rule_id)
     suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
-    verifier = llm_client.resolve_verifier_model(suggest_model)
+    verify = settings().suggest_verify
+    verifier = llm_client.resolve_verifier_model(suggest_model) if verify else None
 
-    cache_key = "pb:s2:one:" + ":".join([_VERSION, suggest_model, verifier, _sha(brief), rule_id, locale])
+    cache_key = "pb:s3:one:" + ":".join(
+        [_VERSION, suggest_model, verifier or "unverified", _sha(brief), rule_id, locale]
+    )
     cached, cache_ms = await _get_suggestion_cache(cache_key, not api_key)
     if cached is not None:
         return cached
 
-    prompt = llm.render_suggest_prompt(rule, brief, LOCALE_NAMES.get(locale))
+    prompt = llm.render_suggest_prompt(rule, brief, locale_name(locale))
     started = time.monotonic()
     raw = await llm_client.complete(
         prompt,
@@ -283,7 +285,9 @@ async def suggest(
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
     items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
-    review, verification_ms = await _review_items(items, brief, verifier, api_key)
+    review, verification_ms = (
+        await _review_items(items, brief, verifier, api_key) if verifier else (None, 0)
+    )
 
     out: list[Suggestion] = []
     for i, s in enumerate(opts):
@@ -308,7 +312,7 @@ async def suggest(
         "generation_ms": generation_ms,
         "verification_ms": verification_ms,
     }
-    if not api_key and review is not None:
+    if not api_key:
         await cache.set_json(
             cache_key,
             {"suggestions": [s.model_dump() for s in out], "meta": meta},
@@ -350,7 +354,7 @@ async def suggest_all(
 
     suggest_model = llm_client.resolve_suggest_model(model, allow_any=bool(api_key))
     verifier = llm_client.resolve_verifier_model(suggest_model)
-    locale_name = LOCALE_NAMES.get(locale)
+    language_name = locale_name(locale)
 
     cache_key = "pb:s2:all:" + ":".join(
         [_VERSION, suggest_model, verifier, _sha(brief), ",".join(sorted(r.id for r in subset)), locale]
@@ -370,7 +374,7 @@ async def suggest_all(
     while pending and iterations < 1 + MAX_REVIEW_RETRIES:
         iterations += 1
         last_round = iterations >= 1 + MAX_REVIEW_RETRIES
-        prompt = llm.render_suggest_all_prompt(pending, brief, locale_name, critiques or None)
+        prompt = llm.render_suggest_all_prompt(pending, brief, language_name, critiques or None)
         started = time.monotonic()
         raw = await llm_client.complete(
             prompt,

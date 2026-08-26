@@ -6,6 +6,17 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.11.1] - 2026-08-26
+
+### Changed
+- Interactive single-rule suggestions now return after one generation call;
+  the previous second LLM verifier is available through
+  `PB_SUGGEST_VERIFY=true`. OpenRouter suggestion calls request latency routing.
+- Gemini 3.1 Flash-Lite is the interactive suggestion default after a
+  five-case multilingual comparison; published scoring remains on DeepSeek V4
+  Pro. Regional browser locales such as `it-IT` now resolve to their prompt
+  language instead of silently falling back to unspecified/English output.
+
 ## [1.11.0] - 2026-08-25
 
 ### Added

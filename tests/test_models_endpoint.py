@@ -1,7 +1,7 @@
 """Model allowlist: /v1/models shape and per-request validation."""
 
 from app import llm_client
-from app.settings import Settings
+from app.settings import Settings, locale_name
 
 
 def test_models_endpoint_shape(client):
@@ -54,6 +54,12 @@ def test_suggestions_can_use_a_cheaper_model(monkeypatch):
     monkeypatch.setattr(llm_client, "settings", lambda: stub)
     assert llm_client.default_model() == "deepseek/deepseek-v4-pro"
     assert llm_client.resolve_suggest_model(None) == "deepseek/deepseek-v4-flash"
+
+
+def test_browser_region_locale_resolves_to_prompt_language():
+    assert locale_name("it-IT") == "Italiano"
+    assert locale_name("de-DE") == "Deutsch"
+    assert locale_name("pt-BR") == "Português (Brasil)"
 
 
 def test_byok_header_enables_llm_judge(client, monkeypatch):
