@@ -20,6 +20,7 @@ BRIEF = "Landing page for a Berlin bakery chain. Budget 12000 EUR, deadline Octo
 def llm_on(monkeypatch):
     monkeypatch.setenv("PB_OPENROUTER_API_KEY", "test-key")
     monkeypatch.setenv("PB_OPENROUTER_MODELS", "deepseek/deepseek-v4-pro,deepseek/deepseek-v4-flash")
+    monkeypatch.setenv("PB_SUGGEST_MODEL", "deepseek/deepseek-v4-flash")
     monkeypatch.setenv("PB_VERIFIER_MODEL", "deepseek/deepseek-v4-flash")
     # Most tests below exercise the optional conservative verifier path. The
     # interactive production default is covered separately.
