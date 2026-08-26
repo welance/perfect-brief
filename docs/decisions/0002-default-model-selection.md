@@ -63,3 +63,31 @@ output tokens. These values supersede the old estimate for operational planning
 without rewriting the historical snapshot above. The service returns the
 resolved model, enforces an operator allowlist, and keeps paid-provider spend
 caps as the final cost boundary.
+
+## Addendum — 2026-08-26
+
+Interactive single-rule suggestions are now treated separately from both the
+authoritative judge and the multi-gap repair loop:
+
+- authoritative publish scoring: `deepseek/deepseek-v4-pro`, unchanged;
+- interactive `/v1/suggest`: `google/gemini-3.1-flash-lite`, one generation
+  call, OpenRouter latency routing;
+- `/v1/suggest/all`: retains the screened retry loop and DeepSeek verifier;
+- optional conservative single-rule screening: `PB_SUGGEST_VERIFY=true`.
+
+Reason: the previous DeepSeek Flash path took 63.2s end to end because every
+editable set waited for generation and a second LLM review. That review still
+accepted three English answers requested with `it-IT`; regional locales were
+not resolved by the exact-key locale map. After fixing locale resolution and
+removing the redundant review, a production-shaped Italian comparison measured
+Gemini 3.1 Flash-Lite at 0.96s, Gemini 3.5 Flash-Lite at 1.20s, Claude Haiku 4.5
+at 2.65s and DeepSeek V4 Flash at 8.92s. GPT-5 nano truncated at the configured
+800-token ceiling after 14.48s.
+
+A follow-up five-case Italian/German/English/French/Portuguese sweep measured
+mean totals of 1.19s (Gemini 3.1), 1.16s (Gemini 3.5) and 2.78s (Haiku). All
+returned three parseable answers in the requested language. The 30ms Gemini
+difference is noise; human review selected 3.1 because 3.5 more often invented
+implementation constraints (offline operation, cloud storage, exact photo
+counts). This selection applies only to editable suggestions. It does not
+change the scoring model or deterministic aggregation boundary.

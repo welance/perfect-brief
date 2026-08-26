@@ -212,6 +212,11 @@ async def complete(
             json={
                 "model": use,
                 "max_tokens": ceiling,
+                **(
+                    {"provider": {"sort": cfg.suggest_provider_sort}}
+                    if purpose.startswith("suggest") and cfg.suggest_provider_sort
+                    else {}
+                ),
                 **_sampling_kwargs(use),
                 **_reasoning_kwargs(),
                 "messages": [{"role": "user", "content": prompt}],

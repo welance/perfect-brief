@@ -135,6 +135,13 @@ def test_byok_key_reaches_only_the_provider(
         assert call["url"] == llm_client.OPENROUTER_URL
         assert CANARY not in call["body"], "the key must not ride in the request body"
 
+        payload = json.loads(call["body"])
+        is_suggestion_generation = "You are improving" in call["body"]
+        if is_suggestion_generation:
+            assert payload["provider"] == {"sort": "latency"}
+        else:
+            assert "provider" not in payload
+
     assert_no_leak(r, redis_writes, caplog, capfd)
 
 
