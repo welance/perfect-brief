@@ -344,6 +344,12 @@ test.describe("the public site stays compact", () => {
     await expect(page.locator("html")).toHaveClass(/wl-app/);
     await expect(page.locator(".wl-calc-modes")).toBeVisible();
     await expect(page.locator(".wl-answer-footer")).toBeVisible();
+    await page.locator(".wl-calc-modes").evaluate((el) =>
+      window.scrollTo(0, el.offsetTop + 300));
+    await expect.poll(() => page.locator(".wl-calc-modes").evaluate((el) =>
+      Math.round(el.getBoundingClientRect().top))).toBe(70);
+    await expect.poll(() => page.locator(".wl-calc-steps").evaluate((el) =>
+      Math.round(el.getBoundingClientRect().top))).toBe(116);
   });
 
   test("the way out of the page survives a phone, in every language", async ({ page }) => {
