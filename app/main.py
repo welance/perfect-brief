@@ -1,4 +1,4 @@
-"""briefs.welance.com — the Perfect Brief scoring service.
+"""briefs.welance.com — the Brief Bar scoring service.
 
 Score is how good a brief is; a separate gate is whether it may publish. The
 LLM only judges (server-side, key never leaves the box); code owns every number,
@@ -16,7 +16,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
-from perfect_brief.llm import JudgeUnparsable
+from brief_bar.llm import JudgeUnparsable
 
 from . import cache, llm_client, scorer
 from .llm_client import JudgeTruncated, LLMNotConfigured, ModelNotAllowed
@@ -36,7 +36,7 @@ from .settings import settings
 from .version import SERVICE_VERSION
 
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger("perfect_brief.api")
+log = logging.getLogger("brief_bar.api")
 
 # The one public surface: the same site/ that GitHub Pages publishes.
 # Landing at /, console.html, rules.html, welance.css, animations/.
@@ -60,7 +60,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Perfect Brief scorer",
+    title="Brief Bar scorer",
     version=scorer.version(),
     summary="Score a digital product brief against an open, versioned ruleset.",
     lifespan=lifespan,

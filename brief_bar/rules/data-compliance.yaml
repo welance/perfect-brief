@@ -19,5 +19,5 @@ references:
     title: "GDPR — Reg. (EU) 2016/679"
     locator: "lawful basis, privacy by design"
     url: https://gdpr-info.eu/
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

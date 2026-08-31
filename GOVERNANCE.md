@@ -110,7 +110,7 @@ principle, however good the intention.
 
 The three gestures need one operational piece: time for the community to
 actually show up. So every **rule-change PR** — anything touching
-`perfect_brief/rules/`, `scoring.yaml`, or `fixtures/` — runs on a clock:
+`brief_bar/rules/`, `scoring.yaml`, or `fixtures/` — runs on a clock:
 
 1. **The window.** The PR stays open at least **7 calendar days** from the
    moment it is complete (template filled, corpus green). Nothing merges

@@ -43,5 +43,5 @@ references:
     title: "GDPR — data minimisation (Art. 5)"
     locator: "don't expose personal data you don't need"
     url: https://gdpr-info.eu/art-5-gdpr/
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

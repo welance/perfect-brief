@@ -9,8 +9,8 @@ import os
 import pytest
 import yaml
 
-from perfect_brief import Status, aggregate, judge_all, load_bundled, loader
-from perfect_brief.judge import MockJudge
+from brief_bar import Status, aggregate, judge_all, load_bundled, loader
+from brief_bar.judge import MockJudge
 
 RULES, CFG = load_bundled()
 FIXTURES = sorted(glob.glob(os.path.join(loader.fixtures_dir(), "*.yaml")))

@@ -1,7 +1,7 @@
-# The welance Method, digitalised — Perfect Price · Perfect Team · method page · site-wide i18n
+# The welance Method, digitalised — Price Split · Team Rate · method page · site-wide i18n
 
 **Date:** 2026-07-31 · **Status:** approved design, pre-implementation
-**Owner workstream:** Perfect Price (second workstream, `PLAN-PERFECT-PRICE.md`)
+**Owner workstream:** Price Split (second workstream, `PLAN-PRICING.md`)
 
 ## 1. What this is
 
@@ -11,10 +11,10 @@ design digitalises that process end to end and opens it as a **blueprint** —
 the same move already made for the brief bar. Three public concepts, in
 causal order:
 
-1. **Perfect Brief** — what the work is. (Live: `index.html`, console, rules.)
-2. **Perfect Price** — what it is worth and who gets what part.
+1. **Brief Bar** — what the work is. (Live: `index.html`, console, rules.)
+2. **Price Split** — what it is worth and who gets what part.
    (Concept + calculator landed; this design publishes them properly.)
-3. **Perfect Team** — who does it, where in the world, at one blended rate.
+3. **Team Rate** — who does it, where in the world, at one blended rate.
    (The missing equation. Built now, not WIP.)
 
 The brief remains **the** principal concept; price and team complement it.
@@ -28,10 +28,10 @@ problem. Formulas help decide; humans complete the decision (§8).
 ## 2. Sitemap
 
 ```
-/            The Perfect Brief      (root stays; surgical edits only)
+/            The Brief Bar      (root stays; surgical edits only)
 method.html  The three steps        NEW — the narrative/blueprint page
-price.html   Perfect Price          existing; port onto welance.css
-team.html    Perfect Team           NEW — team calculator
+price.html   Price Split          existing; port onto welance.css
+team.html    Team Rate           NEW — team calculator
 console.html · rules.html           existing
 ```
 
@@ -52,7 +52,7 @@ already include `welance.css`). Pure policy + math, **no DOM**:
 - the team equation (§5);
 - the **formula registry** (§7).
 
-Every constant carries a comment pointing at the `PERFECT-PRICE.md` section
+Every constant carries a comment pointing at the `PRICING.md` section
 that justifies it. One copy = when the collective resolves the five open
 decisions, one file changes and both pages tell the same truth.
 
@@ -67,7 +67,7 @@ unaffected.
 Keep every behaviour (its 5 languages fold into the site i18n of §6, both
 themes, per-mode default part sets, dirty tracking, reset). Own component
 styles remain only where `welance.css` has no equivalent (split bar, coverage
-ladder, parts grid). Breadcrumbs `welance / perfect price`. Acceptance: sits
+ladder, parts grid). Breadcrumbs `welance / price split`. Acceptance: sits
 beside `console.html` without looking foreign; no numeric regression.
 
 ## 5. `team.html` — the missing equation
@@ -93,7 +93,7 @@ team by level; the project as a whole must clear the **welance margin** — the
 named, stated recipe. Inherited, non-negotiable constraints:
 
 a. **CoL differential stays a separate band, own colour**, aggregated at team
-   level too — never silently swallowed into margin (`PERFECT-PRICE.md` §7).
+   level too — never silently swallowed into margin (`PRICING.md` §7).
 b. **No-deal per row**: if at the accepted R any member lands under their own
    rate, the page says so and the engagement does not exist. Nobody is
    compressed to make a margin work (§8 of the concept).
@@ -181,7 +181,7 @@ as someone reading the pages. Everything new must be easy and *pleasant* to
 understand from source:
 
 - `pricing.js` reads top-to-bottom like the concept doc: named constants,
-  each with a one-line reason and a pointer to its `PERFECT-PRICE.md` section;
+  each with a one-line reason and a pointer to its `PRICING.md` section;
   the formula registry is literally the readable list of the N formulas.
 - No minification, no cleverness, no build artefacts. Plain HTML/CSS/JS a
   curious freelancer can view-source and follow.
@@ -222,7 +222,7 @@ d. Console example prompts localised (§6) so the real judge is exercised in
 5. Judge multilingual: prompt line + `llm-only` fixtures + console limit note
 6. Per-language native-speaker gate before each language ships
 
-Existing Phases 3–4 of `PLAN-PERFECT-PRICE.md` (the €50/h cap decision, CoL
+Existing Phases 3–4 of `PLAN-PRICING.md` (the €50/h cap decision, CoL
 sources, Urdu review, five open decisions, permalink idea) remain valid and
 queue after these.
 
@@ -244,14 +244,14 @@ queue after these.
   more).
 - No individual compensation data, no names: `site/` is public; the
   identified analysis stays in the private cockpit. (Provenance rule of
-  `PLAN-PERFECT-PRICE.md` — unchanged.)
-- "Perfect Team" here is the *equation and page*, not matching/marketplace
+  `PLAN-PRICING.md` — unchanged.)
+- "Team Rate" here is the *equation and page*, not matching/marketplace
   features; the Directory remains the noticeboard.
 
 ## 13. Decisions taken in this design (with who took them)
 
 - Brief stays the root; the concept page is `method.html` — Enrico, 2026-07-31
-- Perfect Team built now, not WIP — Enrico
+- Team Rate built now, not WIP — Enrico
 - One shared engine (`pricing.js`), because the model is a blueprint being
   opened to the world — Enrico
 - Whole-site language switch, always visible, 8 languages incl. Spanish

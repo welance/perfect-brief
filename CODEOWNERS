@@ -2,6 +2,6 @@
 # Maintainership is earned through a track record of good PRs — not appointed.
 # And the whole ruleset is OSS and forkable: if the bar is ever unfair, fork it.
 
-/rules/        @welance/perfect-brief-maintainers
-/scoring.yaml  @welance/perfect-brief-maintainers
-/fixtures/     @welance/perfect-brief-maintainers
+/rules/        @welance/brief-bar-maintainers
+/scoring.yaml  @welance/brief-bar-maintainers
+/fixtures/     @welance/brief-bar-maintainers

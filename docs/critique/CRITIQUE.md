@@ -16,7 +16,7 @@ the reason the bar must be open.
 
 ## 0. Decisions already taken
 
-1. **Rename.** "Perfect Brief" → **The Brief Bar** (`brief-bar`). The copy
+1. **Rename.** "Brief Bar" → **The Brief Bar** (`brief-bar`). The copy
    already calls it "the bar" everywhere; the domain (`briefs.welance.com`)
    never said "perfect". The provocation lives in the gesture — publishing
    your own bar — not in the name. "perfect" survives only in the changelog.
@@ -323,7 +323,7 @@ Three sentences that must appear where the objections land:
 
 ## 5. Surface mapping — every change, both repos
 
-### 5.1 This repo (perfect-brief-service → `brief-bar`)
+### 5.1 This repo (brief-bar-service → `brief-bar`)
 
 | ID | Change | Files |
 |----|--------|-------|
@@ -333,8 +333,8 @@ Three sentences that must appear where the objections land:
 | **PB-4** | data.html truth fixes: "never stored" → "never stored beyond the 24h verdict cache (short verbatim quotes included; `no_cache: true` opts out)"; disclose IP counters + CDN request (or self-host lottie); add the four missing promises (no mining, no training, no sales contact from briefs, log retention period); three-options-by-trust framing for BYOK | `site/data.html`, `site/security.html`, `site/index.html:371` |
 | **PB-5** | **OPERATOR-COVENANT.md** + covenant section on site. Testable where possible: extend the leak-canary pattern — a test asserting brief bodies never reach logs; name the untestable limit plainly (we run the DB), security.html-style | new file, `site/data.html`, `tests/` |
 | **PB-6** | GOVERNANCE.md: fix stale 75/40 bands + severity caps (now 45/85 + gate); preamble "governance exists for the governed"; declare the two rule classes (quality = debatable; `context: directory` = welance policy, labeled, not up for vote) | `GOVERNANCE.md` |
-| **PB-7** | Deterministic pre-checks for `budget-floor`, `clear-title`, `anonymised` (parse/regex/NER first, LLM fallback on ambiguity); fixtures move in the same commit | `perfect_brief/judge.py`, `rules/*.yaml`, `fixtures/` |
-| **PB-8** | Adversarial fixtures: prompt-injection briefs, published as "try to break the judge" | `perfect_brief/fixtures/adversarial/` |
+| **PB-7** | Deterministic pre-checks for `budget-floor`, `clear-title`, `anonymised` (parse/regex/NER first, LLM fallback on ambiguity); fixtures move in the same commit | `brief_bar/judge.py`, `rules/*.yaml`, `fixtures/` |
+| **PB-8** | Adversarial fixtures: prompt-injection briefs, published as "try to break the judge" | `brief_bar/fixtures/adversarial/` |
 | **PB-9** | Kappa study: 3 reviewers × 50 archive briefs × 14 rules; per-rule kappa on rules.html; rewrite low-kappa rules | new `docs/validity/`, `site/rules.html` |
 | **PB-10** | Validity study: score the 2012–2026 archive, correlate with outcomes; publish either result; 20/80 restated as the hypothesis under test; E5 self-scoring page | `docs/validity/`, `site/` |
 | **PB-11** | Console: label mock = "draft check — like a linter" / LLM = "official verdict — like CI"; wire live mode through this server (already planned in README) | `site/console.html`, `site/code.js` |

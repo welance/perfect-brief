@@ -32,7 +32,7 @@ lint:
 fmt:
 	ruff check --fix . && ruff format .
 typecheck:
-	mypy app perfect_brief
+	mypy app brief_bar
 
 health:
 	curl -s localhost:8000/v1/healthz | python -m json.tool

@@ -5,7 +5,7 @@ languages must reach the SAME gate decision and a score within TOLERANCE of
 the English reference — judged live by the real LLM judge, temperature 0.
 
 Not part of offline CI (`make test`): needs PB_ANTHROPIC_API_KEY. Run with
-`make test-llm-multilingual`. See perfect_brief/fixtures/multilingual/README.md.
+`make test-llm-multilingual`. See brief_bar/fixtures/multilingual/README.md.
 """
 
 import glob
@@ -14,7 +14,7 @@ import os
 import pytest
 import yaml
 
-from perfect_brief import aggregate, llm, load_bundled, loader
+from brief_bar import aggregate, llm, load_bundled, loader
 
 pytestmark = pytest.mark.skipif(
     not os.environ.get("PB_ANTHROPIC_API_KEY"),

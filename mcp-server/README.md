@@ -1,4 +1,4 @@
-# perfect-brief-mcp
+# brief-bar-mcp
 
 An MCP server that gives your assistant a bar it cannot bend.
 
@@ -11,9 +11,9 @@ refuse publication outright, which no amount of good prose overturns.
 ```json
 {
   "mcpServers": {
-    "perfect-brief": {
+    "brief-bar": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "perfect-brief-mcp"]
+      "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "brief-bar-mcp"]
     }
   }
 }
@@ -21,7 +21,7 @@ refuse publication outright, which no amount of good prose overturns.
 
 Works with Claude Desktop, Claude Code, Cursor, or anything that speaks MCP.
 Nothing to install: `uvx` fetches and runs it. Prefer `pipx`? `pipx run --spec
-'git+https://github.com/welance/perfect-brief#subdirectory=mcp-server' perfect-brief-mcp`.
+'git+https://github.com/welance/perfect-brief#subdirectory=mcp-server' brief-bar-mcp`.
 
 ## What your assistant gets
 

@@ -20,5 +20,5 @@ references:
     title: "Jobs to be Done"
     locator: "frame the need before the solution"
     url: https://en.wikipedia.org/wiki/Outcome-Driven_Innovation
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

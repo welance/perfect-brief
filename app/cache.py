@@ -16,7 +16,7 @@ import redis.asyncio as aioredis
 
 from .settings import settings
 
-log = logging.getLogger("perfect_brief.cache")
+log = logging.getLogger("brief_bar.cache")
 
 _redis: aioredis.Redis | None = None
 _connect_lock: asyncio.Lock | None = None

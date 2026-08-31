@@ -2,16 +2,24 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Price Split · the split calculator — welance</title>
 <meta name="description" content="How much of the client rate goes to the independent — welance's split rule as a calculator anyone can use and check.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
 <link rel="stylesheet" href="welance.css">
 <script src="pricing.js"></script>
 <script src="splitbar.js"></script>
+<script src="mobile.js"></script>
 <script src="i18n.js"></script>
 <script src="i18n/de.js"></script>
 <script src="i18n/it.js"></script>
@@ -48,8 +56,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) 72px; }
-  .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
+  .wrap > header { padding: var(--sp-6) 0 var(--sp-5); border-bottom: 2px solid var(--ink); margin-bottom: var(--sp-7); }
 
   /* Directory DNA is square */
   .card, .splitbar, .formula, .growth li, .verdict, .warn, .addbtn,
@@ -77,14 +85,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
   .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
   .lang[aria-pressed="true"] { background: var(--company); border-color: var(--company); color: #fff; }
-  .lede { margin: 0 0 28px; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
+  .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
-  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
+  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: var(--sp-6); align-items: start; }
   @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
 
   .card { background: var(--surface); border: 1px solid var(--line);
-    border-radius: 0; padding: 22px; box-shadow: var(--shadow); }
-  .card + .card { margin-top: 20px; }
+    border-radius: 0; padding: var(--sp-5); box-shadow: var(--shadow); }
+  .card + .card { margin-top: var(--sp-5); }
   .card h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
   .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
   .card.quiet { background: transparent; box-shadow: none; border-style: dashed; }
@@ -132,10 +140,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     .comp input[type="text"] { padding: 7px 9px; }
     .comp input[type="number"] { padding: 6px 2px; font-size: 13.5px; }
     .cov { font-size: 12.5px; gap: 4px; }
-    .wrap { padding: 20px 13px 48px; }
+    .wrap { padding: var(--sp-5) 13px var(--sp-8); }
     .card { padding: 16px 14px; }
-    .card + .card { margin-top: 14px; }
-    .cols { gap: 16px; }
+    .card + .card { margin-top: var(--sp-4); }
+    .cols { gap: var(--sp-4); }
     .rolebar { gap: 10px; margin-bottom: 15px; }
     .subnote { font-size: 12px; color: var(--ink-3); }
   .field label { font-size: 10px; letter-spacing: .07em; }
@@ -233,8 +241,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .levels-ref tr:last-child td { border-bottom: 0; }
   .tablewrap { overflow-x: auto; }
 
-  .wrap footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
-  .wrap footer p { margin: 0 0 9px; }
+  .wrap footer { margin-top: var(--sp-8); color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  .wrap footer p { margin: 0 0 var(--sp-3); }
   .wrap footer b { color: var(--ink-2); }
 
   [dir="rtl"] .growth li { border-inline-start: 3px solid var(--person); }
@@ -243,7 +251,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
 <div id="site-header"></div>
-<p class="wl-crumb"><span class="dot"></span><span class="cur">perfect price</span></p>
+<p class="wl-crumb"><span class="dot"></span><span class="cur">price split</span></p>
 <div class="wrap">
   
 
@@ -279,9 +287,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
             <input type="text" id="rolename">
             <span class="subnote" id="t-providersub"></span></div>
           <div class="field" id="fld-rate"><label id="t-l-rate" for="rate"></label>
-            <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
+            <input type="number" inputmode="decimal" enterkeyhint="done" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
           <div class="field" id="fld-cap"><label id="t-l-cap" for="capr"></label>
-            <input type="number" id="capr" class="w-rate" value="50" min="0" step="0.5"></div>
+            <input type="number" inputmode="decimal" enterkeyhint="done" id="capr" class="w-rate" value="50" min="0" step="0.5"></div>
         </div>
         <div class="modes" style="margin-bottom:10px">
           <button class="mode" id="w-client" type="button" aria-pressed="true"></button>
@@ -309,10 +317,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <div class="field grow"><label id="t-l-country" for="country"></label>
             <select id="country"></select></div>
           <div class="field"><label id="t-l-coef" for="coef"></label>
-            <input type="number" id="coef" class="w-rate" min="0.1" max="2" step="0.01">
+            <input type="number" inputmode="decimal" enterkeyhint="done" id="coef" class="w-rate" min="0.1" max="2" step="0.01">
             <span class="subnote" id="coefcustom"></span></div>
           <div class="field"><label id="t-l-floor" for="floorc"></label>
-            <input type="number" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0.5"></div>
+            <input type="number" inputmode="decimal" enterkeyhint="done" id="floorc" class="w-rate" min="0" max="1" step="0.05" value="0.5"></div>
         </div>
         <div id="geonote"></div>
       </section>
@@ -323,7 +331,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           <p class="hint" id="t-checkhint"></p>
           <div class="rolebar">
             <div class="field"><label id="t-l-payout" for="payout"></label>
-              <input type="number" id="payout" class="w-rate" value="50" min="0" step="0.5"></div>
+              <input type="number" inputmode="decimal" enterkeyhint="done" id="payout" class="w-rate" value="50" min="0" step="0.5"></div>
           </div>
           <div id="verdict"></div>
         </details>
@@ -336,7 +344,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       </section>
     </div>
 
-    <div class="sticky">
+    <div class="sticky" data-dock="figPay,figShare">
       <section class="card">
         <h2 id="t-resulth" style="margin-bottom:14px"></h2>
         <div class="levelbadge"><span class="chip"></span><span id="levelname">—</span></div>

@@ -9,7 +9,28 @@ import { test, expect } from "@playwright/test";
 
 const eur = (s) => Number(String(s).replace(/[^\d.,-]/g, "").replace(",", "."));
 
-test.describe("perfect price", () => {
+async function revealInput(page, selector) {
+  const target = page.locator(selector);
+  if (await target.isVisible()) return target;
+  const index = await target.evaluate((el) =>
+    [...document.querySelectorAll(".wl-calc-inputs > section.card")]
+      .indexOf(el.closest("section.card")));
+  for (let i = 0; i < index; i++) await page.locator(".wl-calc-nav button").last().click();
+  await expect(target).toBeVisible();
+  return target;
+}
+
+async function showAnswer(page) {
+  const answer = page.locator(".wl-calc-modes button").last();
+  if (await answer.count()) await answer.click();
+}
+
+async function showEdit(page) {
+  const edit = page.locator(".wl-calc-modes button").first();
+  if (await edit.count()) await edit.click();
+}
+
+test.describe("price split", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/price.html");
     await page.evaluate(() => localStorage.clear());
@@ -34,10 +55,11 @@ test.describe("perfect price", () => {
   });
 
   test("the cost-of-living floor binds, and the differential stays its own band", async ({ page }) => {
-    await page.locator("#usegeo").check();
+    await (await revealInput(page, "#usegeo")).check();
     // defaults: WITH SUPPORT (share 50%) → €50 role-only; Pakistan 0.28 with a
     // 0.5 floor → the floor wins, so €50 × 0.5 = €25
     await expect(page.locator("#figPay")).toContainText("25.00");
+    await showAnswer(page);
     const geo = page.locator("#barGeo");
     await expect(geo).toBeVisible();
     await expect
@@ -54,7 +76,7 @@ test.describe("perfect price", () => {
     // differential comes out of structure & risk instead of off the person.
     // It used to be written as a negative width — silently ignored, leaving the
     // violet band at whatever size it happened to have last.
-    await page.locator("#usegeo").check();
+    await (await revealInput(page, "#usegeo")).check();
     await page.locator("#country").selectOption("CH");
 
     // defaults: WITH SUPPORT (share 50%) -> EUR 50 role-only, x1.35 -> EUR 67.50
@@ -63,6 +85,7 @@ test.describe("perfect price", () => {
     // the panel reports what is actually left, not the level's nominal 50%
     await expect(page.locator("#figMargin")).toHaveText("33%");
 
+    await showAnswer(page);
     const fills = () => page.evaluate(() => {
       const bar = document.querySelector(".splitbar").getBoundingClientRect().width;
       const sum = ["barPerson", "barGeo", "barCompany"].reduce(
@@ -73,7 +96,9 @@ test.describe("perfect price", () => {
     expect(Math.abs(up.sum - up.bar)).toBeLessThan(4);
 
     // and the band reacts to the field, rather than keeping a stale width
-    await page.locator("#coef").fill("0.7");
+    await showEdit(page);
+    await (await revealInput(page, "#coef")).fill("0.7");
+    await showAnswer(page);
     await expect(page.locator("#barGeo")).toContainText("\u2212");
     const down = await fills();
     expect(Math.abs(down.sum - down.bar)).toBeLessThan(4);
@@ -168,7 +193,7 @@ test.describe("perfect price", () => {
   });
 });
 
-test.describe("perfect team", () => {
+test.describe("team rate", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/team.html?lang=en");
     await page.evaluate(() => localStorage.removeItem("welance-team-calc-v1"));
@@ -205,7 +230,8 @@ test.describe("perfect team", () => {
 
   test("the first check is derived from project size, not chosen twice", async ({ page }) => {
     await expect(page.locator("#checkval")).toHaveText("2 weeks");
-    await page.locator("#projsize").selectOption("s");
+    const size = await revealInput(page, "#projsize");
+    await size.selectOption("s");
     await expect(page.locator("#checkval")).toHaveText("3 days");
     await page.locator("#projsize").selectOption("l");
     await expect(page.locator("#checkval")).toHaveText("1 month");
@@ -216,8 +242,11 @@ test.describe("perfect team", () => {
     const floor = page.locator("#floorc");
     await expect(floor).toContainText("no floor");
     const geoWidth = () => page.locator("#barGeo").evaluate((el) => el.getBoundingClientRect().width);
+    await showAnswer(page);
     expect(await geoWidth()).toBeGreaterThan(1); // a real differential with no floor
-    await floor.selectOption("1"); // full role pay — geography off
+    await showEdit(page);
+    await (await revealInput(page, "#floorc")).selectOption("1"); // full role pay — geography off
+    await showAnswer(page);
     // the bar animates (250ms) — poll rather than catch it mid-transition
     await expect.poll(geoWidth, { timeout: 2000 }).toBeLessThan(1);
     await expect(page.locator("#formula")).not.toContainText("13.36");
@@ -245,7 +274,8 @@ test.describe("perfect team", () => {
   });
 
   test("dragging a boundary moves effort between two roles, never out of the project", async ({ page }) => {
-    await page.locator("#effortbar").scrollIntoViewIfNeeded();
+    await page.locator("#effortbar").evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await page.waitForTimeout(450);
     const bar = await page.locator("#effortbar").boundingBox();
     const grip = await page.locator(".grip").first().boundingBox();
     const y = grip.y + grip.height / 2;

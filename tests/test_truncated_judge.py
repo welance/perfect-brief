@@ -30,7 +30,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from perfect_brief import load_bundled
+from brief_bar import load_bundled
 
 BRIEF = "# Portal\nProblem: bookings by phone. Users: dispatchers. Budget 120000 EUR."
 
@@ -117,11 +117,11 @@ def test_a_complete_answer_still_scores(client, openrouter):
 
 def test_the_ceiling_fits_the_ruleset_this_service_ships():
     """Fourteen verdicts with verbatim quotes, with room for a non-Latin script."""
-    import perfect_brief
+    import brief_bar
     from app.settings import settings
 
     settings.cache_clear()
-    rules, _ = perfect_brief.load_bundled()
+    rules, _ = brief_bar.load_bundled()
     floor = 200 * len(rules)
     assert settings().llm_max_tokens >= floor, (
         f"{len(rules)} rules need room for a quote and a note each; "

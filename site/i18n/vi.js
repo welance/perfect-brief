@@ -202,7 +202,7 @@ WelanceI18n.register("vi", {
     "rules.invp": "<code>decision-owner</code> — brief có nêu tên một người duy nhất chịu trách nhiệm quyết định không? Đó là \"80% đội ngũ\" thuần túy: brief không có chủ thì giậm chân. Chúng tôi cố ý để ngỏ. Hãy thêm nó.",
 
     /* ---------- team.html ---------- */
-    "team.crumb": "perfect team",
+    "team.crumb": "team rate",
     "team.eyebrow": "một đội ngũ, một mức giá",
     "team.h1": "Team Rate",
     "team.lede": "Một đội ngũ đa chức năng, được định giá như định giá một người độc lập. Các vai trò và trọng số mô tả dự án; mỗi vai trò mang cấp độ và nền chi phí riêng. Khách hàng thấy <b>một mức giá gộp duy nhất</b> — không phải một trăm mức khác nhau — biên lợi nhuận thay đổi trong đội theo cấp độ, và toàn dự án đạt một <b>biên</b> được tuyên bố, có tên, ai cũng kiểm tra được.",

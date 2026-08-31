@@ -4,14 +4,14 @@
 
 **Goal:** Every `/v1/suggest[/all]` response is screened by a second model (DeepSeek V4 Flash) that accepts/rejects each suggestion on three criteria (anchored, on-rule, actionable), regenerating rejected ones with critiques, max 2 retries.
 
-**Architecture:** Prompt + parser primitives in `perfect_brief/llm.py` (engine, no service deps); loop, sanity screen, caching, and degradation in `app/scorer.py`; verifier-model resolution in `app/llm_client.py`; additive API surface (optional `review`/`verifier_model` per suggestion + `X-PB-Screened`/`X-PB-Iterations` response headers — the response stays `list[Suggestion]` so no consumer breaks).
+**Architecture:** Prompt + parser primitives in `brief_bar/llm.py` (engine, no service deps); loop, sanity screen, caching, and degradation in `app/scorer.py`; verifier-model resolution in `app/llm_client.py`; additive API surface (optional `review`/`verifier_model` per suggestion + `X-PB-Screened`/`X-PB-Iterations` response headers — the response stays `list[Suggestion]` so no consumer breaks).
 
 **Tech Stack:** FastAPI, pydantic v2, httpx (OpenRouter), redis (optional), pytest with mock judge (no network).
 
 ## Global Constraints
 
 - The seam invariant: LLM returns verdicts only; deterministic code owns accept/reject, the loop, and every number.
-- `perfect_brief/` stays importable with zero service deps (no fastapi/redis imports).
+- `brief_bar/` stays importable with zero service deps (no fastapi/redis imports).
 - `make test` must stay green offline (mock path needs no network, no keys).
 - Max 2 retries (3 generations total); regenerate only rejected items; keep accepted ones.
 - Verifier failure NEVER fails the request: return unscreened suggestions (`review=None`, header `X-PB-Screened: false`).
@@ -20,10 +20,10 @@
 
 ---
 
-### Task 1: Review prompt + parser (`perfect_brief/llm.py`)
+### Task 1: Review prompt + parser (`brief_bar/llm.py`)
 
 **Files:**
-- Modify: `perfect_brief/llm.py` (append after `parse_suggestions_all`)
+- Modify: `brief_bar/llm.py` (append after `parse_suggestions_all`)
 - Test: `tests/test_review.py` (new)
 
 **Interfaces:**
@@ -34,7 +34,7 @@
 ```python
 """Verifier primitives: prompt rendering and verdict parsing (no network)."""
 
-from perfect_brief import llm
+from brief_bar import llm
 
 
 def test_render_review_prompt_contains_items_and_criteria():
@@ -60,7 +60,7 @@ def test_parse_review_tolerates_fences_and_junk():
 
 - [ ] **Step 2: Run to verify it fails** — `pytest tests/test_review.py -q` → FAIL (`AttributeError: render_review_prompt`)
 
-- [ ] **Step 3: Implement** (append to `perfect_brief/llm.py`)
+- [ ] **Step 3: Implement** (append to `brief_bar/llm.py`)
 
 ```python
 # ---- suggestion review (the verifier of the verifier) ---------------------
@@ -97,14 +97,14 @@ def parse_review(raw: str) -> dict[str, dict]:
 ```
 
 - [ ] **Step 4: Run to verify pass** — `pytest tests/test_review.py -q` → 3 passed
-- [ ] **Step 5: Commit** — `git add perfect_brief/llm.py tests/test_review.py && git commit -m "feat(engine): review prompt + parser for the suggestion verifier"`
+- [ ] **Step 5: Commit** — `git add brief_bar/llm.py tests/test_review.py && git commit -m "feat(engine): review prompt + parser for the suggestion verifier"`
 
 ---
 
 ### Task 2: Critique-fed regeneration on the suggest prompts
 
 **Files:**
-- Modify: `perfect_brief/llm.py:90-129` (both render functions gain optional `critiques`)
+- Modify: `brief_bar/llm.py:90-129` (both render functions gain optional `critiques`)
 - Test: append to `tests/test_review.py`
 
 **Interfaces:**
@@ -114,7 +114,7 @@ def parse_review(raw: str) -> dict[str, dict]:
 
 ```python
 def test_suggest_prompts_carry_critiques():
-    from perfect_brief import load_bundled
+    from brief_bar import load_bundled
     rules, _ = load_bundled()
     rule = rules["budget-floor"]
     p1 = llm.render_suggest_prompt(rule, "brief text", critique="too generic, name the currency")

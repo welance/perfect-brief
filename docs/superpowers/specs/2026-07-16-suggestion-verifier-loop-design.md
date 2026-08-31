@@ -41,7 +41,7 @@ while (!acceptable) {
 Respecting the seam invariant (LLM returns verdicts; deterministic code owns
 every decision):
 
-- **`perfect_brief/llm.py`** (engine, zero service deps):
+- **`brief_bar/llm.py`** (engine, zero service deps):
   - `render_review_prompt(rules_subset, brief, suggestions, locale)` — asks
     the verifier to accept/reject each suggestion per the three criteria.
   - `parse_review(raw)` → `{rule_id: {"accepted": bool, "reason": str}}`.

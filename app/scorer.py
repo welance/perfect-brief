@@ -13,10 +13,10 @@ import json
 import logging
 import time
 
-from perfect_brief import aggregate, judge_all, llm, load_bundled, loader
-from perfect_brief.judge import MockJudge
-from perfect_brief.llm import FIXHINT
-from perfect_brief.score import Status, Verdict
+from brief_bar import aggregate, judge_all, llm, load_bundled, loader
+from brief_bar.judge import MockJudge
+from brief_bar.llm import FIXHINT
+from brief_bar.score import Status, Verdict
 
 from . import cache, llm_client
 from .models import (
@@ -28,11 +28,11 @@ from .models import (
 )
 from .settings import locale_name, settings
 
-log = logging.getLogger("perfect_brief.scorer")
+log = logging.getLogger("brief_bar.scorer")
 
 _RULES, _CFG = load_bundled()
 _VERSION = loader.ruleset_version()
-_ENGINE = f"perfect-brief@{_VERSION}"
+_ENGINE = f"brief-bar@{_VERSION}"
 
 
 def rules():

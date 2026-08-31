@@ -15,7 +15,7 @@ publishing details.
 ## Scope
 
 - The service (`app/`): API endpoints, rate limiting, CORS, caching.
-- The engine (`perfect_brief/`): the judge seam — the model must never see
+- The engine (`brief_bar/`): the judge seam — the model must never see
   weights or decide the number; anything that lets model output touch the
   score, the gate, or the decision directly is a vulnerability here, not a
   feature request.

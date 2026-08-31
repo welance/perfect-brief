@@ -20,5 +20,5 @@ references:
     title: "Cross-functional team / RACI"
     locator: "name the roles the work needs"
     url: https://en.wikipedia.org/wiki/Responsibility_assignment_matrix
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 1

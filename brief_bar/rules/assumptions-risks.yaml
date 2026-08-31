@@ -18,5 +18,5 @@ references:
     title: "ISO 31000"
     locator: "identify risks early"
     url: https://www.iso.org/iso-31000-risk-management.html
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

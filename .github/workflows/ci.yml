@@ -12,6 +12,6 @@ jobs:
       - name: lint
         run: ruff check .
       - name: types
-        run: mypy app perfect_brief
+        run: mypy app brief_bar
       - name: fixture corpus + api (mock judge, deterministic)
         run: pytest

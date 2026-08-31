@@ -21,5 +21,5 @@ references:
     title: "Design brief — names itself up front"
     locator: "a brief leads with a clear subject"
     url: https://en.wikipedia.org/wiki/Design_brief
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 1

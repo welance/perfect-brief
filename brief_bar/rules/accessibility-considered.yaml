@@ -23,5 +23,5 @@ references:
     title: "EN 301 549 / AgID"
     locator: "EU & Italian public-sector duty"
     url: https://www.agid.gov.it/it/design-servizi/accessibilita
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

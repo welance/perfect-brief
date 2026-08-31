@@ -2,16 +2,24 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Team Rate · one team, one rate — welance</title>
 <meta name="description" content="A cross-functional team as one calculation: roles, weights, levels and cost of living in — one blended client rate, four visible bands and a named margin out.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
 <link rel="stylesheet" href="welance.css">
 <script src="pricing.js"></script>
 <script src="splitbar.js"></script>
+<script src="mobile.js"></script>
 <script src="i18n.js"></script>
 <script src="i18n/de.js"></script>
 <script src="i18n/it.js"></script>
@@ -45,8 +53,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-family: var(--disp); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) 72px; }
-  .wrap > header { padding: 20px 0 18px; border-bottom: 2px solid var(--ink); margin-bottom: 24px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
+  .wrap > header { padding: var(--sp-6) 0 var(--sp-5); border-bottom: 2px solid var(--ink); margin-bottom: var(--sp-7); }
   .lede { margin: 0; color: var(--ink-2); max-width: 66ch; font-size: 16.5px; }
 
   .head-grid { display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; }
@@ -64,13 +72,13 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     background: var(--surface); color: var(--ink-2); border: 1px dashed var(--line-strong); }
   .lang.reset:hover { color: var(--person-ink); border-color: var(--person-ink); }
 
-  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: 26px; align-items: start; }
+  .cols { display: grid; grid-template-columns: minmax(0,1.32fr) minmax(0,1fr); gap: var(--sp-6); align-items: start; }
   @media (max-width: 920px) { .cols { grid-template-columns: 1fr; } }
   .sticky { position: sticky; top: 18px; }
   @media (max-width: 920px) { .sticky { position: static; } }
 
-  .card { background: var(--surface); border: 1px solid var(--line); padding: 22px; }
-  .card + .card { margin-top: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--line); padding: var(--sp-5); }
+  .card + .card { margin-top: var(--sp-5); }
   .card h2 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin: 0 0 4px; }
   .card .hint { margin: 0 0 18px; color: var(--ink-3); font-size: 13.5px; }
 
@@ -169,15 +177,15 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-size: 20px; font-weight: 600; padding: 4px 0 6px; color: var(--person-ink); }
   .checknote { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-2); max-width: 66ch; }
 
-  .wrap footer { margin-top: 34px; color: var(--ink-3); font-size: 13px; max-width: 76ch; }
-  .wrap footer p { margin: 0 0 9px; }
+  .wrap footer { margin-top: var(--sp-8); color: var(--ink-3); font-size: 13px; max-width: 76ch; }
+  .wrap footer p { margin: 0 0 var(--sp-3); }
   .wrap footer b { color: var(--ink-2); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 <div id="site-header"></div>
-<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="team.crumb">perfect team</span></p>
+<p class="wl-crumb"><span class="dot"></span><span class="cur" data-i18n="team.crumb">team rate</span></p>
 <div class="wrap">
   
 
@@ -216,7 +224,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
             <input type="text" id="teamname" value="Team — product rebuild">
             <span class="subnote" data-i18n="team.l.sub">Anonymised by design: roles, never people.</span></div>
           <div class="field"><label for="rate" data-i18n="team.l.rate">Client rate €/h</label>
-            <input type="number" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
+            <input type="number" inputmode="decimal" enterkeyhint="done" id="rate" class="w-rate" value="100" min="0" step="0.5"></div>
           <div class="field"><label for="floorc" data-i18n="team.l.floor">Cost-of-living floor</label>
             <select id="floorc" class="w-floor">
               <option value="0" data-i18n="team.fl0">no floor — pay follows local cost fully</option>
@@ -255,7 +263,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       </section>
     </div>
 
-    <div class="sticky">
+    <div class="sticky" data-dock="figRate,figPeople">
       <section class="card">
         <h2 style="margin-bottom:14px" data-i18n="team.resh">Result</h2>
         <div class="splitbar" aria-label="how the client rate splits">
@@ -404,7 +412,8 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       row.appendChild(co);
 
       var own = document.createElement("input");
-      own.type = "number"; own.min = "0"; own.step = "0.5"; own.value = String(r.own);
+      own.type = "number"; own.inputMode = "decimal"; own.enterKeyHint = "done";
+      own.min = "0"; own.step = "0.5"; own.value = String(r.own);
       own.setAttribute("aria-label", "Own rate €/h");
       own.title = ftip("nodeal");
       // paint(), never render(): render() rebuilds #rows from scratch, which
@@ -503,7 +512,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     $("figPeople").innerHTML = eur(res.payouts) + " <small>" + tt("team.d.blended", "/h blended") + "</small>";
     $("figPeople").title = ftip("team");
     // the margin is ONLY its own band — headroom and the geo
-    // differential are never counted into it (PERFECT-PRICE.md §7, spec §5a)
+    // differential are never counted into it (PRICING.md §7, spec §5a)
     $("figMargin").innerHTML = pct(R > 0 ? res.welanceMargin / R : 0) +
       " <small>· " + tt("team.d.target", "target") + " " + pct(res.marginTarget) + "</small>";
     $("figMargin").title = ftip("margin");

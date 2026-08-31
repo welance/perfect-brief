@@ -1,9 +1,9 @@
-# Perfect Price
+# Price Split
 
 **How welance prices collaborations, and why it works this way.**
 
-A companion to *Perfect Brief*. Where Perfect Brief is about being clear on what
-the work is, Perfect Price is about being clear on what the work is worth and
+A companion to *Brief Bar*. Where Brief Bar is about being clear on what
+the work is, Price Split is about being clear on what the work is worth and
 who gets what part of it.
 
 > **People over Budgets.** A collective is only as honest as its arithmetic. This

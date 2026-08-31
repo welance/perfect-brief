@@ -1,20 +1,20 @@
-# PLAN — Perfect Price
+# PLAN — Price Split
 
 > **Superseded 2026-08-01** by
-> `docs/superpowers/plans/2026-07-31-perfect-method-price-team.md`
-> (spec: `docs/superpowers/specs/2026-07-31-perfect-method-price-team-design.md`),
+> `docs/superpowers/plans/2026-07-31-welance-method-price-team.md`
+> (spec: `docs/superpowers/specs/2026-07-31-welance-method-price-team-design.md`),
 > which executed Phases 0–2 of this plan and extended them: shared engine in
 > `site/pricing.js`, `team.html`, `method.html`, site-wide i18n (8 languages),
 > multilingual judge guarantee. Phases 3–4 below (the €50/h cap decision, CoL
 > real sources, native-speaker reviews — now one per language, the five open
 > decisions, the permalink idea) are **still owed** and queue after it.
 
-**Goal.** Publish **Perfect Price** as the second public surface of this project,
-beside *The Perfect Brief*: a page explaining how welance prices collaborations,
+**Goal.** Publish **Price Split** as the second public surface of this project,
+beside *The Brief Bar*: a page explaining how welance prices collaborations,
 with a calculator anyone can use and check.
 
-Perfect Brief is about being clear on **what the work is**.
-Perfect Price is about being clear on **what it is worth, and who gets what part**.
+Brief Bar is about being clear on **what the work is**.
+Price Split is about being clear on **what it is worth, and who gets what part**.
 
 Framing, in Enrico's words: sustainable *in human terms* — not maximising
 profit, but maximising transparency and clarity between people. **People over
@@ -27,7 +27,7 @@ Do that one first if both are open; nothing here blocks it.
 
 | Path | What it is | State |
 |---|---|---|
-| `docs/perfect-price/PERFECT-PRICE.md` | The whole concept: the rule, the reasoning behind every choice, what was rejected and why, five open decisions, implementation notes | Complete, written to be published |
+| `docs/pricing/PRICING.md` | The whole concept: the rule, the reasoning behind every choice, what was rejected and why, five open decisions, implementation notes | Complete, written to be published |
 | `site/price.html` | The calculator. Self-contained, no build step, no external requests | Works, **not yet styled to `welance.css`** |
 
 Both are **fully anonymised** — no names, no individual compensation. That is
@@ -47,14 +47,14 @@ share = 30% + 0.4 × coverage        (the three levels are one line, sampled)
 
 Coverage comes from decomposing a role into 2–5 **parts**, each scored
 full/partial/none by the independent *and* by the most role-adjacent senior
-member. Read `PERFECT-PRICE.md` before changing any of it — every constant has a
+member. Read `PRICING.md` before changing any of it — every constant has a
 reason recorded there.
 
 ---
 
 ## Phase 0 — Read (no changes)
 
-1. `docs/perfect-price/PERFECT-PRICE.md`, all of it. Especially §10 (open
+1. `docs/pricing/PRICING.md`, all of it. Especially §10 (open
    decisions) and §12 (what was rejected and why) — the second exists so
    settled questions do not get reopened.
 2. Open `site/price.html` in a browser. Switch work type, change coverage,
@@ -74,7 +74,7 @@ reason recorded there.
    ladder, the parts grid).
 2. Keep every behaviour: five languages incl. Urdu RTL, per-mode default part
    sets, dirty tracking in `localStorage`, reset, both themes.
-3. Add breadcrumbs matching the other pages (`welance / perfect price / …`).
+3. Add breadcrumbs matching the other pages (`welance / price split / …`).
 4. **Surgical edits only** to `index.html` — add `price.html` to the nav and
    footer links. Do not rewrite the page.
 
@@ -83,7 +83,7 @@ nothing in the calculator regressed.
 
 ## Phase 2 — The explanatory page
 
-`PERFECT-PRICE.md` is the source. `rules.html` is the precedent for turning long
+`PRICING.md` is the source. `rules.html` is the precedent for turning long
 reasoning into a page.
 
 Lead with the problem, not the formula: a rule nobody can compute is a rule

@@ -3,7 +3,7 @@
 services:
   api:
     build: .
-    image: welance/perfect-brief:1.11.2
+    image: welance/brief-bar:1.12.0
     env_file: .env
     environment:
       PB_REDIS_URL: redis://redis:6379/0

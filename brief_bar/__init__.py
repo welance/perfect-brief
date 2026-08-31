@@ -1,10 +1,10 @@
-"""perfect_brief — the open ruleset + deterministic engine.
+"""brief_bar — the open ruleset + deterministic engine.
 
 The scoring half (this package) is decoupled from the LLM half by one seam:
 a judge returns a per-rule verdict; code owns the weighting, the gate, and the
 decision. Same verdicts + same ruleset_version -> identical output.
 
-    from perfect_brief import load_bundled, score
+    from brief_bar import load_bundled, score
     rules, cfg = load_bundled()
     breakdown, verdicts = score("my brief...", rules, cfg, MockJudge())
 """

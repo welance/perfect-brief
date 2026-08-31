@@ -16,7 +16,7 @@ family (`p007-16-welance-website/public/animations/`).
 2. **All pages** — `index.html`, `rules.html`, and both console copies
    (`site/console.html`, `app/static/index.html`, kept in sync).
 3. **Real Lottie on the landing** — hand-authored
-   `site/animations/the-perfect-brief.json`, played with lottie-web (CDN,
+   `site/animations/the-brief-bar.json`, played with lottie-web (CDN,
    deferred), current CSS stroke-draw SVG kept as no-JS / reduced-motion
    fallback. File stays copy-ready for the welance-website animations folder.
 
@@ -51,14 +51,14 @@ family (`p007-16-welance-website/public/animations/`).
 
 - Header: welance asterisk+wordmark SVG copied verbatim from Directory
   `components/shared.jsx` (stroke-draw + glyph-stagger animation CSS from
-  Directory `styles.css`), followed by `/ perfect brief` in brand-slash
+  Directory `styles.css`), followed by `/ brief bar` in brand-slash
   style. Logo links to welance.com. "built for welance/Directory" directly
   beneath.
 - Hero CTA row keeps the octocat button with the full repo URL, restyled
   primary. Footer GitHub link stays.
 - `rules.html` + consoles get the same slim branded header (static logo).
 
-## Lottie: `site/animations/the-perfect-brief.json`
+## Lottie: `site/animations/the-brief-bar.json`
 
 600×600, 30fps, ~180 frames, shape layers only, transparent bg. Narrative:
 sheet draws in → brief lines type on → yellow highlight sweep → coral score

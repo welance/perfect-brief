@@ -2,15 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Publish Perfect Price properly, build Perfect Team (the missing
+**Goal:** Publish Price Split properly, build Team Rate (the missing
 equation) and the method.html narrative page, and make the whole site speak
 8 languages — per the approved spec
-`docs/superpowers/specs/2026-07-31-perfect-method-price-team-design.md`.
+`docs/superpowers/specs/2026-07-31-welance-method-price-team-design.md`.
 
 **Architecture:** One shared, dependency-free engine (`site/pricing.js`) owns
 all pricing policy/math and the formula registry; `price.html` and `team.html`
 are thin UIs over it. `site/i18n.js` + per-language dictionaries own every
-string on every page. The brief engine (`perfect_brief/`) is untouched except
+string on every page. The brief engine (`brief_bar/`) is untouched except
 one prompt line and new llm-only fixtures.
 
 **Tech Stack:** Plain HTML/CSS/JS, no build step, no external requests.
@@ -19,12 +19,12 @@ one prompt line and new llm-only fixtures.
 ## Global Constraints
 
 - `site/` is public and fully anonymised: **no names, no individual
-  compensation data, ever** (PLAN-PERFECT-PRICE.md provenance rule).
+  compensation data, ever** (PLAN-PRICING.md provenance rule).
 - **No build step, no external requests** from site pages (existing Lottie
   CDN in index.html is the only grandfathered exception).
 - **Surgical edits only** to `index.html` and `console.html` — never rewrite.
 - The source is a public surface (spec §8b): named constants with a one-line
-  reason + pointer to `docs/perfect-price/PERFECT-PRICE.md` section; comments
+  reason + pointer to `docs/pricing/PRICING.md` section; comments
   explain *why*, not *what*; no minification, no cleverness.
 - Voice (CLAUDE.md): modest but professional, sincere, no hype words.
   `site/index.html` is the reference.
@@ -86,8 +86,8 @@ one prompt line and new llm-only fixtures.
     `score`, `gate`, `coverage`, `share`, `margin`, `col`, `nodeal`, `team`;
     `formula` is the human-readable one-liner (e.g.
     `"share = 30% + 0.4 × coverage"`), `plain` one sentence, `source` the
-    doc section (e.g. `"PERFECT-PRICE.md §3"`; score/gate point at
-    `perfect_brief/scoring.yaml`). `n` = 1-based index;
+    doc section (e.g. `"PRICING.md §3"`; score/gate point at
+    `brief_bar/scoring.yaml`). `n` = 1-based index;
     **pages must derive the count from `FORMULAS.length`, never hardcode 8.**
 
 - [ ] **Step 1: Write the failing test**
@@ -173,7 +173,7 @@ Structure (readable top-to-bottom like the concept doc — spec §8b):
 
 ```js
 /* welance pricing — the whole model in one readable file.
- * Every constant has a reason, recorded in docs/perfect-price/PERFECT-PRICE.md;
+ * Every constant has a reason, recorded in docs/pricing/PRICING.md;
  * the section is cited next to each. If you disagree with a number: find it,
  * read its section, open a PR against it. That is the point of this file.
  * No DOM, no dependencies. price.html and team.html are UIs over this. */
@@ -206,13 +206,13 @@ Structure (readable top-to-bottom like the concept doc — spec §8b):
 
   // The N formulas. Pages derive N from FORMULAS.length — never hardcode it.
   var FORMULAS = [
-    { id: "score",    n: 1, name: "The score",        formula: "score = Σ weightᵢ × verdictᵢ  (weights sum to 100)", plain: "How good a brief is: a weighted average over public, versioned rules.", source: "perfect_brief/scoring.yaml" },
-    { id: "gate",     n: 2, name: "The gate",         formula: "publish ⇔ every hard requirement holds",             plain: "Whether a brief may publish at all — no average can paper over a hard miss.", source: "perfect_brief/scoring.yaml" },
-    { id: "coverage", n: 3, name: "Coverage",         formula: "coverage = Σ wᵢ × agreedᵢ / Σ wᵢ",                   plain: "How much of a role someone covers, part by part, agreed by both views.", source: "PERFECT-PRICE.md §4" },
-    { id: "share",    n: 4, name: "The share",        formula: "share = 30% + 0.4 × coverage",                       plain: "The slice of the client rate that goes to the person — it follows from coverage, nothing else.", source: "PERFECT-PRICE.md §3" },
-    { id: "margin",   n: 5, name: "The margin rule",  formula: "(R − payout) / R ≥ m(level)",                        plain: "What the collective retains, priced as the risk it actually carries at that level.", source: "PERFECT-PRICE.md §3" },
-    { id: "col",      n: 6, name: "Cost of living",   formula: "payout_local = payout_role × max(coeff, floor)",     plain: "A stated, floored geographic adjustment — always shown as its own band, never hidden in margin.", source: "PERFECT-PRICE.md §7" },
-    { id: "nodeal",   n: 7, name: "No-deal",          formula: "client < payout/(1−m) → the engagement does not happen", plain: "Nobody is squeezed below their own rate to make a margin work.", source: "PERFECT-PRICE.md §8" },
+    { id: "score",    n: 1, name: "The score",        formula: "score = Σ weightᵢ × verdictᵢ  (weights sum to 100)", plain: "How good a brief is: a weighted average over public, versioned rules.", source: "brief_bar/scoring.yaml" },
+    { id: "gate",     n: 2, name: "The gate",         formula: "publish ⇔ every hard requirement holds",             plain: "Whether a brief may publish at all — no average can paper over a hard miss.", source: "brief_bar/scoring.yaml" },
+    { id: "coverage", n: 3, name: "Coverage",         formula: "coverage = Σ wᵢ × agreedᵢ / Σ wᵢ",                   plain: "How much of a role someone covers, part by part, agreed by both views.", source: "PRICING.md §4" },
+    { id: "share",    n: 4, name: "The share",        formula: "share = 30% + 0.4 × coverage",                       plain: "The slice of the client rate that goes to the person — it follows from coverage, nothing else.", source: "PRICING.md §3" },
+    { id: "margin",   n: 5, name: "The margin rule",  formula: "(R − payout) / R ≥ m(level)",                        plain: "What the collective retains, priced as the risk it actually carries at that level.", source: "PRICING.md §3" },
+    { id: "col",      n: 6, name: "Cost of living",   formula: "payout_local = payout_role × max(coeff, floor)",     plain: "A stated, floored geographic adjustment — always shown as its own band, never hidden in margin.", source: "PRICING.md §7" },
+    { id: "nodeal",   n: 7, name: "No-deal",          formula: "client < payout/(1−m) → the engagement does not happen", plain: "Nobody is squeezed below their own rate to make a margin work.", source: "PRICING.md §8" },
     { id: "team",     n: 8, name: "The team equation",formula: "R = payouts + headroom + geo differential + welance margin", plain: "One blended client rate, decomposed into four visible bands that must sum exactly.", source: "spec §5" }
   ];
 
@@ -298,7 +298,7 @@ the precedent for a tool page on the shared sheet). KEEP the component
 styles the sheet has no equivalent for: the split bar, the coverage ladder,
 the parts grid, `.rowflag`, `.fig` panel. Replace the page header with the
 breadcrumb header pattern from `rules.html` (logo svg + `welance /
-perfect price`), copied verbatim and retitled.
+price split`), copied verbatim and retitled.
 
 - [ ] **Step 4: Verify zero numeric regression + behaviours**
 
@@ -331,9 +331,9 @@ git commit -m "site: price.html on welance.css and the shared engine — no nume
 
 Same metaphor as price.html — the "name" is the team's name, the parts are
 roles. Structure (all styling via `welance.css` + the component styles
-ported in Task 2, breadcrumb `welance / perfect team`):
+ported in Task 2, breadcrumb `welance / team rate`):
 
-- Header: title "One team, one rate" (`<h1>Perfect Team<span class="b">_</span></h1>`
+- Header: title "One team, one rate" (`<h1>Team Rate<span class="b">_</span></h1>`
   pattern), lede: the client sees one blended rate, not a hundred; margins
   vary inside the team; the project clears the welance margin — stated,
   named, checkable.
@@ -427,11 +427,11 @@ beats, in this order:
 2. **The three steps** (eyebrow: "the method — three steps"): three cards in
    causal order, each with a stroke-draw ident (same technique as
    index.html's `.pb-ident`, ~6 strokes each) and a link:
-   — **1 · Perfect Brief** → `index.html` — what the work is. The 20% that
+   — **1 · Brief Bar** → `index.html` — what the work is. The 20% that
    decides whether a good team can start well.
-   — **2 · Perfect Price** → `price.html` — what it is worth and who gets
+   — **2 · Price Split** → `price.html` — what it is worth and who gets
    what part, stated so anyone can compute and check the split.
-   — **3 · Perfect Team** → `team.html` — who does it, where in the world,
+   — **3 · Team Rate** → `team.html` — who does it, where in the world,
    at one blended rate the client can actually reason about.
    Each step needs the one before: the price needs the brief's scope; the
    team needs the price's arithmetic. That cascade is the method.
@@ -560,7 +560,7 @@ Surgical placement: inside the existing header flex containers; on
   (verbatim — these are already good), mark `reviewed: true` for the
   migrated price strings' languages only if they were already shipped
   (they were: keep `reviewed: true` for de/it/pt-BR, `false` for ur — the
-  Urdu native review from PLAN-PERFECT-PRICE.md Phase 4 is still owed);
+  Urdu native review from PLAN-PRICING.md Phase 4 is still owed);
   machine-draft the rest of the site's keys; overall file flag
   `reviewed: false` until a native speaker passes over the whole file.
 - `vi.js`, `ar.js`, `es.js`: machine-draft everything, `reviewed: false`.
@@ -599,8 +599,8 @@ git commit -m "site: one language switcher, eight languages, draft-badged until 
 ### Task 7: The judge understands the language — guarantee, not hope
 
 **Files:**
-- Modify: `perfect_brief/llm.py:47-79` (`render_judge_prompt`)
-- Create: `perfect_brief/fixtures/multilingual/README.md`,
+- Modify: `brief_bar/llm.py:47-79` (`render_judge_prompt`)
+- Create: `brief_bar/fixtures/multilingual/README.md`,
   `tests/test_multilingual_llm.py`
 - Modify: `site/console.html` (offline-mock limit note), `Makefile`
 
@@ -625,7 +625,7 @@ green.
 
 Pick the highest-scoring existing fixture brief; translate it into the
 other 7 languages (machine-drafted, same content). Store as
-`perfect_brief/fixtures/multilingual/<lang>.yaml` with the same expected
+`brief_bar/fixtures/multilingual/<lang>.yaml` with the same expected
 gate decision and the English fixture's score as reference.
 `tests/test_multilingual_llm.py`:
 
@@ -665,7 +665,7 @@ multilingual." No false fails: nothing else changes.
 without a key).
 
 ```bash
-git add perfect_brief/llm.py perfect_brief/fixtures/multilingual tests/test_multilingual_llm.py site/console.html Makefile
+git add brief_bar/llm.py brief_bar/fixtures/multilingual tests/test_multilingual_llm.py site/console.html Makefile
 git commit -m "judge: multilingual as a guarantee — prompt line, llm-only fixtures, honest mock"
 ```
 
@@ -674,16 +674,16 @@ git commit -m "judge: multilingual as a guarantee — prompt line, llm-only fixt
 ### Task 8: Supersede the old plan, update CLAUDE.md
 
 **Files:**
-- Modify: `PLAN-PERFECT-PRICE.md` (top note), `CLAUDE.md` (workstream para)
+- Modify: `PLAN-PRICING.md` (top note), `CLAUDE.md` (workstream para)
 
 - [ ] **Step 1: Point the old plan here**
 
-At the top of `PLAN-PERFECT-PRICE.md`, under the title:
+At the top of `PLAN-PRICING.md`, under the title:
 
 ```markdown
 > **Superseded 2026-07-31** by
-> `docs/superpowers/plans/2026-07-31-perfect-method-price-team.md`
-> (spec: `docs/superpowers/specs/2026-07-31-perfect-method-price-team-design.md`).
+> `docs/superpowers/plans/2026-07-31-welance-method-price-team.md`
+> (spec: `docs/superpowers/specs/2026-07-31-welance-method-price-team-design.md`).
 > Phases 3–4 below (the €50/h cap decision, CoL sources, Urdu review, the
 > five open decisions, the permalink idea) are still owed and queue after it.
 ```
@@ -694,12 +694,12 @@ In the "Second workstream" paragraph: replace the sentence
 "calculator in `site/price.html` (working, not yet on `welance.css`)" with
 "engine in `site/pricing.js` (shared by `price.html` and `team.html`),
 narrative in `site/method.html`, site-wide i18n in `site/i18n.js` — plan in
-`docs/superpowers/plans/2026-07-31-perfect-method-price-team.md`."
+`docs/superpowers/plans/2026-07-31-welance-method-price-team.md`."
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add PLAN-PERFECT-PRICE.md CLAUDE.md
+git add PLAN-PRICING.md CLAUDE.md
 git commit -m "docs: perfect-price plan superseded by the method plan"
 ```
 
@@ -709,6 +709,6 @@ git commit -m "docs: perfect-price plan superseded by the method plan"
 
 - Per-language native-speaker review sessions (the publication gate that
   flips `reviewed: true`) — human work, scheduled with the collective.
-- PLAN-PERFECT-PRICE.md Phases 3–4 decisions (€50/h cap publication, CoL
+- PLAN-PRICING.md Phases 3–4 decisions (€50/h cap publication, CoL
   real sources, five open decisions, URL-hash permalink).
 - welance.com navigation pointing at the method page.

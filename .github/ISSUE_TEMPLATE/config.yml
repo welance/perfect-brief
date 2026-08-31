@@ -9,5 +9,5 @@ contact_links:
     url: https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md
     about: Anyone proposes · evidence merges · anyone forks — and the clock every rule change runs on.
   - name: See the ruleset live
-    url: https://welance.github.io/perfect-brief/rules.html
+    url: https://welance.github.io/brief-bar/rules.html
     about: The 14 rules, weights and gate as the scorer applies them.

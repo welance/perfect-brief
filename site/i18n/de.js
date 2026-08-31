@@ -203,7 +203,7 @@ WelanceI18n.register("de", {
     "rules.invp": "<code>decision-owner</code> — nennt das Briefing eine einzige entscheidungsbefugte Person? Das ist pures \"80% Team\": ein Briefing ohne Owner bleibt stecken. Wir haben sie absichtlich weggelassen. Füge sie hinzu.",
 
     /* ---------- team.html ---------- */
-    "team.crumb": "perfect team",
+    "team.crumb": "team rate",
     "team.eyebrow": "ein Team, ein Satz",
     "team.h1": "Team Rate",
     "team.lede": "Ein cross-funktionales Team, bepreist wie eine einzelne unabhängige Person. Die Rollen und ihre Gewichte beschreiben das Projekt; jede Rolle trägt ihre eigene Stufe und Kostenbasis. Der Kunde sieht <b>einen gemischten Satz</b> — nicht hundert verschiedene — Margen variieren im Team nach Stufe, und das Projekt als Ganzes hält eine erklärte, benannte <b>Marge</b>, die jeder prüfen kann.",
