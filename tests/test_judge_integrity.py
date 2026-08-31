@@ -7,8 +7,8 @@ import pytest
 
 from app import scorer
 from app.settings import settings
-from perfect_brief import load_bundled
-from perfect_brief.llm import JudgeUnparsable, parse_judge
+from brief_bar import load_bundled
+from brief_bar.llm import JudgeUnparsable, parse_judge
 
 RULES, _ = load_bundled()
 BRIEF = "# Portal\nProblem: bookings arrive by phone."

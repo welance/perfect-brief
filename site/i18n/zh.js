@@ -189,7 +189,7 @@ WelanceI18n.register("zh", {
     "int.w.ci": "你的代码 · CI · 一个产品",
     "site.fineprint": "细则",
     "site.response": "响应",
-    "team.crumb": "perfect team",
+    "team.crumb": "team rate",
     "team.h1": "Team Rate",
     "team.eyebrow": "一支团队，一个费率",
     "team.lede": "一支跨职能团队，按给单个独立工作者定价的方式来定价。角色和它们的份额描述这个项目；每个角色带着自己的层级和成本基准。客户看到的是<b>一个混合费率</b>——而不是一百个不同的价——团队内部的利润随层级不同而不同，而项目作为整体清出一个写明的、有名字的<b>利润</b>，任何人都可以核对。",

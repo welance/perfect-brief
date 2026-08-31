@@ -23,5 +23,5 @@ references:
     title: "OKR"
     locator: "outcomes over outputs"
     url: https://en.wikipedia.org/wiki/OKR
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

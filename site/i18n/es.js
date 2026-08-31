@@ -202,7 +202,7 @@ WelanceI18n.register("es", {
     "rules.invp": "<code>decision-owner</code> — ¿el brief nombra a una única persona responsable de decidir? Es puro \"80% equipo\": un brief sin owner se estanca. La dejamos fuera a propósito. Añádela tú.",
 
     /* ---------- team.html ---------- */
-    "team.crumb": "perfect team",
+    "team.crumb": "team rate",
     "team.eyebrow": "un equipo, una tarifa",
     "team.h1": "Team Rate",
     "team.lede": "Un equipo multifuncional, tasado como se tasa a una persona independiente. Los roles y sus pesos describen el proyecto; cada rol lleva su propio nivel y base de costos. El cliente ve <b>una tarifa combinada</b> — no cien distintas — los márgenes varían dentro del equipo por nivel, y el proyecto en su conjunto supera un <b>margen</b> declarado y con nombre, que cualquiera puede verificar.",

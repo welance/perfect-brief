@@ -1,5 +1,5 @@
 {
-  "name": "perfect-brief-site",
+  "name": "brief-bar-site",
   "private": true,
   "description": "Dev tooling for the public site: engine unit tests (node --test) and end-to-end tests (Playwright). The site itself has no build step and no runtime dependencies.",
   "scripts": {

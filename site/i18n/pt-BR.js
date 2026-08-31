@@ -202,7 +202,7 @@ WelanceI18n.register("pt-BR", {
     "rules.invp": "<code>decision-owner</code> — o brief nomeia uma única pessoa responsável pelas decisões? É puro \"80% time\": um brief sem dono empaca. Deixamos de fora de propósito. Adicione você.",
 
     /* ---------- team.html ---------- */
-    "team.crumb": "perfect team",
+    "team.crumb": "team rate",
     "team.eyebrow": "um time, uma taxa",
     "team.h1": "Team Rate",
     "team.lede": "Um time multifuncional, precificado como se precifica uma pessoa independente. Os papéis e seus pesos descrevem o projeto; cada papel carrega seu próprio nível e base de custo. O cliente vê <b>uma taxa combinada</b> — não cem diferentes — as margens variam dentro do time por nível, e o projeto como um todo cumpre um <b>margem</b> declarado e nomeado, que qualquer pessoa pode conferir.",

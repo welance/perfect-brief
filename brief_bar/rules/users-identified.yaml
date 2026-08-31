@@ -22,5 +22,5 @@ references:
     title: "Personas"
     locator: "named, situated users"
     url: https://en.wikipedia.org/wiki/Persona_(user_experience)
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

@@ -1,6 +1,6 @@
 [project]
-name = "perfect-brief-mcp"
-version = "1.11.2"
+name = "brief-bar-mcp"
+version = "1.12.0"
 description = "MCP server for The Brief Bar — score a digital product brief against an open, versioned ruleset your assistant cannot bend."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -14,7 +14,7 @@ Homepage = "https://briefs.welance.com"
 Source = "https://github.com/welance/perfect-brief"
 
 [project.scripts]
-perfect-brief-mcp = "server:main"
+brief-bar-mcp = "server:main"
 
 [build-system]
 requires = ["hatchling"]

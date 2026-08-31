@@ -22,5 +22,5 @@ references:
     title: "Scope creep"
     locator: "the failure this prevents"
     url: https://en.wikipedia.org/wiki/Scope_creep
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

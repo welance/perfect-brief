@@ -1,5 +1,5 @@
 /* ============================================================
-   welance.css — the welance DNA shared by the perfect-brief pages
+   welance.css — the welance DNA shared by the brief-bar pages
    Source of truth: welance.com (fonts, served with CORS *) and
    welance/Directory styles.css (tokens, logo, buttons). No font
    binaries live in this repo; if welance.com ever publishes a
@@ -100,6 +100,29 @@
   --ff-mono: var(--mono);
   --y: var(--wl-y); --c: var(--wl-c); --p: var(--wl-p);
   --a: var(--wl-cy); --b: var(--wl-b);
+
+  /* --- the vertical scale -------------------------------------------------
+     One 4px ladder for every gap on the site. Before it, nine pages each
+     invented their own near-misses — 12, 14, 16 and 18px doing the same job
+     three lines apart — and that is what makes a page feel unsettled: not one
+     wrong number, but four almost-equal ones the eye keeps trying to
+     reconcile. The steps are far enough apart to read as deliberate, and the
+     top three go fluid, so a section break on a phone is not the same 80px it
+     is on a desk. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 28px;
+  --sp-7: clamp(28px, 3.2vw, 40px);
+  --sp-8: clamp(40px, 5vw, 56px);
+  --sp-9: clamp(56px, 7vw, 80px);
+  /* the prose rhythm, named by job rather than by size: --flow is the gap
+     between blocks in running text, --flow-tight the one under a heading,
+     which stays closer to the text it owns than to the section above it. */
+  --flow: var(--sp-5);
+  --flow-tight: var(--sp-3);
 }
 
 :root[data-theme="dark"] {
@@ -153,7 +176,8 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    hairline that used to run off the right of every eyebrow here: the
    Directory marks a section by naming it, not by ruling it off. */
 .eyebrow, .sec-label { display: flex; align-items: baseline; gap: 12px;
-  letter-spacing: .08em; color: var(--muted); margin: 44px 0 22px; }
+  letter-spacing: .08em; color: var(--muted);
+  margin: var(--sp-8) 0 var(--sp-5); }
 .eyebrow::before, .sec-label::before { content: "*"; color: var(--accent);
   font-size: 15px; line-height: 1; }
 .band .eyebrow { color: var(--ink); }
@@ -161,11 +185,11 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 /* --- layout primitives, from the Directory ----------------------------- */
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x); }
 .hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
-.grid { display: grid; gap: 24px; }
+.grid { display: grid; gap: var(--sp-6); }
 .grid-2 { grid-template-columns: 1fr 1fr; }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .row-between { display: flex; justify-content: space-between;
-  align-items: center; gap: 24px; }
+  align-items: center; gap: var(--sp-6); }
 @media (max-width: 760px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
 }
@@ -333,8 +357,8 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    which gets the same result without a magic number to keep in sync.
    ------------------------------------------------------------------- */
 .wl-head { position: sticky; top: 0; z-index: 99; background: var(--paper); }
-.wl-head-in { height: 76px; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
-@media (min-width: 1024px) { .wl-head-in { height: 106px; padding: 0 48px; gap: 24px; } }
+.wl-head-in { height: 68px; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
+@media (min-width: 1024px) { .wl-head-in { height: 84px; padding: 0 48px; gap: 24px; } }
 
 /* the welance colour rule, flush under the header: five bars, full width,
    the site's clearest signature. 3px on the landing page and 2px everywhere
@@ -418,7 +442,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    are the brand, the product name is the part that can go. The header must
    never widen the document (the band test catches this). */
 @media (max-width: 640px) {
-  .wl-head-in { gap: 8px; padding: 0 12px; }
+  .wl-head-in { height: 58px; gap: 8px; padding: 0 12px; }
   .wl-project { font-size: 15px; margin-inline-start: 6px; gap: 6px; }
   .wl-head-right { gap: 6px; min-width: 0; }
   .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 8px; }
@@ -428,15 +452,15 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    here the lockup keeps the asterisk and the wordmark — the part that has to
    be right — and lets the product name go. */
 @media (max-width: 560px) {
-  .wl-project { display: none; }
-  .wl-out { font-size: 13px; }
+  .wl-logo { display: none; }
+  .wl-project { display: flex; font-size: 17px; margin-inline-start: 5px; }
+  .wl-out { font-size: 11px; }
   /* an explicit width, or the select sizes itself to its longest option even
      though the closed label is now two letters */
   .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 6px; }
 }
 @media (max-width: 400px) {
-  .wl-logo { width: 76px; }
-  .wl-out { font-size: 12px; letter-spacing: -.01em; }
+  .wl-out { font-size: 10px; letter-spacing: -.02em; }
   /* only the flag: the list still names every language when you open it */
   .wl-lang-select { width: 46px; max-width: 46px; font-size: 12px; padding: 6px 0; }
   .wl-head-in { gap: 4px; padding: 0 8px; }
@@ -447,7 +471,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 }
 
 /* --- breadcrumb line under the header ---------------------------------- */
-.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 18px var(--pad-x) 0;
+.wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x);
   font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-soft);
   display: flex; align-items: center; gap: 8px; }
@@ -464,7 +488,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    do not swap with the theme, which is why they are built from literals
    and the never-moving --slab set rather than from --paper/--ink.
    ------------------------------------------------------------------- */
-.wl-foot { display: block; margin-top: 72px; padding: 0; border: 0; max-width: none;
+.wl-foot { display: block; margin-top: var(--sp-9); padding: 0; border: 0; max-width: none;
   font-family: var(--disp); font-size: 16px; }
 
 .wl-close { position: relative; overflow: hidden; background: var(--accent-2);
@@ -481,9 +505,9 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-close h2 .b { color: var(--wl-c); }
 /* who made it and on what terms, said once, in the small voice — the band
    states a fact about the ruleset rather than making an offer */
-.wl-close-note { max-width: 46ch; margin: 14px 0 0; font-size: 14.5px;
+.wl-close-note { max-width: 46ch; margin: var(--sp-4) 0 0; font-size: 14.5px;
   line-height: 1.5; color: #0a0a0a; opacity: .72; }
-.wl-close .eyebrow { color: #0a0a0a; opacity: .75; margin: 0 0 14px; }
+.wl-close .eyebrow { color: #0a0a0a; opacity: .75; margin: 0 0 var(--sp-4); }
 .wl-close .eyebrow::before { color: #0a0a0a; }
 .wl-close-row { display: flex; gap: 12px; flex-wrap: wrap; }
 /* on the blue ground the lead door wears the coral — warm on cool, the two
@@ -516,12 +540,12 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-foot-lock .wl-project { color: var(--on-slab-soft); font-size: 20px; }
 .wl-foot-lock .wl-project .slash { color: var(--on-slab-soft); opacity: .6; }
 .wl-foot-blurb { color: var(--on-slab-soft); font-size: 14px; line-height: 1.55;
-  margin: 14px 0 10px; max-width: 34ch; }
+  margin: var(--sp-4) 0 var(--sp-3); max-width: 34ch; }
 .wl-foot-contact { color: var(--on-slab-soft); margin: 0; }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
 
 .wl-foot-k { color: var(--on-slab-soft); text-transform: uppercase;
-  letter-spacing: .05em; margin: 0 0 12px; }
+  letter-spacing: .05em; margin: 0 0 var(--sp-3); }
 .wl-foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .wl-foot-link { color: var(--on-slab); font-size: 14px; text-decoration: none;
   display: inline-flex; align-items: center; gap: 7px; }
@@ -544,7 +568,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-foot-legal { display: flex; justify-content: space-between; align-items: center;
   gap: 14px; flex-wrap: wrap; color: var(--on-slab-soft);
   border-top: 1px solid color-mix(in oklab, var(--on-slab), transparent 82%);
-  margin-top: clamp(28px, 4vw, 44px); padding-top: 16px; }
+  margin-top: var(--sp-8); padding-top: var(--sp-4); }
 .wl-foot-legal p { margin: 0; }
 /* the language select is the one control in an otherwise text-only row, so it
    leads — and wraps to its own line first on narrow */
@@ -564,7 +588,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-foot-deep .wl-lang-select option { background: var(--slab); color: var(--on-slab); }
 
 /* --- the fine print: depth one click away --------------------------------- */
-details.fineprint { border-left: 2px solid var(--rule); margin: 6px 0 18px; padding-left: 14px; }
+details.fineprint { border-left: 2px solid var(--rule); margin: 0 0 var(--flow); padding-left: 14px; }
 html[dir=rtl] details.fineprint { border-left: 0; border-right: 2px solid var(--rule);
   padding-left: 0; padding-right: 14px; }
 details.fineprint > summary { list-style: none; cursor: pointer; font-family: var(--mono);
@@ -573,12 +597,12 @@ details.fineprint > summary::-webkit-details-marker { display: none; }
 details.fineprint > summary::before { content: "+ "; }
 details.fineprint[open] > summary::before { content: "− "; }
 details.fineprint > summary:hover { color: var(--accent); }
-details.fineprint[open] > summary { margin-bottom: 10px; }
+details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
 
 /* --- code blocks: tabs, copy, and a two-tone dark surface ----------------
    The modern docs pattern (tabs + copy + per-language colour), built from
    nothing: the highlighting lives in code.js, the markup stays plain text. */
-.code { border: 1px solid var(--slab); background: var(--slab); margin: 0 0 12px; overflow: hidden; }
+.code { border: 1px solid var(--slab); background: var(--slab); margin: 0 0 var(--flow); overflow: hidden; }
 .code-bar { display: flex; align-items: stretch; justify-content: space-between;
   gap: 12px; border-bottom: 1px solid #232323; }
 .code-tabs { display: flex; }
@@ -608,7 +632,7 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
    container's measure; only the colour runs edge to edge. */
 .band { --bandbg: var(--paper-2); background: var(--bandbg);
   box-shadow: 0 0 0 100vmax var(--bandbg); clip-path: inset(0 -100vmax);
-  padding: 40px 0; margin: 52px 0; }
+  padding: var(--sp-8) 0; margin: var(--sp-9) 0; }
 .band > :first-child { margin-top: 0; }
 .band > :last-child { margin-bottom: 0; }
 .band.cy { --bandbg: var(--wl-cy); }
@@ -620,9 +644,159 @@ details.fineprint[open] > summary { margin-bottom: 10px; }
 .band.cy .eyebrow::before, .band.y .eyebrow::before,
 .band.c .eyebrow::before { color: #0a0a0a; }
 
-/* --- air after the masthead ---------------------------------------------
-   The hero used to sit tight on the first section; a page reads better when
-   the header can breathe. Margin (not padding) so each page's own inline
-   header padding stays untouched. */
-.wl-crumb { margin-top: clamp(14px, 2.5vw, 26px); }
-.wrap > header { margin-bottom: clamp(26px, 4vw, 54px); }
+/* --- air around the masthead --------------------------------------------
+   Two rules used to space the breadcrumb — a padding here and a margin at the
+   foot of the file — so its distance from the colour rule was a sum nobody
+   could read off either one. It is one step now, and the masthead below it
+   closes on the same step the section labels open on, which is what makes the
+   top of every page land in the same place. */
+.wl-crumb { margin-top: var(--sp-6); }
+.wrap > header { margin-bottom: var(--sp-8); }
+/* running text: one gap between blocks, one under a heading. The pages set
+   these on their own elements too — these are the fallbacks for anything a
+   page has not claimed. */
+:where(.wrap) > :is(p, ul, ol, table) { margin-block: 0 var(--flow); }
+:where(.wrap) > :last-child { margin-bottom: 0; }
+
+/* --- what a finger needs ------------------------------------------------- */
+@media (pointer: coarse) {
+  input, select, textarea, button { font-size: max(16px, 1em) !important; }
+  .role input, .role select, .comp input[type="number"],
+  .rolebar input, .rolebar select { font-size: 16px; min-height: 44px; }
+  .role button, .comp button, .mode, .addbtn, .lang,
+  .wl-theme, .code-copy, .code-tabs button { min-height: 44px; min-width: 44px; }
+  .grip { width: 44px; margin-inline-start: -22px; }
+  a, button, summary, .chip, .mode, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:active, .chip:active, .mode:active,
+  a.btn:active, [role="button"]:active { opacity: .62; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+}
+
+/* --- the phone layer ----------------------------------------------------- */
+.wl-app .wl-calc-modes {
+  display: grid; grid-template-columns: 1fr 1fr;
+  margin: 0 0 var(--sp-5); border-bottom: 1px solid var(--rule);
+}
+.wl-app .wl-calc-modes button {
+  min-height: 46px; border: 0; border-bottom: 3px solid transparent;
+  background: transparent; color: var(--ink-soft); cursor: pointer;
+  font-family: var(--disp); font-weight: 650;
+}
+.wl-app .wl-calc-modes button[aria-pressed="true"] {
+  color: var(--ink); border-bottom-color: var(--accent); background: var(--surface-2);
+}
+.wl-app .wl-calc-steps {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 44px; margin-bottom: var(--sp-3);
+}
+.wl-app .wl-calc-count {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.wl-app .wl-calc-nav { display: flex; gap: 6px; }
+.wl-app .wl-calc-nav button {
+  width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule-strong);
+  background: var(--surface); color: var(--ink); cursor: pointer;
+}
+.wl-app .wl-calc-nav button:disabled { opacity: .28; cursor: default; }
+.wl-app .wl-calc-answer { position: static; }
+.wl-app .wl-calc-answer > .card { margin-top: 0; }
+.wl-app .wl-calc-details {
+  margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--rule);
+}
+.wl-app .wl-calc-details > summary {
+  min-height: 44px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.wl-app .wl-calc-details > :not(summary) { margin-top: var(--sp-4); }
+.wl-app .wl-answer-footer {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 102;
+  display: grid; grid-template-columns: minmax(0,1.25fr) minmax(88px,.9fr) auto;
+  align-items: center; gap: 12px; min-height: 72px;
+  padding: 10px max(14px, env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-right));
+  border: 0; border-top: 2px solid var(--ink); background: var(--paper);
+  color: var(--ink); box-shadow: 0 -7px 22px rgba(0,0,0,.12); text-align: start;
+}
+.wl-app .wl-answer-main { display: flex; flex-direction: column; min-width: 0; }
+.wl-app .wl-answer-k {
+  overflow: hidden; color: var(--ink-soft); font-family: var(--mono);
+  font-size: 9px; letter-spacing: .08em; text-overflow: ellipsis;
+  text-transform: uppercase; white-space: nowrap;
+}
+.wl-app .wl-answer-v {
+  overflow: hidden; font-family: var(--mono); font-size: 20px;
+  font-variant-numeric: tabular-nums; text-overflow: ellipsis; white-space: nowrap;
+}
+.wl-app .wl-answer-bar { display: flex; height: 12px; border: 1px solid var(--ink); overflow: hidden; }
+.wl-app .wl-answer-bar i { display: block; height: 100%; }
+.wl-app .wl-answer-side {
+  font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.wl-app .wl-sheet {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 101;
+  display: flex; flex-direction: column; margin: 0;
+  background: var(--paper); border-top: 2px solid var(--ink);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, .16);
+  will-change: transform; padding-bottom: env(safe-area-inset-bottom);
+}
+.wl-app .wl-sheet-flat { box-shadow: 0 -8px 24px rgba(0, 0, 0, .14); }
+.wl-app .wl-grab {
+  position: relative; z-index: 2; flex: none; cursor: grab; touch-action: none;
+  padding: 7px 0 0; background: var(--paper);
+}
+.wl-app .wl-grab::before {
+  content: ""; display: block; width: 36px; height: 4px;
+  border-radius: 2px; background: var(--rule); margin: 0 auto 6px;
+}
+.wl-app .wl-sheet.is-open .wl-grab { cursor: grabbing; }
+.wl-app .wl-dock {
+  display: flex; align-items: baseline; gap: var(--sp-5);
+  padding: 0 var(--sp-4) var(--sp-3);
+}
+.wl-app .wl-dock-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.wl-app .wl-dock-k {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.wl-app .wl-dock-v {
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-size: 21px; font-weight: 600; letter-spacing: -.02em;
+}
+.wl-app .wl-sheet-body {
+  flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch; padding: 0 var(--sp-4) var(--sp-4);
+  touch-action: pan-y;
+}
+.wl-app .wl-sheet .card { border: 0; background: transparent; padding: 0; }
+.wl-app .wl-sheet .card + .card { margin-top: var(--sp-6); }
+.wl-scrim {
+  position: fixed; inset: 0; z-index: 100; background: rgba(10, 10, 10, .38);
+  opacity: 0; pointer-events: none;
+  transition: opacity 340ms cubic-bezier(.32,.72,0,1);
+}
+.wl-app .wl-swipeable { position: relative; }
+.wl-app .wl-swipeable .role {
+  position: relative; z-index: 1; background: var(--surface); touch-action: pan-y;
+}
+.wl-app .wl-swipe-act {
+  position: absolute; inset-inline-end: 0; z-index: 0;
+  display: none; align-items: center; justify-content: flex-end;
+}
+.wl-app .wl-swipe-act.is-live { display: flex; }
+.wl-app .wl-swipe-del {
+  height: 100%; min-width: 92px; border: 0;
+  background: var(--fail); color: #fff; font-family: var(--mono);
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+}
+.wl-app .role.wl-going {
+  transition: opacity 180ms ease, transform 180ms ease;
+  opacity: 0; transform: scaleY(.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wl-app .wl-sheet, .wl-scrim, .wl-app .role { transition: none !important; }
+}

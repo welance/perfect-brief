@@ -50,7 +50,7 @@ checked is worth more than a promise that says how much it is meant.
 | 3 | cache holds verdicts only, 24h TTL, `no_cache` honoured, BYOK bypasses cache | **in code**, reviewable: `app/scorer.py`, `app/cache.py` |
 | 4 | no bodies in logs | log format is code, reviewable; a brief-body canary test in the style of the key canary is the next planned test |
 | 1, 2, 5 | no mining, no training, no reading room | **not mechanically enforceable — we run the servers.** Stated here, versioned, and falsifiable by whistle: if you ever receive contact from welance that could only be explained by a brief you scored, that is a covenant breach — report it publicly or to security@welance.com |
-| 6 | same bar for welance's briefs | **verifiable by design**: `ruleset_version` + model on every verdict; the scoring engine has no caller-identity input to discriminate on (`perfect_brief/` takes text, nothing else) |
+| 6 | same bar for welance's briefs | **verifiable by design**: `ruleset_version` + model on every verdict; the scoring engine has no caller-identity input to discriminate on (`brief_bar/` takes text, nothing else) |
 | 7 | fees at cost | to be evidenced by a published running-cost ledger (planned; until it exists, this line is a promise, not a proof) |
 
 ## The honest limit

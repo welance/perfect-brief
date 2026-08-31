@@ -18,7 +18,7 @@ import os
 
 import pytest
 
-from perfect_brief import Status, llm, load_bundled
+from brief_bar import Status, llm, load_bundled
 
 pytestmark = pytest.mark.skipif(
     not os.environ.get("PB_ANTHROPIC_API_KEY"),

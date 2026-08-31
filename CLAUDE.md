@@ -1,4 +1,4 @@
-# CLAUDE.md — perfect-brief
+# CLAUDE.md — brief-bar
 
 > ## ⚠️ **welance is ALWAYS lowercase. Always.**
 > Never "Welance", never "WELANCE" — not at the start of a sentence, not in a
@@ -17,20 +17,20 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
 
 **Second workstream: the welance Method** — brief → price → team, the agency
 process digitalised and opened as a blueprint. Concept in
-`docs/perfect-price/PERFECT-PRICE.md`; engine + formula registry in
+`docs/pricing/PRICING.md`; engine + formula registry in
 `site/pricing.js` (shared by `price.html` and `team.html`, tested by
 `make test-site`); narrative in `site/method.html`; site-wide i18n in
 `site/i18n.js` + `site/i18n/*.js` (8 languages, draft-badged until a native
 speaker reviews); judge multilingualism guarded by
 `make test-llm-multilingual`. Plan executed:
-`docs/superpowers/plans/2026-07-31-perfect-method-price-team.md`; still-owed
-decisions listed at the top of `PLAN-PERFECT-PRICE.md`. Independent of
+`docs/superpowers/plans/2026-07-31-welance-method-price-team.md`; still-owed
+decisions listed at the top of `PLAN-PRICING.md`. Independent of
 `PLAN.md` — neither blocks the other. Everything in it is anonymised by
 design; `site/` is public and no individual compensation data belongs there.
 
 ## Invariants — do not violate
 1. **The seam.** The judge returns per-rule verdicts (status/confidence/quote)
-   and nothing else. `perfect_brief/score.py` owns weights, gate, decision.
+   and nothing else. `brief_bar/score.py` owns weights, gate, decision.
    Never let model output touch a number directly.
 2. **Weights sum to 100.** Gate = `clear-title`, `problem-defined`,
    `budget-floor` (not_fail) + `anonymised` (pass). `budget-floor` and
@@ -38,11 +38,11 @@ design; `site/` is public and no individual compensation data belongs there.
    gate entries are tagged `context: directory` and deactivate together per
    request (`gate_contexts: []`) — excluded from gate AND score
    (renormalised); verdicts are never changed. Policy lives in
-   `perfect_brief/scoring.yaml` + `rules/*.yaml`, never hardcoded.
-3. **Fixtures are the CI gate.** `perfect_brief/fixtures/*.yaml` must stay green
+   `brief_bar/scoring.yaml` + `rules/*.yaml`, never hardcoded.
+3. **Fixtures are the CI gate.** `brief_bar/fixtures/*.yaml` must stay green
    (`make test`). A ruleset change that moves numbers must update fixtures in
    the same commit, with the reason in the message.
-4. **`perfect_brief/` is the future standalone OSS package.** Keep it
+4. **`brief_bar/` is the future standalone OSS package.** Keep it
    importable with zero service deps inside (no fastapi/redis imports there).
 5. **LLM keys server-side only** (`PB_ANTHROPIC_API_KEY` or
    `PB_OPENROUTER_API_KEY`, env). Temperature 0. Per-request model choice is
@@ -61,7 +61,7 @@ network) · `make lint` · `make typecheck` · `make dev` · `make health` ·
 
 ## Layout
 ```
-perfect_brief/   engine + ruleset: rules/*.yaml, scoring.yaml, score.py,
+brief_bar/       engine + ruleset: rules/*.yaml, scoring.yaml, score.py,
                  judge.py (Mock+LLM), llm.py (prompts), fixtures/, loader.py
 app/             FastAPI service: main.py (routes), scorer.py (orchestration,
                  Redis cache), settings.py (PB_* env)

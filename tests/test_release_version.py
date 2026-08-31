@@ -21,7 +21,7 @@ def test_release_versions_are_in_sync():
 
     assert mcp == service
     assert runtime_match and runtime_match.group(1) == service
-    assert re.search(rf"image: welance/perfect-brief:{re.escape(service)}$", compose, re.MULTILINE)
+    assert re.search(rf"image: welance/brief-bar:{re.escape(service)}$", compose, re.MULTILINE)
     assert f"## [{service}]" in changelog
     assert 'fetch("/v1/healthz"' in chrome
     assert "© 2011–2026 · v1 · live" not in chrome

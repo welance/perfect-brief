@@ -21,7 +21,7 @@ from functools import lru_cache
 from .settings import settings
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-log = logging.getLogger("perfect_brief.llm")
+log = logging.getLogger("brief_bar.llm")
 _openrouter_client = None
 _openrouter_client_factory = None
 _openrouter_client_timeout = None

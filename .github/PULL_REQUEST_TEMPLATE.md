@@ -1,6 +1,6 @@
 <!--
 Thanks for proposing a change to the bar. Anyone may — that's the point.
-If this PR touches perfect_brief/rules/, scoring.yaml, or fixtures/, it is a
+If this PR touches brief_bar/rules/, scoring.yaml, or fixtures/, it is a
 RULE CHANGE: fill every section below (empty sections stall the clock — see
 GOVERNANCE.md § The clock). For engine/site/docs changes, fill "Why" and
 delete the rest.
@@ -8,7 +8,7 @@ delete the rest.
 
 ## What kind of change
 
-- [ ] **Rule change** — touches `perfect_brief/rules/`, `scoring.yaml`, or `fixtures/` (the 7-day discussion window applies)
+- [ ] **Rule change** — touches `brief_bar/rules/`, `scoring.yaml`, or `fixtures/` (the 7-day discussion window applies)
 - [ ] Engine / site / docs — non-normative (no window; normal review)
 
 ## Why — the rationale

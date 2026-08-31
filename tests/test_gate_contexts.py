@@ -5,7 +5,7 @@ directory` and deactivate together per call — the rules then neither gate
 nor score (excluded + renormalised). Verdicts themselves never change.
 """
 
-from perfect_brief import Status, Verdict, aggregate, load_bundled
+from brief_bar import Status, Verdict, aggregate, load_bundled
 
 RULES, CFG = load_bundled()
 DIRECTORY_RULES = {"anonymised", "budget-floor"}

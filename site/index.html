@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Brief Bar — an open ruleset for scoring digital product briefs</title>
 <meta name="description" content="Hard to argue with a clear brief. Nobody has settled what a brief bar looks like — the rules are open. A small service that scores a digital product brief against a public, versioned ruleset: the LLM only judges, code owns the numbers, the gate, and the publish decision.">
 <link rel="preconnect" href="https://welance.com" crossorigin>
@@ -10,20 +10,27 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
 <link rel="stylesheet" href="welance.css">
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6;overflow-x:clip}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) 96px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) var(--sp-8)}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  header{padding:16px 0 18px;border-bottom:2px solid var(--ink)}
+  header{padding:var(--sp-5) 0;border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
-  .crumbs{margin-bottom:20px}
+  .crumbs{margin-bottom:var(--flow)}
   /* the standfirst had no bottom margin because nothing used to follow it;
      the thesis paragraph does now, and at 3.5px apart the two read as one
      block of ragged text */
-  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:12px 0 20px}
+  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:var(--sp-4) 0 var(--flow)}
   /* the invitation in the middle of the argument: an open ruleset is only
      open if changing it is something a reader can picture themselves doing */
   .hl { color: var(--ink); font-weight: 600; text-decoration: none;
@@ -32,24 +39,24 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .hl:hover { background: var(--accent); color: var(--paper); text-decoration: none;
     box-shadow: inset 0 -2px 0 0 var(--accent); }
   .hl::after { content: " ↗"; font-family: var(--mono); font-size: .82em; }
-  p{max-width:66ch;margin:0 0 14px}
-  .cta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}
-  pre{background:var(--paper-2);border:1px solid var(--rule);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 14px}
+  p{max-width:66ch;margin:0 0 var(--flow)}
+  .cta{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin:var(--sp-6) 0 0}
+  pre{background:var(--paper-2);border:1px solid var(--rule);padding:var(--sp-4);font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 var(--flow)}
   pre b{color:var(--accent);font-weight:600}
-  .two{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 14px}
+  .two{display:grid;grid-template-columns:1fr;gap:var(--sp-3);margin:0 0 var(--flow)}
   @media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
-  .card{border:1px solid var(--rule);background:var(--paper-2);padding:14px 16px}
-  .card h3{font-family:var(--mono);font-size:13px;margin:0 0 6px}
+  .card{border:1px solid var(--rule);background:var(--paper-2);padding:var(--sp-4)}
+  .card h3{font-family:var(--mono);font-size:13px;margin:0 0 var(--sp-2)}
   .card p{font-size:14.5px;margin:0;color:var(--ink-soft)}
-  .card .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block;margin-bottom:2px}
+  .card .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block;margin-bottom:var(--sp-1)}
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
-  .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 14px}
+  .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 var(--flow)}
   .triad b{color:var(--accent)}
   /* full-bleed, like the Directory rail: the figure leaves the text column so
      the seam has room to be read at a glance. margin-inline escapes .wrap;
      overflow-x:clip on body absorbs the scrollbar sliver 100vw would add. */
-  .seam{margin:44px 0 34px;max-width:none;margin-inline:calc(50% - 50vw);
-    padding:44px clamp(16px,4vw,56px) 34px;overflow-x:auto;
+  .seam{margin:var(--sp-8) 0;max-width:none;margin-inline:calc(50% - 50vw);
+    padding:var(--sp-8) clamp(16px,4vw,56px);overflow-x:auto;
     background:var(--slab);color:var(--on-slab)}
   /* Re-point the tokens inside the band instead of editing the SVG: every
      var(--ink) in the figure resolves against the slab automatically. */
@@ -70,11 +77,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .seam .bignum{font-family:var(--disp);font-size:34px;font-weight:600;fill:var(--ink);letter-spacing:-.01em}
   /* start routes — the snippet IS the pitch; a developer recognises code
      faster than any sentence describing it. */
-  .starts{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0 10px}
+  .starts{display:grid;grid-template-columns:1fr;gap:var(--sp-3);margin:var(--flow) 0}
   @media(min-width:860px){.starts{grid-template-columns:1fr 1fr}}
   @media(min-width:860px){.start.wide{grid-column:1/-1}}
-  .start{border:1px solid var(--rule);background:var(--paper-2);padding:14px 16px 12px;
-    display:flex;flex-direction:column;gap:9px;min-width:0}
+  .start{border:1px solid var(--rule);background:var(--paper-2);padding:var(--sp-4);
+    display:flex;flex-direction:column;gap:var(--sp-3);min-width:0}
   .shead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .start .ico{width:20px;height:20px;color:var(--accent);flex:none}
   .start .tag{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
@@ -87,29 +94,29 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .code-open{font-family:var(--mono);font-size:12px;color:var(--wl-y);
     text-decoration:none;letter-spacing:.04em}
   .code-open:hover{text-decoration:underline}
-  .startnote{font-size:14px;color:var(--ink-soft);margin:10px 0 0}
-  .seamcap{font-size:14.5px;color:var(--on-slab-soft);max-width:64ch;margin:22px 0 0}
+  .startnote{font-size:14px;color:var(--ink-soft);margin:var(--sp-4) 0 0}
+  .seamcap{font-size:14.5px;color:var(--on-slab-soft);max-width:64ch;margin:var(--sp-6) 0 0}
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   /* the first tap: a paste box that IS the hero action */
-  .hero-paste{margin:18px 0 8px;max-width:720px}
-  .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.6;resize:vertical;box-sizing:border-box}
+  .hero-paste{margin:var(--flow) 0 var(--sp-3);max-width:720px}
+  .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:var(--sp-4);font-family:var(--mono);font-size:13.5px;line-height:1.6;resize:vertical;box-sizing:border-box}
   .hero-paste textarea::placeholder{color:var(--ink-soft)}
   .hero-paste textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
-  .hero-paste-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px}
+  .hero-paste-row{display:flex;gap:var(--sp-4);align-items:center;flex-wrap:wrap;margin-top:var(--sp-3)}
   .hero-paste-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--ink-soft)}
-  .hero-nobrief{font-size:14px;color:var(--ink-soft);margin:10px 0 0}
-  .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
+  .hero-nobrief{font-size:14px;color:var(--ink-soft);margin:var(--sp-4) 0 0}
+  .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:var(--sp-5)}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
   .btn.gh{display:inline-flex;align-items:center;gap:8px}
   .btn.gh svg{width:16px;height:16px;fill:currentColor;flex:none}
-  .head-grid{display:flex;gap:28px;align-items:flex-start;justify-content:space-between}
+  .head-grid{display:flex;gap:var(--sp-6);align-items:flex-start;justify-content:space-between}
   .head-grid .txt{min-width:0}
   .pb-ident{flex:none;width:140px;margin-top:4px}
   .pb-ident svg{display:block;width:100%}
   .pb-ident.lottie{height:140px}
   @media(max-width:560px){.pb-ident{display:none}}
-  /* the perfect-brief ident — drawn in the same stroke-draw technique as the
+  /* the brief-bar ident — drawn in the same stroke-draw technique as the
      welance/Directory illustrations (no animation library needed) */
   .pb-ident .draw{fill:none;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;animation:pb-draw 1.1s cubic-bezier(.6,0,.3,1) forwards}
   .pb-ident .l1{animation-delay:.15s}.pb-ident .l2{animation-delay:.35s}.pb-ident .l3{animation-delay:.55s}
@@ -164,7 +171,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       </div>
     </div>
     <div class="cta">
-      <a class="btn gh" href="https://github.com/welance/perfect-brief" aria-label="perfect-brief on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
+      <a class="btn gh" href="https://github.com/welance/perfect-brief" aria-label="brief-bar on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>github.com/welance/perfect-brief</a>
       <a class="btn ghost" href="rules.html" data-i18n="index.cta.rules">Read the rules</a>
     </div>
     <div class="prov">
@@ -189,9 +196,9 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       </div>
 <div class="code">
         <div class="code-bar"><div class="code-lang">json</div><button class="code-copy">copy</button></div>
-<pre data-lang="json">{"mcpServers": {"perfect-brief": {
+<pre data-lang="json">{"mcpServers": {"brief-bar": {
   "command": "uvx",
-  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "perfect-brief-mcp"]
+  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "brief-bar-mcp"]
 }}}</pre>
       </div>
     </div>
@@ -307,7 +314,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <p data-i18n="idx.ri.p">Every rule is a YAML file with a weight, a criterion and a source. Propose one, reweight one, argue one away — a pull request is the whole process, and it merges on evidence rather than on our say-so. What survives here is what we run on welance/Directory.</p>
       <p data-i18n="idx.ri.p2">It started with briefs for digital products. Whether the same bar should hold for other kinds of work is precisely the sort of thing to open a rule change about.</p>
       <div class="rilinks">
-        <a href="https://github.com/welance/perfect-brief/tree/main/perfect_brief/rules" data-i18n="idx.ri.l1">browse the fourteen rules →</a>
+        <a href="https://github.com/welance/perfect-brief/tree/main/brief_bar/rules" data-i18n="idx.ri.l1">browse the fourteen rules →</a>
         <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md" data-i18n="idx.ri.l2">how a change gets in →</a>
         <a href="https://github.com/welance/perfect-brief/issues" data-i18n="idx.ri.l3">argue with the bar →</a>
       </div>
@@ -381,7 +388,7 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
 </div>
 <div id="site-footer"></div>
 <script>
-/* the perfect-brief ident: hand-authored Lottie in the welance house style
+/* the brief-bar ident: hand-authored Lottie in the welance house style
    (same palette/format as welance.com's directory animations). The inline
    CSS stroke-draw SVG above stays as the no-JS / reduced-motion fallback. */
 /* the landing's paste box hands the brief to the console via localStorage —

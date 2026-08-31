@@ -6,7 +6,7 @@ WORKDIR /srv
 
 # deps first (better layer caching)
 COPY pyproject.toml ./
-COPY perfect_brief ./perfect_brief
+COPY brief_bar ./brief_bar
 COPY app ./app
 COPY site ./site
 RUN pip install --upgrade pip && pip install .

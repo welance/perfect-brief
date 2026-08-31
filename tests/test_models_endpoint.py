@@ -66,7 +66,7 @@ def test_byok_header_enables_llm_judge(client, monkeypatch):
     async def fake_complete(prompt, model=None, api_key=None):
         import json
 
-        from perfect_brief import load_bundled
+        from brief_bar import load_bundled
 
         assert api_key == "sk-or-user-key"
         rules, _ = load_bundled()

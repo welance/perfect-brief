@@ -35,7 +35,7 @@ def report(text: str, itype: str = "brief") -> None:
 
     bar = "" if res.score is None else "█" * round(res.score / 5) + "·" * (20 - round(res.score / 5))
     print("\n" + "=" * 66)
-    print(f"  PERFECT BRIEF SCORE   {res.score}/100   {res.band}   [{bar}]")
+    print(f"  BRIEF BAR SCORE       {res.score}/100   {res.band}   [{bar}]")
     print(f"  {res.decision_label.upper()}")
     if not res.gate_passed:
         names = ", ".join(rules[m].title for m in res.gate_missing)

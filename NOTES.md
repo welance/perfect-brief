@@ -1,4 +1,4 @@
-# NOTES — Phase 0 recon decisions (r001-15 / perfect-brief)
+# NOTES — Phase 0 recon decisions (r001-15 / brief-bar)
 **Deploy path.** Dual-home: `github.com/welance/perfect-brief` is the public
 OSS face (repo + Pages). Deploys run from a GitLab twin
 `gitlab.com/welance/r001-15-perfect-brief` on the shared CI template

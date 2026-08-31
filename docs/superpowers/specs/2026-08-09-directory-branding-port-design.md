@@ -1,4 +1,4 @@
-# Directory branding, ported to perfect-brief
+# Directory branding, ported to brief-bar
 
 **Date:** 2026-08-09
 **Status:** approved, implementing
@@ -15,7 +15,7 @@ side by side and they read as cousins, not as one product.
 
 The Directory (`p007-16-welance-website`, served at `/directory/`) is the
 reference. Its branding is finished and reviewed. This spec re-syncs
-perfect-brief's public pages to it.
+brief-bar's public pages to it.
 
 Source of truth, by file:
 
@@ -34,8 +34,8 @@ Source of truth, by file:
    section labels, the lead button. Violet survives as `--wl-p`, one of the
    five brand colours, and in the code-block token palette.
 2. **Lockup: two strengths.** The footer wears the full Directory lockup —
-   asterisk + wordmark + grey slash + `perfect brief_`. The header wears only
-   `✳ perfect brief_`. *(Revised after first review: the ruleset is MIT and
+   asterisk + wordmark + grey slash + `brief bar_`. The header wears only
+   `✳ brief bar_`. *(Revised after first review: the ruleset is MIT and
    meant to be common property, and co-branding it at the top of every page
    argues the opposite. The mark alone still carries the house, because it
    recurs in the colour rule and the footer.)*
@@ -49,7 +49,7 @@ Source of truth, by file:
    rather than offered. No "it's free", no imperative: the scoring project is
    meant to be impartial and common to everyone, and the copy has to sound
    like it.
-3. **Dark mode: kept.** The Directory is light-only, but perfect-brief's dark
+3. **Dark mode: kept.** The Directory is light-only, but brief-bar's dark
    theme works and is tested. Directory values become the light palette; the
    dark palette is retuned to match.
 4. **Scope: shell + tokens + shared components.** Every page inherits. Bespoke
@@ -63,7 +63,7 @@ Source of truth, by file:
 ## Invariants this must not touch
 
 Per `CLAUDE.md`: the engine is verified. This is a CSS and chrome-markup
-change. `perfect_brief/` is not touched, no number moves, no fixture changes,
+change. `brief_bar/` is not touched, no number moves, no fixture changes,
 no ruleset changes. `site/pricing.js` and `site/splitbar.js` behaviour is
 unchanged — `.effortbar`'s *styling* is corrected, not its logic.
 
@@ -138,8 +138,8 @@ viewBox). The `wl-brandline` two-line block — "an open standard, started by"
 over a small mark — goes. There are two lockups:
 
 ```
-header:  [asterisk] [perfect brief_]
-footer:  [asterisk] [welance] [/] [perfect brief_]
+header:  [asterisk] [brief bar_]
+footer:  [asterisk] [welance] [/] [brief bar_]
 ```
 
 - asterisk `22px` → `30px` at ≥1024
@@ -308,5 +308,5 @@ New i18n keys, English literals as fallback until translated:
 - The split pill CTA.
 - Translating the new i18n keys — they fall back to English, consistent with
   the draft-badge treatment the site already uses.
-- Serving Maison Neue locally. perfect-brief loads it from welance.com over
+- Serving Maison Neue locally. brief-bar loads it from welance.com over
   CORS and that keeps working.

@@ -13,7 +13,7 @@ body:
     attributes:
       label: Area
       options:
-        - engine (perfect_brief/ — scoring, gate, judge seam)
+        - engine (brief_bar/ — scoring, gate, judge seam)
         - service (app/ — API, cache, rate limit, CORS)
         - console (app/static/, site/ — UI, mock judge, live mode)
         - pages / docs

@@ -23,5 +23,5 @@ references:
     title: "INVEST — the T for Testable"
     locator: "a good requirement is testable"
     url: https://en.wikipedia.org/wiki/INVEST_(mnemonic)
-owners: ["@welance/perfect-brief"]
+owners: ["@welance/brief-bar"]
 version: 2

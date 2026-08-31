@@ -27,7 +27,7 @@ import httpx
 import pytest
 
 from app import cache, llm_client
-from perfect_brief import load_bundled
+from brief_bar import load_bundled
 
 # Distinctive enough that a substring search cannot produce a false negative,
 # and shaped like the real thing so no code path treats it as special.

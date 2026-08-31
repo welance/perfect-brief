@@ -1,6 +1,6 @@
 # Releasing
 
-perfect-brief lives in two places with one version history:
+brief-bar lives in two places with one version history:
 
 - **GitHub** (`github.com/welance/perfect-brief`) — canonical development,
   community PRs, Pages site. Pushing `main` auto-deploys the **develop**
@@ -13,7 +13,7 @@ perfect-brief lives in two places with one version history:
 Versions are SemVer. The **release branch name is the version**
 (`release/1.2.0` → image `1.2.0`, tag `v1.2.0`). The ruleset has its own
 independent version (`semver+digest`); a rules change bumps the ruleset
-version inside `perfect_brief/`, a service change bumps the service version
+version inside `brief_bar/`, a service change bumps the service version
 described here.
 
 ## Release checklist

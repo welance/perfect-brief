@@ -6,6 +6,26 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.12.0] - 2026-08-28
+
+### Added
+- The calculators and the console get a phone layer. Price and team become a
+  focused Edit/Answer workspace with one input section at a time and a fixed,
+  live footer for the amount, compressed split and percentage/margin. The
+  console keeps its draggable verdict sheet, with velocity-based snapping.
+- The shared header is shorter, stays in reach, and keeps “brief bar” visible
+  at phone width; calculator spacing now follows the same vertical rhythm on
+  desktop and mobile.
+- Roles can be swiped away, with a confirm tap so a careless thumb costs
+  nothing.
+- Mobile fundamentals on all nine pages: safe-area insets, a 16px input floor
+  (which is what stopped iOS zooming the page on every focus), the numeric
+  keyboard on number fields, and 44px hit areas.
+- Installable: a manifest, icons, standalone display. No service worker.
+- Calculator content remains unchanged on desktop, and nothing changes if the
+  script fails: the interaction layer hangs off one class that only a phone
+  with working JS ever gets.
+
 ## [1.11.2] - 2026-08-26
 
 ### Fixed

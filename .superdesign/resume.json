@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "targets": {
+    "/price.html:mobile-calculator": {
+      "targetKind": "existing-ui",
+      "projectId": "c7f981ba-bc29-4986-8102-9866bf55118d",
+      "baselineDraftId": "bb393392-4e2f-487f-91a7-8a190d34e2fc",
+      "activeDraftId": "ca88aa77-90bf-4614-bad3-745349a65cc6",
+      "designSystemPath": ".superdesign/design-system.md",
+      "contextFiles": [
+        ".superdesign/design-system.md",
+        ".superdesign/init/theme.md",
+        ".superdesign/init/layouts.md",
+        "site/price.html:1:430",
+        "site/mobile.js",
+        "site/welance.css:320:760"
+      ],
+      "fingerprints": {
+        ".superdesign/design-system.md": "ecc3e105431c464ffb7bf4552a38bb4483f8d1dda6e95e002e02b2ddccfb4c1b",
+        ".superdesign/init/theme.md": "c52b44cebdd04594b9a204f244c4bce16521537c1cbe4cc749697648294b3d78",
+        ".superdesign/init/layouts.md": "f6e8e1b60cf14128f9dcad87f093a0e4a1ee796d20b7d6540f67f2e1961254ba",
+        "site/price.html": "7d2e720f3ccb68efd3301a30a4c72046b96fd840f6a3fdfeca1ddf68f0e6e195",
+        "site/mobile.js": "712c01287bbdcf521426f505c1e0bb00c52a379b5f28aa1fdfbb01fb5f3cc7e9",
+        "site/welance.css": "854ab2f5dd3ee8be6afb764e76ef89ca20036b8c8571b950236909a4e0427333"
+      },
+      "components": [
+        {
+          "name": "SiteHeader",
+          "id": "a1a1e40c-0c01-4089-ba89-a8059fadd850",
+          "sourcePath": "site/chrome.js"
+        }
+      ],
+      "drafts": {
+        "bb393392-4e2f-487f-91a7-8a190d34e2fc": {
+          "title": "Current mobile calculator baseline",
+          "visualDirection": "faithful current bottom-sheet UI",
+          "currentVersion": 1
+        },
+        "47cdb39e-07bd-4894-b096-786f6a611d8a": {
+          "title": "Price Split Mobile — Sticky Rail",
+          "visualDirection": "fixed header plus compact answer rail and inline results",
+          "parentDraftId": "bb393392-4e2f-487f-91a7-8a190d34e2fc",
+          "currentVersion": 1
+        },
+        "ca88aa77-90bf-4614-bad3-745349a65cc6": {
+          "title": "Focused Calculator Workspace",
+          "visualDirection": "single fixed brief bar header, focused Edit/Answer workspace, compact fixed live-answer footer shared by calculators",
+          "parentDraftId": "bb393392-4e2f-487f-91a7-8a190d34e2fc",
+          "currentVersion": 2
+        }
+      },
+      "updatedAt": "2026-08-31T14:00:00+02:00"
+    }
+  }
+}

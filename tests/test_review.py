@@ -1,6 +1,6 @@
 """Verifier primitives: prompt rendering and verdict parsing (no network)."""
 
-from perfect_brief import llm
+from brief_bar import llm
 
 
 def test_render_review_prompt_contains_items_and_criteria():
@@ -25,7 +25,7 @@ def test_parse_review_tolerates_fences_and_junk():
 
 
 def test_suggest_prompts_carry_critiques():
-    from perfect_brief import load_bundled
+    from brief_bar import load_bundled
 
     rules, _ = load_bundled()
     rule = rules["budget-floor"]

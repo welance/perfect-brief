@@ -210,7 +210,7 @@ test.describe("the ways in", () => {
     const cfg = page.locator('pre[data-lang="json"]');
     await expect(cfg).toContainText("uvx");
     await expect(cfg).toContainText("subdirectory=mcp-server");
-    await expect(cfg).toContainText("perfect-brief-mcp");
+    await expect(cfg).toContainText("brief-bar-mcp");
   });
 
   test("a brief pasted on the landing arrives in the console, scored", async ({ page }) => {

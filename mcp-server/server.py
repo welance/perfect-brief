@@ -33,7 +33,7 @@ MODEL = os.environ.get("PB_MODEL") or None
 TIMEOUT = float(os.environ.get("PB_TIMEOUT", "120"))
 
 server = MCPServer(
-    "perfect-brief",
+    "brief-bar",
     instructions=(
         "A bar for digital product briefs that the assistant does not control. "
         "Read the rules first, score with the tool, fix the gate before anything "

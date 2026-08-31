@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Brief Bar · scorer</title>
 <link rel="preconnect" href="https://welance.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,13 @@
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
 document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
 <link rel="stylesheet" href="welance.css">
 <style>
   /* tokens/fonts/logo from welance.css (welance/Directory DNA);
@@ -20,18 +27,18 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .brand{font-family:var(--disp);font-size:15px;font-weight:500}
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.5}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) 96px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) var(--sp-8)}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .keepltr{direction:ltr;text-align:left}
   html[dir=rtl] .find-pts{margin-left:0;margin-right:auto}
-  header{padding:34px 0 14px;border-bottom:2px solid var(--ink)}
+  header{padding:var(--sp-6) 0 var(--sp-4);border-bottom:2px solid var(--ink)}
   .htop{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .langsel{margin-left:auto;display:flex;align-items:center;gap:7px}
   html[dir=rtl] .langsel{margin-left:0;margin-right:auto}
   .langsel label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
   .langsel select{font-family:var(--mono);font-size:12.5px;padding:5px 8px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
-  .thesis{font-size:clamp(16px,2.2vw,19px);max-width:64ch;margin:8px 0 8px}
+  .thesis{font-size:clamp(16px,2.2vw,19px);max-width:64ch;margin:var(--sp-3) 0}
   .invariant{font-size:clamp(15px,2vw,18px);max-width:64ch;margin:0 0 16px;font-weight:600}
   .readout{display:flex;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;border:1px solid var(--rule);background:var(--paper-2)}
   .readout span{padding:6px 12px;border-right:1px solid var(--rule);color:var(--ink-soft)}
@@ -51,7 +58,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .btn{font-family:var(--mono);font-size:13px;font-weight:600;padding:9px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:.12s}
   .btn:hover{background:var(--accent);border-color:var(--accent)}
-  .note{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-soft);border-left:2px solid var(--partial);padding:6px 0 6px 12px;margin:14px 0;background:var(--partial-bg)}
+  .note{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-soft);border-left:2px solid var(--partial);padding:var(--sp-2) 0 var(--sp-2) var(--sp-3);margin:var(--flow) 0;background:var(--partial-bg)}
   html[dir=rtl] .note{border-left:0;border-right:2px solid var(--partial);padding:6px 12px 6px 0}
   .note b{color:var(--partial)}
   .offline{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;display:none}
@@ -175,7 +182,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   .knob .kv{min-width:42px;text-align:right;color:var(--ink)}
   .reset{font-family:var(--mono);font-size:11px;color:var(--accent);background:none;border:0;cursor:pointer;padding:0;margin-top:12px}
   .reset:hover{text-decoration:underline}
-  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer{margin-top:var(--sp-8);padding-top:var(--sp-4);border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .modebtn{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink);background:none;border:0;border-bottom:1px dashed var(--ink-soft);padding:0 0 1px;cursor:pointer}
   .modebtn:hover{color:var(--accent);border-color:var(--accent)}
   .modebtn.live{color:var(--accent-bg);background:var(--accent);border:1px solid var(--accent);padding:2px 8px}
@@ -339,7 +346,7 @@ send {"gate_contexts": []} to score a generic brief without them.</pre>
   <footer><span>The Brief Bar · scorer · <a href="https://github.com/welance/perfect-brief">github</a></span><span data-i18n="footerB"></span></footer>
 </div>
 <script>
-const REPO="https://github.com/welance/perfect-brief/blob/main/perfect_brief/rules";
+const REPO="https://github.com/welance/perfect-brief/blob/main/brief_bar/rules";
 const API=location.hostname.endsWith("github.io")?"https://briefs.welance.com":"";
 const I18N={
 "en-GB":{_meta:{name:"English (UK)",flag:"🇬🇧",dir:"ltr"},title:"The Brief Bar",thesis:"20% brief, 80% team. This scores the 20% — and lets you fix it in place. The score says how good it is; a separate gate of hard requirements says whether it may publish.",invariant:"An open ruleset steers the bar; an LLM only judges; code owns every number, the gate, and the publish decision.",nav:"→ why this exists, the rules, and how to change them",yourBrief:"your brief",run:"Score brief","scoredLive":"scored as you type","tryAI":"✦ try the AI judge →","publishCta":"Publish on the welance Directory — it's free","publishBlocked":"Meet the hard requirements to publish","vhandleMore":"details","vhandleLess":"less",presetWeak:"weak",presetMid:"promising",presetStrong:"ready",presetBlocked:"blocked ◀",presetAdv:"adversarial",verdict:"verdict",labelAccepted:"Accepted — published",labelReserved:"With reservation — community check",labelBlocked:"Blocked — hard requirements unmet",labelNoRules:"No applicable rules",gateLabel:"publish gate",gateUnmet:"unmet",bandReady:"Directory-ready",bandStrong:"Strong",bandGetting:"Getting there",bandNeeds:"Needs work",reviewMeta:"human review — low confidence on",strong:"What's strong",raise:"What would raise it",raiseHint:'tap “add a fix” on any gap — pick an option to splice it in and re-score.',naLabel:"Not applicable:",ptsLabel:"pts",addFix:"✚ add a fix",menuHead:"choose an insertion — it splices into the brief at the right spot",tailorAI:"✦ tailor with AI",aiHint:"analyse this brief, propose options that fit its domain",aiThinking:"✦ reading your brief…",aiFail:"AI unavailable here — built-in options shown",liveFail:"AI judge unreachable — back to the keyword score",srcMock:"keyword score — the AI judge did not answer",inserted:"inserted",advNote:"the brief asks to be published with full marks. It isn't obeyed — the judge treats it as inert data, so the instruction gets scored, not followed.",blockedNote:"a high-quality brief, but it leaks a brand name and an email — so the gate blocks it. The score can read ‘Directory-ready’ and still not publish: anonymisation is a hard requirement. Tap the anonymised fix to clear it.",bar:"the bar",barNote:"The diffable knobs — each rule's weight. The model never sees them. Move one and the verdict re-derives. The gate (★) is separate: those rules must hold to publish at all.",reset:"↺ reset the weights",footerB:"score = how good · gate = may it publish — two axes, kept separate",langLabel:"language","r_clear-title":"The brief has a clear title","r_problem-defined":"States a problem, not just a solution","r_users-identified":"Names and situates the users","r_success-metrics":"Defines a measurable outcome","r_deliverables-concrete":"Deliverables are concrete (definition of done)","r_scope-boundaries":"States what is out of scope","r_budget-floor":"Budget is stated and clears the floor","r_timeline":"A timeline or deadline is stated","r_anonymised":"Anonymised & blind-safe","r_team-shape":"Indicates the team it needs","r_constraints-tech":"Technical constraints are on the table","r_assumptions-risks":"Surfaces key assumptions & risks","r_data-compliance":"Names the compliance regime for personal data","r_accessibility-considered":"Accessibility is an explicit expectation",offlineNonEN:"Offline scoring is English-only (keyword mock). With the live LLM judge, a brief in any language is scored against the English rules.","judgeMockLbl":"mock · keyword","judgeLiveLbl":"live · LLM","scoreLiveBtn":"✦ Score with AI","judging":"✦ judging all rules…","staleLbl":"edited — re-score with AI","evidenceLabel":"in your brief:","notMet":"still not met — pick another option or edit the brief directly","fixAll":"✚ Fix all gaps","fixAllLive":"✦ Fix all with AI","fixingAll":"✦ fixing all gaps…","fixesApplied":"fixes applied","anonManual":"needs manual removal of identifiers","gateCtx":"Directory context — anonymisation and the €10k floor are blind-noticeboard policy; untick to score a generic brief without them","assistHead":"use it from your assistant","assistNote":"Connect the MCP server and your assistant can score briefs directly, on your key. From a terminal, the same thing with curl. Browser chats cannot reach the API — their sandboxes block the host — so this is for assistants with a shell or an MCP client. The model cannot move the number either way: only your brief can.","focusCta":"Build it on the Directory — fast, guided","focusNote":"A guided flow writes the brief with you and scores it against this same bar as you go. Start on the Directory homepage.","presetLocal":"in your language"},
@@ -789,7 +796,10 @@ document.querySelectorAll("#presets .chip").forEach(c=>c.addEventListener("click
 $("#run").addEventListener("click",scoreAction);
 $("#modebtn").addEventListener("click",()=>{MODE=MODE==="live"?"mock":"live";updateModeBtn();scoreAction();});
 $("#vstick").classList.add("collapsed");syncVstickLabel();
-$("#vhandle").addEventListener("click",()=>{$("#vstick").classList.toggle("collapsed");syncVstickLabel();});
+if(!(window.matchMedia&&window.matchMedia("(max-width: 920px) and (pointer: coarse)").matches)){
+  $("#vhandle").addEventListener("click",()=>{$("#vstick").classList.toggle("collapsed");syncVstickLabel();});
+}
+new MutationObserver(syncVstickLabel).observe($("#vstick"),{attributes:true,attributeFilter:["class"]});
 $("#livecta").addEventListener("click",()=>{MODE="live";updateModeBtn();updateOfflineNote();scoreAction();});
 $("#modelsel").addEventListener("change",e=>{MODEL=e.target.value.trim()||null;aiCache={};aiFailed={};scoreAction();});
 $("#byok").addEventListener("input",e=>{BYOK=e.target.value.trim();renderModelSel();});
@@ -827,5 +837,6 @@ document.addEventListener("welance:lang",ev=>{
 <script src="i18n/zh.js"></script>
 <script src="chrome.js"></script>
 <script src="code.js"></script>
+<script src="mobile.js"></script>
 </body>
 </html>

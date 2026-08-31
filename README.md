@@ -24,11 +24,11 @@ LLM only ever **judges** (server-side, key never leaves the box); deterministic
 code owns every number, the gate, and the decision.
 
 This repo is the **service**. The ruleset + engine live inside it as an
-installable package (`perfect_brief/`) so they can later be split into their own
+installable package (`brief_bar/`) so they can later be split into their own
 OSS repo and consumed here as a pinned dependency — the seam is already drawn.
 
 ```
-perfect_brief/     the open ruleset + deterministic engine (the OSS core)
+brief_bar/     the open ruleset + deterministic engine (the OSS core)
   rules/*.yaml       14 rules, weights sum to 100, ★ = gate requirement
   scoring.yaml       the €10k floor, the 4-requirement gate (anonymised is directory-context, deactivatable), the bands
   score.py           weighted average + gate + decision (no model here)
@@ -72,7 +72,7 @@ suite. Add the key to unlock the `llm` judge and `/v1/suggest`.
                   "quote": "Stripe … mara@acme.it", "note": "identifying info present",
                   "weight": 8, "severity": "high", "gate": "pass" }, … ],
   "review_required": false, "low_confidence": [],
-  "ruleset_version": "1.0.0+83107baec655", "engine": "perfect-brief@1.0.0+83107baec655",
+  "ruleset_version": "1.0.0+83107baec655", "engine": "brief-bar@1.0.0+83107baec655",
   "judge": "mock", "cached": false }
 ```
 The `ruleset_version` is your audit trail: it pins exactly which bar judged a
@@ -162,9 +162,9 @@ same endpoint server-to-server when it needs to persist a verdict.
 - **Stateless service.** The score is a pure function of `(brief, ruleset_version)`.
   There is no database. Redis holds only an ephemeral verdict cache + rate-limit
   counters, and the service degrades gracefully if Redis is down.
-- **Ruleset as a dependency.** `perfect_brief/` is an installable package with its
+- **Ruleset as a dependency.** `brief_bar/` is an installable package with its
   own version and CI corpus. Today it's vendored here; extracting it to
-  `welance/perfect-brief` and pinning a tag is a lift-and-shift, no code change.
+  `welance/brief-bar` and pinning a tag is a lift-and-shift, no code change.
 - **The gate replaces severity caps.** A critical gap is an explicit publish
   requirement (`clear-title`, `problem-defined`, `budget-floor`, `anonymised`),
   not a quiet penalty on the number.

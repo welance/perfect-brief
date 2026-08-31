@@ -1,7 +1,7 @@
 // Engine tests for site/pricing.js — the shared pricing model.
 // Dev-only (`make test-site`, needs node); offline CI stays `make test`.
 // The pinned numbers below were computed by hand in the plan
-// (docs/superpowers/plans/2026-07-31-perfect-method-price-team.md, Task 1).
+// (docs/superpowers/plans/2026-07-31-welance-method-price-team.md, Task 1).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
