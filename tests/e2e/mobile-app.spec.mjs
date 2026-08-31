@@ -80,6 +80,8 @@ test.describe("the layer is opt-in", () => {
     await expect(page.locator(".wl-head")).toHaveCSS("position", "fixed");
     await expect(page.locator(".wl-head .wl-project")).toContainText("brief bar");
     await expect(page.locator(".wl-head .wl-project")).toBeVisible();
+    await expect(page.locator(".wl-crumb")).toHaveCount(0);
+    await expect(page.locator("#t-eyebrow")).toHaveText("the split rule");
   });
 });
 
