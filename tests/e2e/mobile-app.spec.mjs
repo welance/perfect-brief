@@ -77,7 +77,7 @@ test.describe("the layer is opt-in", () => {
 
   test("the fixed header keeps the product name on screen", async ({ page }) => {
     await page.goto("/price.html");
-    await expect(page.locator(".wl-head")).toHaveCSS("position", "sticky");
+    await expect(page.locator(".wl-head")).toHaveCSS("position", "fixed");
     await expect(page.locator(".wl-head .wl-project")).toContainText("brief bar");
     await expect(page.locator(".wl-head .wl-project")).toBeVisible();
   });

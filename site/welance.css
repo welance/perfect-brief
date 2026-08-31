@@ -675,6 +675,8 @@ details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
 }
 
 /* --- the phone layer ----------------------------------------------------- */
+html.wl-app body { padding-top: 70px; }
+.wl-app .wl-head { position: fixed; inset: 0 0 auto; width: 100%; }
 .wl-app .wl-calc-modes {
   position: sticky; top: 70px; z-index: 98;
   display: grid; grid-template-columns: 1fr 1fr;
@@ -739,6 +741,7 @@ details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
   white-space: nowrap;
 }
 @media (max-width: 640px) {
+  html.wl-app body { padding-top: 60px; }
   .wl-app .wl-calc-modes { top: 60px; }
   .wl-app .wl-calc-steps { top: 106px; }
 }

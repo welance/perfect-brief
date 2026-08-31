@@ -346,6 +346,8 @@ test.describe("the public site stays compact", () => {
     await expect(page.locator(".wl-answer-footer")).toBeVisible();
     await page.locator(".wl-calc-modes").evaluate((el) =>
       window.scrollTo(0, el.offsetTop + 300));
+    await expect.poll(() => page.locator(".wl-head").evaluate((el) =>
+      Math.round(el.getBoundingClientRect().top))).toBe(0);
     await expect.poll(() => page.locator(".wl-calc-modes").evaluate((el) =>
       Math.round(el.getBoundingClientRect().top))).toBe(70);
     await expect.poll(() => page.locator(".wl-calc-steps").evaluate((el) =>
