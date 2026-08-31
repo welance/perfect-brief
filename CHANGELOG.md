@@ -6,6 +6,13 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.12.1] - 2026-08-31
+
+### Fixed
+- The focused calculator workspace now follows the mobile viewport instead of
+  requiring a coarse pointer too, so responsive browser windows and embedded
+  webviews receive the same mobile UI as physical phones.
+
 ## [1.12.0] - 2026-08-28
 
 ### Added

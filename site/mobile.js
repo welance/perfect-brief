@@ -22,7 +22,7 @@
 (function (root, doc) {
   "use strict";
 
-  var MQ = "(max-width: 920px) and (pointer: coarse)";
+  var MQ = "(max-width: 920px)";
   var EASE = "cubic-bezier(.32,.72,0,1)";   /* the sheet curve */
   var DUR = 340;                             /* ms, one snap */
   var FLING = 120;                           /* ms of velocity to project */

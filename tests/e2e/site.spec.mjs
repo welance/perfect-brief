@@ -338,6 +338,14 @@ test.describe("the public site stays compact", () => {
     expect(broken, broken.join(" | ")).toHaveLength(0);
   });
 
+  test("a narrow viewport gets the calculator workspace without touch emulation", async ({ page }) => {
+    await page.setViewportSize({ width: 800, height: 900 });
+    await page.goto("/price.html");
+    await expect(page.locator("html")).toHaveClass(/wl-app/);
+    await expect(page.locator(".wl-calc-modes")).toBeVisible();
+    await expect(page.locator(".wl-answer-footer")).toBeVisible();
+  });
+
   test("the way out of the page survives a phone, in every language", async ({ page }) => {
     // it is the one link that leads off the site — it does not get dropped
     // for being inconvenient at 320px. It names its destination rather than
