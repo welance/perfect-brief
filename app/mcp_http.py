@@ -27,6 +27,7 @@ from typing import Any
 
 from fastapi import HTTPException
 from mcp.server.mcpserver import Context, MCPServer
+from mcp.server.mcpserver.exceptions import ToolError
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.requests import Request
 
@@ -70,7 +71,8 @@ async def _guarded(ctx: Context, call: Callable[[Request], Awaitable[Any]]) -> A
         await _free_limit(request)
         result = await call(request)
     except HTTPException as exc:  # the API's own refusals, worded for a reader
-        raise RuntimeError(f"{exc.status_code}: {exc.detail}") from exc
+        # ToolError keeps the message; any other exception is masked by the SDK
+        raise ToolError(f"{exc.status_code}: {exc.detail}") from exc
     return result.model_dump() if hasattr(result, "model_dump") else result
 
 
@@ -122,7 +124,9 @@ async def score_brief(
     assert _score is not None
     req = ScoreRequest(
         brief=brief,
+        locale="en-GB",
         judge=judge,  # type: ignore[arg-type]  # validated by the model
+        model=None,
         gate_contexts=None if directory_context else [],
     )
     return await _guarded(ctx, lambda r: _score(req, r, None))
@@ -142,7 +146,7 @@ async def suggest_fixes(ctx: Context, brief: str, rule_ids: list[str] | None = N
     assert _suggest_all is not None
     from starlette.responses import Response
 
-    req = SuggestAllRequest(brief=brief, rule_ids=rule_ids or None)
+    req = SuggestAllRequest(brief=brief, rule_ids=rule_ids or None, locale="en-GB", model=None)
     out = await _guarded(ctx, lambda r: _suggest_all(req, r, Response(), None))
     return [s.model_dump() if hasattr(s, "model_dump") else s for s in out]
 

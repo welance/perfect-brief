@@ -11,7 +11,7 @@ import hashlib
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -124,16 +124,17 @@ app = FastAPI(
 )
 
 # Error shapes, documented once and attached to the calls that can raise them.
-ERR_BRIEF = {
+ErrDocs = dict[int | str, dict[str, Any]]
+ERR_BRIEF: ErrDocs = {
     422: {"description": "The brief is empty, too long, or the `model` is not one this server allows."}
 }
-ERR_JUDGE = {
+ERR_JUDGE: ErrDocs = {
     502: {"description": "The model upstream failed. Logged in full server-side; nothing partial is scored."},
     503: {
         "description": 'No model is configured (send `judge: "mock"` or your own key), or the model\'s answer was cut off before it finished.'
     },
 }
-ERR_RATE = {
+ERR_RATE: ErrDocs = {
     429: {
         "description": "Too many calls from this address. Free calls and model-funded calls have separate limits."
     }

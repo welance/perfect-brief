@@ -6,7 +6,7 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
-## [Unreleased]
+## [1.13.0] - 2026-09-03
 
 ### Added
 - A hosted MCP connector at `POST /mcp` (Streamable HTTP, stateless, JSON
@@ -25,6 +25,11 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - The footer credits welance once, as maintainer, with one Directory link.
 - The works-with matrix is honest about browser chats: no prompt route, no
   API, the hosted connector instead.
+
+### Fixed
+- `docker-compose.yml` pins the api service to `linux/amd64`: with the MCP
+  SDK's `cryptography` dependency the arm64 image dies on import under
+  Docker Desktop on Apple silicon. Production is amd64 and unaffected.
 
 ### Removed
 - The pricing calculators (Price Split, Team Rate, the welance Method) and
