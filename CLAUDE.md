@@ -15,18 +15,9 @@ gate, and the decision. Thesis: *20% brief, 80% team* — this scores the 20%.
 
 **Your mission for this session is in `PLAN.md`. Read it first, then Phase 0.**
 
-**Second workstream: the welance Method** — brief → price → team, the agency
-process digitalised and opened as a blueprint. Concept in
-`docs/pricing/PRICING.md`; engine + formula registry in
-`site/pricing.js` (shared by `price.html` and `team.html`, tested by
-`make test-site`); narrative in `site/method.html`; site-wide i18n in
-`site/i18n.js` + `site/i18n/*.js` (8 languages, draft-badged until a native
-speaker reviews); judge multilingualism guarded by
-`make test-llm-multilingual`. Plan executed:
-`docs/superpowers/plans/2026-07-31-welance-method-price-team.md`; still-owed
-decisions listed at the top of `PLAN-PRICING.md`. Independent of
-`PLAN.md` — neither blocks the other. Everything in it is anonymised by
-design; `site/` is public and no individual compensation data belongs there.
+The pricing calculators (Price Split, Team Rate, the welance Method) were
+removed from the site on 2026-09-03; the history keeps them. Do not
+reintroduce them here.
 
 ## Invariants — do not violate
 1. **The seam.** The judge returns per-rule verdicts (status/confidence/quote)
