@@ -6,12 +6,19 @@
  */
 import { test, expect } from "@playwright/test";
 
-const PAGES = ["/", "/calculators.html", "/price.html", "/team.html", "/rules.html",
-  "/console.html", "/integrate.html", "/data.html", "/security.html"];
+const PAGES = ["/", "/rules.html", "/console.html", "/integrate.html", "/data.html", "/security.html"];
 
 
 // On a phone the language switch lives inside the menu panel, so it has to be
 // opened first — the same two taps a visitor makes.
+// the landing keeps everything but the hero and three tiles behind closed
+// folds; tests that look inside open them first, the way a reader would
+async function digDeeper(page) {
+  for (const d of await page.locator("details.deeper").all()) {
+    if (!(await d.getAttribute("open"))) await d.locator("> summary").click();
+  }
+}
+
 async function chooseLanguage(page, code) {
   const burger = page.locator(".wl-burger");
   if (await burger.isVisible()) {
@@ -23,7 +30,7 @@ async function chooseLanguage(page, code) {
 
 test.describe("one origin", () => {
   test("the site and the API are served together", async ({ request }) => {
-    expect((await request.get("/calculators.html")).status()).toBe(200);
+    expect((await request.get("/rules.html")).status()).toBe(200);
     const health = await (await request.get("/v1/healthz")).json();
     expect(health.status).toBe("ok");
     const scored = await request.post("/v1/score", {
@@ -59,13 +66,13 @@ test.describe("chrome and navigation", () => {
       await expect(page.locator(".wl-foot")).toBeAttached();
       await expect(page.locator(".wl-out")).toHaveAttribute("href", /welance\.com\/directory/);
       await expect(page.locator(".wl-brandline")).toHaveAttribute("href", "./");
-      // The header wears the mark and the product name, and NOT the welance
-      // wordmark: the ruleset is MIT and common property, and co-branding it
-      // at the top of every page argues the opposite. Provenance lives in
-      // the footer, where the full lockup does carry the wordmark.
+      // The mark and the product name, and NOT the welance wordmark, in the
+      // header and in the footer alike: the ruleset is MIT and common
+      // property. welance is credited once, in the "maintained by" column.
       await expect(page.locator(".wl-brandline .wl-ast")).toBeAttached();
       await expect(page.locator(".wl-brandline .wl-logo")).toHaveCount(0);
-      await expect(page.locator(".wl-foot-lock .wl-logo")).toBeAttached();
+      await expect(page.locator(".wl-foot-lock .wl-logo")).toHaveCount(0);
+      await expect(page.locator(".wl-foot-op")).toContainText("welance");
       await expect(page.locator(".wl-head .wl-project")).toContainText("brief bar");
       // and the welance colour rule sits under it on every page
       await expect(page.locator(".wl-head .wl-rule i")).toHaveCount(5);
@@ -75,7 +82,7 @@ test.describe("chrome and navigation", () => {
   test("the colour rule is full weight on the landing page, thinner elsewhere", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator(".wl-rule")).not.toHaveClass(/is-thin/);
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await expect(page.locator(".wl-rule")).toHaveClass(/is-thin/);
   });
 
@@ -118,7 +125,7 @@ test.describe("chrome and navigation", () => {
 
 test.describe("nine languages, one choice", () => {
   test("the switcher offers every language with a flag", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     const options = page.locator("#langswitch option");
     const { LANGS } = await page.evaluate(() => ({ LANGS: WelanceI18n.LANGS.map((l) => l.code) }));
     await expect(options).toHaveCount(LANGS.length);
@@ -129,7 +136,7 @@ test.describe("nine languages, one choice", () => {
 
   test("every declared language actually has a dictionary", async ({ page }) => {
     // a flag in the switcher with no strings behind it is worse than no flag
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     const thin = await page.evaluate(async () => {
       const out = [];
       for (const l of WelanceI18n.LANGS) {
@@ -145,33 +152,33 @@ test.describe("nine languages, one choice", () => {
   });
 
   test("choosing a language follows you across pages", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await chooseLanguage(page, "it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
-    await page.goto("/team.html");
+    await page.goto("/rules.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
-    await expect(page.locator("[data-i18n='team.resh']")).toHaveText("Risultato");
+    await expect(page.locator("[data-i18n='rules.crumb']")).not.toHaveText("");
   });
 
   test("Urdu and Arabic mirror the page", async ({ page }) => {
     for (const code of ["ur", "ar"]) {
-      await page.goto(`/calculators.html?lang=${code}`);
+      await page.goto(`/rules.html?lang=${code}`);
       await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
     }
-    await page.goto("/calculators.html?lang=vi");
+    await page.goto("/rules.html?lang=vi");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
   });
 
   test("English is restored exactly — the markup is the content of record", async ({ page }) => {
-    await page.goto("/calculators.html?lang=en");
-    const before = await page.locator("[data-i18n='calc.h1']").textContent();
+    await page.goto("/rules.html?lang=en");
+    const before = await page.locator("[data-i18n-html='rules.h1']").textContent();
     await chooseLanguage(page, "de");
     await chooseLanguage(page, "en");
-    await expect(page.locator("[data-i18n='calc.h1']")).toHaveText(before);
+    await expect(page.locator("[data-i18n-html='rules.h1']")).toHaveText(before);
   });
 
   test("unreviewed languages are labelled draft, English never is", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     const en = await page.locator("#langswitch option").first().textContent();
     expect(en).not.toContain("draft");
     const it = await page.locator("#langswitch option[value=it]").textContent();
@@ -196,17 +203,22 @@ test.describe("the ways in", () => {
     await page.goto("/integrate.html");
     const rows = page.locator(".works tbody tr");
     await expect(rows).toHaveCount(5);
-    // Claude and ChatGPT both do all three — the earlier badges implied otherwise
-    const claude = rows.filter({ hasText: "Claude" });
+    // assistants on your machine do all three; a chat in the browser does none
+    // of them yet — its sandbox cannot POST and there is no hosted MCP server
+    const claude = rows.filter({ hasText: "Desktop, Code" });
     await expect(claude.locator("td.y")).toHaveCount(3);
-    const gpt = rows.filter({ hasText: "ChatGPT" });
-    await expect(gpt.locator("td.y")).toHaveCount(3);
+    // a chat in the browser has exactly one door: the hosted connector
+    const browser = rows.filter({ hasText: "ChatGPT" });
+    await expect(browser.locator("td.y")).toHaveCount(1);
+    await expect(browser.locator("td.y")).toContainText("/mcp");
+    await expect(browser.locator("td.n")).toHaveCount(2);
     // code and CI can only call the API, and the table says so
     await expect(rows.last().locator("td.n")).toHaveCount(2);
   });
 
   test("the MCP snippet is the command we actually publish", async ({ page }) => {
     await page.goto("/integrate.html");
+    await expect(page.locator('pre[data-lang="url"]')).toHaveText("https://briefs.welance.com/mcp");
     const cfg = page.locator('pre[data-lang="json"]');
     await expect(cfg).toContainText("uvx");
     await expect(cfg).toContainText("subdirectory=mcp-server");
@@ -251,7 +263,7 @@ test.describe("the language a visitor expects", () => {
     const page = await ctx.newPage();
     const responses = [];
     page.on("response", (r) => responses.push(r.status()));
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     expect(responses.filter((s) => s >= 300 && s < 400), "no redirects").toHaveLength(0);
     await ctx.close();
@@ -260,7 +272,7 @@ test.describe("the language a visitor expects", () => {
   test("a regional variant falls back to the closest we have", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "pt-PT" });
     const page = await ctx.newPage();
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
     await ctx.close();
   });
@@ -268,9 +280,9 @@ test.describe("the language a visitor expects", () => {
   test("an explicit choice always beats the browser, and is remembered", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "de-DE" });
     const page = await ctx.newPage();
-    await page.goto("/calculators.html?lang=it");
+    await page.goto("/rules.html?lang=it");
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
-    await page.goto("/team.html");
+    await page.goto("/data.html");
     await expect(page.locator("html"), "the choice sticks").toHaveAttribute("lang", "it");
     await ctx.close();
   });
@@ -278,7 +290,7 @@ test.describe("the language a visitor expects", () => {
   test("an unknown language lands on English, not on nothing", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "ja-JP" });
     const page = await ctx.newPage();
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await ctx.close();
   });
@@ -288,6 +300,7 @@ test.describe("the public site stays compact", () => {
 
   test("the fine print starts closed and opens on demand", async ({ page }) => {
     await page.goto("/");
+    await digDeeper(page);
     const fp = page.locator("details.fineprint").first();
     await expect(fp).not.toHaveAttribute("open", "");
     await fp.locator("summary").click();
@@ -298,7 +311,7 @@ test.describe("the public site stays compact", () => {
      the section, ONE paragraph supports it, depth lives in the fine print.
      Prolixity is a UX bug — this test is how it stays fixed. */
   test("no paragraph on the surface runs longer than the style allows", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/");
     const long = await page.evaluate(() => {
       const out = [];
       document.querySelectorAll(".wrap p, .wrap .door p, .wrap .step p").forEach((el) => {
@@ -314,6 +327,7 @@ test.describe("the public site stays compact", () => {
 
   test("the brand band breaks the page without breaking the layout", async ({ page }) => {
     await page.goto("/");
+    await digDeeper(page);
     await expect(page.locator(".band").first()).toBeVisible();
     // The band paints past the container; it must never widen the document.
     const { scroll, client } = await page.evaluate(() => ({
@@ -329,29 +343,13 @@ test.describe("the public site stays compact", () => {
     const broken = [];
     for (const width of [412, 560, 640, 768, 900, 960, 1024, 1100, 1180, 1280, 1440, 1600]) {
       await page.setViewportSize({ width, height: 800 });
-      await page.goto("/calculators.html");
+      await page.goto("/rules.html");
       const over = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
       );
       if (over > 0) broken.push(`${width}px overflows by ${over}px`);
     }
     expect(broken, broken.join(" | ")).toHaveLength(0);
-  });
-
-  test("a narrow viewport gets the calculator workspace without touch emulation", async ({ page }) => {
-    await page.setViewportSize({ width: 800, height: 900 });
-    await page.goto("/price.html");
-    await expect(page.locator("html")).toHaveClass(/wl-app/);
-    await expect(page.locator(".wl-calc-modes")).toBeVisible();
-    await expect(page.locator(".wl-answer-footer")).toBeVisible();
-    await page.locator(".wl-calc-modes").evaluate((el) =>
-      window.scrollTo(0, el.offsetTop + 300));
-    await expect.poll(() => page.locator(".wl-head").evaluate((el) =>
-      Math.round(el.getBoundingClientRect().top))).toBe(0);
-    await expect.poll(() => page.locator(".wl-calc-modes").evaluate((el) =>
-      Math.round(el.getBoundingClientRect().top))).toBe(70);
-    await expect.poll(() => page.locator(".wl-calc-steps").evaluate((el) =>
-      Math.round(el.getBoundingClientRect().top))).toBe(116);
   });
 
   test("the way out of the page survives a phone, in every language", async ({ page }) => {
@@ -362,7 +360,7 @@ test.describe("the public site stays compact", () => {
     for (const lang of ["en", "es", "pt-BR", "ar", "vi"]) {
       for (const width of [320, 390, 412, 560]) {
         await page.setViewportSize({ width, height: 800 });
-        await page.goto(`/calculators.html?lang=${lang}`);
+        await page.goto(`/?lang=${lang}`);
         const out = page.locator(".wl-out");
         await expect(out).toBeVisible();
         await expect(out).toContainText("welance/Directory");
@@ -380,23 +378,19 @@ test.describe("the public site stays compact", () => {
 
   test("the header stays focused, and the rest lives in the footer", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(2);
-    await expect(page.locator(".wl-nav")).toContainText("The calculators");
-    // the calculators page is the index the menu no longer has to be
-    await page.goto("/calculators.html");
-    for (const href of ["index.html", "price.html", "team.html"]) {
-      await expect(page.locator(`.tool a[href="${href}"]`)).toBeVisible();
-    }
+    await expect(page.locator(".wl-nav .wl-nav-item")).toHaveCount(1);
+    await expect(page.locator(".wl-nav")).toContainText("Integrate");
+    await expect(page.locator('.wl-foot-link[href="rules.html"]')).toBeAttached();
   });
 
   test("choosing a language writes it into the address", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     await chooseLanguage(page, "it");
-    await expect(page).toHaveURL(/\/it\/calculators\.html$/);
+    await expect(page).toHaveURL(/\/it\/rules\.html$/);
     // and following any relative link keeps you in that language — the footer
     // one, because the header nav is not on a phone
-    await page.locator('.wl-foot-link[href="calculators.html"]').click();
-    await expect(page).toHaveURL(/\/it\/calculators\.html$/);
+    await page.locator('.wl-foot-link[href="rules.html"]').click();
+    await expect(page).toHaveURL(/\/it\/rules\.html$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "it");
   });
 
@@ -405,6 +399,7 @@ test.describe("the public site stays compact", () => {
     // picture themselves doing — so the clause is marked, and it is a link
     for (const lang of ["en", "it", "de", "ar"]) {
       await page.goto(`/?lang=${lang}`);
+      await digDeeper(page);
       const hl = page.locator("p .hl");
       await expect(hl).toBeVisible();
       await expect(hl).toHaveAttribute("href", /GOVERNANCE\.md$/);
@@ -413,6 +408,7 @@ test.describe("the public site stays compact", () => {
 
   test("the API example offers three languages, highlighted and copyable", async ({ page, context }) => {
     await page.goto("/");
+    await digDeeper(page);
     // the landing carries start chips in `.code` too, so name the example's
     // two blocks rather than counting every code block on the page
     const blocks = page.locator("#api-req, #api-res");
@@ -448,7 +444,7 @@ test.describe("the public site stays compact", () => {
   });
 
   test("light and dark, remembered across pages, no flash", async ({ page }) => {
-    await page.goto("/calculators.html");
+    await page.goto("/rules.html");
     const theme = () => page.evaluate(() => document.documentElement.getAttribute("data-theme"));
     // the inline script decides before paint: the attribute is there immediately
     expect(await theme()).toMatch(/light|dark/);
@@ -456,22 +452,22 @@ test.describe("the public site stays compact", () => {
     await page.locator(".wl-theme").click();
     expect(await theme()).not.toBe(before);
     const chosen = await theme();
-    await page.goto("/price.html");
+    await page.goto("/data.html");
     expect(await theme(), "the choice follows you").toBe(chosen);
   });
 
   test("the footer names its columns and always shows docs and source", async ({ page }) => {
     await page.goto("/");
-    // brand, the three doors in, the model, build with it, operated by
-    await expect(page.locator(".wl-foot-grid > *")).toHaveCount(5);
-    await expect(page.locator(".wl-foot-k")).toHaveCount(4);
+    // brand, the two doors in, build with it, operated by
+    await expect(page.locator(".wl-foot-grid > *")).toHaveCount(4);
+    await expect(page.locator(".wl-foot-k")).toHaveCount(3);
     await expect(page.locator('.wl-foot-link[href="/docs"]')).toBeVisible();
     const gh = page.locator('.wl-foot-link[href*="github.com"]');
     await expect(gh).toBeVisible();
     await expect(gh.locator("svg.wl-gh")).toBeVisible();
-    // the three doors in lead a column of their own rather than sitting in a
+    // the two doors in lead a column of their own rather than sitting in a
     // list of twelve, which is where nobody found them
-    await expect(page.locator(".wl-foot-start")).toHaveCount(3);
+    await expect(page.locator(".wl-foot-start")).toHaveCount(2);
   });
 
   test("the closing band offers the ruleset, not the service", async ({ page }) => {

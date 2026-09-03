@@ -6,8 +6,6 @@
 |---|---|
 | **[Welance Directory](https://welance.com/directory)** | guided brief builder and marketplace powered by this scoring service |
 | **[Brief Bar](https://briefs.welance.com/)** | what the service does · **[console](https://briefs.welance.com/console.html)** · **[rules](https://briefs.welance.com/rules.html)** |
-| **[Price Split](https://briefs.welance.com/price.html)** | the split calculator — what a role is worth and who gets what part |
-| **[Team Rate](https://briefs.welance.com/team.html)** | one blended rate, four visible bands, the no-deal rule |
 | **[API docs](https://briefs.welance.com/docs)** | OpenAPI, every field described |
 | **[Integrate](https://briefs.welance.com/integrate.html)** | four routes into your workflow: console · prompt · **MCP** · API |
 | **[Your brief, your key](https://briefs.welance.com/data.html)** | what travels where, what we keep, and how to bring your own key |

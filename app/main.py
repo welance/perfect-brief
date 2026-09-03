@@ -11,14 +11,14 @@ import hashlib
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from brief_bar.llm import JudgeUnparsable
 
-from . import cache, llm_client, scorer
+from . import cache, llm_client, mcp_http, scorer
 from .llm_client import JudgeTruncated, LLMNotConfigured, ModelNotAllowed
 from .models import (
     Health,
@@ -53,18 +53,92 @@ async def lifespan(app: FastAPI):
         llm_client.configured(),
     )
     try:
-        yield
+        # the hosted MCP connector's session manager lives and dies with the app
+        async with mcp_http.server.session_manager.run():
+            yield
     finally:
         await llm_client.close_openrouter_client()
         await cache.close()
 
 
+API_DESCRIPTION = """
+**What this is.** A brief is the text a client hands a team before any work starts.
+This service reads one and answers two separate questions:
+
+- **How good is it?** A *score* from 0 to 100: a weighted average over fourteen
+  public rules (is there a real problem statement, named users, a measurable
+  outcome, a budget, a deadline…). Weights are public and sum to 100.
+- **May it publish?** A *gate* of four hard requirements. A brief that fails the
+  gate is *blocked* whatever its score, because a brilliant brief that names the
+  client cannot go on a blind noticeboard.
+
+**How the number is made.** A model only *judges*: for each rule it says pass,
+partial or fail, with a verbatim quote from the brief as evidence. Deterministic
+code then owns every number, the gate and the decision. The model never touches
+a weight. Every answer carries the `ruleset_version` that judged it, so the same
+brief and the same version give the same verdict later.
+
+**Two judges.** `judge: "mock"` is a keyword stub that runs without any model
+(English only, useful offline and in CI). `judge: "llm"` is the real judge on
+the service's own model account, rate-limited per address. Send your own
+OpenRouter key in `x-llm-key` and the call runs on your account instead: no
+rate limit, no cache, any allowed model.
+
+**Typical flow.** `POST /v1/score` → read `gate.missing` first, fix those →
+`POST /v1/suggest/all` for ready-to-paste sentences → score again → stop when
+`decision` is `accepted`. The rules themselves are at `GET /v1/rules` and, as
+files, at https://github.com/welance/perfect-brief.
+
+No account, no cookies, nothing stored beyond a one-day verdict cache. What
+travels where is written out at https://briefs.welance.com/data.html.
+"""
+
+TAGS = [
+    {
+        "name": "score",
+        "description": "The one call that matters: a brief in, score + gate + fourteen verdicts out.",
+    },
+    {
+        "name": "fixes",
+        "description": "Ready-to-paste sentences for the rules a brief fails, written in the brief's language and checked by a second model.",
+    },
+    {
+        "name": "ruleset",
+        "description": "The bar itself: every rule, its weight, its criteria and its sources, with the version that ties them together.",
+    },
+    {
+        "name": "meta",
+        "description": "Is the service up, which judge is configured, which models a request may name.",
+    },
+]
+
 app = FastAPI(
     title="Brief Bar scorer",
     version=scorer.version(),
     summary="Score a digital product brief against an open, versioned ruleset.",
+    description=API_DESCRIPTION,
+    openapi_tags=TAGS,
+    contact={"name": "welance", "url": "https://briefs.welance.com", "email": "hello@welance.com"},
+    license_info={"name": "MIT", "url": "https://github.com/welance/perfect-brief/blob/main/LICENSE"},
     lifespan=lifespan,
 )
+
+# Error shapes, documented once and attached to the calls that can raise them.
+ErrDocs = dict[int | str, dict[str, Any]]
+ERR_BRIEF: ErrDocs = {
+    422: {"description": "The brief is empty, too long, or the `model` is not one this server allows."}
+}
+ERR_JUDGE: ErrDocs = {
+    502: {"description": "The model upstream failed. Logged in full server-side; nothing partial is scored."},
+    503: {
+        "description": 'No model is configured (send `judge: "mock"` or your own key), or the model\'s answer was cut off before it finished.'
+    },
+}
+ERR_RATE: ErrDocs = {
+    429: {
+        "description": "Too many calls from this address. Free calls and model-funded calls have separate limits."
+    }
+}
 
 app.add_middleware(
     CORSMiddleware,
@@ -123,7 +197,12 @@ def _guard_byok(key: str | None) -> None:
 # only, never stored, never logged. It also unlocks any model (the caller pays).
 ByokHeader = Annotated[
     str | None,
-    Header(alias="x-llm-key", description="Optional: your own OpenRouter key for this call."),
+    Header(
+        alias="x-llm-key",
+        description="Optional. Your own OpenRouter key (`sk-or-…`). The call then runs on your "
+        "account: no rate limit, no shared cache, and any model from the allowed list. Used for "
+        "this one call, never stored, never logged. Use a spend-capped key.",
+    ),
 ]
 
 
@@ -149,8 +228,11 @@ def _judge_kind(requested: str | None, byok: str | None = None) -> str:
 # ---- API ------------------------------------------------------------------
 
 
-@app.get("/v1/healthz", response_model=Health, tags=["meta"])
+@app.get("/v1/healthz", response_model=Health, tags=["meta"], summary="Is the service up, and with what?")
 async def healthz() -> Health:
+    """Always answers if the process is alive. Says which service release and which
+    ruleset version are running, whether a model is configured for the live judge,
+    and whether the verdict cache is connected. Safe to poll; never rate-limited."""
     return Health(
         release_version=SERVICE_VERSION,
         ruleset_version=scorer.version(),
@@ -160,8 +242,14 @@ async def healthz() -> Health:
     )
 
 
-@app.get("/v1/models", response_model=ModelsResponse, tags=["meta"])
+@app.get(
+    "/v1/models", response_model=ModelsResponse, tags=["meta"], summary="Which models may a request name?"
+)
 async def get_models() -> ModelsResponse:
+    """The `model` field of a scoring request must be one of `available`, or the
+    call is refused with 422. `default` is what runs when you name none. The list
+    is the operator's allowlist, so a proxy cannot quietly pick an expensive model
+    on the service's account. With your own key the list is wider (see `x-llm-key`)."""
     return ModelsResponse(
         default=llm_client.default_model(),
         available=llm_client.available_models(),
@@ -169,8 +257,18 @@ async def get_models() -> ModelsResponse:
     )
 
 
-@app.get("/v1/rules", response_model=RulesResponse, tags=["ruleset"])
+@app.get(
+    "/v1/rules",
+    response_model=RulesResponse,
+    tags=["ruleset"],
+    summary="The bar: all fourteen rules, weights and sources",
+)
 async def get_rules() -> RulesResponse:
+    """Everything a verdict is measured against, in one document: each rule's
+    title, rationale, criteria, weight, severity, whether it is a gate requirement,
+    and the standards or practices it cites. Plus the accept threshold, the score
+    bands and the budget floor. `ruleset_version` here is the one you will see on
+    every verdict. Read this once and cache it; it changes only with a release."""
     cfg = scorer.cfg()
     rules = [
         RuleOut(
@@ -197,8 +295,30 @@ async def get_rules() -> RulesResponse:
     )
 
 
-@app.post("/v1/score", response_model=ScoreResponse, tags=["score"], dependencies=[Depends(rate_limit)])
+@app.post(
+    "/v1/score",
+    response_model=ScoreResponse,
+    tags=["score"],
+    dependencies=[Depends(rate_limit)],
+    summary="Score a brief: number, gate, and a verdict per rule",
+    responses={**ERR_BRIEF, **ERR_JUDGE, **ERR_RATE},
+)
 async def post_score(req: ScoreRequest, request: Request, x_llm_key: ByokHeader = None) -> ScoreResponse:
+    """Send the brief as plain text, in any language. You get back:
+
+    - `score` (0–100) and its `band`, a human label;
+    - `gate.passed` and `gate.missing`: fix these first, they block publication at
+      any score;
+    - `decision`: `accepted`, `accepted_with_reservation` or `blocked`, computed in
+      code from gate and score, never by the model;
+    - one verdict per rule with a verbatim `quote` from your brief as evidence.
+
+    `judge: "mock"` scores on keywords with no model at all (English only).
+    `judge: "llm"` uses the real judge; identical briefs on the same ruleset and
+    model are answered from a one-day cache so nobody pays twice. Send
+    `gate_contexts: []` to score a generic brief without the two rules that are
+    noticeboard policy (anonymised, budget floor). Nothing you send is stored as a
+    document; `no_cache: true` keeps even the evidence quotes out of the cache."""
     _guard_byok(x_llm_key)
     _guard(req.brief)
     kind = _judge_kind(req.judge, x_llm_key)
@@ -238,16 +358,28 @@ def _screening_headers(response: Response, meta: dict) -> None:
     response.headers["X-PB-Cache-Ms"] = str(meta.get("cache_ms", 0))
     response.headers["X-PB-Model"] = meta.get("model") or "none"
     response.headers["Server-Timing"] = (
-        f'cache;dur={meta.get("cache_ms", 0)}, '
-        f'generation;dur={meta.get("generation_ms", 0)}, '
-        f'verification;dur={meta.get("verification_ms", 0)}'
+        f"cache;dur={meta.get('cache_ms', 0)}, "
+        f"generation;dur={meta.get('generation_ms', 0)}, "
+        f"verification;dur={meta.get('verification_ms', 0)}"
     )
 
 
-@app.post("/v1/suggest", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)])
+@app.post(
+    "/v1/suggest",
+    response_model=list[Suggestion],
+    tags=["fixes"],
+    dependencies=[Depends(rate_limit)],
+    summary="Sentences that would make one failing rule pass",
+    responses={**ERR_BRIEF, **ERR_JUDGE, **ERR_RATE, 404: {"description": "No rule with that id."}},
+)
 async def post_suggest(
     req: SuggestRequest, request: Request, response: Response, x_llm_key: ByokHeader = None
 ) -> list[Suggestion]:
+    """For one rule the brief fails, a short menu of ready-to-paste sentences,
+    written to fit this brief and in the language you ask for. Each suggestion may
+    carry a `review` from a second model that checked it against the rule; the
+    `X-PB-*` response headers say whether that check ran, how many rounds it took
+    and how long each step cost. Needs a model: the mock judge cannot write."""
     _guard_byok(x_llm_key)
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
@@ -270,11 +402,21 @@ async def post_suggest(
 
 
 @app.post(
-    "/v1/suggest/all", response_model=list[Suggestion], tags=["fixes"], dependencies=[Depends(rate_limit)]
+    "/v1/suggest/all",
+    response_model=list[Suggestion],
+    tags=["fixes"],
+    dependencies=[Depends(rate_limit)],
+    summary="One fix per failing rule, in a single call",
+    responses={**ERR_BRIEF, **ERR_JUDGE, **ERR_RATE},
 )
 async def post_suggest_all(
     req: SuggestAllRequest, request: Request, response: Response, x_llm_key: ByokHeader = None
 ) -> list[Suggestion]:
+    """The whole repair in one round trip: one suggestion for each rule id you pass
+    (or for every rule that is not passing, if you pass none). Same shape and same
+    `X-PB-*` headers as `/v1/suggest`. Insert the sentences, score again, repeat
+    until `decision` is `accepted`. The anonymisation rule is the one thing it will
+    not write for you: removing a client's name is a judgement, not a sentence."""
     _guard_byok(x_llm_key)
     _guard(req.brief)
     if not llm_client.configured() and not x_llm_key:
@@ -433,5 +575,11 @@ if SITE.exists():
             response.headers["Cache-Control"] = "no-cache"
             return response
 
+    # the hosted MCP connector: the same four tools as mcp-server/, for chats in
+    # the browser that can add a remote server but cannot call the API themselves
+    mcp_http.bind(
+        rules=get_rules, health=healthz, score=post_score, suggest_all=post_suggest_all, free_limit=rate_limit
+    )
+    app.mount("/mcp", mcp_http.asgi_app(), name="mcp")
     app.mount("/a", Immutable(directory=str(SITE)), name="assets")
     app.mount("/", Site(directory=str(SITE), html=True), name="site")

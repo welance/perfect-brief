@@ -6,6 +6,36 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.13.0] - 2026-09-03
+
+### Added
+- A hosted MCP connector at `POST /mcp` (Streamable HTTP, stateless, JSON
+  replies): the same four tools and prompt as the local stdio server, for
+  chats in the browser whose sandboxes cannot call the API. A test holds the
+  two servers in parity.
+- `/docs` explains itself: an introduction to score, gate and the seam, a
+  summary and description on every endpoint, documented error codes.
+
+### Changed
+- The site's copy is shorter everywhere; the landing keeps only the hero,
+  three tiles and three closed folds. A nine-step type scale replaces 46
+  ad-hoc font sizes; nothing renders below 12px.
+- "Your brief, your key" leads with "you never need a key", three options
+  with icons, and names the models the free judge runs on.
+- The footer credits welance once, as maintainer, with one Directory link.
+- The works-with matrix is honest about browser chats: no prompt route, no
+  API, the hosted connector instead.
+
+### Fixed
+- `docker-compose.yml` pins the api service to `linux/amd64`: with the MCP
+  SDK's `cryptography` dependency the arm64 image dies on import under
+  Docker Desktop on Apple silicon. Production is amd64 and unaffected.
+
+### Removed
+- The pricing calculators (Price Split, Team Rate, the welance Method) and
+  their docs, engine and tests. Out of scope and too welance-specific for an
+  open ruleset; the git history keeps them.
+
 ## [1.12.1] - 2026-08-31
 
 ### Fixed

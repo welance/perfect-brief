@@ -1,7 +1,7 @@
 {
   "name": "the brief bar",
   "short_name": "brief bar",
-  "description": "An open ruleset for scoring digital product briefs, and the calculators that go with it.",
+  "description": "An open ruleset for scoring digital product briefs.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

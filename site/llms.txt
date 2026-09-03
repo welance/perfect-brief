@@ -77,12 +77,15 @@ addition takes weight from the rest — a longer checklist is a weaker one. Bett
 contributions are usually sharper criteria, a better source, or a fixture that
 pins a case the bar was getting away with.
 
+## MCP
+
+- Hosted connector (for chats in the browser): https://briefs.welance.com/mcp —
+  Streamable HTTP, stateless, four tools: get_rules, score_brief,
+  suggest_fixes, bar_status, plus the improve_brief prompt.
+- Local server (on your machine, may bring your own key):
+  uvx --from "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server" brief-bar-mcp
+
 ## Related welance tools
 
 - welance Directory: https://welance.com/directory — the guided brief builder
   and marketplace whose publishing bar this service powers
-- Price Split: https://briefs.welance.com/price.html — how a collaboration is
-  priced, formula by formula
-- Team Rate: https://briefs.welance.com/team.html — one blended client rate
-  decomposed into four visible bands
-- The engine, readable: https://github.com/welance/perfect-brief/blob/main/site/pricing.js

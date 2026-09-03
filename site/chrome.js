@@ -12,19 +12,11 @@
 (function () {
   "use strict";
 
-  /* Keep the header about things visitors can do. The individual calculators
-     stay one click deeper — a menu that lists everything is a menu nobody reads. */
+  /* Keep the header about things visitors can do. */
   var NAV = [
-    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
     { href: "integrate.html", key: "chrome.integrate", en: "Integrate" }
   ];
 
-  var PAGES = [
-    { href: "calculators.html", key: "chrome.calcs", en: "The calculators" },
-    { href: "index.html",  key: "chrome.brief",  en: "Brief Bar" },
-    { href: "price.html",  key: "chrome.price",  en: "Price Split" },
-    { href: "team.html",   key: "chrome.team",   en: "Team Rate" }
-  ];
   // the footer's second column: the things a builder looks for
   var BUILD = [
     { href: "integrate.html", key: "chrome.integrate", en: "Integrate" },
@@ -87,9 +79,11 @@
   }
 
   function lockupFoot() {
-    return '<a class="wl-foot-lock" href="./" aria-label="welance brief bar">' +
-      MARK + WORDMARK +
-      '<span class="wl-project"><span class="slash" aria-hidden="true">/</span>' +
+    // the footer names the project, not the maintainer: welance is one line
+    // in the "maintained by" column, the way any OSS project credits one
+    return '<a class="wl-foot-lock" href="./" aria-label="brief bar">' +
+      MARK +
+      '<span class="wl-project">' +
       '<span class="name">' + tt("chrome.slash", "brief bar") +
       '<span class="b">_</span></span></span></a>';
   }
@@ -146,8 +140,6 @@
       '<nav class="wl-menu" id="wl-menu" hidden aria-label="' + tt("chrome.menu", "menu") + '">' +
       '<div class="wl-menu-in">' +
       '<div class="wl-menu-lang" id="wl-menu-lang"></div>' +
-      '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.links", "The model") + "</p>" +
-      menuCol(PAGES) + "</div>" +
       '<div class="wl-menu-col"><p class="wl-menu-h">' + tt("chrome.build", "Build with it") + "</p>" +
       menuCol(BUILD) + "</div>" +
       "</div></nav>" +
@@ -262,8 +254,6 @@
   var STARTS = [
     { href: "console.html", key: "chrome.ctaBrief", en: "Score a brief",
       subKey: "chrome.startBriefSub", subEn: "Against the fourteen public rules, in the browser" },
-    { href: "price.html", key: "chrome.ctaPrice", en: "Compute a split",
-      subKey: "chrome.startPriceSub", subEn: "What the work is worth, and to whom" },
     // named and described, not offered — the ruleset does not belong to the
     // one noticeboard that happens to run it
     { href: "https://welance.com/directory", key: "chrome.startDirectory", en: "welance/Directory",
@@ -314,24 +304,23 @@
       '<div class="wl-foot-grid">' +
       '<div class="wl-foot-brand">' + lockupFoot() +
       '<p class="wl-foot-blurb">' + tt("chrome.blurb",
-        "An open ruleset for scoring digital product briefs. Fourteen public rules, " +
-        "four hard requirements, and code that owns every number.") + "</p>" +
+        "An open ruleset for checking digital product briefs. Fourteen public rules, " +
+        "four hard requirements, code that owns every number. MIT: fork it, change it, run it.") + "</p>" +
       '<p class="mono-sm wl-foot-contact">' + tt("chrome.contact",
-        "hello@welance.com · Berlin · Torino") + "</p></div>" +
+        "hello@welance.com") + "</p></div>" +
       '<nav class="wl-foot-col" aria-label="' + tt("chrome.colStart", "Start here") + '">' +
       '<p class="mono-sm wl-foot-k">' + tt("chrome.colStart", "Start here") + "</p>" +
       starts + "</nav>" +
-      '<nav class="wl-foot-col" aria-label="' + tt("chrome.links", "The model") + '">' +
-      '<p class="mono-sm wl-foot-k">' + tt("chrome.links", "The model") + "</p>" +
-      col(PAGES) + "</nav>" +
       '<nav class="wl-foot-col" aria-label="' + tt("chrome.build", "Build with it") + '">' +
       '<p class="mono-sm wl-foot-k">' + tt("chrome.build", "Build with it") + "</p>" +
       col(BUILD) + "</nav>" +
       '<div class="wl-foot-col">' +
-      '<p class="mono-sm wl-foot-k">' + tt("chrome.colOperated", "Operated by") + "</p>" +
-      '<p class="wl-foot-op">welance Ventures GmbH · Berlin<br>Moosdorfstraße 7-9, 12435</p>' +
-      '<p class="wl-foot-op">welance Ventures Italia SRL · Torino<br>Via San Michele 18, 12050 Lequio Berria</p>' +
-      '<a class="wl-foot-link" href="https://welance.com">' + tt("chrome.welanceLink", "welance.com ↗") + "</a>" +
+      '<p class="mono-sm wl-foot-k">' + tt("chrome.colMaintained", "Maintained by") + "</p>" +
+      '<p class="wl-foot-op">' + tt("chrome.maintainedBy",
+        "welance, a collective of independent senior teams, wrote this bar and hosts it. " +
+        "Anyone can use it, change it or run their own.") + "</p>" +
+      '<a class="wl-foot-link" href="https://welance.com/directory">' + tt("chrome.directoryAd",
+        "Need a team for your brief? welance/Directory ↗") + "</a>" +
       "</div></div>" +
       '<div class="wl-foot-legal mono-sm"><p>' + tt("chrome.legal", "© 2011–2026 welance · MIT") + "</p>" +
       '<nav><button class="wl-theme" type="button" aria-label="' +

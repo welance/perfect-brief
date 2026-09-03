@@ -12,8 +12,8 @@
  *     dictionaries only — never from user input).
  *   - The choice is stored in localStorage["welance-lang"], readable from
  *     ?lang=, and sets lang/dir on <html> (Urdu and Arabic are RTL).
- *   - price.html and console.html keep their own (older) i18n engines and
- *     sync on the same storage key, so the choice follows you across pages.
+ *   - console.html keeps its own (older) i18n engine and syncs on the same
+ *     storage key, so the choice follows you across pages.
  *
  * No dependencies, no build step. Include i18n.js first, then the
  * dictionary files; everything applies on DOMContentLoaded.
@@ -49,8 +49,7 @@
     "sec.w2.a": true,
     "sec.limit2": true,
     "sec.do2": true,
-    "rules.p6": true,
-    "calc.note": true
+    "rules.p6": true
   };
 
   function meta(code) {
