@@ -21,16 +21,16 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:16.5px;line-height:1.6;overflow-x:clip}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:var(--fs-base);line-height:1.6;overflow-x:clip}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) var(--sp-8)}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   header{padding:var(--sp-5) 0;border-bottom:2px solid var(--ink)}
-  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .kicker{font-family:var(--mono);font-size:var(--fs-sm);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:var(--flow)}
   /* the standfirst had no bottom margin because nothing used to follow it;
      the thesis paragraph does now, and at 3.5px apart the two read as one
      block of ragged text */
-  .thesis{font-size:clamp(17px,2.3vw,20px);max-width:62ch;margin:var(--sp-4) 0 var(--flow)}
+  .thesis{font-size:var(--fs-lead);max-width:62ch;margin:var(--sp-4) 0 var(--flow)}
   /* the invitation in the middle of the argument: an open ruleset is only
      open if changing it is something a reader can picture themselves doing */
   .hl { color: var(--ink); font-weight: 600; text-decoration: none;
@@ -40,17 +40,34 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     box-shadow: inset 0 -2px 0 0 var(--accent); }
   .hl::after { content: " ↗"; font-family: var(--mono); font-size: .82em; }
   p{max-width:66ch;margin:0 0 var(--flow)}
+  .soft{font-size:var(--fs-md);color:var(--ink-soft)}
+  /* dig deeper only if you really want to: three closed folds after the tiles */
+  details.deeper{border-top:1px solid var(--rule)}
+  details.deeper:last-of-type{border-bottom:1px solid var(--rule)}
+  details.deeper>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:var(--sp-4) 0;font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
+  details.deeper>summary::-webkit-details-marker{display:none}
+  details.deeper>summary::before{content:"+";font-family:var(--mono);color:var(--accent);width:1em;flex:none}
+  details.deeper[open]>summary::before{content:"–"}
+  details.deeper>summary:hover{color:var(--accent)}
+  details.deeper>*:not(summary){margin-top:var(--sp-3)}
+  details.deeper .seam{margin-top:var(--sp-5)}
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-4);margin:0 0 var(--flow)}
+  @media(max-width:760px){.feats{grid-template-columns:1fr}}
+  .feat{border:1px solid var(--rule);padding:var(--sp-4)}
+  .feat svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block;margin-bottom:var(--sp-3)}
+  .feat h3{margin:0 0 var(--sp-2);font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
+  .feat p{margin:0;font-size:var(--fs-md);color:var(--ink-soft)}
   .cta{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin:var(--sp-6) 0 0}
-  pre{background:var(--paper-2);border:1px solid var(--rule);padding:var(--sp-4);font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto;margin:0 0 var(--flow)}
+  pre{background:var(--paper-2);border:1px solid var(--rule);padding:var(--sp-4);font-family:var(--mono);font-size:var(--fs-sm);line-height:1.6;overflow-x:auto;margin:0 0 var(--flow)}
   pre b{color:var(--accent);font-weight:600}
   .two{display:grid;grid-template-columns:1fr;gap:var(--sp-3);margin:0 0 var(--flow)}
   @media(min-width:640px){.two{grid-template-columns:1fr 1fr}}
   .card{border:1px solid var(--rule);background:var(--paper-2);padding:var(--sp-4)}
-  .card h3{font-family:var(--mono);font-size:13px;margin:0 0 var(--sp-2)}
-  .card p{font-size:14.5px;margin:0;color:var(--ink-soft)}
-  .card .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block;margin-bottom:var(--sp-1)}
+  .card h3{font-family:var(--mono);font-size:var(--fs-sm);margin:0 0 var(--sp-2)}
+  .card p{font-size:var(--fs-md);margin:0;color:var(--ink-soft)}
+  .card .n{font-family:var(--mono);font-size:var(--fs-2xl);font-weight:600;display:block;margin-bottom:var(--sp-1)}
   .card .n.g{color:var(--pass)} .card .n.f{color:var(--fail)}
-  .triad{font-family:var(--mono);font-size:13.5px;line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 var(--flow)}
+  .triad{font-family:var(--mono);font-size:var(--fs-sm);line-height:1.9;border-left:2px solid var(--accent);padding-left:14px;margin:0 0 var(--flow)}
   .triad b{color:var(--accent)}
   /* full-bleed, like the Directory rail: the figure leaves the text column so
      the seam has room to be read at a glance. margin-inline escapes .wrap;
@@ -69,12 +86,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   @media(max-width:760px){.seam svg{min-width:760px;margin:0}}
   .seam figcaption{margin-inline:auto;max-width:66ch}
   .seam svg{display:block;width:100%}
-  .seam .sl{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.05em}
-  .seam .sl.b{font-size:13px;font-weight:600;fill:var(--ink)}
+  .seam .sl{font-family:var(--mono);font-size:var(--fs-xs);fill:var(--ink-soft);letter-spacing:.05em}
+  .seam .sl.b{font-size:var(--fs-sm);font-weight:600;fill:var(--ink)}
   .seam .sl.accent{fill:var(--accent)}
   .seam .sl.pass{fill:var(--pass)}
   .seam .sl.fail{fill:var(--fail)}
-  .seam .bignum{font-family:var(--disp);font-size:34px;font-weight:600;fill:var(--ink);letter-spacing:-.01em}
+  .seam .bignum{font-family:var(--disp);font-size:var(--fs-2xl);font-weight:600;fill:var(--ink);letter-spacing:-.01em}
   /* start routes — the snippet IS the pitch; a developer recognises code
      faster than any sentence describing it. */
   .starts{display:grid;grid-template-columns:1fr;gap:var(--sp-3);margin:var(--flow) 0}
@@ -84,29 +101,29 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     display:flex;flex-direction:column;gap:var(--sp-3);min-width:0}
   .shead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .start .ico{width:20px;height:20px;color:var(--accent);flex:none}
-  .start .tag{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+  .start .tag{font-family:var(--mono);font-size:var(--fs-sm);font-weight:600;color:var(--accent);
     border:1px solid var(--accent);padding:1px 7px}
-  .start .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  .start .who{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.06em;
     text-transform:uppercase;color:var(--ink-soft)}
   .start .code{margin:0;flex:1}
-  .start .code-lang{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  .start .code-lang{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.08em;
     text-transform:uppercase;color:var(--on-slab-soft)}
-  .code-open{font-family:var(--mono);font-size:12px;color:var(--wl-y);
+  .code-open{font-family:var(--mono);font-size:var(--fs-sm);color:var(--wl-y);
     text-decoration:none;letter-spacing:.04em}
   .code-open:hover{text-decoration:underline}
-  .startnote{font-size:14px;color:var(--ink-soft);margin:var(--sp-4) 0 0}
-  .seamcap{font-size:14.5px;color:var(--on-slab-soft);max-width:64ch;margin:var(--sp-6) 0 0}
+  .startnote{font-size:var(--fs-md);color:var(--ink-soft);margin:var(--sp-4) 0 0}
+  .seamcap{font-size:var(--fs-md);color:var(--on-slab-soft);max-width:64ch;margin:var(--sp-6) 0 0}
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   /* the first tap: a paste box that IS the hero action */
   .hero-paste{margin:var(--flow) 0 var(--sp-3);max-width:720px}
-  .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:var(--sp-4);font-family:var(--mono);font-size:13.5px;line-height:1.6;resize:vertical;box-sizing:border-box}
+  .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:var(--sp-4);font-family:var(--mono);font-size:var(--fs-sm);line-height:1.6;resize:vertical;box-sizing:border-box}
   .hero-paste textarea::placeholder{color:var(--ink-soft)}
   .hero-paste textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
   .hero-paste-row{display:flex;gap:var(--sp-4);align-items:center;flex-wrap:wrap;margin-top:var(--sp-3)}
-  .hero-paste-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--ink-soft)}
-  .hero-nobrief{font-size:14px;color:var(--ink-soft);margin:var(--sp-4) 0 0}
-  .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:var(--sp-5)}
+  .hero-paste-note{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.05em;color:var(--ink-soft)}
+  .hero-nobrief{font-size:var(--fs-md);color:var(--ink-soft);margin:var(--sp-4) 0 0}
+  .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:var(--fs-sm);color:var(--ink-soft);margin-top:var(--sp-5)}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
   .btn.gh{display:inline-flex;align-items:center;gap:8px}
   .btn.gh svg{width:16px;height:16px;fill:currentColor;flex:none}
@@ -145,7 +162,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
              the argument starts: nobody owns the answer, so the invitation
              comes first and the thesis follows it. index.thesis keeps its key
              and its eight translations — it only moved down a slot. -->
-        <p class="thesis" data-i18n="index.lede">Nobody has settled what a brief bar looks like. The rules are open. Help us write them.</p>
+        <p class="thesis" data-i18n="index.lede">AI builds whatever you ask. Ask well.</p>
         <!-- The first tap IS the hero: paste, one button, scored. The argument
              below survives intact for whoever wants it — but nobody should
              need to read a single paragraph before getting the number. -->
@@ -157,7 +174,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
           </div>
           <p class="hero-nobrief" data-i18n-html="index.paste.nobrief">No brief yet? <a href="https://welance.com/directory">Build it on the Directory, guided →</a></p>
         </div>
-        <p data-i18n-html="index.thesis">A brief has never made a project succeed — the team does that. A bad one fails quietly instead: weeks in, when the work comes back wrong. It is also the only part anyone can check before the money moves. <b>20% brief, 80% team</b> — this is a small, open service that scores the 20%.</p>
+        <p data-i18n-html="index.thesis">Software is cheap to build now and easy to build wrong. The brief is the one part you can still get right before anyone, human or model, starts. <b>20% brief, 80% team</b>: fourteen open rules check the 20%.</p>
       </div>
       <div class="pb-ident" id="pbIdent" role="img" aria-label="A brief being written and checked">
       <svg viewBox="0 0 120 140" aria-hidden="true">
@@ -181,81 +198,18 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </header>
 
   <div class="eyebrow"><span data-i18n="index.eb1">what it does</span></div>
-  <p data-i18n-html="index.p1">It reads a brief and returns two separate things. A <b>score</b> — a weighted average over fourteen public rules (is there a real problem statement? named users? a measurable outcome? a definition of done?) with a plain band label. And a <b>gate</b> — four hard requirements that must hold before a brief may publish at all: a clear title, a stated problem, a budget above the engagement floor, and full anonymisation.</p>
-  <p data-i18n-html="index.p2">Keeping them separate is the point. A brilliant brief that leaks the client's name shouldn't go on a blind noticeboard — and no average should be able to paper over that.</p>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p3">One honest nuance: two of the fourteen rules — anonymisation and the €10k budget floor — are Directory noticeboard policy, not universal virtues. Both carry a <span style="font-family:var(--mono)">context: directory</span> tag in the open ruleset; scoring a generic brief, a caller switches that context off and they drop out entirely — no gate, no score weight, the average renormalises over the rules that actually apply.</p>
-
-  <div class="eyebrow"><span data-i18n="idx.start.eb">run it in one line</span></div>
-  <div class="starts">
-
-    <div class="start wide">
-      <div class="shead">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5.6" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.4" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10h3.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="tag">MCP</span>
-        <span class="who">Claude Desktop · Claude Code · Cursor · <span data-i18n="idx.start.mcp.who">anything that speaks MCP</span></span>
-      </div>
-<div class="code">
-        <div class="code-bar"><div class="code-lang">json</div><button class="code-copy">copy</button></div>
-<pre data-lang="json">{"mcpServers": {"brief-bar": {
-  "command": "uvx",
-  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "brief-bar-mcp"]
-}}}</pre>
-      </div>
-    </div>
-
-    <div class="start">
-      <div class="shead">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 6l3.6 4-3.6 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.4 14.2h6.1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="tag">curl</span>
-        <span class="who" data-i18n="idx.start.s2.who">no key needed</span>
-      </div>
-<div class="code">
-        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
-<pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
-  -H 'content-type: application/json' \
-  -d '{"brief":"Paste your brief here"}'</pre>
-      </div>
-    </div>
-
-    <div class="start">
-      <div class="shead">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l6.4 3.2v5.1c0 3.1-2.6 5.4-6.4 6.5-3.8-1.1-6.4-3.4-6.4-6.5V5.8z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.6 10.1l1.7 1.7 3.3-3.4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="tag">OpenAPI</span>
-        <span class="who" data-i18n="idx.start.docs.who">swagger ui · try every endpoint</span>
-      </div>
-<div class="code">
-        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="https://briefs.welance.com/docs" data-i18n="idx.start.open">open →</a></div>
-<pre data-lang="bash">briefs.welance.com/docs</pre>
-      </div>
-    </div>
-
-    <div class="start">
-      <div class="shead">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9l2.4 2.4L6 13.8" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 13.8h3.2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="tag">browser</span>
-        <span class="who" data-i18n="idx.start.s1.who">nothing to install</span>
-      </div>
-<div class="code">
-        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="console.html" data-i18n="idx.start.open">open →</a></div>
-<pre data-lang="bash">briefs.welance.com/console.html</pre>
-      </div>
-    </div>
-
-    <div class="start">
-      <div class="shead">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="6" cy="5.2" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="15" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.2" cy="8.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 7.1v5.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.9 5.2h4a2.3 2.3 0 0 1 2.3 2.3" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="tag">git</span>
-        <span class="who">MIT · <span data-i18n="idx.start.s4.who">rules, engine, service, site</span></span>
-      </div>
-<div class="code">
-        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
-<pre data-lang="bash">git clone https://github.com/welance/perfect-brief.git</pre>
-      </div>
-    </div>
-
+  <div class="feats">
+    <div class="feat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/><path d="M3 20h18"/></svg><h3 data-i18n="index.f1.h">A score</h3>
+      <p data-i18n="index.f1.p">0 to 100, a weighted average over fourteen public rules. Problem, users, outcome, scope, budget, deadline.</p></div>
+    <div class="feat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 7.6-8 9-4.6-1.4-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><h3 data-i18n="index.f2.h">A gate</h3>
+      <p data-i18n="index.f2.p">Four hard requirements. Fail one and the brief is blocked, whatever the score. A brilliant brief that names the client stays off a blind noticeboard.</p></div>
+    <div class="feat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4z"/><path d="M8.5 9h7M8.5 12h4"/></svg><h3 data-i18n="index.f3.h">Evidence</h3>
+      <p data-i18n="index.f3.p">Every verdict quotes the brief. The model only judges; code owns every number, so the same brief and the same version always agree.</p></div>
   </div>
-  <p class="startnote" data-i18n-html="idx.start.note">All four work without an API key. Every endpoint, the MCP tools and the ruleset format are on <a href="integrate.html">the integrate page</a>.</p>
+  <p class="soft" data-i18n-html="index.p3">Two rules, anonymisation and the €10k floor, are noticeboard policy, not virtues. They carry <span style="font-family:var(--mono)">context: directory</span>; send <span style="font-family:var(--mono)">gate_contexts: []</span> to score a generic brief without them.</p>
 
+  <details class="deeper">
+    <summary><span data-i18n="index.d1">How it works</span></summary>
   <div class="band">
   <div class="two">
     <div class="card"><span class="n g">92 / 100</span><h3 data-i18n="index.card1.h">Directory-ready</h3><p data-i18n="index.card1.p">High quality: problem, users, metrics, definition of done, budget, timeline — all there.</p></div>
@@ -263,8 +217,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </div>
   </div>
 
-  <div class="eyebrow"><span data-i18n="index.eb2">how it works</span></div>
-  <p data-i18n-html="index.p4">There is one seam, and everything depends on it. The ruleset is a folder of versioned YAML files — anyone can read them, <a class="hl" href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">anyone can propose a change</a>. A language model reads one rule at a time and returns a verdict: pass, partial, or fail, with a quote from the brief as evidence. That is all it does. Plain, deterministic code — which the model never sees — owns every weight, the gate, and the decision.</p>
+  <p data-i18n-html="index.p4">One seam. The rules are versioned YAML files anyone can read and <a class="hl" href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">anyone can change</a>. A model reads one rule at a time and answers pass, partial or fail, with a quote. Past the seam, code does the arithmetic.</p>
   
   <figure class="seam" style="direction:ltr">
     <svg viewBox="0 0 1100 286" role="img" aria-label="A brief goes into a judge slot holding either an LLM or plain word matching. Either one returns the same fourteen verdicts. Only past the seam does code turn those verdicts into a score and a publish decision.">
@@ -365,13 +318,87 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
   "ruleset_version": "1.0.0+83107baec655"
 }</pre>
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.p6">The <span style="font-family:var(--mono)">ruleset_version</span> pins exactly which bar judged a brief, and every verdict carries its verbatim evidence — an audit trail you can re-read long after any particular model is gone. The <a href="console.html">console</a> works offline too, on a keyword mock of the judge, so you can try the mechanics without an API key.</p>
+  <p class="soft" data-i18n-html="index.p6"><span style="font-family:var(--mono)">ruleset_version</span> pins which bar judged a brief; the quotes keep it readable after the model is gone. The <a href="console.html">console</a> works offline too, on a keyword stub.</p>
 
-  <div class="eyebrow"><span data-i18n="index.eb3">why we built it, honestly</span></div>
-  <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a small collective of independent senior teams, working together since 2011. We run <b>welance/Directory</b> — a curated, blind noticeboard where cross-functional teams pick up product briefs on the strength of the brief, not the brand behind it. The platform maximises connections, not margin: meeting a team costs a fixed, symbolic token, never a percentage of the relationship. For that to work, briefs need a bar: readable, consistent, and blind-safe.</p>
-  <p data-i18n-html="index.p7b">The bar doesn't just guard that noticeboard — it helps write for it: the Directory's guided brief builder derives its questions from these fourteen rules, and every draft it produces is scored by this same service before anyone sends anything. One instrument, teaching and judging with the same hand.</p>
-  <p data-i18n-html="index.p8">There's an obvious conflict in one company operating both the noticeboard and the bar. Our answer is to make the bar open. The rules are public files with public weights; the €10k budget floor is a stated policy, not a hidden filter; the test corpus that guards changes is public; and the whole thing is MIT-licensed, so if you disagree with our bar you can fork it and run your own. It is the only way we have found to run one honestly.</p>
-  <p data-i18n-html="index.p8b">The sharpest edge of it, said plainly: <b>welance also pitches as a team on the Directory</b> — same fees, same blindness, same bar, and the <span style="font-family:var(--mono)">ruleset_version</span> on every verdict is how anyone checks nobody got a different one. And yes, we benefit when your brief improves and lands on our noticeboard. That is why the tool is free, and why every exit stays open: the offline mock, the fork, self-hosting. What binds <em>us</em> — never mining briefs for leads, never training on them — is written out in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
+  </details>
+  <details class="deeper">
+    <summary><span data-i18n="index.d2">Run it yourself: one prompt, MCP, API</span></summary>
+  <div class="starts">
+
+    <div class="start wide">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="5.6" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.4" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10h3.6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">MCP</span>
+        <span class="who">Claude Desktop · Claude Code · Cursor · <span data-i18n="idx.start.mcp.who">anything that speaks MCP</span></span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">json</div><button class="code-copy">copy</button></div>
+<pre data-lang="json">{"mcpServers": {"brief-bar": {
+  "command": "uvx",
+  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "brief-bar-mcp"]
+}}}</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 6l3.6 4-3.6 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.4 14.2h6.1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">curl</span>
+        <span class="who" data-i18n="idx.start.s2.who">no key needed</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
+<pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
+  -H 'content-type: application/json' \
+  -d '{"brief":"Paste your brief here"}'</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l6.4 3.2v5.1c0 3.1-2.6 5.4-6.4 6.5-3.8-1.1-6.4-3.4-6.4-6.5V5.8z" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.6 10.1l1.7 1.7 3.3-3.4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">OpenAPI</span>
+        <span class="who" data-i18n="idx.start.docs.who">swagger ui · try every endpoint</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="https://briefs.welance.com/docs" data-i18n="idx.start.open">open →</a></div>
+<pre data-lang="bash">briefs.welance.com/docs</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="1" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9l2.4 2.4L6 13.8" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 13.8h3.2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">browser</span>
+        <span class="who" data-i18n="idx.start.s1.who">nothing to install</span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">url</div><a class="code-open" href="console.html" data-i18n="idx.start.open">open →</a></div>
+<pre data-lang="bash">briefs.welance.com/console.html</pre>
+      </div>
+    </div>
+
+    <div class="start">
+      <div class="shead">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="6" cy="5.2" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="15" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.2" cy="8.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 7.1v5.9" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.9 5.2h4a2.3 2.3 0 0 1 2.3 2.3" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tag">git</span>
+        <span class="who">MIT · <span data-i18n="idx.start.s4.who">rules, engine, service, site</span></span>
+      </div>
+<div class="code">
+        <div class="code-bar"><div class="code-lang">bash</div><button class="code-copy">copy</button></div>
+<pre data-lang="bash">git clone https://github.com/welance/perfect-brief.git</pre>
+      </div>
+    </div>
+
+  </div>
+  <p class="startnote" data-i18n-html="idx.start.note">All four work without an API key. Every endpoint, the MCP tools and the ruleset format are on <a href="integrate.html">the integrate page</a>.</p>
+
+  </details>
+  <details class="deeper">
+    <summary><span data-i18n="index.d3">Why we built it, honestly</span></summary>
+  <p data-i18n-html="index.p7">We are <a href="https://welance.com">welance</a>, a collective of independent senior teams since 2011. We run <b>welance/Directory</b>, a blind noticeboard where teams pick up briefs on the strength of the brief, not the brand. Its guided builder asks these fourteen questions and scores every draft with this service.</p>
+  <p data-i18n-html="index.p8">One company running both the noticeboard and the bar is a conflict. Our answer is to make the bar open: public rules, public weights, a public test corpus, MIT. Disagree? Fork it.</p>
+  <p data-i18n-html="index.p8b"><b>welance also pitches as a team on the Directory.</b> Same fees, same blindness, same bar; the version on every verdict is how anyone checks. What binds us is the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>: never mining briefs for leads, never training on them.</p>
   <details class="fineprint"><summary data-i18n="site.fineprint">the fine print</summary>
   <p data-i18n="index.p9">This tool is the distilled version of what fifteen years of handoffs taught us: the products that go well aren't the ones with the most polished decks — they're the ones where a small, senior, cross-functional team got a brief honest enough to start from. We can't open-source the teams. We can open-source the bar.</p>
   <p data-i18n-html="index.p10">Together, this service and the Directory are the digitalised version of what welance has always done in person — matching honest briefs with senior teams — rebuilt with the approaches we now believe in: open rules instead of opinions, inspectable scores instead of gut feel. Two convictions drive it. Writing a <em>good technical brief</em> for a software product should be easy — the bar should help you clear it, not just measure you. And no one should have to commit to the first team they meet: a brief worth building deserves to meet several, so the fit — technical <em>and</em> cultural — is chosen, not defaulted to.</p>
@@ -383,8 +410,9 @@ score, decision = r.json()["score"], r.json()["decision"]</pre>
     <b>evidence merges</b> — the public fixture corpus in CI decides, not taste<br>
     <b>anyone forks</b> — MIT; the exit right is the real anti-capture guarantee
   </div>
-  <p style="font-size:14px;color:var(--ink-soft)" data-i18n-html="index.govnote">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
+  <p style="font-size:var(--fs-md);color:var(--ink-soft)" data-i18n-html="index.govnote">Details in <a href="https://github.com/welance/perfect-brief/blob/main/GOVERNANCE.md">GOVERNANCE.md</a> and <a href="https://github.com/welance/perfect-brief/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>. The long-form reasoning is in <a href="rules.html">the article</a>.</p>
 
+  </details>
 </div>
 <div id="site-footer"></div>
 <script>

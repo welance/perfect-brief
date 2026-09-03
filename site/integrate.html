@@ -32,44 +32,45 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   /* tokens, fonts, buttons come from welance.css */
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.6; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); }
-  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: var(--sp-4) 0 0; }
+  .thesis { font-size: var(--fs-lead); max-width: 60ch; margin: var(--sp-4) 0 0; }
   p { max-width: 64ch; margin: 0 0 var(--flow); }
   .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
-    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 var(--flow); max-width: 24ch; }
+    font-size: var(--fs-2xl); line-height: 1.18; margin: 0 0 var(--flow); max-width: 24ch; }
 
   /* the four routes */
   .routes { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); margin: 0 0 var(--flow); }
   @media (min-width: 720px) { .routes { grid-template-columns: 1fr 1fr; } }
   .route { border: 1px solid var(--rule); background: var(--paper-2); padding: var(--sp-5);
     display: flex; flex-direction: column; gap: var(--sp-2); }
-  .route .who { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  .route .who { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .1em;
     text-transform: uppercase; color: var(--ink-soft); }
-  .route h3 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin: 0; }
-  .route p { font-size: 14.5px; color: var(--ink-soft); margin: 0; flex: 1; }
-  .route .go { font-family: var(--mono); font-size: 13px; }
-  .route .effort { font-family: var(--mono); font-size: 11px; color: var(--ink);
+  .route h3 { font-family: var(--disp); font-size: var(--fs-lg); font-weight: 600; margin: 0; }
+  .route p { font-size: var(--fs-md); color: var(--ink-soft); margin: 0; flex: 1; }
+  .route .go { font-family: var(--mono); font-size: var(--fs-sm); }
+  .route .effort { font-family: var(--mono); font-size: var(--fs-xs); color: var(--ink);
     border: 1px solid var(--rule); background: var(--paper); padding: 3px 8px;
     align-self: flex-start; }
 
   /* what actually works where — a matrix beats a badge wall */
   .works { border-collapse: collapse; width: 100%; max-width: 760px; margin: 0 0 var(--flow); }
   .works th, .works td { text-align: start; padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--rule); }
-  .works th { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  .works th { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .1em;
     text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
-  .works td.t { font-weight: 600; font-size: 15px; }
-  .works td.y { color: var(--pass); font-family: var(--mono); font-size: 13px; }
-  .works td.m { color: var(--partial); font-family: var(--mono); font-size: 12px; }
-  .works td.n { color: var(--ink-soft); font-family: var(--mono); font-size: 13px; }
+  .works td.t { font-weight: 600; font-size: var(--fs-md); }
+  .works td.y { color: var(--pass); font-family: var(--mono); font-size: var(--fs-sm); }
+  .works td.m { color: var(--partial); font-family: var(--mono); font-size: var(--fs-sm); }
+  .works td.n { color: var(--ink-soft); font-family: var(--mono); font-size: var(--fs-sm); }
 
   .step { display: grid; grid-template-columns: 26px 1fr; gap: var(--sp-3); margin: 0 0 var(--sp-4);
     max-width: 66ch; align-items: start; }
-  .step .n { font-family: var(--mono); font-size: 12px; color: var(--accent); padding-top: 3px; }
+  .step .n { font-family: var(--mono); font-size: var(--fs-sm); color: var(--accent); padding-top: 3px; }
   .step p { margin: 0; }
   footer { display: none; }
+  .soft { font-size: var(--fs-md); color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -87,28 +88,28 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
       <span class="who" data-i18n="int.r1.who">anyone · no setup</span>
       <h3 data-i18n="int.r1.h">Use the console</h3>
       <p data-i18n="int.r1.p">Paste a brief, press score, read what fails and fix it in place. Works offline on a keyword stub, and the live judge reads the meaning of any language. Nothing to install, nothing to sign.</p>
-      <span class="effort" data-i18n="int.r1.e">2 minutes</span>
+      <span class="effort" data-i18n="int.r1.e">seconds</span>
       <a class="go" href="console.html" data-i18n="int.r1.go">→ open the console</a>
     </div>
     <div class="route">
       <span class="who" data-i18n="int.r2.who">anyone with an assistant</span>
       <h3 data-i18n="int.r2.h">Paste a prompt</h3>
       <p data-i18n="int.r2.p">Copy one prompt into an assistant that can reach the network — Claude Code, Cursor, your editor's assistant, or anything wired to the MCP server. It fixes the gate first, quotes the evidence and re-scores. No account, no key, no code. Browser chats cannot reach the API: their sandboxes block the host.</p>
-      <span class="effort" data-i18n="int.r2.e">5 minutes</span>
+      <span class="effort" data-i18n="int.r2.e">1 minute</span>
       <a class="go" href="console.html#assistant" data-i18n="int.r2.go">→ copy the prompt</a>
     </div>
     <div class="route">
       <span class="who" data-i18n="int.r3.who">assistant power users</span>
       <h3 data-i18n="int.r3.h">Connect the MCP server</h3>
       <p data-i18n="int.r3.p">Your assistant gets four tools — read the rules, score, suggest fixes, check the bar — and a guided prompt. It runs on your machine and talks to the public API; bring your own model key if you want to.</p>
-      <span class="effort" data-i18n="int.r3.e">10 minutes</span>
+      <span class="effort" data-i18n="int.r3.e">5 minutes</span>
       <a class="go" href="#mcp" data-i18n="int.r3.go">→ set it up below</a>
     </div>
     <div class="route">
       <span class="who" data-i18n="int.r4.who">developers · products</span>
       <h3 data-i18n="int.r4.h">Call the API</h3>
       <p data-i18n="int.r4.p">One POST returns the score, the gate and a verdict per rule with verbatim evidence. Stable, versioned, and pinned by a contract test suite: what you build against will not move under you.</p>
-      <span class="effort" data-i18n="int.r4.e">15 minutes</span>
+      <span class="effort" data-i18n="int.r4.e">10 minutes</span>
       <a class="go" href="/docs" data-i18n="int.r4.go">→ API docs</a>
     </div>
   </div>
@@ -123,17 +124,27 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </tr></thead>
     <tbody>
       <tr><td class="t">Claude · Desktop, Code</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
-      <tr><td class="t">ChatGPT</td><td class="y" data-i18n="int.w.conn">✓ connectors</td><td class="y">✓</td><td class="y">✓</td></tr>
+      <tr><td class="t" data-i18n="int.w.browser">claude.ai · ChatGPT, in the browser</td><td class="y" data-i18n="int.w.hosted">✓ add briefs.welance.com/mcp as a connector</td><td class="n" data-i18n="int.w.nopost">no — the chat sandbox cannot POST</td><td class="n" data-i18n="int.w.nopost2">no</td></tr>
       <tr><td class="t">Cursor · VS Code · Zed</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
       <tr><td class="t" data-i18n="int.w.other">Any other assistant</td><td class="m" data-i18n="int.w.ifmcp">if it speaks MCP</td><td class="y">✓</td><td class="y">✓</td></tr>
       <tr><td class="t" data-i18n="int.w.ci">Your code · CI · a product</td><td class="n">—</td><td class="n">—</td><td class="y">✓</td></tr>
     </tbody>
   </table>
-  <p style="font-size:13.5px;color:var(--ink-soft)" data-i18n="int.works.note">Every route reaches the same bar; only the effort differs. Nothing here is a partnership or a plugin store — it is one open endpoint and one small server you can read.</p>
-  <p style="font-size:13.5px;color:var(--ink-soft)" data-i18n-html="int.works.interest">One interest to declare, wherever your brief comes in from: this bar gates welance's own Directory, welance pitches there as a team, and what that obliges the operator to is written in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
+  <p style="font-size:var(--fs-sm);color:var(--ink-soft)" data-i18n="int.works.sandbox">A chat in the browser runs its tools in a sandbox that cannot reach this API, and its fetch tool is GET only. Its door is the hosted connector: add the URL below in the assistant's connector settings and the platform makes the calls for it.</p>
+  <p style="font-size:var(--fs-sm);color:var(--ink-soft)" data-i18n="int.works.note">Every route reaches the same bar; only the effort differs. Nothing here is a partnership or a plugin store — it is one open endpoint and one small server you can read.</p>
+  <p style="font-size:var(--fs-sm);color:var(--ink-soft)" data-i18n-html="int.works.interest">One interest to declare, wherever your brief comes in from: this bar gates welance's own Directory, welance pitches there as a team, and what that obliges the operator to is written in the <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a>.</p>
 
   <div class="eyebrow" id="mcp"><span data-i18n="int.eb3">the mcp server, step by step</span></div>
   <p class="claim" data-i18n="int.c1">Your assistant, holding a bar it cannot bend.</p>
+  <div class="step"><span class="n">0</span><p data-i18n-html="int.s0">In the browser (claude.ai, ChatGPT): add this URL as a custom connector in the assistant's settings. Same four tools, same prompt, nothing to install. It runs on the service-funded judge, so no key is involved and the usual per-address limit applies.</p></div>
+  <div class="code">
+    <div class="code-bar">
+      <div class="code-lang">url · <span data-i18n="int.hostedLabel">hosted connector</span></div>
+      <button class="code-copy">copy</button>
+    </div>
+<pre data-lang="url">https://briefs.welance.com/mcp</pre>
+  </div>
+  <p class="soft" data-i18n="int.s0b">On your own machine, the local server below is the same bar and adds one thing the hosted one never will: your own key.</p>
   <div class="step"><span class="n">1</span><p data-i18n="int.s1">Install nothing: <code>uvx</code> fetches and runs it. You need <a href="https://docs.astral.sh/uv/">uv</a> (or use <code>pipx</code>).</p></div>
   <div class="step"><span class="n">2</span><p data-i18n="int.s2">Add this to your assistant's MCP configuration — Claude Desktop, Claude Code, Cursor, or anything else that speaks MCP.</p></div>
   <div class="code">

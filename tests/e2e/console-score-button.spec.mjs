@@ -36,7 +36,7 @@ test.describe("the score button is honest about what it does", () => {
     await page.locator('[data-p="strong"]').click();
     await expect(cta).not.toHaveClass(/off/);
     // the Directory homepage is the door now — its guided flow, not a bare editor
-    await expect(cta).toHaveAttribute("href", /welance\.com\/en\/directory$/);
+    await expect(cta).toHaveAttribute("href", /welance\.com\/directory$/);
 
     // the whole point of the gate: a high score that still may not publish
     await page.locator('[data-p="blocked"]').click();

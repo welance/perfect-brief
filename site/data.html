@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Your brief, your key — Brief Bar</title>
-<meta name="description" content="Exactly what travels where when you score a brief: what we send, what we keep and for how long, what we never keep — and how to bring your own model key.">
+<meta name="description" content="You never need a key. What leaves your machine when you score a brief, what we keep, and when your own OpenRouter key is worth it.">
 <script>/* theme before paint: no flash of the wrong one */
 (function(){try{var t=localStorage.getItem("welance-theme");
 if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
@@ -31,22 +31,36 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.6; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); }
-  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: var(--sp-4) 0 0; }
+  .thesis { font-size: var(--fs-lead); max-width: 56ch; margin: var(--sp-3) 0 0; }
   p { max-width: 64ch; margin: 0 0 var(--flow); }
   .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
-    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 var(--flow); max-width: 26ch; }
-  table { border-collapse: collapse; width: 100%; max-width: 860px; margin: 0 0 var(--flow); font-size: 15px; }
+    font-size: var(--fs-2xl); line-height: 1.18; margin: 0 0 var(--flow); max-width: 26ch; }
+  .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin: 0 0 var(--flow); }
+  @media (max-width: 760px) { .opts { grid-template-columns: 1fr; } }
+  .opt { border: 1px solid var(--rule); padding: var(--sp-4); }
+  .opt.key { border-color: var(--ink); }
+  .opt svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: var(--sp-3); }
+  .opt h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-lg); font-weight: 600; letter-spacing: -.01em; }
+  .opt p { margin: 0; font-size: var(--fs-md); color: var(--ink-soft); }
+  .opt .tag { display: inline-block; margin-top: var(--sp-3); font-family: var(--mono); font-size: var(--fs-xs);
+    letter-spacing: .08em; text-transform: uppercase; color: var(--pass); }
+  .opt.key .tag { color: var(--ink); }
+  .opt .go { display: block; margin-top: var(--sp-2); font-family: var(--mono); font-size: var(--fs-sm); }
+  .tbl { overflow-x: auto; margin: 0 0 var(--flow); }
+  table { border-collapse: collapse; width: 100%; max-width: 860px; font-size: var(--fs-md); }
   th, td { text-align: start; padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--rule);
     vertical-align: top; }
-  th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  th { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase;
     color: var(--ink-soft); font-weight: 600; }
   td.k { font-weight: 600; white-space: nowrap; }
-  td .no { color: var(--fail); font-family: var(--mono); font-size: 12.5px; }
-  td .yes { color: var(--pass); font-family: var(--mono); font-size: 12.5px; }
+  td .no { color: var(--fail); font-family: var(--mono); font-size: var(--fs-sm); }
+  td .yes { color: var(--pass); font-family: var(--mono); font-size: var(--fs-sm); }
+  .small { font-size: var(--fs-md); color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -55,11 +69,31 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <div class="wrap">
   <header>
     <h1><span data-i18n="data.h1">Your brief, your key</span><span class="b">_</span></h1>
-    <p class="thesis" data-i18n="data.thesis">A project that asks you to trust an open bar owes you the boring details: what leaves your machine, what we keep, for how long, and what we never keep at all.</p>
+    <p class="thesis" data-i18n="data.thesis">You never need a key. Everything here works without one. This page says what leaves your machine, and when your own key is worth it.</p>
   </header>
 
+  <div class="eyebrow"><span data-i18n="data.eb0">three ways to score, pick one</span></div>
+  <div class="opts">
+    <div class="opt"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg>
+      <h3 data-i18n="data.o1.h">In your browser</h3>
+      <p data-i18n="data.o1.p">The keyword judge runs inside the page. Nothing leaves your machine. Instant, English only.</p>
+      <span class="tag" data-i18n="data.o1.t">free · no key</span>
+    </div>
+    <div class="opt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.6-7.95A6 6 0 0 1 18 9.5a3.5 3.5 0 0 1-.5 8.5z"/></svg>
+      <h3 data-i18n="data.o2.h">AI judge, on us</h3>
+      <p data-i18n="data.o2.p">welance pays the model call: DeepSeek V4 Pro judges, DeepSeek V4 Flash writes the suggestions. Rate-limited per address; the same brief is judged once a day thanks to a cache.</p>
+      <span class="tag" data-i18n="data.o2.t">free · no key</span>
+      <a class="go" href="console.html" data-i18n="data.o2.go">Score a brief there →</a>
+    </div>
+    <div class="opt key"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M16 6l2 2M13 9l2 2"/></svg>
+      <h3 data-i18n="data.o3.h">AI judge, your key</h3>
+      <p data-i18n="data.o3.p">An OpenRouter key, the kind that starts with sk-or-. You pay per call. No rate limit, no cache, your choice of model.</p>
+      <span class="tag" data-i18n="data.o3.t">optional · your account</span>
+    </div>
+  </div>
+
   <div class="eyebrow"><span data-i18n="data.eb1">what travels where</span></div>
-  <table>
+  <div class="tbl"><table>
     <thead><tr>
       <th data-i18n="data.th1">what</th>
       <th data-i18n="data.th2">where it goes</th>
@@ -67,36 +101,32 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </tr></thead>
     <tbody>
       <tr>
-        <td class="k" data-i18n="data.r1.k">The brief text</td>
-        <td data-i18n="data.r1.a">To our service, then through OpenRouter to the DeepSeek provider that judges it. The API receives the assembled text, not original files.</td>
-        <td><span class="no" data-i18n="data.r1.b">never stored as a document — only its verdict survives, one row down, for a day</span></td>
+        <td class="k" data-i18n="data.r1.k">Your brief</td>
+        <td data-i18n="data.r1.a">To our service, then to the model through OpenRouter. Text only, never files.</td>
+        <td><span class="no" data-i18n="data.r1.b">not stored — only its verdict, for a day</span></td>
       </tr>
       <tr>
         <td class="k" data-i18n="data.r2.k">The verdicts</td>
-        <td data-i18n="data.r2.a">Back to you. Each carries a short quote copied verbatim from your brief as evidence.</td>
-        <td><span class="yes" data-i18n="data.r2.b">cached 24h</span> <span data-i18n-html="data.r2.c">— keyed by a hash of the brief, so the same brief is not re-judged and re-charged. This holds even when you bring your own key: the cache is shared, so an identical brief may be answered from it rather than charged again. Send <code>no_cache: true</code> and nothing is read or written.</span></td>
+        <td data-i18n="data.r2.a">Back to you. Each carries a short quote from your brief as evidence.</td>
+        <td><span class="yes" data-i18n="data.r2.b">cached 24h</span> <span data-i18n-html="data.r2.c">by a hash of the brief. Never when you bring your own key. <code>no_cache: true</code> skips it.</span></td>
       </tr>
       <tr>
-        <td class="k" data-i18n="data.r3.k">Your model key</td>
-        <td data-i18n="data.r3.a">Forwarded once, over TLS, to the provider — as the Authorization header of that single call.</td>
-        <td><span class="no" data-i18n="data.r3.b">never stored, never logged, never part of any cache key</span></td>
+        <td class="k" data-i18n="data.r3.k">Your key</td>
+        <td data-i18n="data.r3.a">Forwarded once, over TLS, inside that single model call.</td>
+        <td><span class="no" data-i18n="data.r3.b">never stored, never logged</span></td>
       </tr>
       <tr>
-        <td class="k" data-i18n="data.r4.k">Who you are</td>
-        <td data-i18n="data.r4.a">Nowhere. No accounts, no cookies, no analytics. The pages fetch fonts (welance.com, Google's Noto for non-Latin scripts) and nothing else — a test fails if any page reaches any other host.</td>
-        <td><span class="no" data-i18n="data.r4.b">one per-IP rate counter in Redis, expiring with its window — nothing else</span></td>
+        <td class="k" data-i18n="data.r4.k">You</td>
+        <td data-i18n="data.r4.a">No accounts, no cookies, no analytics. The pages load fonts and nothing else.</td>
+        <td><span class="no" data-i18n="data.r4.b">one rate counter per address, gone with its window</span></td>
       </tr>
     </tbody>
-  </table>
-  <p data-i18n="data.cache">The cache exists for one reason: the judge is deterministic at temperature 0, so scoring the same brief twice should cost once and answer identically. Honestly stated, that means fragments of your brief do survive for a day: each cached verdict carries its short verbatim quote, keyed by a hash of the full text. Never the document itself, never past 24 hours — and no_cache: true skips it entirely.</p>
-
-  <div class="eyebrow"><span data-i18n="data.eb5">what binds us — the operator covenant</span></div>
-  <p data-i18n-html="data.cov1">The rules on this site judge briefs. The <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a> judges us — it exists because welance runs the Directory this bar gates <em>and</em> pitches on it as a team. In short: we never mine briefs for leads, never train on them, never contact anyone because of what a scored brief contained, and our own briefs pass the same gate, same model, same version.</p>
-  <p data-i18n="data.cov2">Where code can enforce a promise, it does: the key-leak canary already fails the build if a key ever reaches a log, a cache, or a response, and the same treatment for brief bodies is next. Where code can't reach — we do run the servers — the covenant names the limit plainly instead of hiding it, and self-hosting remains the exit that needs no trust at all.</p>
+  </table></div>
+  <p class="small" data-i18n-html="data.cov1">The <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a> binds welance, which runs the Directory this bar gates and pitches on it too: no lead-mining, no training on briefs, no contact because of what a brief said.</p>
 
   <div class="eyebrow"><span data-i18n="data.eb2">bring your own key</span></div>
   <p class="claim" data-i18n="data.c1">With your key, we run no model for you.</p>
-  <p data-i18n-html="data.byok">Send an OpenRouter key in the <code>x-llm-key</code> header and the judgement runs on your account. welance still restricts that path to DeepSeek V4 Pro or Flash, so an internal proxy cannot accidentally select Sonnet. We forward the call and hand you the result — no service-funded model is invoked, nothing about the key is retained, and BYOK scoring bypasses the shared verdict cache.</p>
+  <p data-i18n-html="data.byok">Put an OpenRouter key in the <code>x-llm-key</code> header. The call runs on your account, skips our cache, and may name any of six allowed models: DeepSeek V4 Pro and Flash, Gemini Flash-Lite, GPT-5 nano, Claude Haiku 4.5. Use a spend-capped key.</p>
   <div class="code">
     <div class="code-bar">
       <div class="code-lang">bash · <span data-i18n="data.byokLabel">your own judge</span></div>
@@ -105,16 +135,13 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <pre data-lang="bash">curl -X POST https://briefs.welance.com/v1/score \
   -H 'content-type: application/json' \
   -H 'x-llm-key: sk-or-…' \
-  -d '{"brief":"…","judge":"llm","model":"deepseek/deepseek-v4-pro","no_cache":true}'</pre>
+  -d '{"brief":"…","judge":"llm","model":"deepseek/deepseek-v4-pro"}'</pre>
   </div>
-  <p data-i18n-html="data.mcpkey">The <a href="integrate.html#mcp">MCP server</a> reads the same key from <code>PB_LLM_KEY</code>, so an assistant on your machine can score briefs entirely on your own account.</p>
-  <p data-i18n-html="data.secpage">Handing your key to somebody else's server deserves more than our word for it. <a href="security.html">Every line of ours that touches it</a> — and the test that fails if that ever changes — is written out on its own page.</p>
-
-  <div class="eyebrow"><span data-i18n="data.eb3">if that is not enough</span></div>
-  <p data-i18n-html="data.custom">Some briefs cannot leave a perimeter, and some organisations need a data-processing agreement, a named model, or the whole thing running somewhere else. That is a conversation, not a checkbox: write to <a href="mailto:hello@welance.com">hello@welance.com</a> and we will tell you plainly what is possible — including running it on models we select, or handing you the deployment to run yourself. It is MIT-licensed; self-hosting is a right, not a favour.</p>
+  <p data-i18n-html="data.mcpkey">The <a href="integrate.html#mcp">MCP server</a> reads the same key from <code>PB_LLM_KEY</code>, so your assistant scores on your account.</p>
+  <p data-i18n-html="data.secpage"><a href="security.html">Every line of ours that touches your key</a> is on its own page, with the test that fails if it ever changes.</p>
 
   <div class="eyebrow"><span data-i18n="data.eb4">the honest limits</span></div>
-  <p data-i18n="data.limits">We do not control OpenRouter or its routed provider's retention; their terms apply once a brief leaves this service. The API receives text only, not original document bytes or attachments. It is rate-limited and served over TLS, but it is a small open-source service, not a compliance product. For genuinely confidential material, use a spend-capped key or run your own copy.</p>
+  <p data-i18n-html="data.limits">Once a brief leaves here, OpenRouter's and the provider's terms apply. This is a small open-source service, not a compliance product. For confidential work use your own spend-capped key, or run your own copy: it is MIT. Need a data-processing agreement or a private deployment? Write to <a href="mailto:hello@welance.com">hello@welance.com</a>.</p>
 </div>
 <div id="site-footer"></div>
 </body>
