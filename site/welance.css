@@ -51,6 +51,19 @@
   /* Directory tokens, mapped onto the token names these pages already use.
      Values are the Directory's, verbatim — assets/css/directory/directory.css */
   --maxw: 1320px;               /* Directory --maxw */
+
+  /* --- type scale: the only font sizes on the site ------------------------
+     Nine steps. Nothing is set below --fs-xs; the three hero sizes
+     (.h-display, .h1, .h2) keep their own clamps. */
+  --fs-xs:   12px;                      /* mono labels, badges, eyebrows */
+  --fs-sm:   13px;                      /* secondary text, table cells  */
+  --fs-md:   15px;                      /* UI text, buttons, nav        */
+  --fs-base: 16px;                      /* body                         */
+  --fs-lg:   18px;                      /* card titles                  */
+  --fs-xl:   21px;                      /* figures, the wordmark        */
+  --fs-lead: clamp(17px, 1.6vw, 20px);  /* thesis / lead paragraphs     */
+  --fs-2xl:  clamp(24px, 2.6vw, 30px);  /* section heads, big figures   */
+  --fs-3xl:  clamp(30px, 4.5vw, 50px);  /* hero ratio, the score        */
   --pad-x: clamp(16px, 4vw, 56px);
   --radius: 999px;              /* the pill, everywhere something is rounded */
   --paper: #ffffff;
@@ -160,17 +173,17 @@
   font-size: clamp(26px, 3vw, 42px); line-height: 1.08;
   letter-spacing: -.015em; margin: 0; }
 .h3, h3 { font-family: var(--disp); font-weight: 500;
-  font-size: clamp(19px, 1.6vw, 25px); line-height: 1.2;
+  font-size: var(--fs-lead); line-height: 1.2;
   letter-spacing: -.005em; margin: 0; }
-.lead { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.45; }
+.lead { font-size: var(--fs-lead); line-height: 1.45; }
 /* the underscore that ends a heading is the one place violet used to live
    in the type; it follows the accent now, like everything else */
 h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* the mono voice: eyebrows, counts, keys */
-.eyebrow, .mono { font-family: var(--mono); font-size: 12px;
+.eyebrow, .mono { font-family: var(--mono); font-size: var(--fs-sm);
   letter-spacing: .04em; text-transform: uppercase; }
-.mono-sm { font-family: var(--mono); font-size: 12px; color: var(--muted);
+.mono-sm { font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted);
   letter-spacing: .02em; }
 /* Section label — asterisk-prefixed mono eyebrow. The asterisk replaces the
    hairline that used to run off the right of every eyebrow here: the
@@ -179,7 +192,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
   letter-spacing: .08em; color: var(--muted);
   margin: var(--sp-8) 0 var(--sp-5); }
 .eyebrow::before, .sec-label::before { content: "*"; color: var(--accent);
-  font-size: 15px; line-height: 1; }
+  font-size: var(--fs-md); line-height: 1; }
 .band .eyebrow { color: var(--ink); }
 
 /* --- layout primitives, from the Directory ----------------------------- */
@@ -196,7 +209,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* --- badge, from the Directory ----------------------------------------- */
 .badge { display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+  font-family: var(--mono); font-size: var(--fs-xs); text-transform: uppercase;
   letter-spacing: .07em; padding: 5px 10px; border: 1px solid currentColor; }
 .badge.dot::before { content: ""; width: 6px; height: 6px;
   background: var(--accent); border-radius: 50%; }
@@ -215,13 +228,13 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .wl-menu-in { display: grid; gap: 22px; padding: 20px; }
 .wl-menu-lang:empty { display: none; }
 @media (min-width: 480px) { .wl-menu-lang { grid-column: 1 / -1; } }
-.wl-menu-lang .wl-lang-select { width: auto; max-width: none; font-size: 14px; padding: 9px 8px; }
+.wl-menu-lang .wl-lang-select { width: auto; max-width: none; font-size: var(--fs-md); padding: 9px 8px; }
 @media (min-width: 480px) { .wl-menu-in { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
 .wl-menu-col { display: flex; flex-direction: column; gap: 2px; }
-.wl-menu-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+.wl-menu-h { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .12em;
   text-transform: uppercase; color: var(--ink-soft); margin: 0 0 8px; }
 .wl-menu a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink);
-  text-decoration: none; font-family: var(--disp); font-size: 16px; padding: 7px 0; }
+  text-decoration: none; font-family: var(--disp); font-size: var(--fs-base); padding: 7px 0; }
 .wl-menu a:hover { color: var(--accent); text-decoration: none; }
 .wl-menu a[aria-current="page"] { font-weight: 600;
   box-shadow: inset 0 -2px 0 0 var(--ink); }
@@ -240,7 +253,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* --- breadcrumbs: ✳ welance / brief bar / <page> ------------------ */
 .crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--mono);
-  font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
+  font-size: var(--fs-sm); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
 .crumbs a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
 .crumbs a:hover { color: var(--accent); text-decoration: none; }
 .crumbs .sep { color: var(--ink-soft); opacity: .5; }
@@ -270,7 +283,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    match it, so the lockup reads as one thing. In the header there is no
    wordmark to defer to, so the product name IS the lockup: full ink. */
 .wl-project { display: flex; align-items: baseline; gap: 8px;
-  margin-inline-start: 8px; font-family: var(--disp); font-size: 22px;
+  margin-inline-start: 8px; font-family: var(--disp); font-size: var(--fs-xl);
   font-weight: 500; line-height: 1; letter-spacing: -.01em;
   color: var(--ink-soft); min-width: 0; }
 .wl-brandline .wl-project { color: var(--ink); }
@@ -281,7 +294,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 @media (min-width: 1024px) {
   .wl-ast { width: 30px; height: 30px; }
   .wl-logo { width: 112px; margin-inline-start: 8px; }
-  .wl-project { font-size: 30px; margin-inline-start: 12px; gap: 10px; }
+  .wl-project { font-size: var(--fs-2xl); margin-inline-start: 12px; gap: 10px; }
 }
 
 /* --- buttons: Directory style ---------------------------------------- */
@@ -297,7 +310,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
   color: var(--fg);
   font-family: var(--disp);
   font-weight: 500;
-  font-size: 15px;
+  font-size: var(--fs-md);
   cursor: pointer;
   transition: all 140ms ease;
   white-space: nowrap;
@@ -310,14 +323,14 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .btn.accent { background: var(--accent); color: var(--accent-fg);
   border-color: var(--accent); }
 .btn.accent:hover { background: transparent; color: var(--accent); }
-.btn.lg { height: 56px; padding: 0 30px; font-size: 16px; }
-.btn.sm { height: 36px; padding: 0 16px; font-size: 13px; }
+.btn.lg { height: 56px; padding: 0 30px; font-size: var(--fs-base); }
+.btn.sm { height: 36px; padding: 0 16px; font-size: var(--fs-sm); }
 .btn.ghost { border-color: transparent; }
 .btn.ghost:hover { background: var(--surface-2); color: var(--fg); }
 
 /* --- language switcher: one dropdown with flags (rendered by i18n.js) --- */
 #langswitch { display: flex; align-items: center; }
-.wl-lang-select { font-family: var(--disp); font-size: 14px; font-weight: 500;
+.wl-lang-select { font-family: var(--disp); font-size: var(--fs-md); font-weight: 500;
   padding: 8px 14px; cursor: pointer; background: var(--paper); color: var(--ink);
   border: 1px solid var(--rule); border-radius: var(--radius); max-width: 150px; }
 @media (min-width: 1440px) { .wl-lang-select { max-width: 190px; } }
@@ -329,27 +342,6 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 /* the whole split, at a glance and under the thumb: one bar, one segment per
    role, and a handle on every boundary. Dragging a handle moves effort from
    one role to its neighbour, so the project stays whole by construction. */
-.effortbar { position: relative; display: flex; width: 100%; height: 46px; margin: 0 0 14px;
-  border: 1px solid var(--line-strong); background: var(--surface-2);
-  touch-action: none; user-select: none; }
-.effortseg { position: relative; width: 0; min-width: 0; overflow: hidden; }
-/* the label floats above its segment rather than sitting inside it: text in
-   the flow would set how narrow the bar can be, and "Full-stack developer ·
-   45%" is wider than a phone */
-.effortlabel { position: absolute; inset: 0; display: flex; align-items: center;
-  justify-content: center; padding: 0 6px; overflow: hidden; white-space: nowrap;
-  font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px;
-  font-weight: 600; }
-.effortbar.smooth .effortseg, .effortbar.smooth .grip { transition: flex-basis .2s ease, inset-inline-start .2s ease; }
-.grip { position: absolute; top: -5px; bottom: -5px; width: 26px; margin-inline-start: -13px;
-  display: flex; align-items: center; justify-content: center; cursor: ew-resize;
-  background: none; border: 0; padding: 0; touch-action: none; z-index: 2; }
-.grip::before { content: ""; width: 4px; height: 100%; background: var(--ink);
-  border: 1px solid var(--surface); }
-.grip:hover::before, .grip:focus-visible::before { background: var(--accent); width: 6px; }
-.grip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.grip.dragging::before { background: var(--accent); width: 6px; }
-@media (max-width: 720px) { .effortbar { height: 54px; } .grip { width: 34px; margin-inline-start: -17px; } }
 
 /* --- site header, the Directory's (chrome.js) ---------------------------
    Two heights, not three — 76 / 106 at 1024, the same two the Directory
@@ -369,7 +361,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* the mono status line — the header's quietest voice, and the first thing
    to go when the bar runs out of room */
-.wl-status { font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+.wl-status { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .06em;
   text-transform: uppercase; color: var(--ink-soft); white-space: nowrap;
   display: none; }
 /* It leads the right-hand group, so it carries the auto margin that pushes
@@ -383,7 +375,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 .wl-nav { display: flex; align-items: center; gap: 26px; margin-inline-start: auto; }
 @media (min-width: 1024px) { .wl-nav { gap: 28px; } }
-.wl-nav-item { position: relative; font-family: var(--disp); font-size: 18px;
+.wl-nav-item { position: relative; font-family: var(--disp); font-size: var(--fs-lg);
   font-weight: 600; line-height: 1; color: var(--ink); text-decoration: none;
   padding: 8px 0; white-space: nowrap; }
 /* the Directory's underline: a bar that grows from nothing rather than a
@@ -404,7 +396,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    goes, in the nav's register but muted, with the same underline the nav
    items grow on hover. Nothing here shouts. */
 .wl-out { position: relative; display: inline-flex; align-items: center; gap: 5px;
-  font-family: var(--disp); font-size: 15px; font-weight: 500; line-height: 1;
+  font-family: var(--disp); font-size: var(--fs-md); font-weight: 500; line-height: 1;
   color: var(--ink-soft); text-decoration: none; white-space: nowrap;
   padding: 8px 0; transition: color 150ms ease; }
 .wl-out::before { content: ""; position: absolute; display: block; width: 100%;
@@ -423,29 +415,29 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
   .wl-head-in { padding: 0 24px; gap: 14px; }
   .wl-ast { width: 26px; height: 26px; }
   .wl-logo { width: 92px; margin-inline-start: 6px; }
-  .wl-project { font-size: 20px; margin-inline-start: 8px; gap: 7px; }
+  .wl-project { font-size: var(--fs-xl); margin-inline-start: 8px; gap: 7px; }
   .wl-nav { gap: 16px; }
-  .wl-nav-item { font-size: 15px; }
+  .wl-nav-item { font-size: var(--fs-md); }
   .wl-head-right { gap: 10px; }
-  .wl-lang-select { max-width: 104px; font-size: 12.5px; padding: 8px 10px; }
-  .wl-out { font-size: 14px; }
+  .wl-lang-select { max-width: 104px; font-size: var(--fs-sm); padding: 8px 10px; }
+  .wl-out { font-size: var(--fs-md); }
 }
 @media (max-width: 1023px) {
   .wl-nav { display: none; }
   .wl-head-right { margin-inline-start: auto; }
   /* the switch shows the flag and the code from here down (see i18n.js), so it
      no longer needs room for "Português (BR)" */
-  .wl-lang-select { width: 82px; max-width: 82px; font-size: 13px; padding: 8px 10px; }
-  .wl-out { font-size: 14px; }
+  .wl-lang-select { width: 82px; max-width: 82px; font-size: var(--fs-sm); padding: 8px 10px; }
+  .wl-out { font-size: var(--fs-md); }
 }
 /* small screens: the lockup gives way first — the asterisk and the wordmark
    are the brand, the product name is the part that can go. The header must
    never widen the document (the band test catches this). */
 @media (max-width: 640px) {
   .wl-head-in { height: 58px; gap: 8px; padding: 0 12px; }
-  .wl-project { font-size: 15px; margin-inline-start: 6px; gap: 6px; }
+  .wl-project { font-size: var(--fs-md); margin-inline-start: 6px; gap: 6px; }
   .wl-head-right { gap: 6px; min-width: 0; }
-  .wl-lang-select { max-width: 92px; font-size: 12px; padding: 7px 8px; }
+  .wl-lang-select { max-width: 92px; font-size: var(--fs-sm); padding: 7px 8px; }
 }
 /* the pill is the one thing on the page that leads somewhere else: it earns
    its room on a phone, and the rest of the header gives way for it. Below
@@ -453,16 +445,16 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    be right — and lets the product name go. */
 @media (max-width: 560px) {
   .wl-logo { display: none; }
-  .wl-project { display: flex; font-size: 17px; margin-inline-start: 5px; }
-  .wl-out { font-size: 11px; }
+  .wl-project { display: flex; font-size: var(--fs-base); margin-inline-start: 5px; }
+  .wl-out { font-size: var(--fs-xs); }
   /* an explicit width, or the select sizes itself to its longest option even
      though the closed label is now two letters */
-  .wl-lang-select { width: 78px; max-width: 78px; font-size: 12.5px; padding: 7px 6px; }
+  .wl-lang-select { width: 78px; max-width: 78px; font-size: var(--fs-sm); padding: 7px 6px; }
 }
 @media (max-width: 400px) {
-  .wl-out { font-size: 10px; letter-spacing: -.02em; }
+  .wl-out { font-size: var(--fs-xs); letter-spacing: -.02em; }
   /* only the flag: the list still names every language when you open it */
-  .wl-lang-select { width: 46px; max-width: 46px; font-size: 12px; padding: 6px 0; }
+  .wl-lang-select { width: 46px; max-width: 46px; font-size: var(--fs-sm); padding: 6px 0; }
   .wl-head-in { gap: 4px; padding: 0 8px; }
   /* the header has to hold in every language, not in English: "Encontre um
      time" is a third longer than "Find a team", and at 320px that decides it */
@@ -472,7 +464,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* --- breadcrumb line under the header ---------------------------------- */
 .wl-crumb { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x);
-  font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+  font-family: var(--mono); font-size: var(--fs-sm); letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-soft);
   display: flex; align-items: center; gap: 8px; }
 .wl-crumb a { color: var(--ink-soft); text-decoration: none; }
@@ -489,7 +481,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
    and the never-moving --slab set rather than from --paper/--ink.
    ------------------------------------------------------------------- */
 .wl-foot { display: block; margin-top: var(--sp-9); padding: 0; border: 0; max-width: none;
-  font-family: var(--disp); font-size: 16px; }
+  font-family: var(--disp); font-size: var(--fs-base); }
 
 .wl-close { position: relative; overflow: hidden; background: var(--accent-2);
   color: var(--accent-2-fg); padding: clamp(48px, 6vw, 72px) 0; }
@@ -505,7 +497,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-close h2 .b { color: var(--wl-c); }
 /* who made it and on what terms, said once, in the small voice — the band
    states a fact about the ruleset rather than making an offer */
-.wl-close-note { max-width: 46ch; margin: var(--sp-4) 0 0; font-size: 14.5px;
+.wl-close-note { max-width: 46ch; margin: var(--sp-4) 0 0; font-size: var(--fs-md);
   line-height: 1.5; color: #0a0a0a; opacity: .72; }
 .wl-close .eyebrow { color: #0a0a0a; opacity: .75; margin: 0 0 var(--sp-4); }
 .wl-close .eyebrow::before { color: #0a0a0a; }
@@ -523,7 +515,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 /* Five columns: who we are, then the ways in, then everything else. The old
    footer split twelve links across two columns and buried the three doors
    among them; here they lead a column of their own. */
-.wl-foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+.wl-foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
   gap: clamp(24px, 4vw, 56px); }
 @media (max-width: 1100px) { .wl-foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
 @media (max-width: 900px) { .wl-foot-grid { grid-template-columns: 1fr 1fr; } }
@@ -537,9 +529,9 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
    The mark is not a link colour; it is the brand. */
 .wl-foot-lock { display: inline-flex; align-items: center; color: var(--on-slab); }
 .wl-foot-lock:hover { color: var(--on-slab); text-decoration: none; }
-.wl-foot-lock .wl-project { color: var(--on-slab-soft); font-size: 20px; }
+.wl-foot-lock .wl-project { color: var(--on-slab-soft); font-size: var(--fs-xl); }
 .wl-foot-lock .wl-project .slash { color: var(--on-slab-soft); opacity: .6; }
-.wl-foot-blurb { color: var(--on-slab-soft); font-size: 14px; line-height: 1.55;
+.wl-foot-blurb { color: var(--on-slab-soft); font-size: var(--fs-md); line-height: 1.55;
   margin: var(--sp-4) 0 var(--sp-3); max-width: 34ch; }
 .wl-foot-contact { color: var(--on-slab-soft); margin: 0; }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
@@ -547,23 +539,23 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-foot-k { color: var(--on-slab-soft); text-transform: uppercase;
   letter-spacing: .05em; margin: 0 0 var(--sp-3); }
 .wl-foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-.wl-foot-link { color: var(--on-slab); font-size: 14px; text-decoration: none;
+.wl-foot-link { color: var(--on-slab); font-size: var(--fs-md); text-decoration: none;
   display: inline-flex; align-items: center; gap: 7px; }
 .wl-foot-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .wl-gh { width: 14px; height: 14px; fill: currentColor; flex: none; }
 /* the repo link wears the open-blue — "this part you can change" */
 .wl-foot-gh { padding: 5px 10px; border: 1px solid var(--wl-cy);
   background: color-mix(in oklab, var(--wl-cy), var(--slab) 82%); }
-.wl-foot-op { color: var(--on-slab-soft); font-size: 13px; margin: 0; line-height: 1.5; }
+.wl-foot-op { color: var(--on-slab-soft); font-size: var(--fs-sm); margin: 0; line-height: 1.5; }
 
 /* the three doors in, given a two-line block each rather than a list row */
 .wl-foot-start { display: block; padding: 7px 0; text-decoration: none; }
 .wl-foot-start-t { display: block; color: var(--on-slab); font-weight: 500;
-  font-size: 15px; line-height: 1.25; }
+  font-size: var(--fs-md); line-height: 1.25; }
 .wl-foot-start:hover .wl-foot-start-t { text-decoration: underline;
   text-underline-offset: 3px; }
 .wl-foot-start-s { display: block; margin-top: 2px; color: var(--on-slab-soft);
-  font-size: 12.5px; line-height: 1.4; }
+  font-size: var(--fs-sm); line-height: 1.4; }
 
 .wl-foot-legal { display: flex; justify-content: space-between; align-items: center;
   gap: 14px; flex-wrap: wrap; color: var(--on-slab-soft);
@@ -583,7 +575,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
   padding: 5px 8px; }
 .wl-foot-deep .wl-theme:hover { color: var(--on-slab); border-color: var(--on-slab); }
 .wl-foot-deep .wl-lang-select { background: transparent; color: var(--on-slab);
-  border-color: var(--ink-line); font-size: 13px; }
+  border-color: var(--ink-line); font-size: var(--fs-sm); }
 .wl-foot-deep .wl-lang-select:hover { border-color: var(--on-slab); }
 .wl-foot-deep .wl-lang-select option { background: var(--slab); color: var(--on-slab); }
 
@@ -592,7 +584,7 @@ details.fineprint { border-left: 2px solid var(--rule); margin: 0 0 var(--flow);
 html[dir=rtl] details.fineprint { border-left: 0; border-right: 2px solid var(--rule);
   padding-left: 0; padding-right: 14px; }
 details.fineprint > summary { list-style: none; cursor: pointer; font-family: var(--mono);
-  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
 details.fineprint > summary::-webkit-details-marker { display: none; }
 details.fineprint > summary::before { content: "+ "; }
 details.fineprint[open] > summary::before { content: "− "; }
@@ -606,17 +598,17 @@ details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
 .code-bar { display: flex; align-items: stretch; justify-content: space-between;
   gap: 12px; border-bottom: 1px solid #232323; }
 .code-tabs { display: flex; }
-.code-tabs button, .code-copy { font-family: var(--mono); font-size: 11.5px;
+.code-tabs button, .code-copy { font-family: var(--mono); font-size: var(--fs-xs);
   letter-spacing: .06em; background: transparent; border: 0; cursor: pointer;
   color: var(--on-slab-soft); padding: 10px 14px; }
 .code-tabs button:hover, .code-copy:hover { color: var(--on-slab); }
 .code-tabs button[aria-pressed="true"] { color: var(--on-slab); box-shadow: inset 0 -2px 0 var(--wl-c); }
 .code-copy { white-space: nowrap; }
 .code-copy.done { color: var(--wl-cy); }
-.code-lang { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+.code-lang { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .1em;
   text-transform: uppercase; color: var(--on-slab-soft); padding: 10px 14px; }
 .code pre { margin: 0; padding: 14px 16px 16px; background: transparent; border: 0;
-  font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
+  font-family: var(--mono); font-size: var(--fs-sm); line-height: 1.75; color: #d7d7d7; overflow-x: auto; }
 .code .s  { color: var(--wl-y); }      /* strings */
 .code .k  { color: var(--wl-cy); }     /* json keys */
 .code .n  { color: #b18cf0; }          /* numbers, booleans */
@@ -662,10 +654,8 @@ details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
 @media (pointer: coarse) {
   input, select, textarea, button { font-size: max(16px, 1em) !important; }
   .role input, .role select, .comp input[type="number"],
-  .rolebar input, .rolebar select { font-size: 16px; min-height: 44px; }
   .role button, .comp button, .mode, .addbtn, .lang,
   .wl-theme, .code-copy, .code-tabs button { min-height: 44px; min-width: 44px; }
-  .grip { width: 44px; margin-inline-start: -22px; }
   a, button, summary, .chip, .mode, [role="button"] {
     -webkit-tap-highlight-color: transparent;
   }
@@ -677,73 +667,8 @@ details.fineprint[open] > summary { margin-bottom: var(--sp-3); }
 /* --- the phone layer ----------------------------------------------------- */
 html.wl-app body { padding-top: 70px; }
 .wl-app .wl-head { position: fixed; inset: 0 0 auto; width: 100%; }
-.wl-app .wl-calc-modes {
-  position: sticky; top: 70px; z-index: 98;
-  display: grid; grid-template-columns: 1fr 1fr;
-  margin: 0 0 var(--sp-5); border-bottom: 1px solid var(--rule); background: var(--paper);
-}
-.wl-app .wl-calc-modes button {
-  min-height: 46px; border: 0; border-bottom: 3px solid transparent;
-  background: transparent; color: var(--ink-soft); cursor: pointer;
-  font-family: var(--disp); font-weight: 650;
-}
-.wl-app .wl-calc-modes button[aria-pressed="true"] {
-  color: var(--ink); border-bottom-color: var(--accent); background: var(--surface-2);
-}
-.wl-app .wl-calc-steps {
-  position: sticky; top: 116px; z-index: 97;
-  display: flex; align-items: center; justify-content: space-between;
-  min-height: 52px; margin-bottom: var(--sp-3); padding: 4px 0;
-  border-bottom: 1px solid var(--rule); background: var(--paper);
-}
-.wl-app .wl-calc-count {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--ink-soft);
-}
-.wl-app .wl-calc-nav { display: flex; gap: 6px; }
-.wl-app .wl-calc-nav button {
-  width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule-strong);
-  background: var(--surface); color: var(--ink); cursor: pointer;
-}
-.wl-app .wl-calc-nav button:disabled { opacity: .28; cursor: default; }
-.wl-app .wl-calc-answer { position: static; }
-.wl-app .wl-calc-answer > .card { margin-top: 0; }
-.wl-app .wl-calc-details {
-  margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--rule);
-}
-.wl-app .wl-calc-details > summary {
-  min-height: 44px; font-family: var(--mono); font-size: 11px;
-  letter-spacing: .08em; text-transform: uppercase;
-}
-.wl-app .wl-calc-details > :not(summary) { margin-top: var(--sp-4); }
-.wl-app .wl-answer-footer {
-  position: fixed; inset-inline: 0; bottom: 0; z-index: 102;
-  display: grid; grid-template-columns: minmax(0,1.25fr) minmax(88px,.9fr) auto;
-  align-items: center; gap: 12px; min-height: 72px;
-  padding: 10px max(14px, env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-right));
-  border: 0; border-top: 2px solid var(--ink); background: var(--paper);
-  color: var(--ink); box-shadow: 0 -7px 22px rgba(0,0,0,.12); text-align: start;
-}
-.wl-app .wl-answer-main { display: flex; flex-direction: column; min-width: 0; }
-.wl-app .wl-answer-k {
-  overflow: hidden; color: var(--ink-soft); font-family: var(--mono);
-  font-size: 9px; letter-spacing: .08em; text-overflow: ellipsis;
-  text-transform: uppercase; white-space: nowrap;
-}
-.wl-app .wl-answer-v {
-  overflow: hidden; font-family: var(--mono); font-size: 20px;
-  font-variant-numeric: tabular-nums; text-overflow: ellipsis; white-space: nowrap;
-}
-.wl-app .wl-answer-bar { display: flex; height: 12px; border: 1px solid var(--ink); overflow: hidden; }
-.wl-app .wl-answer-bar i { display: block; height: 100%; }
-.wl-app .wl-answer-side {
-  font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
 @media (max-width: 640px) {
   html.wl-app body { padding-top: 60px; }
-  .wl-app .wl-calc-modes { top: 60px; }
-  .wl-app .wl-calc-steps { top: 106px; }
 }
 
 .wl-app .wl-sheet {
@@ -769,13 +694,13 @@ html.wl-app body { padding-top: 70px; }
 }
 .wl-app .wl-dock-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .wl-app .wl-dock-k {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .09em;
+  font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .09em;
   text-transform: uppercase; color: var(--ink-soft);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .wl-app .wl-dock-v {
   font-family: var(--mono); font-variant-numeric: tabular-nums;
-  font-size: 21px; font-weight: 600; letter-spacing: -.02em;
+  font-size: var(--fs-xl); font-weight: 600; letter-spacing: -.02em;
 }
 .wl-app .wl-sheet-body {
   flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain;
@@ -789,24 +714,6 @@ html.wl-app body { padding-top: 70px; }
   opacity: 0; pointer-events: none;
   transition: opacity 340ms cubic-bezier(.32,.72,0,1);
 }
-.wl-app .wl-swipeable { position: relative; }
-.wl-app .wl-swipeable .role {
-  position: relative; z-index: 1; background: var(--surface); touch-action: pan-y;
-}
-.wl-app .wl-swipe-act {
-  position: absolute; inset-inline-end: 0; z-index: 0;
-  display: none; align-items: center; justify-content: flex-end;
-}
-.wl-app .wl-swipe-act.is-live { display: flex; }
-.wl-app .wl-swipe-del {
-  height: 100%; min-width: 92px; border: 0;
-  background: var(--fail); color: #fff; font-family: var(--mono);
-  font-size: 12px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
-}
-.wl-app .role.wl-going {
-  transition: opacity 180ms ease, transform 180ms ease;
-  opacity: 0; transform: scaleY(.6);
-}
 @media (prefers-reduced-motion: reduce) {
-  .wl-app .wl-sheet, .wl-scrim, .wl-app .role { transition: none !important; }
+  .wl-app .wl-sheet, .wl-scrim { transition: none !important; }
 }

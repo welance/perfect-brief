@@ -31,31 +31,31 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: var(--disp); font-size: 16.5px; line-height: 1.6; }
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.6; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); }
-  .thesis { font-size: clamp(17px, 2.3vw, 20px); max-width: 60ch; margin: var(--sp-4) 0 0; }
+  .thesis { font-size: var(--fs-lead); max-width: 60ch; margin: var(--sp-4) 0 0; }
   p { max-width: 64ch; margin: 0 0 var(--flow); }
   .claim { font-family: var(--disp); font-weight: 600; letter-spacing: -.015em;
-    font-size: clamp(21px, 3vw, 30px); line-height: 1.18; margin: 0 0 var(--flow); max-width: 28ch; }
+    font-size: var(--fs-2xl); line-height: 1.18; margin: 0 0 var(--flow); max-width: 28ch; }
   /* The evidence column. Never translated: a file path and a function name
      mean the same thing in every language, and a drifting translation of a
      security claim is worse than no translation at all. */
-  .ref { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft);
+  .ref { font-family: var(--mono); font-size: var(--fs-sm); color: var(--ink-soft);
     display: block; margin: var(--sp-1) 0 0; }
   .ref a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
   .ref a:hover { color: var(--accent); }
   ol.path { max-width: 64ch; margin: 0 0 var(--flow); padding: 0 0 0 1.1em; }
   ol.path li { margin: 0 0 var(--sp-3); }
   .where { border-collapse: collapse; width: 100%; max-width: 860px;
-    margin: 0 0 var(--flow); font-size: 15px; }
+    margin: 0 0 var(--flow); font-size: var(--fs-md); }
   .where th, .where td { text-align: start; padding: var(--sp-3) var(--sp-4);
     border-bottom: 1px solid var(--rule); vertical-align: top; }
-  .where th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  .where th { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .1em;
     text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
   .where td.k { font-weight: 600; white-space: nowrap; }
-  .no { color: var(--fail); font-family: var(--mono); font-size: 12.5px; }
+  .no { color: var(--fail); font-family: var(--mono); font-size: var(--fs-sm); }
 </style>
 </head>
 <body>
