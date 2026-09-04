@@ -3,7 +3,7 @@
 services:
   api:
     build: .
-    image: welance/brief-bar:1.13.2
+    image: welance/brief-bar:1.13.3
     # amd64 on purpose: the cluster is amd64, and on Apple silicon the arm64
     # build dies on import (cryptography wheels raise Illegal instruction under
     # Docker Desktop's VM). Emulated is slower; crashed is useless.

@@ -70,7 +70,9 @@ class Settings(BaseSettings):
     # JSON appears. Measured on develop, one brief in a pair tripped 4000 while
     # its shorter sibling passed. Unused headroom costs nothing — only generated
     # tokens are billed — while a ceiling hit costs the whole call and a 503.
-    llm_max_tokens: Annotated[int, Field(ge=500, le=32_000)] = 4000
+    # 16000 leaves enough room for reasoning plus the complete structured
+    # verdict while remaining below the provider and application maximums.
+    llm_max_tokens: Annotated[int, Field(ge=500, le=32_000)] = 16000
     # Output ceilings are task-specific: suggestions are short JSON, while the
     # all-gaps endpoint may return one sentence for every rule.
     suggest_max_tokens: Annotated[int, Field(ge=200, le=8_000)] = 800
