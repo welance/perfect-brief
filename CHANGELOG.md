@@ -13,6 +13,9 @@ version below — a rule change bumps the ruleset, a service change bumps this.
   or provenance line; the thesis moved into the "how it works" fold. On a
   phone the headline and lede are smaller and the score button is full
   width.
+- More room everywhere: the spacing scale stepped up (`--sp-3` … `--sp-9`),
+  the prose flow with it, and line-height to 1.65. Tiles, folds and the
+  console's findings got wider padding.
 - Every string on every page is translated in all eight languages: the
   rules page's redesigned copy, the site chrome, the hero and the security
   disclosure had been English-only. Dead keys removed.

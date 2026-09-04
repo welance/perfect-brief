@@ -124,18 +124,20 @@
      is on a desk. */
   --sp-1: 4px;
   --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 20px;
-  --sp-6: 28px;
-  --sp-7: clamp(28px, 3.2vw, 40px);
-  --sp-8: clamp(40px, 5vw, 56px);
-  --sp-9: clamp(56px, 7vw, 80px);
+  /* 2026-09-04: the whole scale stepped up. A page should breathe, not
+     press; the old values read as a dense document, not a place to try. */
+  --sp-3: 14px;
+  --sp-4: 20px;
+  --sp-5: 28px;
+  --sp-6: 36px;
+  --sp-7: clamp(36px, 4vw, 52px);
+  --sp-8: clamp(52px, 6vw, 76px);
+  --sp-9: clamp(72px, 8vw, 108px);
   /* the prose rhythm, named by job rather than by size: --flow is the gap
      between blocks in running text, --flow-tight the one under a heading,
      which stays closer to the text it owns than to the section above it. */
-  --flow: var(--sp-5);
-  --flow-tight: var(--sp-3);
+  --flow: var(--sp-6);
+  --flow-tight: var(--sp-4);
 }
 
 :root[data-theme="dark"] {

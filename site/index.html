@@ -21,10 +21,10 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   /* tokens, fonts, logo, buttons come from welance.css (welance/Directory DNA) */
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:var(--fs-base);line-height:1.6;overflow-x:clip}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:var(--fs-base);line-height:1.65;overflow-x:clip}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) var(--sp-8)}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  header{padding:var(--sp-5) 0;border-bottom:2px solid var(--ink)}
+  header{padding:var(--sp-7) 0 var(--sp-6);border-bottom:2px solid var(--ink)}
   .kicker{font-family:var(--mono);font-size:var(--fs-sm);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:var(--flow)}
   /* the standfirst had no bottom margin because nothing used to follow it;
@@ -44,16 +44,16 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   /* dig deeper only if you really want to: three closed folds after the tiles */
   details.deeper{border-top:1px solid var(--rule)}
   details.deeper:last-of-type{border-bottom:1px solid var(--rule)}
-  details.deeper>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:var(--sp-4) 0;font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
+  details.deeper>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:var(--sp-5) 0;font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
   details.deeper>summary::-webkit-details-marker{display:none}
   details.deeper>summary::before{content:"+";font-family:var(--mono);color:var(--accent);width:1em;flex:none}
   details.deeper[open]>summary::before{content:"–"}
   details.deeper>summary:hover{color:var(--accent)}
   details.deeper>*:not(summary){margin-top:var(--sp-3)}
   details.deeper .seam{margin-top:var(--sp-5)}
-  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-4);margin:0 0 var(--flow)}
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-5);margin:0 0 var(--sp-7)}
   @media(max-width:760px){.feats{grid-template-columns:1fr}}
-  .feat{border:1px solid var(--rule);padding:var(--sp-4)}
+  .feat{border:1px solid var(--rule);padding:var(--sp-5)}
   .feat svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block;margin-bottom:var(--sp-3)}
   .feat h3{margin:0 0 var(--sp-2);font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
   .feat p{margin:0;font-size:var(--fs-md);color:var(--ink-soft)}
@@ -116,7 +116,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   [dir="rtl"] .triad{border-left:0;border-right:2px solid var(--accent);padding-left:0;padding-right:14px}
   /* welance provenance strip + GitHub mark */
   /* the first tap: a paste box that IS the hero action */
-  .hero-paste{margin:var(--flow) 0 var(--sp-3);max-width:720px}
+  .hero-paste{margin:var(--sp-6) 0 var(--sp-3);max-width:720px}
   .hero-paste textarea{width:100%;min-height:118px;background:var(--paper-2);border:1.5px solid var(--rule-strong);color:var(--ink);padding:var(--sp-4);font-family:var(--mono);font-size:var(--fs-sm);line-height:1.6;resize:vertical;box-sizing:border-box}
   .hero-paste textarea::placeholder{color:var(--ink-soft)}
   .hero-paste textarea:focus{outline:2px solid var(--accent);outline-offset:2px}
@@ -128,7 +128,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     .thesis{font-size:var(--fs-base);margin-top:var(--sp-3)}
     .hero-paste textarea{min-height:96px}
     .hero-paste-row .btn{width:100%;justify-content:center}
-    header{padding:var(--sp-4) 0}
+    header{padding:var(--sp-5) 0}
   }
   .prov{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:var(--fs-sm);color:var(--ink-soft);margin-top:var(--sp-5)}
   .prov .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
