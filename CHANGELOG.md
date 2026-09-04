@@ -8,6 +8,14 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [1.13.1] - 2026-09-04
 
+### Fixed
+- Tapping a suggested fix while the AI was still writing did nothing: the
+  menu showed a dead placeholder row. Bank fixes now render at once and the
+  AI ones replace them when they arrive.
+- The anonymisation fix inserted a note and changed nothing. It now removes
+  emails, links, phone numbers, company and brand names and what the judge
+  quoted, so the gate actually clears. "Fix all" includes it.
+
 ### Changed
 - The landing's top is quieter: no crumb above the headline, no button row
   or provenance line; the thesis moved into the "how it works" fold. On a

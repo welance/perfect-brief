@@ -390,7 +390,7 @@ const SUGGEST={
  "assumptions-risks":[{label:"Surface the biggest risk",text:"Risk: [risk]; if it holds, [consequence] — so we validate it first."},{label:"State a key assumption",text:"Assumption: [assumption]. If it's false, [impact]."}],
  "data-compliance":[{label:"Name the GDPR lawful basis",text:"Personal data: [accounts/history]; GDPR lawful basis is [contract/consent]; a DPA is required."},{label:"Add privacy by design",text:"Privacy by design: we collect only [data], retained [period]; data protection reviewed before launch."}],
  "accessibility-considered":[{label:"Target a WCAG level",text:"Accessibility: the public pages target WCAG 2.2 AA."},{label:"Commit to assistive testing",text:"Tested with keyboard navigation and a screen reader before release."}],
- "anonymised":[{label:"Genericise the identifiers",text:"(Replace the company name with ‘the client’, and remove any emails, URLs, or phone numbers.)"}],
+ "anonymised":[{label:"Anonymise it",text:"Removes emails, links, phone numbers, company and brand names, and what the judge quoted — replaced with ‘the client’."}],
 };
 let aiCache={}, aiFailed={};
 // MODE is which judge the reader asked for; SRC is which one actually produced
@@ -513,6 +513,25 @@ function ruleTopic(t){
  if(has(t,A.TIME)||has(t,A.VAGUE_TIME))return 7; if(has(t,A.TECH))return 8; if(has(t,A.TEAM))return 9;
  if(has(t,A.RISK)||has(t,A.NORISK))return 10; if(has(t,A.DATA)||has(t,A.COMPLY))return 11; if(has(t,A.A11Y)||has(t,A.PUBLIC))return 12; return -1;
 }
+// The anonymised rule cannot be fixed by inserting a sentence: the names have
+// to go. Strip contact details, company names with a legal suffix, known
+// brands, and whatever the judge quoted as evidence (capitalised runs only,
+// so ordinary words in the quote survive).
+function anonymise(brief){
+ let t=brief;
+ t=t.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g,"[email removed]");
+ t=t.replace(/https?:\/\/\S+/g,"[link removed]");
+ t=t.replace(/\+?\d[\d ()\-]{7,}\d/g,"[phone removed]");
+ t=t.replace(/\b([A-Z][\w&'.-]*(?:\s+[A-Z][\w&'.-]*){0,3})\s+(?:Inc\.?|Ltd\.?|LLC|GmbH|S\.?r\.?l\.?|S\.?p\.?A\.?|PLC|AG|SAS|BV)\b/g,"the client");
+ for(const b of A.BRAND){ t=t.replace(new RegExp("\\b(our|the|a|an|via|with|on)\\s+"+b+"\\b","gi"),"$1 provider").replace(new RegExp("\\b"+b+"\\b","gi"),"a third-party provider"); }
+ const v=(lastVerdicts||[]).find(x=>x.rule_id==="anonymised"), q=v&&v.quote?String(v.quote):"";
+ const stop=new Set(["The","A","An","We","Our","It","This","That","In","On","For","To","And","Or","But","With","By","At","From","As","Of","Problem","Budget","Timeline","Title","Success","Users","Scope","Team","Deliverables"]);
+ for(const run of q.match(/\b[A-Z][\w'&.-]+(?:\s+[A-Z][\w'&.-]+)*/g)||[]){
+   if(stop.has(run)||run.length<3) continue;
+   t=t.replace(new RegExp(run.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"g"),"the client");
+ }
+ return t;
+}
 function insertAtSlot(brief,ruleId,text){
  const slot=SLOT.indexOf(ruleId);
  const parts=brief.trim().length?brief.trim().split(/(?<=[.!?])\s+/):[];
@@ -546,11 +565,10 @@ const citation=r=>`<span class="tier ${r.ref.tier}">${r.ref.tier}</span><a href=
 function renderMenu(id){
  const el=document.getElementById("menu-"+id); if(!el)return;
  const head=`<div class="fixmenu-head">${esc(t("menuHead"))}</div>`;
- if(!aiCache[id]&&!aiFailed[id]){ el.innerHTML=head+`<div class="opt" style="cursor:default"><div class="lab">${esc(t("aiThinking"))}</div><div class="prev">${esc(t("aiHint"))}</div></div>`; return; }
- const ai=!!aiCache[id], opts=menuOpts(id);
+ const pending=!aiCache[id]&&!aiFailed[id], ai=!!aiCache[id], opts=menuOpts(id);
  el.innerHTML=head+
   opts.map((o,i)=>{const b=o.review?(o.review.accepted?`<span class="vbadge ok" title="${esc(o.review.reason||"")} — ${esc(o.verifier||"reviewer")}">✓</span>`:`<span class="vbadge no" title="${esc(o.review.reason||"")}">✗</span>`):"";return `<div class="opt" data-pick="${id}" data-idx="${i}"><div class="lab">${ai?'<span class="ai">AI</span>':''}${esc(o.label)}${b}</div><div class="prev">${esc(o.text)}</div></div>`;}).join("")+
-  `<div class="fixmenu-foot">`+(ai?`<button class="aibtn" data-regen="${id}">↻</button><span class="aihint">${esc(t("aiHint"))}</span>`:`<span class="aihint" style="color:var(--fail)">${esc(t("aiFail"))}</span>`)+`</div>`;
+  `<div class="fixmenu-foot">`+(pending?`<span class="aihint">✦ ${esc(t("aiThinking"))}</span>`:ai?`<button class="aibtn" data-regen="${id}">↻</button><span class="aihint">${esc(t("aiHint"))}</span>`:`<span class="aihint" style="color:var(--fail)">${esc(t("aiFail"))}</span>`)+`</div>`;
 }
 function syncVstickLabel(){const h=$("#vhandle"),v=$("#vstick");if(!h||!v)return;
  const open=!v.classList.contains("collapsed");h.setAttribute("aria-expanded",String(open));
@@ -627,7 +645,7 @@ function showToast(label,before,after){
  el.classList.add("show"); clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove("show"),4200);
 }
 function insertFix(id,text,label){
- const cur=$("#input").value, before=MODE==="mock"?scoreOf(cur):null, next=insertAtSlot(cur,id,text);
+ const cur=$("#input").value, before=MODE==="mock"?scoreOf(cur):null, next=id==="anonymised"?anonymise(cur):insertAtSlot(cur,id,text);
  const ta=$("#input"); ta.value=next; ta.classList.remove("flash"); void ta.offsetWidth; ta.classList.add("flash");
  {const ps=$("#preset"); if(ps) ps.value="";}
  $("#adv-note").style.display="none"; $("#blocked-note").style.display="none";
@@ -667,7 +685,7 @@ async function fixAll(){
  const verdicts=lastVerdicts||RULES.map(r=>({rule_id:r.id,...judge(r.id,cur0)}));
  const gapIds=verdicts.filter(v=>(v.status==="partial"||v.status==="fail")&&v.rule_id!=="anonymised").map(v=>v.rule_id);
  const anonFailing=verdicts.some(v=>v.rule_id==="anonymised"&&v.status!=="pass");
- if(!gapIds.length){ if(anonFailing) showToastRaw(ruleTitle("anonymised")+" — "+t("anonManual")); return; }
+ if(!gapIds.length&&!anonFailing) return;
  let fixes=[];
  if(MODE==="live"){ setBusyAll(true);
    try{ fixes=await aiSuggestAll(gapIds,cur0); if(!fixes.length) fixes=gapIds.map(bankFix).filter(Boolean); }
@@ -677,12 +695,13 @@ async function fixAll(){
  fixes.sort((a,b)=>SLOT.indexOf(a.id)-SLOT.indexOf(b.id));
  const before=MODE==="mock"?scoreOf(cur0):null;
  let cur=cur0; for(const f of fixes) cur=insertAtSlot(cur,f.id,f.text);
+ if(anonFailing) cur=anonymise(cur);
  const ta=$("#input"); ta.value=cur; ta.classList.remove("flash"); void ta.offsetWidth; ta.classList.add("flash");
  {const ps=$("#preset"); if(ps) ps.value="";}
  $("#adv-note").style.display="none"; $("#blocked-note").style.display="none";
  aiCache={}; aiFailed={};
  scoreAction();
- showToastAll(fixes.length,before,MODE==="mock"?scoreOf(cur):null,anonFailing);
+ showToastAll(fixes.length+(anonFailing?1:0),before,MODE==="mock"?scoreOf(cur):null,anonFailing&&MODE==="mock"&&judge("anonymised",cur).status!=="pass");
 }
 const FIXHINT={
  "clear-title":"Give a short, specific title line naming the product or problem; prefix it so it reads as a title, e.g. \"Title: …\".",
