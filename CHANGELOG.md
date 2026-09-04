@@ -6,6 +6,17 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.13.1] - 2026-09-04
+
+### Changed
+- The landing's top is quieter: no crumb above the headline, no button row
+  or provenance line; the thesis moved into the "how it works" fold. On a
+  phone the headline and lede are smaller and the score button is full
+  width.
+- Every string on every page is translated in all eight languages: the
+  rules page's redesigned copy, the site chrome, the hero and the security
+  disclosure had been English-only. Dead keys removed.
+
 ## [1.13.0] - 2026-09-03
 
 ### Added
