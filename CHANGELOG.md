@@ -16,6 +16,10 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - More room everywhere: the spacing scale stepped up (`--sp-3` … `--sp-9`),
   the prose flow with it, and line-height to 1.65. Tiles, folds and the
   console's findings got wider padding.
+- The landing hero fills the first screen; the tiles start below the fold.
+- Seven type sizes instead of nine, and the mono face is for code and
+  numbers only: eyebrows, footer heads and badges use the display face.
+- The data page's table stacks on phones.
 - Every string on every page is translated in all eight languages: the
   rules page's redesigned copy, the site chrome, the hero and the security
   disclosure had been English-only. Dead keys removed.

@@ -55,13 +55,15 @@
   /* --- type scale: the only font sizes on the site ------------------------
      Nine steps. Nothing is set below --fs-xs; the three hero sizes
      (.h-display, .h1, .h2) keep their own clamps. */
-  --fs-xs:   12px;                      /* mono labels, badges, eyebrows */
+  /* 2026-09-04: seven sizes, not nine. xs folds into sm, the lead
+     paragraph shares the card-title size. Fewer sizes read calmer. */
+  --fs-xs:   13px;                      /* labels, badges (= sm)        */
   --fs-sm:   13px;                      /* secondary text, table cells  */
   --fs-md:   15px;                      /* UI text, buttons, nav        */
   --fs-base: 16px;                      /* body                         */
-  --fs-lg:   18px;                      /* card titles                  */
-  --fs-xl:   21px;                      /* figures, the wordmark        */
-  --fs-lead: clamp(17px, 1.6vw, 20px);  /* thesis / lead paragraphs     */
+  --fs-lg:   18px;                      /* card titles, lead paragraphs */
+  --fs-xl:   20px;                      /* figures, the wordmark        */
+  --fs-lead: var(--fs-lg);              /* thesis / lead paragraphs     */
   --fs-2xl:  clamp(24px, 2.6vw, 30px);  /* section heads, big figures   */
   --fs-3xl:  clamp(30px, 4.5vw, 50px);  /* hero ratio, the score        */
   --pad-x: clamp(16px, 4vw, 56px);
@@ -183,7 +185,8 @@
 h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 
 /* the mono voice: eyebrows, counts, keys */
-.eyebrow, .mono { font-family: var(--mono); font-size: var(--fs-sm);
+.mono { font-family: var(--mono); font-size: var(--fs-sm); }
+.eyebrow { font-family: var(--disp); font-weight: 500; font-size: var(--fs-sm);
   letter-spacing: .04em; text-transform: uppercase; }
 .mono-sm { font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted);
   letter-spacing: .02em; }
@@ -233,7 +236,7 @@ h1 .b, h2 .b, .h1 .b, .h2 .b { color: var(--accent); }
 .wl-menu-lang .wl-lang-select { width: auto; max-width: none; font-size: var(--fs-md); padding: 9px 8px; }
 @media (min-width: 480px) { .wl-menu-in { grid-template-columns: 1fr 1fr; gap: 20px 28px; } }
 .wl-menu-col { display: flex; flex-direction: column; gap: 2px; }
-.wl-menu-h { font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .12em;
+.wl-menu-h { font-family: var(--disp); font-weight: 500; font-size: var(--fs-xs); letter-spacing: .12em;
   text-transform: uppercase; color: var(--ink-soft); margin: 0 0 8px; }
 .wl-menu a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink);
   text-decoration: none; font-family: var(--disp); font-size: var(--fs-base); padding: 7px 0; }
@@ -538,7 +541,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 .wl-foot-contact { color: var(--on-slab-soft); margin: 0; }
 .wl-asterisk { width: 72px; height: 72px; display: block; }
 
-.wl-foot-k { color: var(--on-slab-soft); text-transform: uppercase;
+.wl-foot-k { font-family: var(--disp); font-weight: 500; color: var(--on-slab-soft); text-transform: uppercase;
   letter-spacing: .05em; margin: 0 0 var(--sp-3); }
 .wl-foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .wl-foot-link { color: var(--on-slab); font-size: var(--fs-md); text-decoration: none;
