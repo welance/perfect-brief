@@ -6,6 +6,15 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.13.2] - 2026-09-04
+
+### Fixed
+- Open finding rows no longer snap shut on every re-render (each keystroke,
+  each applied fix).
+- With the live judge, applying a fix now says so where you tapped: the
+  toast appears at once, the findings dim and the score pulses while the
+  verdicts are recomputed, and the toast completes with the score delta.
+
 ## [1.13.1] - 2026-09-04
 
 ### Fixed
