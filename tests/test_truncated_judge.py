@@ -122,7 +122,7 @@ def test_the_ceiling_fits_the_ruleset_this_service_ships():
 
     settings.cache_clear()
     rules, _ = brief_bar.load_bundled()
-    floor = 200 * len(rules)
+    floor = max(16000, 200 * len(rules))
     assert settings().llm_max_tokens >= floor, (
         f"{len(rules)} rules need room for a quote and a note each; "
         f"{settings().llm_max_tokens} tokens is below the {floor} floor"
