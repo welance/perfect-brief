@@ -6,6 +6,37 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [1.13.1] - 2026-09-04
+
+### Fixed
+- Tapping a suggested fix while the AI was still writing did nothing: the
+  menu showed a dead placeholder row. Bank fixes now render at once and the
+  AI ones replace them when they arrive.
+- The anonymisation fix inserted a note and changed nothing. It now removes
+  emails, links, phone numbers, company and brand names and what the judge
+  quoted, so the gate actually clears. "Fix all" includes it.
+
+### Changed
+- The landing's top is quieter: no crumb above the headline, no button row
+  or provenance line; the thesis moved into the "how it works" fold. On a
+  phone the headline and lede are smaller and the score button is full
+  width.
+- More room everywhere: the spacing scale stepped up (`--sp-3` … `--sp-9`),
+  the prose flow with it, and line-height to 1.65. Tiles, folds and the
+  console's findings got wider padding.
+- The landing hero fills the first screen; the tiles start below the fold.
+- Seven type sizes instead of nine, and the mono face is for code and
+  numbers only: eyebrows, footer heads and badges use the display face.
+- The data page's table stacks on phones.
+- The console is a box first: heading and language on one row, a taller
+  bordered textarea, the example briefs in one select instead of six chips,
+  the judge switch under the box, the Directory door one line. Failing rules
+  collapse to one row each like passing ones; the collapsed verdict sheet
+  shows score and decision only.
+- Every string on every page is translated in all eight languages: the
+  rules page's redesigned copy, the site chrome, the hero and the security
+  disclosure had been English-only. Dead keys removed.
+
 ## [1.13.0] - 2026-09-03
 
 ### Added

@@ -31,7 +31,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.6; }
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.65; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); }
@@ -41,13 +41,13 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     font-size: var(--fs-2xl); line-height: 1.18; margin: 0 0 var(--flow); max-width: 26ch; }
   .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin: 0 0 var(--flow); }
   @media (max-width: 760px) { .opts { grid-template-columns: 1fr; } }
-  .opt { border: 1px solid var(--rule); padding: var(--sp-4); }
+  .opt { border: 1px solid var(--rule); padding: var(--sp-5); }
   .opt.key { border-color: var(--ink); }
   .opt svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.8;
     stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: var(--sp-3); }
   .opt h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-lg); font-weight: 600; letter-spacing: -.01em; }
   .opt p { margin: 0; font-size: var(--fs-md); color: var(--ink-soft); }
-  .opt .tag { display: inline-block; margin-top: var(--sp-3); font-family: var(--mono); font-size: var(--fs-xs);
+  .opt .tag { display: inline-block; margin-top: var(--sp-3); font-weight: 500; font-size: var(--fs-xs);
     letter-spacing: .08em; text-transform: uppercase; color: var(--pass); }
   .opt.key .tag { color: var(--ink); }
   .opt .go { display: block; margin-top: var(--sp-2); font-family: var(--mono); font-size: var(--fs-sm); }
@@ -61,6 +61,14 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   td .no { color: var(--fail); font-family: var(--mono); font-size: var(--fs-sm); }
   td .yes { color: var(--pass); font-family: var(--mono); font-size: var(--fs-sm); }
   .small { font-size: var(--fs-md); color: var(--ink-soft); }
+  /* on a phone the table stacks: one row becomes a small card, header row hidden */
+  @media (max-width: 640px) {
+    thead { display: none; }
+    table, tbody, tr, td { display: block; width: 100%; }
+    tr { border-bottom: 1px solid var(--rule); padding: var(--sp-3) 0; }
+    td { border: 0; padding: 4px 0; }
+    td.k { white-space: normal; padding-bottom: 6px; }
+  }
 </style>
 </head>
 <body>
