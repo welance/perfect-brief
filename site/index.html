@@ -24,7 +24,11 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:var(--fs-base);line-height:1.65;overflow-x:clip}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) var(--sp-8)}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  header{padding:var(--sp-7) 0 var(--sp-6);border-bottom:2px solid var(--ink)}
+  /* the hero owns the first screen: what you see before scrolling is the
+     headline, the box, the button and the way in without a brief — nothing
+     else. 96px is the fixed chrome above it (header + colour rule). */
+  header{padding:var(--sp-7) 0 var(--sp-6);border-bottom:2px solid var(--ink);
+    min-height:calc(100svh - 96px);display:flex;flex-direction:column;justify-content:center}
   .kicker{font-family:var(--mono);font-size:var(--fs-sm);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
   .crumbs{margin-bottom:var(--flow)}
   /* the standfirst had no bottom margin because nothing used to follow it;
