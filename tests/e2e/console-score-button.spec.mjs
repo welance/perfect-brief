@@ -33,13 +33,13 @@ test.describe("the score button is honest about what it does", () => {
     await page.goto("/console.html");
     const cta = page.locator("#pubcta");
 
-    await page.locator('[data-p="strong"]').click();
+    await page.locator("#preset").selectOption("strong");
     await expect(cta).not.toHaveClass(/off/);
     // the Directory homepage is the door now — its guided flow, not a bare editor
     await expect(cta).toHaveAttribute("href", /welance\.com\/directory$/);
 
     // the whole point of the gate: a high score that still may not publish
-    await page.locator('[data-p="blocked"]').click();
+    await page.locator("#preset").selectOption("blocked");
     await expect(cta).toHaveClass(/off/);
     await expect(cta).not.toHaveAttribute("href", /./);
     await expect(page.locator("#vmeta")).not.toBeEmpty(); // and it says which rule
@@ -47,7 +47,7 @@ test.describe("the score button is honest about what it does", () => {
 
   test("the CTA keeps the reader's language on the way to the Directory", async ({ page }) => {
     await page.goto("/console.html?lang=it");
-    await page.locator('[data-p="strong"]').click();
+    await page.locator("#preset").selectOption("strong");
     await expect(page.locator("#pubcta")).toHaveAttribute("href", /welance\.com\/it\//);
     await expect(page.locator("#pubcta")).toContainText("gratis");
   });
