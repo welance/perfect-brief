@@ -6,7 +6,7 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
-## [Unreleased]
+## [1.13.2] - 2026-09-04
 
 ### Fixed
 - Open finding rows no longer snap shut on every re-render (each keystroke,
