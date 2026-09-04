@@ -20,6 +20,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - Seven type sizes instead of nine, and the mono face is for code and
   numbers only: eyebrows, footer heads and badges use the display face.
 - The data page's table stacks on phones.
+- The console's top is a heading that says what to do, one line, the judge
+  switch and the box: crumb, product name, stats strip and long thesis gone.
 - Every string on every page is translated in all eight languages: the
   rules page's redesigned copy, the site chrome, the hero and the security
   disclosure had been English-only. Dead keys removed.
