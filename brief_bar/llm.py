@@ -11,6 +11,8 @@ the gate, or scoring.yaml — those stay in score.py.
 from __future__ import annotations
 
 import json
+import re
+import unicodedata
 
 from .score import Finding, Rule, Status, Verdict
 
@@ -120,11 +122,74 @@ def parse_judge(rules: dict[str, Rule], raw: str, source_text: str | None = None
         note = v.get("note", "")
         if not isinstance(quote, str) or not isinstance(note, str):
             raise JudgeUnparsable(f"rule '{rid}' has non-text evidence")
-        if source_text is not None and quote and quote not in source_text:
+        if source_text is not None and quote and not is_evidence(quote, source_text):
             raise JudgeUnparsable(f"rule '{rid}' quote is not verbatim evidence")
         findings = (Finding(quote, note),)
         out.append(Verdict(rid, Status(status), conf, findings))
     return out
+
+
+# ---- evidence -------------------------------------------------------------
+
+# A quote is evidence only if its words are the brief's words, in the brief's
+# order. That rule is what stops a model inventing support for a verdict, and
+# it is not relaxed here. What IS forgiven is everything a careful human
+# quoting a document also changes without thinking: the case of a first
+# letter, a curly apostrophe typed straight, a dash of another length, a line
+# break, the markdown around a phrase, and an ellipsis standing for words
+# left out of the middle. Exact string containment failed on all of those and
+# threw away the whole score each time.
+_QUOTES = str.maketrans(
+    {
+        "\u2018": "'",
+        "\u2019": "'",
+        "\u201a": "'",
+        "\u2032": "'",
+        "\u0060": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\u201e": '"',
+        "\u2033": '"',
+        "\u00ab": '"',
+        "\u00bb": '"',
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2212": "-",
+        "\u2011": "-",
+        "\u2010": "-",
+        "\u00a0": " ",
+    }
+)
+_MARKUP = re.compile(r"[*_#>]+")
+_SPACE = re.compile(r"\s+")
+_ELLIPSIS = re.compile(r"\s*(?:\u2026|\.{3,}|\[\s*(?:\u2026|\.{3,})\s*\])\s*")
+_EDGE = " \t\n.,;:!?\"'()[]-"
+
+
+def _plain(text: str) -> str:
+    text = unicodedata.normalize("NFKC", text).translate(_QUOTES)
+    text = _MARKUP.sub(" ", text)
+    return _SPACE.sub(" ", text).strip().casefold()
+
+
+def is_evidence(quote: str, source_text: str) -> bool:
+    """True when every fragment of `quote` occurs in `source_text`, in order.
+
+    Fragments are the stretches between ellipses. A quote that contributes no
+    words at all (only punctuation or an ellipsis) is not evidence.
+    """
+    source = _plain(source_text)
+    fragments = [f.strip(_EDGE) for f in _ELLIPSIS.split(_plain(quote))]
+    fragments = [f for f in fragments if f]
+    if not fragments:
+        return False
+    at = 0
+    for fragment in fragments:
+        found = source.find(fragment, at)
+        if found < 0:
+            return False
+        at = found + len(fragment)
+    return True
 
 
 # ---- fix suggestions ------------------------------------------------------
@@ -153,7 +218,7 @@ MISSING ASPECT: {rule.criteria.strip()}
 TO SATISFY IT (a hard requirement — every option MUST meet this exactly, or it won't resolve the issue):
 {FIXHINT.get(rule.id, rule.criteria.strip())}
 
-Propose 3 distinct, concrete insertions tailored to THIS brief (use its actual domain, no placeholders/brackets) that satisfy the requirement and genuinely help the executing team. Each: a "label" (max 8 words) and "text" (ONE sentence, ready to paste).{lang}{redo}
+Propose 3 distinct, concrete insertions tailored to THIS brief (use its actual domain, no placeholders/brackets) that satisfy the requirement and genuinely help the executing team. Each: a "label" (max 8 words) and "text" (one to three short sentences, ready to paste, written as the client would say it — long enough to meet the requirement in full, no longer).{lang}{redo}
 Return ONLY a JSON array, no markdown: [{{"label":"...","text":"..."}}]"""
 
 

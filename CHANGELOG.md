@@ -6,6 +6,28 @@ All notable changes to perfect-brief are documented here. The format follows
 (`semver+content-digest`, e.g. `1.0.0+83107bae`) independent of the service
 version below — a rule change bumps the ruleset, a service change bumps this.
 
+## [Unreleased]
+
+### Fixed
+- A judge quote is now matched against the brief the way a careful reader
+  would quote it: the case of a first letter, curly versus straight quotes,
+  dash length, line breaks, markdown emphasis and an ellipsis for omitted
+  words no longer disqualify it. Its words must still be the brief's words,
+  in the brief's order — invented or reordered evidence is refused exactly as
+  before. Exact string containment had been rejecting faithful quotes, and
+  each rejection discarded the whole score with a 503.
+- An answer that fails the integrity checks is asked for once more before the
+  request fails (`PB_JUDGE_RETRIES`, default 1; 0 restores fail-on-first). The
+  budget is per request, not per batch: a brief written to make the judge
+  misquote can cost at most one extra model call.
+- That failure is reported as what it is. It used to carry the message for a
+  cut-off answer and told operators to raise `PB_LLM_MAX_TOKENS`.
+
+### Changed
+- Fix suggestions may be one to three short sentences instead of exactly one,
+  so a suggestion can satisfy rules that need more than a single clause
+  (three deliverables with acceptance conditions; a target and a timeframe).
+
 ## [1.13.3] - 2026-09-04
 
 ### Fixed
