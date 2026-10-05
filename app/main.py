@@ -216,6 +216,18 @@ TRUNCATED_ERROR = (
     "the judge's answer was cut off before it finished, so no score was "
     "computed; retry, or raise PB_LLM_MAX_TOKENS"
 )
+# A complete answer that failed the integrity checks. It used to be reported
+# with the message above, which sent operators to raise a token limit that
+# had nothing to do with it.
+UNUSABLE_ERROR = (
+    "the judge's answer did not pass the integrity checks (malformed, "
+    "incomplete, or quoting words the brief does not contain), so no score "
+    "was computed; retry"
+)
+
+
+def _incomplete(exc: Exception) -> str:
+    return TRUNCATED_ERROR if isinstance(exc, JudgeTruncated) else UNUSABLE_ERROR
 
 
 def _judge_kind(requested: str | None, byok: str | None = None) -> str:
@@ -339,10 +351,10 @@ async def post_score(req: ScoreRequest, request: Request, x_llm_key: ByokHeader 
     except LLMNotConfigured as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except (JudgeTruncated, JudgeUnparsable) as exc:
-        # Not the provider's fault and not a timeout: our ceiling. Say which,
-        # and refuse rather than score a partial answer.
+        # Not the provider's fault and not a timeout: our ceiling or our
+        # integrity checks. Say which, and refuse rather than score it.
         log.warning("judge answer incomplete: %s", exc)
-        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
+        raise HTTPException(status_code=503, detail=_incomplete(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("scoring failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
@@ -395,7 +407,7 @@ async def post_suggest(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except (JudgeTruncated, JudgeUnparsable) as exc:
         log.warning("suggestion answer incomplete: %s", exc)
-        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
+        raise HTTPException(status_code=503, detail=_incomplete(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("suggest failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
@@ -432,7 +444,7 @@ async def post_suggest_all(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except (JudgeTruncated, JudgeUnparsable) as exc:
         log.warning("suggestion answer incomplete: %s", exc)
-        raise HTTPException(status_code=503, detail=TRUNCATED_ERROR) from exc
+        raise HTTPException(status_code=503, detail=_incomplete(exc)) from exc
     except Exception as exc:  # noqa: BLE001
         log.exception("suggest failed")
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc

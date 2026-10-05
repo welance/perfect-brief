@@ -98,11 +98,36 @@ async def _judge(
             except (KeyError, TypeError, ValueError) as exc:
                 log.warning("discarding invalid verdict cache entry: %s", exc)
 
+    # Retries are a budget for the whole request, not per batch. Each one is
+    # a paid model call the caller did not ask for, and the rate limit counts
+    # requests: a brief written to make the judge misquote must not be able
+    # to multiply what one request costs. With the default budget of 1, the
+    # worst case is exactly one extra call, however the rules are batched.
+    retries_left = max(0, settings().judge_retries)
+
+    async def judged(rules: dict) -> list[Verdict]:
+        """One judge call, parsed — asked again when the answer is unusable.
+
+        An answer that fails the integrity checks is refused, never repaired.
+        But the model is not deterministic: a second, independent answer is
+        usually clean, and asking for it here costs one call instead of a
+        failed request the caller then repeats from the start.
+        """
+        nonlocal retries_left
+        prompt = llm.render_judge_prompt(rules, brief, _CFG.budget_floor)
+        while True:
+            raw = await llm_client.complete(prompt, use, api_key)
+            try:
+                return llm.parse_judge(rules, raw, brief)
+            except llm.JudgeUnparsable as exc:
+                if retries_left <= 0:
+                    raise
+                retries_left -= 1
+                log.warning("judge answer refused, asking once more: %s", exc)
+
     batch_size = settings().judge_batch_size
     if batch_size <= 0 or batch_size >= len(_RULES):
-        prompt = llm.render_judge_prompt(_RULES, brief, _CFG.budget_floor)
-        raw = await llm_client.complete(prompt, use, api_key)
-        verdicts = llm.parse_judge(_RULES, raw, brief)
+        verdicts = await judged(_RULES)
     else:
         items = list(_RULES.items())
         batches = [dict(items[i : i + batch_size]) for i in range(0, len(items), batch_size)]
@@ -110,9 +135,7 @@ async def _judge(
 
         async def judge_batch(batch: dict) -> list[Verdict]:
             async with semaphore:
-                prompt = llm.render_judge_prompt(batch, brief, _CFG.budget_floor)
-                raw = await llm_client.complete(prompt, use, api_key)
-                return llm.parse_judge(batch, raw, brief)
+                return await judged(batch)
 
         # If one batch fails, cancel its siblings instead of continuing to
         # spend tokens on a score that can no longer be returned. Keep the
@@ -285,9 +308,7 @@ async def suggest(
     opts = [s for s in llm.parse_suggestions(raw) if _sane(s["text"])]
 
     items = [{"id": str(i), "requirement": _requirement(rule), "text": s["text"]} for i, s in enumerate(opts)]
-    review, verification_ms = (
-        await _review_items(items, brief, verifier, api_key) if verifier else (None, 0)
-    )
+    review, verification_ms = await _review_items(items, brief, verifier, api_key) if verifier else (None, 0)
 
     out: list[Suggestion] = []
     for i, s in enumerate(opts):
