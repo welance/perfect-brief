@@ -8,7 +8,7 @@ import pytest
 from app import scorer
 from app.settings import settings
 from brief_bar import load_bundled
-from brief_bar.llm import JudgeUnparsable, parse_judge
+from brief_bar.llm import JudgeUnparsable, is_evidence, parse_judge
 
 RULES, _ = load_bundled()
 BRIEF = "# Portal\nProblem: bookings arrive by phone."
@@ -16,8 +16,7 @@ BRIEF = "# Portal\nProblem: bookings arrive by phone."
 
 def verdicts_for(rules=RULES):
     return [
-        {"rule_id": rid, "status": "fail", "confidence": 0.9, "quote": "", "note": "missing"}
-        for rid in rules
+        {"rule_id": rid, "status": "fail", "confidence": 0.9, "quote": "", "note": "missing"} for rid in rules
     ]
 
 
@@ -43,6 +42,121 @@ def test_non_array_and_invented_quote_are_refused():
     values[0]["quote"] = "words that do not occur"
     with pytest.raises(JudgeUnparsable):
         parse_judge(RULES, json.dumps(values), BRIEF)
+
+
+EVIDENCE_SOURCE = (
+    "# Fleet planning\n\n## What we get\n\nWhat we get at the end: the driver app must let a user "
+    "mark a stop \u2018Delivered\u2019 \u2014 it won\u2019t need signal.\n\n- Two dispatchers plan the day\n"
+    "- **Eighteen drivers** use a phone"
+)
+
+
+@pytest.mark.parametrize(
+    "quote",
+    [
+        "The driver app must let a user mark a stop",  # the judge capitalised a sentence start
+        "mark a stop 'Delivered' - it won't need signal",  # straight quotes, a plain dash
+        "the driver app must let a user\nmark a stop",  # a line break where the brief has a space
+        "Eighteen drivers use a phone",  # markdown emphasis left out
+        "the driver app must let a user ... it won\u2019t need signal.",  # words left out of the middle
+        "Two dispatchers plan the day\u2026 Eighteen drivers use a phone",
+    ],
+)
+def test_a_faithful_quote_is_evidence_whatever_its_typography(quote):
+    assert is_evidence(quote, EVIDENCE_SOURCE)
+
+
+@pytest.mark.parametrize(
+    "quote",
+    [
+        "the driver app must let a customer mark a stop",  # one word that is not in the brief
+        "Eighteen drivers use a phone ... Two dispatchers plan the day",  # real words, wrong order
+        "nineteen drivers",
+        "...",
+        "\u2026",
+    ],
+)
+def test_invented_or_reordered_words_are_never_evidence(quote):
+    assert not is_evidence(quote, EVIDENCE_SOURCE)
+
+
+def test_an_unusable_answer_is_asked_for_again_once(monkeypatch):
+    monkeypatch.setenv("PB_OPENROUTER_API_KEY", "test-key")
+    monkeypatch.setenv("PB_JUDGE_BATCH_SIZE", "0")
+    settings.cache_clear()
+    answers = iter(
+        [
+            json.dumps([{**v, "quote": "words that do not occur"} for v in verdicts_for()]),
+            json.dumps(verdicts_for()),
+        ]
+    )
+    calls = 0
+
+    async def fake_complete(prompt, model=None, api_key=None):
+        nonlocal calls
+        calls += 1
+        return next(answers)
+
+    monkeypatch.setattr(scorer.llm_client, "complete", fake_complete)
+    monkeypatch.setattr(scorer.cache, "get_json", lambda key: _none())
+    monkeypatch.setattr(scorer.cache, "set_json", lambda *a, **k: _none())
+    asyncio.run(scorer.score(BRIEF, "en-GB", "llm"))
+    assert calls == 2
+    settings.cache_clear()
+
+
+def test_an_answer_that_stays_unusable_is_still_refused(monkeypatch):
+    monkeypatch.setenv("PB_OPENROUTER_API_KEY", "test-key")
+    monkeypatch.setenv("PB_JUDGE_BATCH_SIZE", "0")
+    settings.cache_clear()
+    calls = 0
+
+    async def fake_complete(prompt, model=None, api_key=None):
+        nonlocal calls
+        calls += 1
+        return json.dumps([{**v, "quote": "words that do not occur"} for v in verdicts_for()])
+
+    monkeypatch.setattr(scorer.llm_client, "complete", fake_complete)
+    monkeypatch.setattr(scorer.cache, "get_json", lambda key: _none())
+    with pytest.raises(JudgeUnparsable):
+        asyncio.run(scorer.score(BRIEF, "en-GB", "llm"))
+    assert calls == 2
+    settings.cache_clear()
+
+
+def test_the_retry_budget_is_per_request_not_per_batch(monkeypatch):
+    """A brief that makes every batch misquote costs one extra call, not one per batch."""
+    monkeypatch.setenv("PB_OPENROUTER_API_KEY", "test-key")
+    monkeypatch.setenv("PB_JUDGE_BATCH_SIZE", "5")
+    monkeypatch.setenv("PB_JUDGE_CONCURRENCY", "1")
+    settings.cache_clear()
+    calls = 0
+
+    async def fake_complete(prompt, model=None, api_key=None):
+        nonlocal calls
+        calls += 1
+        ids = [rid for rid in RULES if f"- {rid}:" in prompt]
+        return json.dumps(
+            [
+                {
+                    "rule_id": rid,
+                    "status": "fail",
+                    "confidence": 0.9,
+                    "quote": "words that do not occur",
+                    "note": "x",
+                }
+                for rid in ids
+            ]
+        )
+
+    monkeypatch.setattr(scorer.llm_client, "complete", fake_complete)
+    monkeypatch.setattr(scorer.cache, "get_json", lambda key: _none())
+    with pytest.raises(JudgeUnparsable):
+        asyncio.run(scorer.score(BRIEF, "en-GB", "llm"))
+    # Three batches. One retry for the whole request: at most one call per
+    # batch plus that single retry — never a retry per batch (which is six).
+    assert 2 <= calls <= 4
+    settings.cache_clear()
 
 
 def test_concurrent_batches_are_complete_and_keep_rule_order(monkeypatch):

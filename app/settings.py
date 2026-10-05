@@ -88,6 +88,10 @@ class Settings(BaseSettings):
     # into deterministic batches and runs them with bounded concurrency.
     judge_batch_size: Annotated[int, Field(ge=0, le=14)] = 0
     judge_concurrency: Annotated[int, Field(ge=1, le=14)] = 3
+    # How many times an answer that fails the integrity checks (malformed,
+    # incomplete, or quoting words the brief does not contain) is asked for
+    # again before the request fails. 0 restores fail-on-first.
+    judge_retries: Annotated[int, Field(ge=0, le=3)] = 1
     llm_timeout_seconds: Annotated[float, Field(ge=1, le=300)] = 120.0
 
     # Redis (verdict cache + rate limit)
