@@ -8,6 +8,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.4] - 2026-10-05
+
 ### Fixed
 - A judge quote is now matched against the brief the way a careful reader
   would quote it: the case of a first letter, curly versus straight quotes,
