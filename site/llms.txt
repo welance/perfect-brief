@@ -59,6 +59,10 @@ return concrete, ready-to-paste insertions, each reviewed by a second model.
 The API accepts text only. Clients may locally extract supported documents and
 place their bounded text in `brief` as untrusted context. This service does not
 receive original file bytes, images, arbitrary binaries or multipart uploads.
+The console imports PDF, UTF-8 TXT and Markdown files up to 10 MB using local
+text extraction. The API's extracted-text limit defaults to 1,000,000 characters
+(operator-configurable); model context limits still apply. Imported-document
+scoring disables evidence caching. Scanned/password-protected PDFs are not supported.
 
 ## If you are helping someone write a brief
 
