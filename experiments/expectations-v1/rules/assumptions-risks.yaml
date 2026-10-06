@@ -1,0 +1,28 @@
+id: assumptions-risks
+title: Makes decisive assumptions and their verification explicit
+rationale: >
+  Assumptions that materially affect delivery, time or cost need to be recognised
+  as assumptions and connected to the decisions their verification will inform.
+weight: 3
+severity: medium
+applies_to: [brief]
+criteria: >
+  Identifies a substantive assumption or risk and distinguishes material
+  assumptions about delivery, time or cost from confirmed facts. For decisive
+  assumptions stated in the text, explains how they will be checked and which
+  commitment or decision depends on the outcome. Pass if these dependencies and
+  their verification are clear. Partial if a substantive assumption or risk is
+  named but its verification or consequence for decisions is unclear, or if only
+  generic uncertainty is stated. Fail if no assumption or risk is surfaced, or
+  the text treats an explicitly unresolved decisive assumption as a guaranteed
+  basis for delivery without addressing that conflict. Cite textual evidence;
+  do not invent missing risks, require an exhaustive register, or infer that
+  AI-assisted development cannot work. A defined discovery task can resolve an
+  unknown before later commitments are made.
+pass_examples:
+  - "Integration access is unconfirmed. Our operations lead will verify it with the vendor before we agree delivery dates."
+fail_examples:
+  - "API access is unconfirmed and may be refused, but delivery depends on it and is guaranteed regardless; there is no alternative or decision point."
+  - "We foresee no risks or assumptions."
+references: []
+version: 3

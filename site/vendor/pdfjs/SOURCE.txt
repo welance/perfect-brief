@@ -1,0 +1,5 @@
+PDF.js 6.4.299
+https://github.com/mozilla/pdf.js
+https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz
+Integrity: sha512-AVl138zALtfaAPvADulE0PZThbYzCBS79nL4pOSL/6Sm/4AH5A21BD9VHt97OlCuzJuCpmeZtAtkinisF4Vb1g==
+Apache-2.0; see LICENSE. Vendored legacy display API and worker for local text extraction.

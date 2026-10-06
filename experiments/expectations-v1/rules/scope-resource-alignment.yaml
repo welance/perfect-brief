@@ -1,0 +1,31 @@
+id: scope-resource-alignment
+title: Clarifies how results and resources will be agreed
+rationale: >
+  Meaningful supplier discussion requires knowing which results, budget and
+  dates are constraints and which require assessment before an undertaking.
+weight: 10
+severity: medium
+applies_to: [brief]
+criteria: >
+  Makes clear which requested results, budget and schedule are binding,
+  indicative or subject to assessment. When their compatibility is unresolved,
+  identifies the assessment or decision needed before commitment. Pass if their
+  status and any necessary assessment are clear, including a supplier request
+  to price fixed scope, assess scope within a fixed budget, or determine whether
+  fixed scope, budget and dates can be accepted. No prior quote or validated
+  estimate is required. Partial if relevant amounts, dates or scope are stated
+  but their status is ambiguous, or coverage is deferred to a quote without
+  clarifying what is to be decided if the resources do not cover the request.
+  Fail if these expectations are absent, or the text itself imposes conflicting
+  commitments without an identifiable resolution. Do not estimate market prices,
+  infer an effort requirement from technical complexity, or fail a brief merely
+  because its budget looks low. Fixed constraints are legitimate, and declining
+  the engagement may be the outcome of an explicit assessment. This is general
+  brief quality; it is independent of the Directory's minimum budget policy.
+pass_examples:
+  - "Our ceiling for the first build is EUR 24,000. Propose which requested outcomes fit before we agree scope."
+  - "Scope and the launch date are fixed. Please quote the work and state whether you can accept that date."
+fail_examples:
+  - "The validated minimum delivery cost is EUR 40,000; we require the identical scope for a fixed EUR 20,000 and prohibit all changes or further assessment."
+references: []
+version: 1
