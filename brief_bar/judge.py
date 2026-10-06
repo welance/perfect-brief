@@ -94,11 +94,13 @@ def _v(rid, s, c, note, quote):
 
 def _budget_eur(t: str):
     vals = []
-    for m in re.finditer(r"(\d[\d.,]*)\s*k\b", t):
+    # Start once per numeric token, rather than retrying the same long suffix
+    # at every digit when a document contains an unbroken number without k/EUR.
+    for m in re.finditer(r"(?<![\d.,])(\d[\d.,]*)\s*k\b", t):
         vals.append(_to_num(m.group(1)) * 1000)
     for m in re.finditer(r"[€$]\s*(\d[\d.,]*)", t):
         vals.append(_to_num(m.group(1)))
-    for m in re.finditer(r"\b(\d[\d.,]*)\s*(?:eur|euro)", t):
+    for m in re.finditer(r"(?<![\d.,])\b(\d[\d.,]*)\s*(?:eur|euro)", t):
         vals.append(_to_num(m.group(1)))
     return max(vals) if vals else None
 
@@ -363,7 +365,9 @@ class MockJudge:
             )
         if rid == "anonymised":
             hits = []
-            if re.search(r"[\w.+-]+@[\w-]+\.[\w.]+", t):
+            # A long token with no email must not trigger quadratic retries at
+            # every character. The boundary preserves the same email matches.
+            if re.search(r"(?<![\w.+-])[\w.+-]+@[\w-]+\.[\w.]+", t):
                 hits.append("an email")
             if re.search(r"https?://", t):
                 hits.append("a URL")

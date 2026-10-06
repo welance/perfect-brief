@@ -12,6 +12,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 ## [1.13.5] - 2026-10-06
 
 ### Fixed
+- Long unbroken text and numeric tokens no longer stall the mock judge's
+  email and budget checks when a large document is read.
 - Complete document scoring now accepts up to 1,000,000 extracted characters
   by default instead of 20,000. Explicit operator limits still apply; no text
   is silently truncated. Production configuration must use the same limit.
