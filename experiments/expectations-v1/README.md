@@ -73,3 +73,18 @@ An eventual release also requires the existing contribution and governance
 process, fixture calibration, and updates to the mock, suggestions and consumers.
 The overlay is deliberately outside the bundled package to keep these remaining
 adoption steps visible.
+
+## Known limitations
+
+This is a preserved experiment, not a recommended replacement ruleset. In
+particular, failing every brief without an explicit risk statement can penalise
+simple, fully specified tasks. An ordinary request for a quotation must not need
+special wording about declining the work. A single unresolved dependency must
+not automatically receive penalties under both assumptions and resource alignment.
+
+`expectations_simulations.py` also explores numeric caps and a critical-dimension
+ceiling. These are uncalibrated alternatives, not service policy. Its expected
+labels are proposed model judgements, not independent human ground truth. Parser
+and arithmetic tests establish mechanical consistency, not semantic accuracy.
+Full-document review must examine contrary evidence, including pricing and
+pre-commitment decisions elsewhere, before replacing any previous verdict.
