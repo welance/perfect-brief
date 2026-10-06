@@ -102,7 +102,9 @@ class Settings(BaseSettings):
     default_judge: str = "mock"  # "mock" | "llm"
     rate_limit_per_minute: Annotated[int, Field(ge=0, le=100_000)] = 60  # 0 disables
     paid_llm_rate_limit_per_minute: Annotated[int, Field(ge=0, le=10_000)] = 10
-    request_max_chars: Annotated[int, Field(ge=100, le=1_000_000)] = 20_000
+    # Extracted text, independent of the console's 10 MB original-file limit.
+    # Provider context limits still apply; never silently truncate a document.
+    request_max_chars: Annotated[int, Field(ge=100, le=1_000_000)] = 1_000_000
     byok_max_chars: Annotated[int, Field(ge=64, le=4096)] = 512
     cors_origins: list[str] = ["*"]
 

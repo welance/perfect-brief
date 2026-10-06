@@ -8,6 +8,24 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+
+## [1.13.5] - 2026-10-06
+
+### Fixed
+- Long unbroken text and numeric tokens no longer stall the mock judge's
+  email and budget checks when a large document is read.
+- Complete document scoring now accepts up to 1,000,000 extracted characters
+  by default instead of 20,000. Explicit operator limits still apply; no text
+  is silently truncated. Production configuration must use the same limit.
+
+### Added
+- Console import for PDF, TXT and Markdown files up to 10 MB, with local
+  extraction, explicit failures, and uncached AI scoring of imported text.
+- Vendored PDF.js and regression checks for file size, extraction cleanup,
+  complete text delivery, and independent text limits.
+- Product direction and an isolated expectations-scoring experiment harness.
+  These proposals do not change the bundled rules, weights or publication gates.
+
 ## [1.13.4] - 2026-10-05
 
 ### Fixed

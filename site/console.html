@@ -243,6 +243,12 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   </header>
   <div class="grid">
     <section class="block">
+      <div class="row">
+        <label for="document-file" id="document-label">Import a document</label>
+        <input id="document-file" type="file" accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown" aria-describedby="document-hint document-status">
+      </div>
+      <p class="assist-note" id="document-hint">PDF, TXT or Markdown · up to 10 MB. Extraction stays on your device.</p>
+      <p class="assist-note" id="document-status" role="status" aria-live="polite"></p>
       <textarea id="input" spellcheck="false" placeholder="Paste your brief here…"></textarea>
       <div class="row controls">
         <select id="preset" class="preset" aria-label="example brief">
@@ -503,8 +509,8 @@ function evidence(id,text){
  return hit?hit.trim():"";
 }
 async function judgeLive(text){
- const resp=await fetch(API+"/v1/score",{method:"POST",headers:authHeaders(),body:JSON.stringify({brief:text,locale:LOCALE,judge:"llm",model:MODEL||undefined})});
- if(!resp.ok) throw new Error("api "+resp.status);
+ const resp=await fetch(API+"/v1/score",{method:"POST",headers:authHeaders(),body:JSON.stringify({brief:text,locale:LOCALE,judge:"llm",model:MODEL||undefined,no_cache:$("#input").dataset.documentImport==="true"})});
+ if(!resp.ok){const error=new Error("api "+resp.status);if(resp.status===413){const body=await resp.json();error.detail=body.detail;}throw error;}
  const data=await resp.json();
  const by={}; (data.verdicts||[]).forEach(v=>{if(v&&v.rule_id)by[v.rule_id]=v;});
  return RULES.map(r=>{const v=by[r.id]||{};return {rule_id:r.id,status:["pass","partial","fail","not_applicable"].includes(v.status)?v.status:"not_applicable",confidence:typeof v.confidence==="number"?v.confidence:.7,note:v.note||"",quote:v.quote||""};});
@@ -626,8 +632,10 @@ function reaggregate(){if(!lastVerdicts){run();return;}render(lastVerdicts,aggre
 // is the reader's choice, and dropping out of live would take the key field
 // and the model selector with it, just when they are wanted.
 async function runLive(){const text=$("#input").value;setJudging(true);
- let live=null; try{live=await judgeLive(text);}catch(e){}
+ let live=null,error=null; try{live=await judgeLive(text);}catch(e){error=e;}
  setJudging(false);
+ if($("#input").value!==text){stale=true;markStale();return;}
+ if(error&&error.detail){showToastAlert(error.detail);stale=true;markStale();return;}
  if(!live){pendingFix=null;SRC="mock";run();showToastAlert(t("liveFail"));return;}
  const prev=lastVerdicts?aggregate(lastVerdicts).score:null;
  SRC="live";lastVerdicts=live;render(lastVerdicts,aggregate(lastVerdicts),text);stale=false;markStale();
@@ -863,5 +871,6 @@ document.addEventListener("welance:lang",ev=>{
 <script src="chrome.js"></script>
 <script src="code.js"></script>
 <script src="mobile.js"></script>
+<script type="module" src="document-import.mjs"></script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+id: scope-boundaries
+title: Makes the requested engagement and its boundaries clear
+rationale: >
+  Client and supplier need to distinguish the current engagement from options,
+  later phases and decisions still to agree before accepting responsibility.
+weight: 11
+severity: medium
+applies_to: [brief]
+criteria: >
+  Distinguishes the work requested in the current engagement from exclusions,
+  optional work, future phases and aspects still to agree, when these are present.
+  If scope is to be established, explicitly identifies the assessment requested
+  from the supplier. Pass if the engagement is recognisably bounded and the
+  status of optional or unresolved work is clear. Partial if boundaries exist
+  but it remains ambiguous what the supplier must include. Fail if the request
+  is open-ended or contradictory with no identifiable engagement boundary.
+  A broad but clearly bounded scope can pass. Do not require an MVP, feature
+  ranking, optional work or willingness to cut scope in every brief. Do not
+  infer affordability from breadth; scope-resource-alignment addresses how
+  resource commitments are to be agreed.
+pass_examples:
+  - "Build the web checkout; native apps are excluded. Assess subscriptions separately before we decide whether to include them."
+  - "The engagement is a discovery study producing an options report; implementation will be commissioned separately."
+fail_examples:
+  - "Deliver the platform and anything else needed; all future ideas are included in this engagement."
+references: []
+version: 3
