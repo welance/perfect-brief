@@ -21,6 +21,12 @@ says *how good* a brief is; a separate **gate** says *whether it may publish*. A
 LLM only ever **judges** (server-side, key never leaves the box); deterministic
 code owns every number, the gate, and the decision.
 
+The product target is a brief that **makes expectations explicit and open to
+discussion**, so client and supplier can understand whether and how to work
+together before committing. See the [product decision](docs/decisions/0003-brief-expectations.md)
+and [audit of current rule coverage](docs/critique/expectations-rule-audit.md).
+The audit identifies proposed improvements; it does not change current scoring.
+
 This repo is the **service**. The ruleset + engine live inside it as an
 installable package (`brief_bar/`) so they can later be split into their own
 OSS repo and consumed here as a pinned dependency — the seam is already drawn.
@@ -57,6 +63,20 @@ fully deterministic) — enough to develop against and to run the whole test
 suite. Add the key to unlock the `llm` judge and `/v1/suggest`.
 
 ## API
+
+The console can import PDF, UTF-8 TXT and Markdown documents up to **10 MB**
+(10,000,000 bytes). Text extraction runs locally using the vendored
+[PDF.js](https://mozilla.github.io/pdf.js/) display API and worker; the original
+file is not uploaded. Review the extracted text before explicitly scoring with
+AI. Imported-document scoring sets `no_cache: true`.
+
+The API's separate text limit defaults to **1,000,000 characters**
+(`PB_REQUEST_MAX_CHARS`). Existing environment overrides still apply. Provider
+context limits may be lower; a successful import does not guarantee that every
+model can judge the document. Text is never silently truncated or summarised.
+PDF extraction is limited to 1,000 pages and 60 seconds; pages without extractable
+text, password-protected PDFs and malformed files are refused. Run OCR or remove
+blank pages before import when needed. There is no multipart/file storage API.
 
 `POST /v1/score`
 ```json

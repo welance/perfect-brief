@@ -2,6 +2,13 @@
 
 **Do not propose a rule. Propose the evidence.**
 
+The [product direction](docs/decisions/0003-brief-expectations.md) is to make
+expectations explicit and open to discussion before client and supplier commit.
+A useful unknown can improve a brief when it identifies a decision to resolve;
+invented certainty should not earn points. The
+[rule coverage audit](docs/critique/expectations-rule-audit.md) records candidate
+gaps and controlled comparisons to evaluate, not additional scoring requirements.
+
 Fourteen rules already share 100 points. Every rule added takes weight from the
 others, and a checklist that keeps growing is a checklist people stop reading —
 that is how bars die, not by being too strict but by being too long. So the bar
