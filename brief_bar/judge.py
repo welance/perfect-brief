@@ -92,16 +92,26 @@ def _v(rid, s, c, note, quote):
     return Verdict(rid, Status(s), c, (Finding(quote, note),))
 
 
+# A money figure: digits with optional ".", "," or space thousands separators
+# ("30.000", "30,000", "12 000"). The lookbehind starts one match per numeric
+# token rather than retrying the same long suffix at every digit when a
+# document contains an unbroken number without k/EUR.
+_NUM = r"(?<![\d.,])(\d[\d.,]*(?:[ \u00a0\u202f]\d{3}){0,3})"
+_BUDGET_PATTERNS = (
+    # "25-40k", "40 k€"
+    (re.compile(_NUM + r"\s*k\b", re.IGNORECASE), 1000),
+    # "€30,000", "$ 30000"
+    (re.compile(r"[€$]\s*" + _NUM), 1),
+    # "30.000–45.000 €", "45.000€", "35.000 EUR", "30.000 euro"
+    (re.compile(_NUM + r"\s*(?:€|eur\b|euro)", re.IGNORECASE), 1),
+)
+
+
 def _budget_eur(t: str):
     vals = []
-    # Start once per numeric token, rather than retrying the same long suffix
-    # at every digit when a document contains an unbroken number without k/EUR.
-    for m in re.finditer(r"(?<![\d.,])(\d[\d.,]*)\s*k\b", t):
-        vals.append(_to_num(m.group(1)) * 1000)
-    for m in re.finditer(r"[€$]\s*(\d[\d.,]*)", t):
-        vals.append(_to_num(m.group(1)))
-    for m in re.finditer(r"(?<![\d.,])\b(\d[\d.,]*)\s*(?:eur|euro)", t):
-        vals.append(_to_num(m.group(1)))
+    for pattern, factor in _BUDGET_PATTERNS:
+        for m in pattern.finditer(t):
+            vals.append(_to_num(m.group(1)) * factor)
     return max(vals) if vals else None
 
 

@@ -8,6 +8,12 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+### Fixed
+- The offline (`mock`) judge's budget detector now reads European money
+  formats with the currency after the number — `30.000–45.000 €`, `45.000€`,
+  `12 000 €`, `35.000 EUR` — instead of reporting "no budget figure" and
+  failing the `budget-floor` gate on Italian, German and French briefs.
+
 
 ## [1.13.5] - 2026-10-06
 
