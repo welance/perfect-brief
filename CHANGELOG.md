@@ -8,6 +8,15 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.7] - 2026-10-18
+
+### Fixed
+- The offline (`mock`) judge now recognises explicit and soft scope
+  boundaries, localised title labels and problem/solution phrasing in Italian,
+  German, French, Spanish, Portuguese, Dutch and Polish, so a non-English brief
+  that states what is out of scope no longer fails `scope-boundaries` as
+  "open-ended scope".
+
 ## [1.13.6] - 2026-10-17
 
 ### Fixed

@@ -162,6 +162,27 @@ class MockJudge:
         "don't have",
     ]
     SOLUTION = ["build", "platform", "app ", "website", "piattaforma", "we want a"]
+    # The gate rules below are also read in the other Directory languages.
+    PROBLEM_I18N = [
+        # it
+        "perché", "perchè", "non abbiamo", "non possiamo", "non riusciamo", "perdiamo", "fatica a",
+        # de
+        "weil", "haben keine", "können nicht", "verlieren", "schwierig",
+        # fr
+        "parce que", "nous perdons", "ne pouvons pas", "n'avons pas", "n'arrivons pas", "difficile",
+        # es
+        "porque", "no podemos", "no tenemos", "perdemos", "dificultad",
+        # pt
+        "porquê", "por que", "não podemos", "não temos", "não conseguimos", "dificuldade",
+        # nl
+        "omdat", "kunnen niet", "hebben geen", "verliezen", "moeite",
+        # pl
+        "ponieważ", "nie możemy", "nie mamy", "tracimy", "trudno",
+    ]  # fmt: skip
+    SOLUTION_I18N = [
+        "vogliamo", "wir wollen", "nous voulons", "queremos", "wij willen", "chcemy",
+        "sito web", "webseite", "site web", "sitio web", "plattform", "plateforme", "plataforma", "platforma",
+    ]  # fmt: skip
     USER_SPECIFIC = [
         "managers",
         "restaurants",
@@ -196,7 +217,7 @@ class MockJudge:
         "rate",
     ]
     VAGUE_SUCCESS = ["happy", "proud", "great product", "good product", "love it", "delight"]
-    BOUNDARY = [
+    BOUNDARY_EN = [
         "out of scope",
         "not in scope",
         "out-of-scope",
@@ -205,7 +226,73 @@ class MockJudge:
         "in scope",
         "v1 covers",
     ]
-    SOFT_BOUND = ["for now", "to start", "initially", "first phase"]
+    # Explicit exclusions and section headings in the other Directory
+    # languages. Entries are lowercase (the text is lowercased first) and keep
+    # their accents. Short stems that would also match English words
+    # (exclu-, esclus-) are spelled out in full.
+    # "esclusi" is a substring of "esclusivamente" (which appears in briefs
+    # that have no boundary at all), so the Italian exclusions are spelled
+    # out with their verb or punctuation, like the French ones.
+    BOUNDARY_IT = [
+        "fuori perimetro", "fuori scope", "fuori ambito", "fuori dal perimetro", "non implementeremo",
+        "non rientra", "non rientrano", "non incluso", "non inclusi", "non inclusa",
+        "è escluso", "è esclusa", "sono esclusi", "sono escluse", "resta escluso", "resta esclusa",
+        "restano esclusi", "restano escluse", "escluso:", "esclusi:", "esclusa:", "escluse:",
+        "escluso.", "esclusi.", "esclusa.", "escluse.", "escluso,", "esclusi,", "esclusa,", "escluse,",
+    ]  # fmt: skip
+    BOUNDARY_DE = [
+        "nicht im umfang", "außerhalb des umfangs", "außerhalb des projektumfangs", "ausgeschlossen",
+        "nicht teil", "nicht enthalten",
+    ]  # fmt: skip
+    BOUNDARY_FR = [
+        "hors périmètre", "hors du périmètre", "hors scope", "ne fait pas partie", "ne font pas partie",
+        "est exclu", "sont exclus", "exclu,", "exclu.", "exclu\n", "exclus,", "exclus.", "exclus\n",
+        "n'est pas inclus", "non inclus",
+    ]  # fmt: skip
+    BOUNDARY_ES = [
+        "fuera del alcance", "fuera de alcance", "excluido", "excluidos", "excluida", "excluidas",
+        "no incluye", "no incluimos", "no forma parte",
+    ]  # fmt: skip
+    BOUNDARY_PT = [
+        "fora do escopo", "fora do âmbito", "fora de escopo", "excluído", "excluídos", "excluída",
+        "excluídas", "excluido", "não inclui", "não incluímos", "não faz parte",
+    ]  # fmt: skip
+    BOUNDARY_NL = [
+        "buiten scope", "buiten de scope", "buiten het bereik", "uitgesloten",
+        "valt buiten", "niet inbegrepen",
+    ]  # fmt: skip
+    BOUNDARY_PL = [
+        "poza zakresem", "poza zakresu", "wykluczone", "wykluczony", "wykluczona", "nie obejmuje",
+        "nie wchodzi w zakres",
+    ]  # fmt: skip
+    BOUNDARY = (
+        BOUNDARY_EN
+        + BOUNDARY_IT
+        + BOUNDARY_DE
+        + BOUNDARY_FR
+        + BOUNDARY_ES
+        + BOUNDARY_PT
+        + BOUNDARY_NL
+        + BOUNDARY_PL
+    )
+    SOFT_BOUND_EN = ["for now", "to start", "initially", "first phase"]
+    SOFT_BOUND_I18N = [
+        # it
+        "per ora", "per il momento", "inizialmente", "prima fase", "per iniziare",
+        # de
+        "vorerst", "zunächst", "anfangs", "erste phase", "ersten phase",
+        # fr
+        "pour l'instant", "dans un premier temps", "initialement", "première phase",
+        # es
+        "por ahora", "inicialmente", "primera fase", "por el momento",
+        # pt
+        "por enquanto", "por agora", "primeira fase", "primeira etapa",
+        # nl
+        "voorlopig", "in eerste instantie", "eerste fase", "aanvankelijk",
+        # pl
+        "na razie", "początkowo", "pierwsza faza", "pierwszym etapie",
+    ]  # fmt: skip
+    SOFT_BOUND = SOFT_BOUND_EN + SOFT_BOUND_I18N
     TECH = [
         "stack",
         "integrat",
@@ -308,7 +395,9 @@ class MockJudge:
         t = text.lower()
         rid = rule.id
         if rid == "clear-title":
-            if re.search(r"(^|\n)\s{0,3}#{1,3}\s+\S", text) or re.search(r"(^|\n)\s*title\s*[:\-]", t):
+            if re.search(r"(^|\n)\s{0,3}#{1,3}\s+\S", text) or re.search(
+                r"(^|\n)\s*(title|titolo|titel|titre|título|tytuł)\s*[:\-]", t
+            ):
                 return _v(rid, "pass", 0.85, "a clear title is present", "brief names itself up front")
             first = next((ln.strip() for ln in text.splitlines() if ln.strip()), "")
             if 3 <= len(first) <= 70 and not first.endswith((".", "!", "?")):
@@ -319,9 +408,9 @@ class MockJudge:
         if rid == "problem-defined":
             return (
                 _v(rid, "pass", 0.85, "a user problem is stated", "problem named")
-                if _has(t, self.PROBLEM)
+                if _has(t, self.PROBLEM) or _has(t, self.PROBLEM_I18N)
                 else _v(rid, "fail", 0.8, "jumps to a solution", "state the user problem first")
-                if _has(t, self.SOLUTION)
+                if _has(t, self.SOLUTION) or _has(t, self.SOLUTION_I18N)
                 else _v(rid, "partial", 0.6, "problem only implied", "make the problem explicit")
             )
         if rid == "scope-boundaries":
