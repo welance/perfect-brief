@@ -8,6 +8,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.6] - 2026-10-17
+
 ### Fixed
 - The offline (`mock`) judge's budget detector now reads European money
   formats with the currency after the number — `30.000–45.000 €`, `45.000€`,
