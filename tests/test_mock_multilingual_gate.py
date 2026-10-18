@@ -131,3 +131,21 @@ SOLUTION_FIRST = [
 @pytest.mark.parametrize("lang,text", SOLUTION_FIRST, ids=[lang for lang, _ in SOLUTION_FIRST])
 def test_solution_first_fails(lang, text):
     assert _status("problem-defined", text) == "fail"
+
+
+def test_italian_esclusivamente_is_not_a_boundary():
+    """'esclusivamente' contains the stem 'esclusi'; it names no exclusion."""
+    rules, _ = load_bundled()
+    text = (
+        "# Prenotazioni\n\nL'obiettivo è esclusivamente la pianificazione dei "
+        "coperti totali. Vogliamo una vista unica del giorno."
+    )
+    verdict = MockJudge().judge(rules["scope-boundaries"], text, "brief")
+    assert verdict.status.value == "fail"
+
+
+def test_italian_spelled_exclusion_is_a_boundary():
+    rules, _ = load_bundled()
+    text = "# Prenotazioni\n\nLa cassa del ristorante e la fatturazione sono escluse."
+    verdict = MockJudge().judge(rules["scope-boundaries"], text, "brief")
+    assert verdict.status.value == "pass"

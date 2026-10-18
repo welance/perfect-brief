@@ -230,9 +230,15 @@ class MockJudge:
     # languages. Entries are lowercase (the text is lowercased first) and keep
     # their accents. Short stems that would also match English words
     # (exclu-, esclus-) are spelled out in full.
+    # "esclusi" is a substring of "esclusivamente" (which appears in briefs
+    # that have no boundary at all), so the Italian exclusions are spelled
+    # out with their verb or punctuation, like the French ones.
     BOUNDARY_IT = [
         "fuori perimetro", "fuori scope", "fuori ambito", "fuori dal perimetro", "non implementeremo",
-        "non rientra", "non rientrano", "escluso", "esclusi", "esclusa", "escluse", "non incluso",
+        "non rientra", "non rientrano", "non incluso", "non inclusi", "non inclusa",
+        "è escluso", "è esclusa", "sono esclusi", "sono escluse", "resta escluso", "resta esclusa",
+        "restano esclusi", "restano escluse", "escluso:", "esclusi:", "esclusa:", "escluse:",
+        "escluso.", "esclusi.", "esclusa.", "escluse.", "escluso,", "esclusi,", "esclusa,", "escluse,",
     ]  # fmt: skip
     BOUNDARY_DE = [
         "nicht im umfang", "außerhalb des umfangs", "außerhalb des projektumfangs", "ausgeschlossen",
@@ -252,7 +258,7 @@ class MockJudge:
         "excluídas", "excluido", "não inclui", "não incluímos", "não faz parte",
     ]  # fmt: skip
     BOUNDARY_NL = [
-        "buiten scope", "buiten de scope", "buiten het bereik", "buiten de scope", "uitgesloten",
+        "buiten scope", "buiten de scope", "buiten het bereik", "uitgesloten",
         "valt buiten", "niet inbegrepen",
     ]  # fmt: skip
     BOUNDARY_PL = [
