@@ -8,6 +8,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.7] - 2026-10-18
+
 ### Fixed
 - The offline (`mock`) judge now recognises explicit and soft scope
   boundaries, localised title labels and problem/solution phrasing in Italian,
