@@ -8,6 +8,20 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.8] - 2026-10-19
+
+### Fixed
+- The offline (`mock`) judge now reads every keyword rule in Italian, German,
+  French, Spanish, Portuguese, Dutch and Polish, not only the gate rules:
+  timeline ("tre mesi, prima dell'apertura di stagione"), success metrics,
+  users, team shape, technical constraints, assumptions and risks, personal
+  data and its compliance (including Polish inflected forms and retention
+  wording), and accessibility. On the 69 fixture and example briefs, 56
+  verdicts improve, none get worse, and no English verdict changes.
+  Arabic, Chinese and Japanese remain for the real judge.
+
+## [1.13.7] - 2026-10-18
+
 ### Fixed
 - The offline (`mock`) judge now recognises explicit and soft scope
   boundaries, localised title labels and problem/solution phrasing in Italian,
