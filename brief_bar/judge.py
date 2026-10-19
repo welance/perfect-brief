@@ -391,6 +391,128 @@ class MockJudge:
     ]
     SUFFIX = [" inc", " ltd", " llc", " gmbh", " srl", "s.r.l", " spa", "s.p.a", " plc"]
 
+    # ── The other Directory languages for the remaining keyword rules ──
+    # Same conventions as the gate lists above: lowercase, accents kept,
+    # substrings that would fire on unrelated English or local words are
+    # spelled out (e.g. Polish "termin" is a substring of "determine", so
+    # only "w terminie" is listed). Order inside a list: it, de, fr, es, pt,
+    # nl, pl. ar / zh-Hans / ja are not covered: the editor's on-demand real
+    # judge reads those.
+    TIME_I18N = [
+        "mesi", "settimane", "prima dell", "prima della", "scadenza", "stagione", "lancio", "trimestre",
+        "monate", "monaten", "wochen", "bis ende", "bis zum", "spätestens", "frist", "meilenstein",
+        "saison", "quartal",
+        " mois ", " mois,", " mois.", " mois\n", "semaines", "avant le", "avant la", "d'ici", "échéance", "date limite", "jalon",
+        "lancement",
+        "meses", "semanas", "antes de", "plazo", "fecha límite", "hito", "temporada", "lanzamiento",
+        "prazo", "lançamento", "até o fim", "até ao fim", "até ao final", "até o final",
+        "maanden", "weken", "uiterlijk", "mijlpaal", "seizoen", "lancering", "kwartaal", "voor eind",
+        "miesięcy", "miesiące", "tygodni", "do końca", "w terminie", "kamień milowy", "sezon", "kwartał",
+    ]  # fmt: skip
+    METRIC_I18N = [
+        "aumentare", "riduzione", "aumento", "obiettivo", "misur", "tasso", "dimezzare",
+        "reduzieren", "senken", "erhöhen", "steigern", "messen", "kennzahl",
+        "réduire", "augmenter", "objectif", "mesur", "taux",
+        "reducir", "aumentar", "objetivo", "medir", "tasa",
+        "reduzir", "taxa de",
+        "verminderen", "verlagen", "verhogen", "meten",
+        "zmniejszyć", "zwiększyć", "zmierzyć", "wskaźnik",
+    ]  # fmt: skip
+    VAGUE_SUCCESS_I18N = [
+        "contenti", "soddisfatti", "zufrieden", "satisfaits", "contentos", "satisfechos", "tevreden",
+        "zadowoleni",
+    ]  # fmt: skip
+    USER_SPECIFIC_I18N = [
+        "per chi è", "utenti principali", "clienti", "personale", "agenzie", "aziende", "famiglie",
+        "operatori", "responsabili", "gestori",
+        "für wen", "zielgruppe", "mitarbeiter", "kunden", "betreiber",
+        "pour qui", "utilisateurs principaux", "les clients", "le personnel", "gérants",
+        "para quién", "usuarios principales", "clientes", "gestores",
+        "para quem", "usuários principais", "utilizadores principais",
+        "voor wie", "doelgroep", "medewerkers", "klanten", "beheerders",
+        "dla kogo", "grupa docelowa", "pracownicy", "klienci",
+    ]  # fmt: skip
+    USER_GENERIC_I18N = [
+        "chiunque", "jeder", "alle nutzer", "tout le monde", "todo el mundo", "toda a gente",
+        "iedereen", "wszyscy",
+    ]  # fmt: skip
+    TEAM_I18N = [
+        "sviluppatore", "sviluppatori", "progettista", "competenze", "ruoli", "cerchiamo", "squadra di",
+        "seniorità",
+        "entwickler", "kompetenzen", "rollen", "wir suchen", "team aus",
+        "développeur", "compétences", "rôles", "nous cherchons", "équipe de",
+        "desarrollador", "habilidades", "buscamos", "equipo de",
+        "desenvolvedor", "programador", "competências", "procuramos", "equipe de", "equipa de",
+        "ontwikkelaar", "vaardigheden", "we zoeken",
+        "programista", "deweloper", "umiejętności", "szukamy", "zespół",
+    ]  # fmt: skip
+    TECH_I18N = [
+        "integraz", "vincoli tecnici", "sistema esistente", "gestionale", "interfaccia", "banca dati",
+        "schnittstelle", "bestehende system", "technische vorgaben", "datenbank",
+        "intégration", "contraintes techniques", "système existant", "base de données",
+        "integración", "restricciones técnicas", "sistema existente", "base de datos",
+        "integração", "restrições técnicas", "banco de dados", "base de dados",
+        "technische beperkingen", "bestaande systeem", "koppeling",
+        "integracja", "ograniczenia techniczne", "istniejący system", "baza danych",
+        "offline",
+    ]  # fmt: skip
+    RISK_I18N = [
+        "ipotesi", "rischi", "diamo per scontato", "presupposto",
+        "risiko", "annahme", "hängt ab", "wir gehen davon aus",
+        "risque", "hypothèse", "dépend de", "nous supposons",
+        "riesgo", "suposición", "hipótesis", "depende de",
+        "riscos", "o risco", "um risco", "risco:", "hipótese", "pressuposto",
+        "risico", "aanname", "hangt af",
+        "ryzyko", "założenie", "zależy od",
+    ]  # fmt: skip
+    DATA_I18N = [
+        "e-mail", "contatti", "nomi e", "nominativi", "pagamento",
+        "personenbezogene daten", "zahlung",
+        "données personnelles", "paiement",
+        "datos personales", "pago",
+        "dados pessoais",
+        "persoonsgegevens", "betaling",
+        "dane osobowe", "płatnoś",
+    ]  # fmt: skip
+    COMPLY_I18N = [
+        "base giuridica", "consenso",
+        "dsgvo", "rechtsgrundlage", "einwilligung",
+        "rgpd", "base légale", "consentement",
+        "base jurídica", "base legal", "consentimiento", "consentimento",
+        "rechtsgrond", "toestemming",
+        "podstawa prawna", "zgoda", " rodo",
+        # retention and the data-protection officer are compliance too; Polish
+        # inflects, so the oblique cases are listed alongside the base forms
+        "tempi di conservazione", "conservazione dei dati",
+        "aufbewahrungsfrist", "löschfrist", "datenschutzbeauftragt",
+        "durée de conservation", "conservation des données",
+        "plazo de conservación", "conservación de los datos",
+        "prazo de conservação", "conservação dos dados",
+        "bewaartermijn", "functionaris gegevensbescherming",
+        "podstawy prawnej", "podstawie prawnej", "ochrony danych", "okres retencji",
+        "okresu przechowywania", "okres przechowywania",
+    ]  # fmt: skip
+    A11Y_I18N = [
+        "accesib", "acessib", "barrierefrei", "toegankelijk", "dostępnoś", "lettore di schermo",
+        "tastiera", "contrasto",
+    ]  # fmt: skip
+    PUBLIC_I18N = [
+        "prenotazion", "öffentlich", "buchung", "réservation", "público", "pública", "reservas", "la reserva",
+        "openbaar", "boeking", "publiczn", "rezerwacj",
+    ]  # fmt: skip
+    TIME = TIME + TIME_I18N
+    METRIC = METRIC + METRIC_I18N
+    VAGUE_SUCCESS = VAGUE_SUCCESS + VAGUE_SUCCESS_I18N
+    USER_SPECIFIC = USER_SPECIFIC + USER_SPECIFIC_I18N
+    USER_GENERIC = USER_GENERIC + USER_GENERIC_I18N
+    TEAM = TEAM + TEAM_I18N
+    TECH = TECH + TECH_I18N
+    RISK = RISK + RISK_I18N
+    DATA = DATA + DATA_I18N
+    COMPLY = COMPLY + COMPLY_I18N
+    A11Y = A11Y + A11Y_I18N
+    PUBLIC = PUBLIC + PUBLIC_I18N
+
     def judge(self, rule: Rule, text: str, itype: str) -> Verdict:
         t = text.lower()
         rid = rule.id
