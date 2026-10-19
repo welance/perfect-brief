@@ -15,7 +15,7 @@ jobs:
         run: mypy app brief_bar
       - name: fixture corpus + api (mock judge, deterministic)
         run: pytest
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
       - name: document import boundaries and extraction
