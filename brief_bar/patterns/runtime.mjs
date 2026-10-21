@@ -14,6 +14,11 @@
 //   3. Overlaps resolve by priority, then the longer span, then the earlier
 //      start, then the pattern id. Spans come back in document order.
 //   4. Keyword cues are lowercase substrings of the lowercased text.
+//   5. Subject spans say WHERE the text already states a subject (a
+//      budget-labelled amount or range, a timeline-labelled duration). Group 1
+//      is the value, without its label. Presence only: no floor, no verdict.
+//      Overlaps resolve by the longer span, then the earlier start, then the
+//      pattern id. Spans come back in document order.
 //
 // Offsets are native string indexes (UTF-16 code units). Vendored unchanged
 // by consumers; no dependencies, no network, no LLM.
@@ -25,6 +30,7 @@ export function compileCatalogue(catalogue) {
     contacts: catalogue.contacts.map((e) => ({ ...e, re: rx(e, 'g'), sticky: rx(e, 'y') })),
     exclusions: catalogue.exclusions.map((e) => ({ ...e, re: rx(e, 'g') })),
     keywords: catalogue.keywords,
+    subjects: (catalogue.subjects || []).map((e) => ({ ...e, re: rx(e, 'g') })),
   }
 }
 
@@ -126,4 +132,27 @@ export function contactSpans(compiled, text) {
 export function keywordHits(compiled, text, group) {
   const t = (text || '').toLowerCase()
   return compiled.keywords[group].filter((k) => t.includes(k))
+}
+
+export function subjectSpans(compiled, text) {
+  const t = text || ''
+  const cands = []
+  for (const e of compiled.subjects || [])
+    for (const m of matches(e.re, t)) {
+      const [s, end] = spanOf(m)
+      cands.push({ e, s, end })
+    }
+  const cmpId = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
+  cands.sort((a, b) => b.end - b.s - (a.end - a.s) || a.s - b.s || cmpId(a.e.id, b.e.id))
+  const kept = []
+  for (const c of cands)
+    if (!kept.some((k) => c.s < k.end && c.end > k.s)) kept.push(c)
+  kept.sort((a, b) => a.s - b.s)
+  return kept.map(({ e, s, end }) => ({
+    subject: e.subject,
+    start: s,
+    end,
+    text: t.slice(s, end),
+    pattern: e.id,
+  }))
 }

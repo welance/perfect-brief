@@ -23,6 +23,11 @@ harness (`python -m experiments.pattern_harness`) over `cases.json`:
   3. Overlaps resolve by priority, then the longer span, then the earlier
      start, then the pattern id. Spans come back in document order.
   4. Keyword cues are lowercase substrings of the lowercased text.
+  5. Subject spans (`subject_spans`) say WHERE a brief already states a
+     subject — a budget-labelled amount or range, a timeline-labelled
+     duration. Group 1 is the value, without its label. They report presence
+     only: no floor, no comparison, no verdict. Overlaps resolve by the longer
+     span, then the earlier start, then the pattern id; document order out.
 
 No LLM runs here, ever; the offline improvement loop only proposes edits to
 the catalogue and the corpus for human review.
@@ -50,6 +55,15 @@ class Span:
     pattern: str
 
 
+@dataclass(frozen=True)
+class SubjectSpan:
+    subject: str
+    start: int
+    end: int
+    text: str
+    pattern: str
+
+
 def _compile(entry: dict) -> re.Pattern[str]:
     return re.compile(entry["source"], re.IGNORECASE if "i" in entry.get("flags", "") else 0)
 
@@ -71,6 +85,7 @@ class Catalogue:
         self.contacts = [(e, _compile(e)) for e in data["contacts"]]
         self.exclusions = [(e, _compile(e)) for e in data["exclusions"]]
         self.keywords: dict[str, list[str]] = data["keywords"]
+        self.subjects = [(e, _compile(e)) for e in data.get("subjects", [])]
 
     def exclusion_spans(self, text: str) -> list[tuple[int, int, bool]]:
         return [
@@ -126,6 +141,17 @@ class Catalogue:
         kept.sort(key=lambda c: c[1])
         return [Span(e["kind"], s, end, text[s:end], e["id"]) for e, s, end in kept]
 
+    def subject_spans(self, text: str) -> list[SubjectSpan]:
+        """Where the text already states a subject (budget, timeline): presence only."""
+        cands = [(e, *_span(m)) for e, rx in self.subjects for m in rx.finditer(text)]
+        cands.sort(key=lambda c: (-(c[2] - c[1]), c[1], c[0]["id"]))
+        kept: list[tuple[dict, int, int]] = []
+        for c in cands:
+            if not any(c[1] < k[2] and c[2] > k[1] for k in kept):
+                kept.append(c)
+        kept.sort(key=lambda c: c[1])
+        return [SubjectSpan(e["subject"], s, end, text[s:end], e["id"]) for e, s, end in kept]
+
     def keyword_hits(self, text: str, group: str) -> list[str]:
         t = text.lower()
         return [k for k in self.keywords[group] if k in t]
@@ -143,3 +169,7 @@ def bundled() -> Catalogue:
 
 def contact_spans(text: str) -> list[Span]:
     return bundled().contact_spans(text)
+
+
+def subject_spans(text: str) -> list[SubjectSpan]:
+    return bundled().subject_spans(text)

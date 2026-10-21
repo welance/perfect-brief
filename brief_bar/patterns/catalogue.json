@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "version": "1.0.0",
-  "about": "Deterministic spans and cues shared by the r001-15 mock judge (Python) and the Directory pre-publish scan (JavaScript). Owned here; consumers vendor a pinned copy. Regex sources use the portable dialect in brief_bar/patterns/README.md; group 1, when present, is the span and must end where the match ends. A phone that overruns its digit limit, or that an exclusion hides, backs off to its longest valid prefix. An exclusion hides a phone only when it covers the whole candidate and carries no other digits; national numbers yield only to structural exclusions (dates, tax ids, IBANs), + / 00 numbers and full Italian mobiles to none (fail closed).",
+  "version": "1.1.0",
+  "about": "Deterministic spans and cues shared by the r001-15 mock judge (Python) and the Directory pre-publish scan (JavaScript). Owned here; consumers vendor a pinned copy. Regex sources use the portable dialect in brief_bar/patterns/README.md; group 1, when present, is the span and must end where the match ends. A phone that overruns its digit limit, or that an exclusion hides, backs off to its longest valid prefix. An exclusion hides a phone only when it covers the whole candidate and carries no other digits; national numbers yield only to structural exclusions (dates, tax ids, IBANs), + / 00 numbers and full Italian mobiles to none (fail closed). Subject patterns (budget, timeline) say where a brief already states a subject; group 1 is the value without its label; presence only, never a verdict.",
   "contacts": [
     {
       "id": "email",
@@ -283,5 +283,21 @@
       "同意を得",
       "個人情報保護法"
     ]
-  }
+  },
+  "subjects": [
+    {
+      "id": "budget.labelled",
+      "subject": "budget",
+      "flags": "i",
+      "source": "(?:^|[^A-Za-z])(?:budget|presupuesto|orçamento|orcamento|budżet)(?:[ \\u00a0\\u202f]{1,2}(?:massimo|max|totale|disponibile|previsto|stimato|indicativo|complessivo|total|totaal|available|estimated|band|range|cap|gesamt|maximal|estimé|estimado|estimado|is|ist|est|è|of|di|du|von|van|de|do)){0,2}[ \\u00a0\\u202f]{0,3}[:=]?[ \\u00a0\\u202f]{0,3}((?:(?:tra|fra|between|from|da|zwischen|von|entre|de|van|tussen|od|między|up to|fino a|max|massimo|circa|around|about|approx|ca|bis zu|jusqu'à|hasta|até|ok)\\.?[ \\u00a0\\u202f]{1,2})?(?:(?:(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£)[ \\u00a0\\u202f]?)?[0-9](?:[.,' \\u00a0\\u202f]?[0-9]){0,12}(?:[ \\u00a0\\u202f]?(?:k(?![a-z])|mila|mln|mio|millioni|milioni|million|thousand|tsd))?(?:[ \\u00a0\\u202f]?(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£))?[ \\u00a0\\u202f]{0,2}(?:-|–|—|to|a|e|and|bis|à|al|tot|do|y|und|et|en|hasta|até)[ \\u00a0\\u202f]{0,2}(?:(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£)[ \\u00a0\\u202f]?)?[0-9](?:[.,' \\u00a0\\u202f]?[0-9]){0,12}(?:[ \\u00a0\\u202f]?(?:k(?![a-z])|mila|mln|mio|millioni|milioni|million|thousand|tsd))?(?:[ \\u00a0\\u202f]?(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£))?|(?:(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£)[ \\u00a0\\u202f]?[0-9](?:[.,' \\u00a0\\u202f]?[0-9]){0,12}(?:[ \\u00a0\\u202f]?(?:k(?![a-z])|mila|mln|mio|millioni|milioni|million|thousand|tsd))?|[0-9](?:[.,' \\u00a0\\u202f]?[0-9]){0,12}(?:[ \\u00a0\\u202f]?(?:k(?![a-z])|mila|mln|mio|millioni|milioni|million|thousand|tsd))?[ \\u00a0\\u202f]?(?:€|euro|eur|chf|usd|gbp|pln|zł|\\$|£)|[0-9](?:[.,' \\u00a0\\u202f]?[0-9]){0,12}(?:[ \\u00a0\\u202f]?(?:k(?![a-z])|mila|mln|mio|millioni|milioni|million|thousand|tsd)))))(?![0-9A-Za-z])",
+      "note": "a budget label, then one amount with a currency or multiplier, or a range: Budget: tra 3000 - 5000 €, Budget € 20.000, budget band 25-40k; a bare number (Budget 2026) is not a budget"
+    },
+    {
+      "id": "timeline.labelled",
+      "subject": "timeline",
+      "flags": "i",
+      "source": "(?:^|[^A-Za-z])(?:durata(?:[ \\u00a0\\u202f]{1,2}(?:stimata|prevista|del progetto|progetto))?|tempistic(?:a|he)|tempi(?:[ \\u00a0\\u202f]{1,2}di consegna)?|timeline|timeframe|time frame|duration|estimated duration|project duration|deadline|scadenza|laufzeit|projektdauer|dauer|zeitrahmen|durée(?:[ \\u00a0\\u202f]{1,2}estimée)?|délai|délais|duración(?:[ \\u00a0\\u202f]{1,2}estimada)?|plazo|duração(?:[ \\u00a0\\u202f]{1,2}estimada)?|prazo|looptijd|doorlooptijd|duur|czas trwania|termin realizacji)[ \\u00a0\\u202f]{0,2}:[ \\u00a0\\u202f]{0,3}([^ \\t\\r\\n·;|.,](?:[^\\r\\n·;|]{0,78}[^ \\t\\r\\n·;|.,])?)",
+      "note": "a duration or deadline label and a colon, then the rest of the line up to · ; | (80 characters max): Durata stimata: qualche mese o anno, Timeline: 3 months"
+    }
+  ]
 }

@@ -7,7 +7,13 @@
       "origin": "human",
       "text": "Budget: tra 3000 - 5000 €",
       "spans": [],
-      "note": "amount range, not a phone (reported)"
+      "note": "amount range, not a phone (reported)",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000 €"
+        ]
+      ]
     },
     {
       "id": "it-budget-range-10000",
@@ -15,7 +21,13 @@
       "origin": "human",
       "text": "Budget: tra 10000 - 30000 €",
       "spans": [],
-      "note": "amount range, not a phone (reported)"
+      "note": "amount range, not a phone (reported)",
+      "subjects": [
+        [
+          "budget",
+          "tra 10000 - 30000 €"
+        ]
+      ]
     },
     {
       "id": "it-budget-range-no-currency",
@@ -23,14 +35,26 @@
       "origin": "human",
       "text": "Budget: tra 3000 - 5000",
       "spans": [],
-      "note": "worded range without currency"
+      "note": "worded range without currency",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000"
+        ]
+      ]
     },
     {
       "id": "it-budget-range-endash",
       "locale": "it",
       "origin": "human",
       "text": "Budget 10.000–30.000 €.",
-      "spans": []
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "10.000–30.000 €"
+        ]
+      ]
     },
     {
       "id": "it-real-condominio",
@@ -39,7 +63,17 @@
       "text": "# Piattaforma per Amministratore di Condominio Connessa con l'AI\n\nSto cercando uno sviluppatore (o agenzia) che abbia già una soluzione software per amministratori di condominio che possa risultare customizzabile a partire dalla ricerca semantica dal db di tutta la documentazione dello studio. (da integrare con il gestionale già utilizzato dall'amministratore Danea Domustudio e con piattaforma esterna di ricerca fonti normative).\n\nTramite prompting il cliente vuole come focus che l'AI faccia un match tra le recenti normative che ha trovato il cliente su piattaforma esterna da collegare ed il documento che sottopone all'interno dell'applicazione AI da sviluppare o se lo sviluppatore ne ha già una pronta.\n\nTecnologie: Python, OpenAI API, Machine Learning, FastAPI, Git, NLP, PostgreSQL\nCittà: Milano · Full remote\nDurata stimata: qualche mese o anno\nBudget: tra 3000 - 5000 €\n",
       "spans": [],
       "data": false,
-      "note": "real brief (no personal data); third-party product name kept"
+      "note": "real brief (no personal data); third-party product name kept",
+      "subjects": [
+        [
+          "timeline",
+          "qualche mese o anno"
+        ],
+        [
+          "budget",
+          "tra 3000 - 5000 €"
+        ]
+      ]
     },
     {
       "id": "it-real-edge-ai",
@@ -49,7 +83,17 @@
       "spans": [],
       "data": true,
       "compliance": true,
-      "note": "real brief: 'dati sensibili/biometrici' is personal data; 'privacy dei dati' is the cue"
+      "note": "real brief: 'dati sensibili/biometrici' is personal data; 'privacy dei dati' is the cue",
+      "subjects": [
+        [
+          "timeline",
+          "qualche mese o anno"
+        ],
+        [
+          "budget",
+          "tra 10000 - 30000 €"
+        ]
+      ]
     },
     {
       "id": "it-mobile-spaced",
@@ -438,7 +482,13 @@
           "347 123 4567"
         ]
       ],
-      "note": "an exclusion must not swallow a nearby phone"
+      "note": "an exclusion must not swallow a nearby phone",
+      "subjects": [
+        [
+          "budget",
+          "3000 €"
+        ]
+      ]
     },
     {
       "id": "it-phone-then-range",
@@ -449,6 +499,12 @@
         [
           "phone",
           "02 1234567"
+        ]
+      ],
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000 €"
         ]
       ]
     },
@@ -625,7 +681,13 @@
       "origin": "human",
       "text": "Budget 3000 €",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "3000 €"
+        ]
+      ]
     },
     {
       "id": "amount-01",
@@ -633,7 +695,13 @@
       "origin": "human",
       "text": "Budget: 25.000 €",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "25.000 €"
+        ]
+      ]
     },
     {
       "id": "amount-02",
@@ -641,7 +709,13 @@
       "origin": "human",
       "text": "Budget 10 000 EUR",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "10 000 EUR"
+        ]
+      ]
     },
     {
       "id": "amount-03",
@@ -649,7 +723,13 @@
       "origin": "human",
       "text": "Budget 30.000–45.000 €",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "30.000–45.000 €"
+        ]
+      ]
     },
     {
       "id": "amount-04",
@@ -657,7 +737,13 @@
       "origin": "human",
       "text": "Budget 12 000 € HT",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "12 000 €"
+        ]
+      ]
     },
     {
       "id": "amount-05",
@@ -665,7 +751,13 @@
       "origin": "human",
       "text": "Budget £25,000 - £40,000",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "£25,000 - £40,000"
+        ]
+      ]
     },
     {
       "id": "amount-06",
@@ -673,7 +765,13 @@
       "origin": "human",
       "text": "Budget band 25-40k",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "25-40k"
+        ]
+      ]
     },
     {
       "id": "amount-07",
@@ -681,7 +779,13 @@
       "origin": "human",
       "text": "Budget $300,000",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "$300,000"
+        ]
+      ]
     },
     {
       "id": "amount-08",
@@ -689,7 +793,13 @@
       "origin": "human",
       "text": "Presupuesto: 15.000 €",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "15.000 €"
+        ]
+      ]
     },
     {
       "id": "amount-09",
@@ -705,7 +815,13 @@
       "origin": "human",
       "text": "Budget € 20.000",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "€ 20.000"
+        ]
+      ]
     },
     {
       "id": "amount-11",
@@ -745,7 +861,13 @@
       "origin": "human",
       "text": "Budget: tra 3000 e 5000",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 e 5000"
+        ]
+      ]
     },
     {
       "id": "amount-16",
@@ -769,7 +891,13 @@
       "origin": "human",
       "text": "Budget 10000-30000 euro",
       "spans": [],
-      "note": "amount or range"
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "10000-30000 euro"
+        ]
+      ]
     },
     {
       "id": "amount-19",
@@ -1418,7 +1546,13 @@
           "+39 347 1234567"
         ]
       ],
-      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)",
+      "subjects": [
+        [
+          "budget",
+          "3000 - 5000 €"
+        ]
+      ]
     },
     {
       "id": "adv-nip-inside-word",
@@ -1615,6 +1749,253 @@
       "text": "3000 €",
       "spans": [],
       "note": "security review: still not a phone"
+    },
+    {
+      "id": "subject-it-budget-is",
+      "locale": "it",
+      "origin": "human",
+      "text": "Il budget è di 15.000 € per la prima fase.",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "15.000 €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-budget-max",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget massimo: 8k",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "8k"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-two-lines",
+      "locale": "it",
+      "origin": "human",
+      "text": "Durata: 6 mesi · Budget: 20k €",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "6 mesi"
+        ],
+        [
+          "budget",
+          "20k €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-deadline-date",
+      "locale": "it",
+      "origin": "human",
+      "text": "Scadenza: 12/03/2026.",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "12/03/2026"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-year-not-budget",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 2026: da definire con il CFO.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-people-not-budget",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: 2 persone part-time",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-price-unlabelled",
+      "locale": "it",
+      "origin": "human",
+      "text": "Il prodotto costa 3000 € al mese e lo sconto è del 30 %.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-phone-after-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: chiamare il 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "subjects": [],
+      "note": "a phone after a budget label is a phone, never a budget"
+    },
+    {
+      "id": "subject-it-timeline-no-colon",
+      "locale": "it",
+      "origin": "human",
+      "text": "La durata stimata sarà di qualche mese.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budget-range",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Our budget is €40k-€60k. Timeline: 3 months; launch in May",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "€40k-€60k"
+        ],
+        [
+          "timeline",
+          "3 months"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budget-currency",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget: €5,000",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "€5,000"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budgetary",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budgetary approval of 5000 € is pending.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-de-laufzeit",
+      "locale": "de",
+      "origin": "human",
+      "text": "Laufzeit: 6 Monate\nBudget: 25.000 EUR",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "6 Monate"
+        ],
+        [
+          "budget",
+          "25.000 EUR"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-fr-budget",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Budget : entre 10 000 et 20 000 €\nDurée estimée : 4 mois",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "entre 10 000 et 20 000 €"
+        ],
+        [
+          "timeline",
+          "4 mois"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-es-presupuesto",
+      "locale": "es",
+      "origin": "human",
+      "text": "Presupuesto: entre 10.000 y 20.000 €",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "entre 10.000 y 20.000 €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-pt-orcamento",
+      "locale": "pt",
+      "origin": "human",
+      "text": "Orçamento: até 15.000 €\nPrazo: 3 meses",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "até 15.000 €"
+        ],
+        [
+          "timeline",
+          "3 meses"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-nl-budget",
+      "locale": "nl",
+      "origin": "human",
+      "text": "Budget: tussen 10.000 en 20.000 euro",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "tussen 10.000 en 20.000 euro"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-pl-budzet",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Budżet: od 40 000 do 60 000 zł",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "od 40 000 do 60 000 zł"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
     }
   ]
 }

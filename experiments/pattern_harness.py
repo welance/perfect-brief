@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 NODE_RUNNER = ROOT / "experiments" / "pattern_node.mjs"
 LOCALES = ("en-GB", "it", "de", "fr", "es", "ar", "pt", "pt-BR", "nl", "pl", "zh-Hans", "ja")
 KINDS = ("email", "url", "phone")
+SUBJECTS = ("budget", "timeline")
 ORIGINS = ("human", "ai-proposed")
 SLOW_MS = 1500.0
 # Inputs shaped to make a backtracking regex go quadratic or worse.
@@ -39,6 +40,8 @@ ADVERSARIAL = {
     "currency-run": "€" + "1 " * 20_000,
     "dotted-groups": "123." * 15_000,
     "parens": "+1 " + "(1)" * 15_000,
+    "budget-run": "Budget: " + "1 - " * 15_000,
+    "label-run": "budget di " * 10_000 + "durata: " + "x" * 50_000,
 }
 
 
@@ -92,7 +95,7 @@ def validate(cat: dict, cases: list[dict]) -> list[str]:
     if errs:
         return errs
     ids: set[str] = set()
-    for e in cat["contacts"] + cat["exclusions"]:
+    for e in cat["contacts"] + cat["exclusions"] + cat.get("subjects", []):
         pid = e.get("id", "?")
         if pid in ids:
             errs.append(f"{pid}: duplicate id")
@@ -119,6 +122,15 @@ def validate(cat: dict, cases: list[dict]) -> list[str]:
             errs.append(f"{pid}: never_excluded_from_digits must be an integer")
         if ("min_digits" in e) != ("max_digits" in e):
             errs.append(f"{pid}: min_digits and max_digits go together")
+    for e in cat.get("subjects", []):
+        pid = e.get("id", "?")
+        if e.get("subject") not in SUBJECTS:
+            errs.append(f"{pid}: subject must be one of {SUBJECTS}")
+        try:
+            if re.compile(e["source"]).groups != 1:
+                errs.append(f"{pid}: a subject pattern captures its value as group 1")
+        except (re.error, KeyError):
+            pass  # reported above
     for group in ("data", "compliance"):
         kws = cat["keywords"].get(group, [])
         if not kws:
@@ -140,6 +152,7 @@ def validate(cat: dict, cases: list[dict]) -> list[str]:
             errs.append(f"case {cid}: origin must be one of {ORIGINS}")
         try:
             expected_spans(c)
+            expected_subjects(c)
         except ValueError as exc:
             errs.append(f"case {cid}: {exc}")
     missing = set(LOCALES) - {c.get("locale") for c in cases}
@@ -162,13 +175,31 @@ def expected_spans(case: dict) -> list[list]:
     return out
 
 
+def expected_subjects(case: dict) -> list[list] | None:
+    """Optional `subjects` labels: [subject, text] in document order."""
+    if "subjects" not in case:
+        return None
+    out, pos = [], 0
+    for subject, text in case["subjects"]:
+        if subject not in SUBJECTS:
+            raise ValueError(f"subject {subject!r}")
+        at = case["text"].find(text, pos)
+        if at < 0 or not text:
+            raise ValueError(f"subject {text!r} not found after offset {pos}")
+        out.append([subject, at, at + len(text), text])
+        pos = at + len(text)
+    return out
+
+
 def run_python(cat: Catalogue, texts: dict[str, str]) -> dict[str, dict]:
     out = {}
     for cid, text in texts.items():
         t0 = time.perf_counter()
         spans = [[s.kind, s.start, s.end, s.text] for s in cat.contact_spans(text)]
+        subjects = [[s.subject, s.start, s.end, s.text] for s in cat.subject_spans(text)]
         out[cid] = {
             "spans": spans,
+            "subjects": subjects,
             "data": bool(cat.keyword_hits(text, "data")),
             "compliance": bool(cat.keyword_hits(text, "compliance")),
             "ms": (time.perf_counter() - t0) * 1000,
@@ -213,6 +244,8 @@ def evaluate(catalogue_path: Path = CATALOGUE_PATH, cases_path: Path = CASES_PAT
     for c in cases:
         cid = c["id"]
         want = {"spans": expected_spans(c)}
+        if "subjects" in c:
+            want["subjects"] = expected_subjects(c)
         for cue in ("data", "compliance"):
             if cue in c:
                 want[cue] = c[cue]
@@ -222,7 +255,7 @@ def evaluate(catalogue_path: Path = CATALOGUE_PATH, cases_path: Path = CASES_PAT
                     report["failures"].append(
                         {"case": cid, "engine": engine, "field": key, "want": value, "got": got[key]}
                     )
-        for key in ("spans", "data", "compliance"):
+        for key in ("spans", "subjects", "data", "compliance"):
             if py[cid][key] != js[cid][key]:
                 report["disagreements"].append(
                     {"case": cid, "field": key, "python": py[cid][key], "node": js[cid][key]}
@@ -232,8 +265,9 @@ def evaluate(catalogue_path: Path = CATALOGUE_PATH, cases_path: Path = CASES_PAT
         for engine, got in (("python", adv_py[name]), ("node", adv_js[name])):
             if got["ms"] > SLOW_MS:
                 report["slow"].append({"input": name, "engine": engine, "ms": round(got["ms"])})
-        if adv_py[name]["spans"] != adv_js[name]["spans"]:
-            report["disagreements"].append({"case": f"adversarial:{name}", "field": "spans"})
+        for key in ("spans", "subjects"):
+            if adv_py[name][key] != adv_js[name][key]:
+                report["disagreements"].append({"case": f"adversarial:{name}", "field": key})
     report["ok"] = not (report["failures"] or report["disagreements"] or report["slow"])
     return report
 

@@ -118,6 +118,38 @@ def test_a_suffix_never_hides_a_phone():
     assert not missed, missed
 
 
+# Subject spans say where a brief already states its budget or timeline, so a
+# consumer can show it instead of asking again. Presence only, never a verdict.
+LISTING = "Città: Milano · Full remote\nDurata stimata: qualche mese o anno\nBudget: tra 3000 - 5000 €"
+
+
+def test_subject_spans_read_a_listing_on_both_engines():
+    py = [[s.subject, s.start, s.end, s.text] for s in patterns.subject_spans(LISTING)]
+    assert [[k, t] for k, _, _, t in py] == [
+        ["timeline", "qualche mese o anno"],
+        ["budget", "tra 3000 - 5000 €"],
+    ]
+    assert all(LISTING[s:e] == t for _, s, e, t in py)
+    assert harness.run_node(patterns.CATALOGUE_PATH, {"t": LISTING})["t"]["subjects"] == py
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["Budget 2026: da definire", "Il prodotto costa 3000 €", "sconto del 30 %", "Budget: 347 123 4567"],
+)
+def test_unlabelled_or_non_monetary_numbers_are_not_budgets(text):
+    assert [s for s in patterns.subject_spans(text) if s.subject == "budget"] == []
+    assert harness.run_node(patterns.CATALOGUE_PATH, {"t": text})["t"]["subjects"] == []
+
+
+def test_subject_spans_do_not_change_contact_detection():
+    # the subjects section is additive: dropping it leaves every contact span as is
+    data = json.loads(patterns.CATALOGUE_PATH.read_text())
+    without = patterns.Catalogue({**data, "subjects": []})
+    for case in json.loads(patterns.CASES_PATH.read_text())["cases"]:
+        assert without.contact_spans(case["text"]) == patterns.contact_spans(case["text"]), case["id"]
+
+
 def test_sensitive_data_is_a_data_cue():
     cat = patterns.bundled()
     assert cat.keyword_hits("Protezione dei dati sensibili/biometrici.", "data")
@@ -148,7 +180,7 @@ def test_every_contact_capture_ends_where_the_match_ends():
     # ends early would give the two engines different offsets
     cat = patterns.bundled()
     for case in json.loads(patterns.CASES_PATH.read_text())["cases"]:
-        for _, rx in cat.contacts + cat.exclusions:
+        for _, rx in cat.contacts + cat.exclusions + cat.subjects:
             for m in rx.finditer(case["text"]):
                 if rx.groups:
                     assert m.end(1) == m.end(), (rx.pattern, case["id"])

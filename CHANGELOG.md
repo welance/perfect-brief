@@ -31,9 +31,16 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - `brief_bar/patterns/`: one versioned catalogue (`catalogue.json`) of
   contact patterns, exclusions and data/compliance keywords, with a Python
   and a dependency-free JavaScript runtime held to the same contract by a
-  dual-engine harness over a labelled corpus of 161 cases in all twelve
+  dual-engine harness over a labelled corpus of 179 cases in all twelve
   service locales (`make test-patterns`, part of `make test`). Consumers
   vendor a pinned copy. Its bytes join the ruleset digest (ruleset 1.1.1).
+- Pattern catalogue 1.1.0: additive **subject spans** (`subject_spans()` /
+  `subjectSpans()`) for a budget-labelled amount or range ("Budget: tra
+  3000 - 5000 €") and a timeline-labelled duration ("Durata stimata: qualche
+  mese o anno"), in both runtimes, labelled in the corpus.
+  Presence only, never a verdict: the Directory uses them to show what a
+  brief already says instead of asking for it again. Contact detection is
+  unchanged.
 - `make improve-patterns`: an offline, capped ($1, 8 rounds) developer loop
   in which DeepSeek V4.1 Flash proposes catalogue edits and labelled cases and
   the deterministic harness scores them; it writes a proposal for human

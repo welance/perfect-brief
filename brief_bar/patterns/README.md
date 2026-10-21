@@ -7,10 +7,10 @@ Directory's pre-publish scan (welance.com vendors a pinned copy of
 
 | File | Role |
 |---|---|
-| `catalogue.json` | contact patterns, phone exclusions, data/compliance keywords — data, versioned |
+| `catalogue.json` | contact patterns, phone exclusions, subject patterns, data/compliance keywords — data, versioned |
 | `__init__.py` | Python runtime (the mock judge) |
 | `runtime.mjs` | JavaScript runtime (browsers, Node) — same contract |
-| `cases.json` | labelled corpus: `spans` as `[kind, text]` in document order, optional `data` / `compliance` cues |
+| `cases.json` | labelled corpus: `spans` as `[kind, text]` in document order, optional `subjects` as `[subject, text]`, optional `data` / `compliance` cues |
 
 The catalogue bytes are part of the ruleset digest (`loader.content_digest`),
 so any edit moves `ruleset_version`.
@@ -35,6 +35,14 @@ so any edit moves `ruleset_version`.
 3. Overlaps resolve by `priority`, then the longer span, then the earlier
    start, then the id. Spans come back in document order.
 4. Keywords are lowercase substrings of the lowercased text.
+5. Subject spans (`subject_spans` / `subjectSpans`) say where the text already
+   states a subject: `budget` (a budget label, then an amount carrying a
+   currency or multiplier, or a range) or `timeline` (a duration/deadline label
+   and a colon, then the rest of the line). Group 1 is the value without its
+   label, as `{subject, start, end, text, pattern}`. They report presence only —
+   no floor, no comparison, no verdict — so a consumer can show "you said
+   this" instead of asking again. A bare number after a label (`Budget 2026`)
+   is not a budget. Overlaps: longer span, earlier start, id.
 
 ## Portable dialect
 
