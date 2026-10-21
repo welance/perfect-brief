@@ -4,10 +4,13 @@
 //
 //   1. Every contact pattern runs over the ORIGINAL text. Group 1, when
 //      present, is the span and ends where the match ends.
-//   2. A phone candidate outside its digit limits is dropped. An exclusion
-//      (amount, range, date, tax id, IBAN...) drops it only when it covers
-//      the whole candidate and carries no other digits; patterns with
-//      never_excluded_from_digits are never dropped by one (fail closed).
+//   2. A phone candidate is valid when its digit count is within limits and
+//      no exclusion hides it. An exclusion hides it only when it covers the
+//      whole candidate and carries no other digits. never_excluded_from_digits
+//      patterns are never hidden; hidden_only_by_structural ones yield only
+//      to structural exclusions (dates, tax ids, IBANs). An invalid candidate
+//      BACKS OFF to its longest prefix, cut where a digit run ends, that the
+//      pattern still matches exactly and that is valid (fail closed).
 //   3. Overlaps resolve by priority, then the longer span, then the earlier
 //      start, then the pattern id. Spans come back in document order.
 //   4. Keyword cues are lowercase substrings of the lowercased text.
@@ -16,13 +19,19 @@
 // by consumers; no dependencies, no network, no LLM.
 
 export function compileCatalogue(catalogue) {
-  const rx = (e) => new RegExp(e.source, (e.flags || '') + 'g')
+  const rx = (e, f) => new RegExp(e.source, (e.flags || '') + f)
   return {
     version: catalogue.version,
-    contacts: catalogue.contacts.map((e) => ({ ...e, re: rx(e) })),
-    exclusions: catalogue.exclusions.map((e) => ({ ...e, re: rx(e) })),
+    contacts: catalogue.contacts.map((e) => ({ ...e, re: rx(e, 'g'), sticky: rx(e, 'y') })),
+    exclusions: catalogue.exclusions.map((e) => ({ ...e, re: rx(e, 'g') })),
     keywords: catalogue.keywords,
   }
+}
+
+// [start, end] of group 1 (a suffix of the match) or of the whole match
+const spanOf = (m) => {
+  const end = m.index + m[0].length
+  return [m[1] !== undefined ? end - m[1].length : m.index, end]
 }
 
 function* matches(re, text) {
@@ -33,25 +42,54 @@ function* matches(re, text) {
       re.lastIndex++
       continue
     }
-    const end = m.index + m[0].length
-    const start = m[1] !== undefined ? end - m[1].length : m.index
-    yield [start, end]
+    yield m
   }
 }
 
 const digits = (s) => (s.match(/[0-9]/g) || []).length
+const isDigit = (ch) => ch >= '0' && ch <= '9'
 
 export function exclusionSpans(compiled, text) {
   const out = []
   for (const e of compiled.exclusions)
-    for (const [s, end] of matches(e.re, text)) out.push([s, end, e.id])
+    for (const m of matches(e.re, text)) out.push([...spanOf(m), !!e.structural])
   return out
 }
 
-function isExcluded(e, s, end, text, excluded) {
+function isHidden(e, s, end, text, excluded) {
   const n = digits(text.slice(s, end))
   if (e.never_excluded_from_digits !== undefined && n >= e.never_excluded_from_digits) return false
-  return excluded.some(([xs, xe]) => xs <= s && end <= xe && digits(text.slice(xs, xe)) === n)
+  return excluded.some(
+    ([xs, xe, structural]) =>
+      xs <= s &&
+      end <= xe &&
+      digits(text.slice(xs, xe)) === n &&
+      (structural || !e.hidden_only_by_structural)
+  )
+}
+
+function isValid(e, s, end, text, excluded) {
+  if (e.min_digits !== undefined) {
+    const n = digits(text.slice(s, end))
+    if (n < e.min_digits || n > e.max_digits) return false
+  }
+  return !(e.kind === 'phone' && isHidden(e, s, end, text, excluded))
+}
+
+// the longest valid prefix of a match, cut where a digit run ends
+function backOff(e, m, text, excluded) {
+  const [s, end] = spanOf(m)
+  if (isValid(e, s, end, text, excluded)) return [s, end]
+  if (e.min_digits === undefined) return null
+  for (let k = end - 1; k > s; k--) {
+    if (!isDigit(text[k - 1]) || isDigit(text[k])) continue
+    e.sticky.lastIndex = m.index
+    const mm = e.sticky.exec(text.slice(0, k))
+    if (!mm) continue
+    const [ms, me] = spanOf(mm)
+    if (ms === s && me === k && isValid(e, s, k, text, excluded)) return [s, k]
+  }
+  return null
 }
 
 export function contactSpans(compiled, text) {
@@ -59,13 +97,9 @@ export function contactSpans(compiled, text) {
   const excluded = exclusionSpans(compiled, t)
   const cands = []
   for (const e of compiled.contacts) {
-    for (const [s, end] of matches(e.re, t)) {
-      if (e.min_digits !== undefined) {
-        const n = digits(t.slice(s, end))
-        if (n < e.min_digits || n > e.max_digits) continue
-      }
-      if (e.kind === 'phone' && isExcluded(e, s, end, t, excluded)) continue
-      cands.push({ e, s, end })
+    for (const m of matches(e.re, t)) {
+      const kept = backOff(e, m, t, excluded)
+      if (kept) cands.push({ e, s: kept[0], end: kept[1] })
     }
   }
   const cmpId = (a, b) => (a < b ? -1 : a > b ? 1 : 0)

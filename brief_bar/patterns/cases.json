@@ -776,8 +776,13 @@
       "locale": "en-GB",
       "origin": "human",
       "text": "Budget 300 500 1000 €",
-      "spans": [],
-      "note": "amount or range"
+      "spans": [
+        [
+          "phone",
+          "300 500 1000"
+        ]
+      ],
+      "note": "ambiguous by design: a US number shape followed by a currency stays a phone (fail closed; '212 555 1234 €' must not leak)"
     },
     {
       "id": "date-00",
@@ -1542,6 +1547,74 @@
         ]
       ],
       "note": "security review: a spaced slash between later groups is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-trunk-then-year",
+      "locale": "de",
+      "origin": "human",
+      "text": "030 12345678 / 2024",
+      "spans": [
+        [
+          "phone",
+          "030 12345678"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-mobile-then-year",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 123 4567 / 2026",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-trunk-currency-after",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234567 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-trunk-then-range",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234567 - 5000 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-date-dashed",
+      "locale": "it",
+      "origin": "human",
+      "text": "12-10-2026",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-short-amount",
+      "locale": "it",
+      "origin": "human",
+      "text": "3000 €",
+      "spans": [],
+      "note": "security review: still not a phone"
     }
   ]
 }

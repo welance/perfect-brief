@@ -77,11 +77,45 @@ def test_exclusions_fail_closed(text, phone):
 
 
 @pytest.mark.parametrize(
-    "text", ["tra 3000 - 5000 €", "10000 - 30000 €", "P.IVA 12345678901", "P.IVA 01234567890"]
+    "text",
+    [
+        "tra 3000 - 5000 €",
+        "10000 - 30000 €",
+        "12-10-2026",
+        "P.IVA 12345678901",
+        "P.IVA 01234567890",
+        "3000 €",
+    ],
 )
 def test_amounts_and_tax_ids_are_still_not_phones(text):
     assert patterns.contact_spans(text) == []
     assert harness.run_node(patterns.CATALOGUE_PATH, {"t": text})["t"]["spans"] == []
+
+
+# Whatever follows a phone — a year, a range, a currency — never hides it: the
+# runtimes back off to the longest valid prefix instead of dropping the match.
+SUFFIXES = [" / 2024", " - 5000 €", " 2026", " – 30000 €", " €", "/5"]
+MUST_DETECT = sorted(
+    {t for c in json.loads(patterns.CASES_PATH.read_text())["cases"] for k, t in c["spans"] if k == "phone"}
+)
+
+
+def _covers(spans, text, phone):
+    at = text.index(phone)
+    return any(k == "phone" and s <= at and e >= at + len(phone) for k, s, e, *_ in spans)
+
+
+def test_a_suffix_never_hides_a_phone():
+    texts = {f"{p}|{x}": p + x for p in MUST_DETECT for x in SUFFIXES}
+    js = harness.run_node(patterns.CATALOGUE_PATH, texts)
+    missed = []
+    for key, text in texts.items():
+        phone = key.split("|")[0]
+        py = [[s.kind, s.start, s.end] for s in patterns.contact_spans(text)]
+        for engine, spans in (("python", py), ("node", js[key]["spans"])):
+            if not _covers(spans, text, phone):
+                missed.append((engine, text))
+    assert not missed, missed
 
 
 def test_sensitive_data_is_a_data_cue():

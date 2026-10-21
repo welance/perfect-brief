@@ -8,13 +8,18 @@ harness (`python -m experiments.pattern_harness`) over `cases.json`:
   1. Every contact pattern runs over the ORIGINAL text. Group 1, when present,
      is the span (it must end where the match ends — the leading part is a
      boundary, since lookbehind is not portable).
-  2. A phone candidate whose digit count is outside its pattern's limits is
-     dropped. An exclusion (amount, range, date, tax id, IBAN...) drops it
-     only when the exclusion covers the whole candidate and carries no digits
-     besides the candidate's — it is about exactly this number. Patterns with
-     `never_excluded_from_digits` (a + / 00 prefix, a full Italian mobile) are
-     never dropped by an exclusion. A missed phone is a privacy leak; a false
-     positive is an edit, so ambiguity fails closed.
+  2. A phone candidate is valid when its digit count is within its pattern's
+     limits and no exclusion hides it. An exclusion hides it only when it
+     covers the whole candidate and carries no other digits (it is about
+     exactly this number). Patterns with `never_excluded_from_digits` (a + /
+     00 prefix, a full Italian mobile) are never hidden; patterns with
+     `hidden_only_by_structural` (national numbers) yield only to
+     `structural` exclusions (dates, tax ids, IBANs), never to amounts.
+     An invalid candidate BACKS OFF: it is cut at the end of each digit run,
+     longest first, and the first prefix the pattern still matches exactly
+     and that is valid is kept. So "030 12345678 / 2024" keeps
+     "030 12345678": what follows a phone never hides it. A missed phone is a
+     privacy leak; a false positive is an edit, so ambiguity fails closed.
   3. Overlaps resolve by priority, then the longer span, then the earlier
      start, then the pattern id. Spans come back in document order.
   4. Keyword cues are lowercase substrings of the lowercased text.
@@ -67,27 +72,52 @@ class Catalogue:
         self.exclusions = [(e, _compile(e)) for e in data["exclusions"]]
         self.keywords: dict[str, list[str]] = data["keywords"]
 
-    def exclusion_spans(self, text: str) -> list[tuple[int, int, str]]:
-        return [(*_span(m), e["id"]) for e, rx in self.exclusions for m in rx.finditer(text)]
+    def exclusion_spans(self, text: str) -> list[tuple[int, int, bool]]:
+        return [
+            (*_span(m), bool(e.get("structural"))) for e, rx in self.exclusions for m in rx.finditer(text)
+        ]
 
     @staticmethod
-    def _excluded(e: dict, s: int, end: int, text: str, excluded: list[tuple[int, int, str]]) -> bool:
+    def _hidden(e: dict, s: int, end: int, text: str, excluded: list[tuple[int, int, bool]]) -> bool:
         n = _digits(text[s:end])
         if n >= e.get("never_excluded_from_digits", n + 1):
             return False
-        return any(xs <= s and end <= xe and _digits(text[xs:xe]) == n for xs, xe, _ in excluded)
+        return any(
+            xs <= s
+            and end <= xe
+            and _digits(text[xs:xe]) == n
+            and (structural or not e.get("hidden_only_by_structural"))
+            for xs, xe, structural in excluded
+        )
+
+    def _valid(self, e: dict, s: int, end: int, text: str, excluded: list[tuple[int, int, bool]]) -> bool:
+        if "min_digits" in e and not e["min_digits"] <= _digits(text[s:end]) <= e["max_digits"]:
+            return False
+        return not (e["kind"] == "phone" and self._hidden(e, s, end, text, excluded))
+
+    def _back_off(self, e, rx, m, text, excluded) -> tuple[int, int] | None:
+        """The longest valid prefix of a match, cut where a digit run ends."""
+        s, end = _span(m)
+        if self._valid(e, s, end, text, excluded):
+            return s, end
+        if "min_digits" not in e:
+            return None
+        for k in range(end - 1, s, -1):
+            if not ("0" <= text[k - 1] <= "9") or "0" <= text[k] <= "9":
+                continue
+            mm = rx.match(text[:k], m.start())
+            if mm and _span(mm) == (s, k) and self._valid(e, s, k, text, excluded):
+                return s, k
+        return None
 
     def contact_spans(self, text: str) -> list[Span]:
         excluded = self.exclusion_spans(text)
         cands: list[tuple[dict, int, int]] = []
         for e, rx in self.contacts:
             for m in rx.finditer(text):
-                s, end = _span(m)
-                if "min_digits" in e and not e["min_digits"] <= _digits(text[s:end]) <= e["max_digits"]:
-                    continue
-                if e["kind"] == "phone" and self._excluded(e, s, end, text, excluded):
-                    continue
-                cands.append((e, s, end))
+                kept_span = self._back_off(e, rx, m, text, excluded)
+                if kept_span:
+                    cands.append((e, *kept_span))
         cands.sort(key=lambda c: (-c[0]["priority"], -(c[2] - c[1]), c[1], c[0]["id"]))
         kept: list[tuple[dict, int, int]] = []
         for c in cands:
