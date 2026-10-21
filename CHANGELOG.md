@@ -8,6 +8,34 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.13.9] - 2026-10-21
+
+### Fixed
+- **Ruleset 1.1.1 — budget ranges are not phone numbers.** The offline
+  (`mock`) judge read any long run of digits, spaces and hyphens as a phone,
+  so "Budget: tra 3000 - 5000 €" and "tra 10000 - 30000 €" failed the
+  `anonymised` gate and blocked real briefs. Italian national numbers
+  (`347 123 4567`, `02 1234567`) are now found; amounts, ranges, grouped
+  numbers, dates, tax ids and IBANs are not. Exclusions fail closed: one only
+  drops a phone it covers entirely with no other digits, and a `+`/`00`
+  number or a full Italian mobile is never dropped.
+- `data-compliance` recognises sensitive, biometric and health data
+  ("dati sensibili/biometrici", "Gesundheitsdaten", "données de santé"...)
+  and reads personal-data and compliance wording in Arabic, Chinese and
+  Japanese too, so such a brief is no longer `not_applicable`.
+
+### Added
+- `brief_bar/patterns/`: one versioned catalogue (`catalogue.json`) of
+  contact patterns, exclusions and data/compliance keywords, with a Python
+  and a dependency-free JavaScript runtime held to the same contract by a
+  dual-engine harness over a labelled corpus of 150 cases in all twelve
+  service locales (`make test-patterns`, part of `make test`). Consumers
+  vendor a pinned copy. Its bytes join the ruleset digest (ruleset 1.1.1).
+- `make improve-patterns`: an offline, capped ($1, 8 rounds) developer loop
+  in which DeepSeek V4.1 Flash proposes catalogue edits and labelled cases and
+  the deterministic harness scores them; it writes a proposal for human
+  review and never edits tracked files. Not run in CI.
+
 ## [1.13.8] - 2026-10-19
 
 ### Fixed
