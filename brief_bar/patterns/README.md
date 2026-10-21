@@ -20,9 +20,13 @@ so any edit moves `ruleset_version`.
 1. Contact patterns run over the original text. Group 1, when present, is
    the span and must end where the match ends (the leading part is a boundary,
    because lookbehind is not portable).
-2. A phone candidate outside `min_digits`..`max_digits`, or overlapping an
-   exclusion (amounts, ranges, grouped numbers, dates, tax ids, IBANs), is
-   dropped. Exclusions never drop emails or URLs.
+2. A phone candidate outside `min_digits`..`max_digits` is dropped. An
+   exclusion (amounts, ranges, grouped numbers, dates, tax ids, IBANs) drops
+   it only when the exclusion covers the whole candidate and carries no other
+   digits. A pattern with `never_excluded_from_digits` (a `+`/`00` prefix, a
+   complete Italian mobile) is never dropped by an exclusion. Exclusions never
+   drop emails or URLs. A missed phone is a leak, a false positive is an
+   edit: ambiguity fails closed.
 3. Overlaps resolve by `priority`, then the longer span, then the earlier
    start, then the id. Spans come back in document order.
 4. Keywords are lowercase substrings of the lowercased text.

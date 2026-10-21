@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "1.0.0",
-  "about": "Deterministic spans and cues shared by the r001-15 mock judge (Python) and the Directory pre-publish scan (JavaScript). Owned here; consumers vendor a pinned copy. Regex sources use the portable dialect in brief_bar/patterns/README.md; group 1, when present, is the span and must end where the match ends.",
+  "about": "Deterministic spans and cues shared by the r001-15 mock judge (Python) and the Directory pre-publish scan (JavaScript). Owned here; consumers vendor a pinned copy. Regex sources use the portable dialect in brief_bar/patterns/README.md; group 1, when present, is the span and must end where the match ends. An exclusion drops a phone only when it covers the whole candidate and carries no other digits (fail closed).",
   "contacts": [
     {
       "id": "email",
@@ -27,7 +27,8 @@
       "min_digits": 8,
       "max_digits": 15,
       "source": "(?:^|[^0-9A-Za-z+_@/€$£.,]|[A-Za-z][.:,])((?:\\+|00)[1-9][0-9]{0,2}(?:[ .\\-]?\\(?[0-9]{1,4}\\)?){2,6})(?![0-9A-Za-z_@€$£%]|[.,][0-9])",
-      "note": "+CC or 00CC, then up to six groups: +39 02 1234567, +44 (0)20 7946 0958, 0049 30 1234567"
+      "note": "+CC or 00CC, then up to six groups: +39 02 1234567, +44 (0)20 7946 0958, 0049 30 1234567; a + or 00 prefix is never excluded",
+      "never_excluded_from_digits": 8
     },
     {
       "id": "phone.it.mobile",
@@ -36,8 +37,9 @@
       "flags": "",
       "min_digits": 9,
       "max_digits": 10,
-      "source": "(?:^|[^0-9A-Za-z+_@/€$£.,]|[A-Za-z][.:,])(3[0-9]{2}[ .\\-/]?[0-9]{3}[ .\\-/]?[0-9]{3,4})(?![0-9A-Za-z_@€$£%]|[.,][0-9])",
-      "note": "Italian mobile without prefix: 347 123 4567, 347-1234567, 3471234567"
+      "source": "(?:^|[^0-9A-Za-z+_@/€$£.,]|[A-Za-z][.:,])(3[1-9][0-9][ .\\-/]?[0-9]{3}[ .\\-/]?[0-9]{3,4})(?![0-9A-Za-z_@€$£%]|[.,][0-9])",
+      "note": "Italian mobile without prefix (31x-39x; no 30x range exists): 347 123 4567, 347-1234567, 3471234567; a complete 10-digit mobile is never excluded",
+      "never_excluded_from_digits": 10
     },
     {
       "id": "phone.trunk",
@@ -46,7 +48,7 @@
       "flags": "",
       "min_digits": 8,
       "max_digits": 12,
-      "source": "(?:^|[^0-9A-Za-z+_@/€$£.,]|[A-Za-z][.:,])(\\(?0[1-9][0-9]{0,3}\\)?(?:(?:[ .\\-/]|[ ][/\\-][ ])?[0-9]{2,4}){1,4})(?![0-9A-Za-z_@€$£%]|[.,][0-9])",
+      "source": "(?:^|[^0-9A-Za-z+_@/€$£.,]|[A-Za-z][.:,])(\\(?0[1-9][0-9]{0,3}\\)?(?:(?:[ .\\-/]|[ ]/[ ])?[0-9]{2,4}){1,4})(?![0-9A-Za-z_@€$£%]|[.,][0-9])",
       "note": "national numbers with a trunk 0 (IT landlines, DE, FR, UK, NL...): 02 1234567, 030 12345678, 01 23 45 67 89, 020 7946 0958"
     },
     {
@@ -104,10 +106,22 @@
       "note": "2025-03-12"
     },
     {
-      "id": "tax-id",
+      "id": "tax-id.it-piva",
       "flags": "i",
-      "source": "((?:p\\.? ?iva|partita iva|vat(?: no\\.?| number| id)?|ust-?id(?:nr)?\\.?|tva|nif|cif|btw(?:-nummer)?|nip|c\\.? ?f\\.?|codice fiscale)[ :.#\\u00a0]{0,4}(?:[a-z]{2})?[ ]?[0-9][0-9 ]{6,14}[0-9])",
-      "note": "P.IVA 01234567890, VAT IT01234567890, USt-IdNr. DE123456789"
+      "source": "(?:^|[^A-Za-z])((?:p\\. ?iva|p\\.iva|piva|partita iva)[ :.#\\u00a0]{0,3}(?:it)?[0-9]{11})(?![0-9])",
+      "note": "P.IVA 01234567890: label + exactly 11 digits, no internal spaces"
+    },
+    {
+      "id": "tax-id.eu-vat",
+      "flags": "i",
+      "source": "(?:^|[^A-Za-z])((?:vat(?: no\\.?| number| id)?|tva|btw(?:-nummer)?|ust-?id(?:nr)?\\.?)[ :.#\\u00a0]{0,3}[a-z]{2}[0-9]{8,12}(?:b[0-9]{2})?)(?![0-9A-Za-z])",
+      "note": "VAT IT01234567890, USt-IdNr. DE123456789, BTW NL123456789B01: country prefix + digits, no internal spaces"
+    },
+    {
+      "id": "tax-id.pl-nip",
+      "flags": "i",
+      "source": "(?:^|[^A-Za-z])(nip[ :.#\\u00a0]{0,3}[0-9]{10})(?![0-9])",
+      "note": "NIP 1234567890: exactly 10 digits"
     },
     {
       "id": "iban",

@@ -115,6 +115,8 @@ def validate(cat: dict, cases: list[dict]) -> list[str]:
             errs.append(f"{pid}: kind must be one of {KINDS}")
         if not isinstance(e.get("priority"), int):
             errs.append(f"{pid}: priority must be an integer")
+        if not isinstance(e.get("never_excluded_from_digits", 0), int):
+            errs.append(f"{pid}: never_excluded_from_digits must be an integer")
         if ("min_digits" in e) != ("max_digits" in e):
             errs.append(f"{pid}: min_digits and max_digits go together")
     for group in ("data", "compliance"):

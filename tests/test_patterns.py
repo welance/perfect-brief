@@ -48,6 +48,37 @@ def test_national_and_international_phones_are_found(text):
     assert harness.run_node(patterns.CATALOGUE_PATH, {"t": text})["t"]["spans"] == py
 
 
+# A numeric exclusion must never hide a real phone: a missed phone is a leak,
+# a false positive is an edit. Every one of these is still a phone.
+HIDDEN = [
+    ("347 123 4567 €", "347 123 4567"),
+    ("€ 3471234567", "3471234567"),
+    ("cf 3471234567", "3471234567"),
+    ("cf 347 123 4567", "347 123 4567"),
+    ("questo nip 3471234567", "3471234567"),
+    ("nip 347 123 4567", "347 123 4567"),
+    ("P.IVA 347 123 4567", "347 123 4567"),
+    ("tel. 02 1234567 - 5000 €", "02 1234567"),
+    ("+39 347 1234567 (budget 3000 - 5000 €)", "+39 347 1234567"),
+]
+
+
+@pytest.mark.parametrize("text,phone", HIDDEN)
+def test_exclusions_fail_closed(text, phone):
+    py = [[s.kind, s.text] for s in patterns.contact_spans(text)]
+    js = harness.run_node(patterns.CATALOGUE_PATH, {"t": text})["t"]["spans"]
+    assert ["phone", phone] in py
+    assert [[k, t] for k, _, _, t in js] == py
+
+
+@pytest.mark.parametrize(
+    "text", ["tra 3000 - 5000 €", "10000 - 30000 €", "P.IVA 12345678901", "P.IVA 01234567890"]
+)
+def test_amounts_and_tax_ids_are_still_not_phones(text):
+    assert patterns.contact_spans(text) == []
+    assert harness.run_node(patterns.CATALOGUE_PATH, {"t": text})["t"]["spans"] == []
+
+
 def test_sensitive_data_is_a_data_cue():
     cat = patterns.bundled()
     assert cat.keyword_hits("Protezione dei dati sensibili/biometrici.", "data")

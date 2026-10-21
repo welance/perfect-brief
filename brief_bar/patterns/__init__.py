@@ -8,9 +8,13 @@ harness (`python -m experiments.pattern_harness`) over `cases.json`:
   1. Every contact pattern runs over the ORIGINAL text. Group 1, when present,
      is the span (it must end where the match ends — the leading part is a
      boundary, since lookbehind is not portable).
-  2. A phone candidate whose digit count is outside its pattern's limits, or
-     that overlaps an exclusion (amount, range, date, tax id, IBAN...), is
-     dropped.
+  2. A phone candidate whose digit count is outside its pattern's limits is
+     dropped. An exclusion (amount, range, date, tax id, IBAN...) drops it
+     only when the exclusion covers the whole candidate and carries no digits
+     besides the candidate's — it is about exactly this number. Patterns with
+     `never_excluded_from_digits` (a + / 00 prefix, a full Italian mobile) are
+     never dropped by an exclusion. A missed phone is a privacy leak; a false
+     positive is an edit, so ambiguity fails closed.
   3. Overlaps resolve by priority, then the longer span, then the earlier
      start, then the pattern id. Spans come back in document order.
   4. Keyword cues are lowercase substrings of the lowercased text.
@@ -66,6 +70,13 @@ class Catalogue:
     def exclusion_spans(self, text: str) -> list[tuple[int, int, str]]:
         return [(*_span(m), e["id"]) for e, rx in self.exclusions for m in rx.finditer(text)]
 
+    @staticmethod
+    def _excluded(e: dict, s: int, end: int, text: str, excluded: list[tuple[int, int, str]]) -> bool:
+        n = _digits(text[s:end])
+        if n >= e.get("never_excluded_from_digits", n + 1):
+            return False
+        return any(xs <= s and end <= xe and _digits(text[xs:xe]) == n for xs, xe, _ in excluded)
+
     def contact_spans(self, text: str) -> list[Span]:
         excluded = self.exclusion_spans(text)
         cands: list[tuple[dict, int, int]] = []
@@ -74,7 +85,7 @@ class Catalogue:
                 s, end = _span(m)
                 if "min_digits" in e and not e["min_digits"] <= _digits(text[s:end]) <= e["max_digits"]:
                     continue
-                if e["kind"] == "phone" and any(s < xe and end > xs for xs, xe, _ in excluded):
+                if e["kind"] == "phone" and self._excluded(e, s, end, text, excluded):
                     continue
                 cands.append((e, s, end))
         cands.sort(key=lambda c: (-c[0]["priority"], -(c[2] - c[1]), c[1], c[0]["id"]))

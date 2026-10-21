@@ -4,8 +4,10 @@
 //
 //   1. Every contact pattern runs over the ORIGINAL text. Group 1, when
 //      present, is the span and ends where the match ends.
-//   2. A phone candidate outside its digit limits, or overlapping an
-//      exclusion (amount, range, date, tax id, IBAN...), is dropped.
+//   2. A phone candidate outside its digit limits is dropped. An exclusion
+//      (amount, range, date, tax id, IBAN...) drops it only when it covers
+//      the whole candidate and carries no other digits; patterns with
+//      never_excluded_from_digits are never dropped by one (fail closed).
 //   3. Overlaps resolve by priority, then the longer span, then the earlier
 //      start, then the pattern id. Spans come back in document order.
 //   4. Keyword cues are lowercase substrings of the lowercased text.
@@ -46,6 +48,12 @@ export function exclusionSpans(compiled, text) {
   return out
 }
 
+function isExcluded(e, s, end, text, excluded) {
+  const n = digits(text.slice(s, end))
+  if (e.never_excluded_from_digits !== undefined && n >= e.never_excluded_from_digits) return false
+  return excluded.some(([xs, xe]) => xs <= s && end <= xe && digits(text.slice(xs, xe)) === n)
+}
+
 export function contactSpans(compiled, text) {
   const t = text || ''
   const excluded = exclusionSpans(compiled, t)
@@ -56,7 +64,7 @@ export function contactSpans(compiled, text) {
         const n = digits(t.slice(s, end))
         if (n < e.min_digits || n > e.max_digits) continue
       }
-      if (e.kind === 'phone' && excluded.some(([xs, xe]) => s < xe && end > xs)) continue
+      if (e.kind === 'phone' && isExcluded(e, s, end, t, excluded)) continue
       cands.push({ e, s, end })
     }
   }

@@ -1323,6 +1323,160 @@
       "spans": [],
       "data": false,
       "compliance": false
+    },
+    {
+      "id": "adv-mobile-currency-after",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 123 4567 €",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-currency-before",
+      "locale": "it",
+      "origin": "human",
+      "text": "€ 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-cf-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "cf 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-nip-label",
+      "locale": "pl",
+      "origin": "human",
+      "text": "nip 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-piva-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-then-amount",
+      "locale": "it",
+      "origin": "human",
+      "text": "tel. 02 1234567 - 5000 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-intl-then-range",
+      "locale": "it",
+      "origin": "human",
+      "text": "+39 347 1234567 (budget 3000 - 5000 €)",
+      "spans": [
+        [
+          "phone",
+          "+39 347 1234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-nip-inside-word",
+      "locale": "it",
+      "origin": "human",
+      "text": "snip 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-tva-inside-word",
+      "locale": "fr",
+      "origin": "human",
+      "text": "outva 0123456789",
+      "spans": [
+        [
+          "phone",
+          "0123456789"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-btw-spaced-mobile",
+      "locale": "nl",
+      "origin": "human",
+      "text": "btw 06 12345678",
+      "spans": [
+        [
+          "phone",
+          "06 12345678"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-range-currency",
+      "locale": "it",
+      "origin": "human",
+      "text": "10000 - 30000 €",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-piva-not-phone",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 12345678901",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-piva-leading-zero",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 01234567890",
+      "spans": [],
+      "note": "security review: still not a phone"
     }
   ]
 }
