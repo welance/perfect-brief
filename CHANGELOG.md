@@ -28,7 +28,7 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - `brief_bar/patterns/`: one versioned catalogue (`catalogue.json`) of
   contact patterns, exclusions and data/compliance keywords, with a Python
   and a dependency-free JavaScript runtime held to the same contract by a
-  dual-engine harness over a labelled corpus of 153 cases in all twelve
+  dual-engine harness over a labelled corpus of 155 cases in all twelve
   service locales (`make test-patterns`, part of `make test`). Consumers
   vendor a pinned copy. Its bytes join the ruleset digest (ruleset 1.1.1).
 - `make improve-patterns`: an offline, capped ($1, 8 rounds) developer loop

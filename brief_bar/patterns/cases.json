@@ -1516,6 +1516,32 @@
         ]
       ],
       "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-tail-spaced-slash",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234 / 5678",
+      "spans": [
+        [
+          "phone",
+          "02 1234 / 5678"
+        ]
+      ],
+      "note": "security review: a spaced slash between later groups is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-slash-groups",
+      "locale": "de",
+      "origin": "human",
+      "text": "030 / 123 / 45678",
+      "spans": [
+        [
+          "phone",
+          "030 / 123 / 45678"
+        ]
+      ],
+      "note": "security review: a spaced slash between later groups is still a phone (fail closed)"
     }
   ]
 }
