@@ -1,0 +1,23 @@
+id: 0007-real-budget-range-it
+input_type: brief
+input: |
+  # Piattaforma per Amministratore di Condominio Connessa con l'AI
+
+  Sto cercando uno sviluppatore (o agenzia) che abbia già una soluzione software per amministratori di condominio che possa risultare customizzabile a partire dalla ricerca semantica dal db di tutta la documentazione dello studio. (da integrare con il gestionale già utilizzato dall'amministratore Danea Domustudio e con piattaforma esterna di ricerca fonti normative).
+
+  Tramite prompting il cliente vuole come focus che l'AI faccia un match tra le recenti normative che ha trovato il cliente su piattaforma esterna da collegare ed il documento che sottopone all'interno dell'applicazione AI da sviluppare o se lo sviluppatore ne ha già una pronta.
+
+  Tecnologie: Python, OpenAI API, Machine Learning, FastAPI, Git, NLP, PostgreSQL
+  Città: Milano · Full remote
+  Durata stimata: qualche mese o anno
+  Budget: tra 3000 - 5000 €
+expected: {min: 30, max: 48}
+expected_decision: blocked
+expected_verdicts:
+  anonymised: pass
+  budget-floor: fail
+  data-compliance: not_applicable
+notes: >
+  A real Italian brief (no personal data). "Budget: tra 3000 - 5000 €" used to
+  read as a phone number and fail the anonymised gate; it is an amount range.
+  The brief stays blocked for the right reason: the budget is under the floor.
