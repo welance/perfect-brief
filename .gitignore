@@ -16,3 +16,6 @@ playwright-report/
 .playwright-mcp/
 .superdesign/tmp/
 *.DS_Store
+
+# pattern_loop proposals (reviewed by hand, never committed as-is)
+experiments/out/
