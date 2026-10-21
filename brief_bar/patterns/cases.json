@@ -1477,6 +1477,45 @@
       "text": "P.IVA 01234567890",
       "spans": [],
       "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-landline-spaced-dash",
+      "locale": "it",
+      "origin": "human",
+      "text": "tel. 02 - 1234567",
+      "spans": [
+        [
+          "phone",
+          "02 - 1234567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-spaced-slash",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 / 1234567",
+      "spans": [
+        [
+          "phone",
+          "02 / 1234567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-spaced-dash",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 - 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 - 123 4567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
     }
   ]
 }
