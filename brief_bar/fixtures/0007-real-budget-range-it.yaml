@@ -1,14 +1,14 @@
 id: 0007-real-budget-range-it
 input_type: brief
 input: |
-  # Piattaforma per Amministratore di Condominio Connessa con l'AI
+  # Assistente AI per uno studio di amministrazione condominiale
 
-  Sto cercando uno sviluppatore (o agenzia) che abbia già una soluzione software per amministratori di condominio che possa risultare customizzabile a partire dalla ricerca semantica dal db di tutta la documentazione dello studio. (da integrare con il gestionale già utilizzato dall'amministratore Danea Domustudio e con piattaforma esterna di ricerca fonti normative).
+  Cerchiamo uno sviluppatore o un'agenzia con un prodotto già pronto per amministratori di condominio, da adattare: ricerca semantica su tutti i documenti dello studio, integrata con il gestionale in uso e con una banca dati di norme esterna.
 
-  Tramite prompting il cliente vuole come focus che l'AI faccia un match tra le recenti normative che ha trovato il cliente su piattaforma esterna da collegare ed il documento che sottopone all'interno dell'applicazione AI da sviluppare o se lo sviluppatore ne ha già una pronta.
+  L'obiettivo è che l'AI confronti le norme più recenti con i documenti caricati dallo studio e segnali cosa cambia.
 
-  Tecnologie: Python, OpenAI API, Machine Learning, FastAPI, Git, NLP, PostgreSQL
-  Città: Milano · Full remote
+  Tecnologie: Python, API LLM, FastAPI, PostgreSQL
+  Città: Torino · Full remote
   Durata stimata: qualche mese o anno
   Budget: tra 3000 - 5000 €
 expected: {min: 30, max: 48}
@@ -18,6 +18,6 @@ expected_verdicts:
   budget-floor: fail
   data-compliance: not_applicable
 notes: >
-  A real Italian brief (no personal data). "Budget: tra 3000 - 5000 €" used to
+  A synthetic Italian brief, modelled on a public listing, (no personal data). "Budget: tra 3000 - 5000 €" used to
   read as a phone number and fail the anonymised gate; it is an amount range.
   The brief stays blocked for the right reason: the budget is under the floor.

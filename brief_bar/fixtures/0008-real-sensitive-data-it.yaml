@@ -1,25 +1,17 @@
 id: 0008-real-sensitive-data-it
 input_type: brief
 input: |
-  # Edge AI & Systems Engineer - Infrastrutture Locali e Intelligenza Artificiale
+  # Architetto edge per centri benessere con AI locale
 
-  Stiamo sviluppando un ecosistema tecnologico d'avanguardia per macchinari legati al benessere di lusso e al bio-hacking (saune di design, floating pods, stazioni avanzate di mental training). I nostri dispositivi non solo creano esperienze immersive locali, ma raccolgono dati e interagiscono in tempo reale con l'utente.
-  Per garantire la massima privacy dei dati, resilienza del sistema (funzionamento offline) e zero latenza, abbiamo scelto di non appoggiarci al cloud pubblico per l'elaborazione sensibile. Tutta la nostra architettura si basa sull'Edge Computing e su modelli di Intelligenza Artificiale proprietari che girano localmente all'interno della struttura.
-  Cerchiamo un ingegnere IT brillante ed eclettico che progetti il "cervello centrale locale" che coordinerà le reti, i server e l'AI di ogni centro.
+  Progettiamo dispositivi per centri benessere (cabine di galleggiamento, saune, postazioni di rilassamento guidato) che raccolgono dati e rispondono in tempo reale. Per la privacy dei dati e il funzionamento offline, l'elaborazione resta in locale, senza cloud pubblico.
 
-  ## Il Tuo Ruolo nel Progetto
-  - Architettura Edge & Server locali: progettare, configurare e ottimizzare l'infrastruttura server on-premise (Linux-based) che raccoglie i dati inviati dai singoli macchinari (via MQTT/REST).
-  - Integrazione AI e LLM Locali: distribuire, ottimizzare e mantenere modelli open-source/proprietari in locale (Ollama/vLLM) per personalizzare le sessioni di mental training in tempo reale, senza inviare dati all'esterno.
-  - Networking e Sicurezza (LAN): reti locali isolate, VLAN per separare il traffico dei macchinari dal Wi-Fi ospiti, protocolli di cyber-security.
-  - Deployment e Containerizzazione: Docker per replicare l'infrastruttura in ogni nuovo centro benessere.
+  Cerchiamo chi progetti il server locale di ogni centro: raccolta dati dai dispositivi (MQTT/REST), modelli AI in locale (Ollama/vLLM), rete separata tra dispositivi e Wi-Fi ospiti, installazione replicabile con Docker e Ansible.
 
-  ## Competenze
-  Linux (Ubuntu/Debian), Ansible/Bash, LLM locali, Python, HuggingFace, PyTorch, Docker Compose, PostgreSQL, MongoDB, VLAN, firewall, WireGuard, MQTT (Mosquitto). Protezione dei dati sensibili/biometrici. Collaborazione con il progettista Hardware/Firmware.
+  Competenze: Linux, Docker Compose, PostgreSQL, VLAN, firewall, WireGuard, MQTT. Protezione dei dati sensibili/biometrici.
 
-  Città: Trento · meglio se vicino
+  Città: Bologna · meglio se vicino
   Durata stimata: qualche mese o anno
   Budget: tra 10000 - 30000 €
-  Anche senza P.IVA
 expected: {min: 65, max: 82}
 expected_decision: reserved
 expected_verdicts:
@@ -27,6 +19,6 @@ expected_verdicts:
   budget-floor: pass
   data-compliance: pass
 notes: >
-  A real Italian brief (no personal data). "tra 10000 - 30000 €" is an amount
+  A synthetic Italian brief, modelled on a public listing, (no personal data). "tra 10000 - 30000 €" is an amount
   range, not a phone; "dati sensibili/biometrici" is personal data, so data-
   compliance applies (and passes on "privacy dei dati").

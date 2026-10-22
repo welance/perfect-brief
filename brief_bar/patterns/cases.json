@@ -57,13 +57,13 @@
       ]
     },
     {
-      "id": "it-real-condominio",
+      "id": "it-synthetic-condominio",
       "locale": "it",
       "origin": "human",
-      "text": "# Piattaforma per Amministratore di Condominio Connessa con l'AI\n\nSto cercando uno sviluppatore (o agenzia) che abbia già una soluzione software per amministratori di condominio che possa risultare customizzabile a partire dalla ricerca semantica dal db di tutta la documentazione dello studio. (da integrare con il gestionale già utilizzato dall'amministratore Danea Domustudio e con piattaforma esterna di ricerca fonti normative).\n\nTramite prompting il cliente vuole come focus che l'AI faccia un match tra le recenti normative che ha trovato il cliente su piattaforma esterna da collegare ed il documento che sottopone all'interno dell'applicazione AI da sviluppare o se lo sviluppatore ne ha già una pronta.\n\nTecnologie: Python, OpenAI API, Machine Learning, FastAPI, Git, NLP, PostgreSQL\nCittà: Milano · Full remote\nDurata stimata: qualche mese o anno\nBudget: tra 3000 - 5000 €\n",
+      "text": "# Assistente AI per uno studio di amministrazione condominiale\n\nCerchiamo uno sviluppatore o un'agenzia con un prodotto già pronto per amministratori di condominio, da adattare: ricerca semantica su tutti i documenti dello studio, integrata con il gestionale in uso e con una banca dati di norme esterna.\n\nL'obiettivo è che l'AI confronti le norme più recenti con i documenti caricati dallo studio e segnali cosa cambia.\n\nTecnologie: Python, API LLM, FastAPI, PostgreSQL\nCittà: Torino · Full remote\nDurata stimata: qualche mese o anno\nBudget: tra 3000 - 5000 €",
       "spans": [],
       "data": false,
-      "note": "real brief (no personal data); third-party product name kept",
+      "note": "synthetic brief modelled on a public listing (no third-party text); budget range is not a phone",
       "subjects": [
         [
           "timeline",
@@ -76,14 +76,14 @@
       ]
     },
     {
-      "id": "it-real-edge-ai",
+      "id": "it-synthetic-edge-ai",
       "locale": "it",
       "origin": "human",
-      "text": "# Edge AI & Systems Engineer - Infrastrutture Locali e Intelligenza Artificiale\n\nStiamo sviluppando un ecosistema tecnologico d'avanguardia per macchinari legati al benessere di lusso e al bio-hacking (saune di design, floating pods, stazioni avanzate di mental training). I nostri dispositivi non solo creano esperienze immersive locali, ma raccolgono dati e interagiscono in tempo reale con l'utente.\nPer garantire la massima privacy dei dati, resilienza del sistema (funzionamento offline) e zero latenza, abbiamo scelto di non appoggiarci al cloud pubblico per l'elaborazione sensibile. Tutta la nostra architettura si basa sull'Edge Computing e su modelli di Intelligenza Artificiale proprietari che girano localmente all'interno della struttura.\nCerchiamo un ingegnere IT brillante ed eclettico che progetti il \"cervello centrale locale\" che coordinerà le reti, i server e l'AI di ogni centro.\n\n## Il Tuo Ruolo nel Progetto\n- Architettura Edge & Server locali: progettare, configurare e ottimizzare l'infrastruttura server on-premise (Linux-based) che raccoglie i dati inviati dai singoli macchinari (via MQTT/REST).\n- Integrazione AI e LLM Locali: distribuire, ottimizzare e mantenere modelli open-source/proprietari in locale (Ollama/vLLM) per personalizzare le sessioni di mental training in tempo reale, senza inviare dati all'esterno.\n- Networking e Sicurezza (LAN): reti locali isolate, VLAN per separare il traffico dei macchinari dal Wi-Fi ospiti, protocolli di cyber-security.\n- Deployment e Containerizzazione: Docker per replicare l'infrastruttura in ogni nuovo centro benessere.\n\n## Competenze\nLinux (Ubuntu/Debian), Ansible/Bash, LLM locali, Python, HuggingFace, PyTorch, Docker Compose, PostgreSQL, MongoDB, VLAN, firewall, WireGuard, MQTT (Mosquitto). Protezione dei dati sensibili/biometrici. Collaborazione con il progettista Hardware/Firmware.\n\nCittà: Trento · meglio se vicino\nDurata stimata: qualche mese o anno\nBudget: tra 10000 - 30000 €\nAnche senza P.IVA\n",
+      "text": "# Architetto edge per centri benessere con AI locale\n\nProgettiamo dispositivi per centri benessere (cabine di galleggiamento, saune, postazioni di rilassamento guidato) che raccolgono dati e rispondono in tempo reale. Per la privacy dei dati e il funzionamento offline, l'elaborazione resta in locale, senza cloud pubblico.\n\nCerchiamo chi progetti il server locale di ogni centro: raccolta dati dai dispositivi (MQTT/REST), modelli AI in locale (Ollama/vLLM), rete separata tra dispositivi e Wi-Fi ospiti, installazione replicabile con Docker e Ansible.\n\nCompetenze: Linux, Docker Compose, PostgreSQL, VLAN, firewall, WireGuard, MQTT. Protezione dei dati sensibili/biometrici.\n\nCittà: Bologna · meglio se vicino\nDurata stimata: qualche mese o anno\nBudget: tra 10000 - 30000 €",
       "spans": [],
       "data": true,
       "compliance": true,
-      "note": "real brief: 'dati sensibili/biometrici' is personal data; 'privacy dei dati' is the cue",
+      "note": "synthetic brief modelled on a public listing: 'dati sensibili/biometrici' is personal data; 'privacy dei dati' is the cue",
       "subjects": [
         [
           "timeline",
