@@ -307,7 +307,7 @@ def test_every_route_is_documented_for_humans(client):
     summary, a real description, and the API needs an introduction."""
     spec = client.get("/openapi.json").json()
     assert len(spec["info"]["description"]) > 800
-    assert {t["name"] for t in spec["tags"]} == {"score", "fixes", "ruleset", "meta"}
+    assert {t["name"] for t in spec["tags"]} == {"score", "fixes", "ruleset", "byo", "meta"}
     for path, ops in spec["paths"].items():
         if not path.startswith("/v1/"):
             continue
