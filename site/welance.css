@@ -570,7 +570,7 @@ html[dir=rtl] .wl-close-ast { right: auto; left: -60px; }
 /* the language select is the one control in an otherwise text-only row, so it
    leads — and wraps to its own line first on narrow */
 .wl-foot-legal-lang { display: inline-flex; flex: none; }
-.wl-foot-legal nav { display: inline-flex; gap: 14px; align-items: center; }
+.wl-foot-legal nav { display: inline-flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
 .wl-foot-legal a { color: var(--on-slab-soft); text-decoration: none; }
 .wl-foot-legal a:hover { color: var(--on-slab); text-decoration: underline;
   text-underline-offset: 3px; }
