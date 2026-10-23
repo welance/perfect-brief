@@ -77,6 +77,12 @@ def init(version):
     }
 
 
+def test_the_documented_url_without_a_trailing_slash_answers(client):
+    r = client.post("/mcp", json=init("2025-06-18"), headers=headers(None))
+    assert r.status_code == 200, r.text[:300]
+    assert r.json()["result"]["serverInfo"]["name"] == "perfect-brief"
+
+
 # --- protocol: negotiation, batching, both eras ----------------------------------------
 
 

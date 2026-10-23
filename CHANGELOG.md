@@ -10,6 +10,11 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [1.14.0] - 2026-10-23
 
+### Fixed
+- `POST https://briefs.welance.com/mcp` (the documented URL, no trailing
+  slash) answered 405 from the static site; `/mcp` and `/mcp-hosted` now
+  answer like `/mcp/`, without a redirect.
+
 ### Added
 - **Free, bring-your-own-model Perfect Brief.** `/v1/byo/*` and the remote MCP
   server at `/mcp` hand a client's own model the live bar — `get_rules`,
