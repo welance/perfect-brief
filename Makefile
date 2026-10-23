@@ -1,7 +1,11 @@
-.PHONY: up down logs build test test-e2e test-all test-llm-multilingual test-llm-batching lint fmt typecheck dev score rules health
+.PHONY: up down logs build test test-patterns improve-patterns test-e2e test-all test-llm-multilingual test-llm-batching lint fmt typecheck dev score rules health
 COMPOSE ?= docker compose
 # use the project venv when it exists, so `make test` works without activating
 PYTEST ?= $(shell [ -x .venv/bin/pytest ] && echo .venv/bin/pytest || echo pytest)
+PYTHON ?= $(shell [ -x .venv/bin/python ] && echo .venv/bin/python || echo python)
+# hard caps live in experiments/pattern_loop.py ($1, 8 rounds); these can only lower them
+PATTERN_BUDGET_USD ?= 1
+PATTERN_MAX_ROUNDS ?= 8
 
 up:            ## build + start the service and redis
 	$(COMPOSE) up --build -d
@@ -17,6 +21,10 @@ dev:           ## run locally with autoreload (needs local redis or none)
 
 test:          ## fixture corpus (CI gate) + API + contract tests, all on the mock judge
 	$(PYTEST)
+test-patterns: ## pattern catalogue: dialect, labelled corpus, python + node parity (needs node)
+	$(PYTHON) -m experiments.pattern_harness
+improve-patterns: ## OFFLINE, PAID: LLM proposes catalogue edits, harness scores them; writes experiments/out/ for review (needs PB_OPENROUTER_API_KEY; never in CI)
+	$(PYTHON) -m experiments.pattern_loop --budget-usd $(PATTERN_BUDGET_USD) --max-rounds $(PATTERN_MAX_ROUNDS)
 test-e2e:      ## end-to-end: the real service, every page, 8 languages (needs node)
 	npx playwright test -c tests/e2e/playwright.config.mjs
 test-all:      ## everything that runs offline: python + e2e

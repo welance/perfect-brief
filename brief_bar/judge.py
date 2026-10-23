@@ -16,6 +16,7 @@ import json
 import re
 from typing import Protocol
 
+from . import patterns
 from .score import Finding, Rule, Status, Verdict
 
 VERDICT_JSON_CONTRACT = """
@@ -321,19 +322,6 @@ class MockJudge:
         "unknown",
     ]
     NORISK = ["don't foresee", "no problems", "nessun problema", "no risks"]
-    DATA = [
-        "personal data",
-        "email",
-        "payment",
-        "spid",
-        "account",
-        "identifier",
-        "customer",
-        "booking history",
-        "dati personali",
-        "card",
-    ]
-    COMPLY = ["gdpr", "dpa", "privacy", "lawful basis", "consent", "data protection", "by design"]
     A11Y = ["accessib", "wcag", "screen reader", "keyboard", "a11y", " aa", "en 301", "contrast"]
     PUBLIC = ["public", "website", "page", "portal", "booking", "pubblico", "sito", "landing"]
     TIME = [
@@ -465,33 +453,6 @@ class MockJudge:
         "risico", "aanname", "hangt af",
         "ryzyko", "założenie", "zależy od",
     ]  # fmt: skip
-    DATA_I18N = [
-        "e-mail", "contatti", "nomi e", "nominativi", "pagamento",
-        "personenbezogene daten", "zahlung",
-        "données personnelles", "paiement",
-        "datos personales", "pago",
-        "dados pessoais",
-        "persoonsgegevens", "betaling",
-        "dane osobowe", "płatnoś",
-    ]  # fmt: skip
-    COMPLY_I18N = [
-        "base giuridica", "consenso",
-        "dsgvo", "rechtsgrundlage", "einwilligung",
-        "rgpd", "base légale", "consentement",
-        "base jurídica", "base legal", "consentimiento", "consentimento",
-        "rechtsgrond", "toestemming",
-        "podstawa prawna", "zgoda", " rodo",
-        # retention and the data-protection officer are compliance too; Polish
-        # inflects, so the oblique cases are listed alongside the base forms
-        "tempi di conservazione", "conservazione dei dati",
-        "aufbewahrungsfrist", "löschfrist", "datenschutzbeauftragt",
-        "durée de conservation", "conservation des données",
-        "plazo de conservación", "conservación de los datos",
-        "prazo de conservação", "conservação dos dados",
-        "bewaartermijn", "functionaris gegevensbescherming",
-        "podstawy prawnej", "podstawie prawnej", "ochrony danych", "okres retencji",
-        "okresu przechowywania", "okres przechowywania",
-    ]  # fmt: skip
     A11Y_I18N = [
         "accesib", "acessib", "barrierefrei", "toegankelijk", "dostępnoś", "lettore di schermo",
         "tastiera", "contrasto",
@@ -508,8 +469,10 @@ class MockJudge:
     TEAM = TEAM + TEAM_I18N
     TECH = TECH + TECH_I18N
     RISK = RISK + RISK_I18N
-    DATA = DATA + DATA_I18N
-    COMPLY = COMPLY + COMPLY_I18N
+    # personal-data and compliance cues live in the shared pattern catalogue
+    # (every service locale, sensitive/biometric/health data included)
+    DATA = patterns.bundled().keywords["data"]
+    COMPLY = patterns.bundled().keywords["compliance"]
     A11Y = A11Y + A11Y_I18N
     PUBLIC = PUBLIC + PUBLIC_I18N
 
@@ -585,15 +548,11 @@ class MockJudge:
                 else _v(rid, "fail", 0.7, "no timeline", "name a deadline or milestone")
             )
         if rid == "anonymised":
-            hits = []
-            # A long token with no email must not trigger quadratic retries at
-            # every character. The boundary preserves the same email matches.
-            if re.search(r"(?<![\w.+-])[\w.+-]+@[\w-]+\.[\w.]+", t):
-                hits.append("an email")
-            if re.search(r"https?://", t):
-                hits.append("a URL")
-            if re.search(r"\+?\d[\d ()\-]{7,}\d", t):
-                hits.append("a phone number")
+            # emails, URLs and phones come from the shared deterministic catalogue,
+            # which keeps amounts, ranges, dates and tax ids from reading as phones
+            kinds = {sp.kind for sp in patterns.contact_spans(text)}
+            labels = (("email", "an email"), ("url", "a URL"), ("phone", "a phone number"))
+            hits = [label for kind, label in labels if kind in kinds]
             if _has(t, self.BRAND):
                 hits.append("a brand name")
             if _has(t, self.SUFFIX):

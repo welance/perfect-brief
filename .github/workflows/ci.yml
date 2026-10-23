@@ -9,14 +9,15 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
+      # before pytest: tests/test_patterns.py runs the catalogue on node too
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
       - name: lint
         run: ruff check .
       - name: types
         run: mypy app brief_bar
       - name: fixture corpus + api (mock judge, deterministic)
         run: pytest
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
       - name: document import boundaries and extraction
         run: node --test tests/site/*.test.mjs
