@@ -183,6 +183,7 @@ WelanceI18n.register("de", {
     "chrome.menu": "Menü",
     "chrome.outTitle": "das Schwarze Brett, das dieses Regelwerk nutzt",
     "chrome.privacy": "Datenschutz",
+    "chrome.terms": "Nutzungsbedingungen",
     "chrome.startBriefSub": "Gegen die vierzehn öffentlichen Regeln, im Browser",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "Ein Schwarzes Brett, das dieses Regelwerk nutzt. Briefings bleiben blind, bis ein Team eines übernimmt.",

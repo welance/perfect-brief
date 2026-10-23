@@ -182,6 +182,7 @@ WelanceI18n.register("it", {
     "chrome.menu": "menu",
     "chrome.outTitle": "la bacheca che usa questo regolamento",
     "chrome.privacy": "Privacy",
+    "chrome.terms": "Termini",
     "chrome.startBriefSub": "Contro le quattordici regole pubbliche, nel browser",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "Una bacheca che usa questo regolamento. I brief restano ciechi finché un team non ne prende uno.",

@@ -47,14 +47,25 @@ INSTRUCTIONS = (
     "Read the rules (get_rules), judge the brief with your own model using get_judge_prompt, then "
     "send your JSON verdicts to aggregate_verdicts: the bar's own code computes score, gate and "
     "decision. Fix the gate first. Never state a score you did not get from aggregate_verdicts, and "
-    "say it is client-judged and advisory: only the welance/directory's own scoring can publish."
+    "say it is client-judged and advisory: only the welance/directory's own scoring can publish. "
+    "Privacy: https://briefs.welance.com/privacy.html. Terms: https://briefs.welance.com/terms.html."
 )
 
 READ_ONLY = ToolAnnotations(
     read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=False
 )
+# The opt-in service-judge tools (score_brief, suggest_fixes) change nothing either,
+# but they send the brief to a model provider through OpenRouter: open world.
+SERVICE_JUDGE = ToolAnnotations(
+    read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=True
+)
 
-server = MCPServer("perfect-brief", instructions=INSTRUCTIONS)
+server = MCPServer(
+    "perfect-brief",
+    title="brief bar",
+    website_url="https://briefs.welance.com",
+    instructions=INSTRUCTIONS,
+)
 
 # The free per-address limit from app.main, bound after it is defined. Kept
 # behind a name so this module never imports main (which imports this one).
@@ -94,7 +105,7 @@ def _verdict_list(verdicts: list[dict[str, Any]] | str) -> Any:
 # ---- tools ---------------------------------------------------------------------
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Read the brief rules", annotations=READ_ONLY)
 async def get_rules(ctx: Context) -> dict:
     """Read the bar before judging anything. Free; no model runs.
 
@@ -107,7 +118,7 @@ async def get_rules(ctx: Context) -> dict:
     return await _free(ctx, byo.rules_payload)
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get a brief template", annotations=READ_ONLY)
 async def get_brief_template(ctx: Context) -> dict:
     """A brief template built from the live rules, with the inputs each section needs.
 
@@ -117,7 +128,7 @@ async def get_brief_template(ctx: Context) -> dict:
     return await _free(ctx, byo.template_payload)
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get the judge prompt", annotations=READ_ONLY)
 async def get_judge_prompt(ctx: Context, brief: str = "") -> dict:
     """The judge prompt and verdict JSON Schema, for YOUR model to answer. Free.
 
@@ -131,7 +142,7 @@ async def get_judge_prompt(ctx: Context, brief: str = "") -> dict:
     return await _free(ctx, lambda: byo.judge_prompt_payload(brief or None))
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get an improvement prompt", annotations=READ_ONLY)
 async def get_improvement_prompt(
     ctx: Context,
     brief: str,
@@ -149,7 +160,7 @@ async def get_improvement_prompt(
     return await _free(ctx, lambda: byo.improvement_prompt_payload(brief, parsed, directory_context))
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Run deterministic checks", annotations=READ_ONLY)
 async def check_brief(ctx: Context, brief: str, directory_context: bool = True) -> dict:
     """Deterministic checks only — semantic coverage is INCOMPLETE. Never a score.
 
@@ -163,7 +174,7 @@ async def check_brief(ctx: Context, brief: str, directory_context: bool = True) 
     return await _free(ctx, lambda: byo.check_payload(brief, directory_context))
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Score from your verdicts", annotations=READ_ONLY)
 async def aggregate_verdicts(
     ctx: Context,
     brief: str,
@@ -189,7 +200,7 @@ async def aggregate_verdicts(
     return await _free(ctx, lambda: byo.aggregate_payload(brief, parsed, ruleset_version, directory_context))
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Bar status", annotations=READ_ONLY)
 async def bar_status(ctx: Context) -> dict:
     """Which ruleset version is live, and what this free surface can do.
 
@@ -202,19 +213,19 @@ async def bar_status(ctx: Context) -> dict:
 # ---- prompts (with the tool equivalents above for clients that hide prompts) ----
 
 
-@server.prompt()
+@server.prompt(title="Judge a brief")
 def judge_brief(brief: str = "") -> str:
     """The judge prompt with the brief in it: answer with the JSON array, then aggregate_verdicts."""
     return byo.judge_prompt_payload(brief or None)["prompt"]
 
 
-@server.prompt()
+@server.prompt(title="Improve a brief")
 def improve_brief(brief: str = "") -> str:
     """A working order for turning a draft into a publishable brief, with your own model."""
     return byo.improvement_prompt_text(brief)
 
 
-@server.prompt()
+@server.prompt(title="Brief template")
 def brief_template() -> str:
     """The brief template built from the live rules, as Markdown to fill in."""
     return byo.template_payload()["template"]
@@ -223,25 +234,27 @@ def brief_template() -> str:
 # ---- resources ---------------------------------------------------------------------
 
 
-@server.resource("perfect-brief://rules", mime_type="application/json")
+@server.resource("perfect-brief://rules", title="Rules", mime_type="application/json")
 def rules_resource() -> str:
     """The live ruleset and its arithmetic (same as get_rules)."""
     return json.dumps(byo.rules_payload(), ensure_ascii=False)
 
 
-@server.resource("perfect-brief://template", mime_type="text/markdown")
+@server.resource("perfect-brief://template", title="Brief template", mime_type="text/markdown")
 def template_resource() -> str:
     """The brief template (same as get_brief_template)."""
     return byo.template_payload()["template"]
 
 
-@server.resource("perfect-brief://judge-prompt", mime_type="text/plain")
+@server.resource("perfect-brief://judge-prompt", title="Judge prompt", mime_type="text/plain")
 def judge_prompt_resource() -> str:
     """The judge prompt with a {{BRIEF}} placeholder (same as get_judge_prompt without a brief)."""
     return byo.judge_prompt_payload(None)["prompt"]
 
 
-@server.resource("perfect-brief://verdict-schema", mime_type="application/schema+json")
+@server.resource(
+    "perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json"
+)
 def verdict_schema_resource() -> str:
     """The JSON Schema a verdict array must meet."""
     return json.dumps(byo.judge_prompt_payload(None)["verdict_schema"])
@@ -254,6 +267,8 @@ def verdict_schema_resource() -> str:
 
 hosted = MCPServer(
     "brief-bar-hosted",
+    title="brief bar (service judge)",
+    website_url="https://briefs.welance.com",
     instructions=(
         "A bar for digital product briefs that the assistant does not control. "
         "Read the rules first, score with the tool, fix the gate before anything "
@@ -286,7 +301,7 @@ async def _guarded(ctx: Context, call: Callable[[Request], Awaitable[Any]]) -> A
     return result.model_dump() if hasattr(result, "model_dump") else result
 
 
-@hosted.tool(name="get_rules")
+@hosted.tool(name="get_rules", title="Read the brief rules", annotations=READ_ONLY)
 async def hosted_get_rules(ctx: Context) -> dict:
     """Read the bar before judging anything.
 
@@ -299,7 +314,7 @@ async def hosted_get_rules(ctx: Context) -> dict:
     return await _guarded(ctx, lambda _r: _rules())
 
 
-@hosted.tool()
+@hosted.tool(title="Score with the service judge", annotations=SERVICE_JUDGE)
 async def score_brief(
     ctx: Context,
     brief: str,
@@ -324,7 +339,7 @@ async def score_brief(
     return await _guarded(ctx, lambda r: _score(req, r, None))
 
 
-@hosted.tool()
+@hosted.tool(title="Suggest fixes", annotations=SERVICE_JUDGE)
 async def suggest_fixes(ctx: Context, brief: str, rule_ids: list[str] | None = None) -> list[dict]:
     """Ready-to-paste insertions for the rules a brief fails, written by the service model
     and reviewed by a second one. Drafts for a human to accept, edit or reject."""
@@ -336,7 +351,7 @@ async def suggest_fixes(ctx: Context, brief: str, rule_ids: list[str] | None = N
     return [s.model_dump() if hasattr(s, "model_dump") else s for s in out]
 
 
-@hosted.tool(name="bar_status")
+@hosted.tool(name="bar_status", title="Bar status", annotations=READ_ONLY)
 async def hosted_bar_status(ctx: Context) -> dict:
     """Which ruleset version is live, and whether a real judge is configured."""
     assert _health is not None

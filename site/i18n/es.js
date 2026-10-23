@@ -182,6 +182,7 @@ WelanceI18n.register("es", {
     "chrome.menu": "menú",
     "chrome.outTitle": "el tablón que usa este reglamento",
     "chrome.privacy": "Privacidad",
+    "chrome.terms": "Términos",
     "chrome.startBriefSub": "Contra las catorce reglas públicas, en el navegador",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "Un tablón que usa este reglamento. Los briefs siguen ciegos hasta que un equipo toma uno.",

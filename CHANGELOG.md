@@ -8,6 +8,26 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+### Added
+- `/privacy.html` and `/terms.html` (also `/privacy`, `/terms`): what the
+  hosted service and its MCP connector receive, keep and for how long, the
+  operators, the OpenRouter sub-processor for model-judged calls, and the
+  terms of use for the hosted service. Linked from the site footer, the
+  README and the MCP server instructions.
+- `GET /.well-known/openai-apps-challenge` returns `PB_OPENAI_APPS_CHALLENGE`
+  as `text/plain` for OpenAI's plugin domain verification (404 while unset).
+- The site serves clean URLs: `/rules` is `rules.html`, as on GitHub Pages.
+
+### Fixed
+- MCP listings: every tool on `/mcp`, `/mcp-hosted` and the stdio server now
+  has a human `title` and explicit `readOnlyHint`, `destructiveHint`,
+  `idempotentHint` and `openWorldHint` (Claude's connectors directory rejects
+  tools without a title). Prompts and resources have titles; the server info
+  carries the title `brief bar` and `websiteUrl`. The opt-in `score_brief` and
+  `suggest_fixes` are marked open-world: they send the brief to a model.
+- The footer's Privacy link pointed at welance.com's own policy; it now
+  points at the service's page, with Terms beside it.
+
 ## [1.14.0] - 2026-10-23
 
 ### Fixed

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Privacy — brief bar</title>
+<meta name="description" content="What brief bar and its MCP connector receive, what they keep and for how long, and who else sees it.">
+<script>/* theme before paint: no flash of the wrong one */
+(function(){try{var t=localStorage.getItem("welance-theme");
+if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
+<link rel="stylesheet" href="welance.css">
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.65; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); margin-bottom: var(--sp-5); }
+  .thesis { font-size: var(--fs-lead); max-width: 56ch; margin: var(--sp-3) 0 0; }
+  h2 { font-size: var(--fs-lg); font-weight: 600; letter-spacing: -.01em; margin: var(--sp-6) 0 var(--sp-2); }
+  p, li { max-width: 68ch; }
+  p { margin: 0 0 var(--flow); }
+  ul { margin: 0 0 var(--flow); padding-inline-start: 1.2em; }
+  li { margin: 0 0 var(--sp-2); }
+  code { font-family: var(--mono); font-size: .92em; overflow-wrap: anywhere; }
+  .small { font-size: var(--fs-md); color: var(--ink-soft); }
+  address { font-style: normal; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur">privacy</span></p>
+<div class="wrap">
+  <header>
+    <h1>Privacy<span class="b">_</span></h1>
+    <p class="thesis">What brief bar receives, what it keeps and for how long, and who else sees it. No accounts, no cookies, no analytics.</p>
+  </header>
+
+  <h2>Who runs it</h2>
+  <p>brief bar at briefs.welance.com (the pages, the <code>/v1</code> API and the MCP connector at <code>/mcp</code>) is run by welance:</p>
+  <address>
+    <p>welance ventures GmbH, Dorfstraße 402, 15345 Prötzel, Germany. Amtsgericht Frankfurt (Oder), HRB 20945 FF. VAT ID DE313216886.</p>
+    <p>welance ventures Italia S.R.L., 12050 Lequio Berria (CN), Italy. P.IVA IT04021150042.</p>
+  </address>
+  <p>Contact for anything on this page: <a href="mailto:hello@welance.com">hello@welance.com</a>. Security reports: <a href="mailto:security@welance.com">security@welance.com</a>. Full company details: <a href="https://welance.com/imprint">welance.com/imprint</a>.</p>
+
+  <h2>The MCP connector (/mcp)</h2>
+  <ul>
+    <li><strong>What it receives.</strong> The arguments your AI client sends to a tool: the brief text, your model's verdicts, the ruleset version and a few switches. Three tools take no input at all.</li>
+    <li><strong>What it does with them.</strong> Computes the answer in memory and sends it back. It calls no language model, makes no other network request, and writes nothing: no database, no cache, no log of the brief or the verdicts.</li>
+    <li><strong>Who judges.</strong> Your own AI client's model, under your provider's terms (for example Anthropic for Claude, OpenAI for ChatGPT). We never see that conversation, only the tool calls.</li>
+  </ul>
+  <p>The local server you install with <code>perfect-brief-mcp</code> sends the same arguments to the same free routes (<code>/v1/byo/*</code>), which behave the same way.</p>
+
+  <h2>The scoring API (/v1)</h2>
+  <ul>
+    <li><strong>What it receives.</strong> The brief text and its options. Text only, never files: a document you open in the console is read in your browser.</li>
+    <li><strong>The model judge.</strong> When a request asks for the model judge (the console's AI judge, the welance/directory, or any caller of <code>/v1/score</code> and <code>/v1/suggest</code>), the brief is sent to <a href="https://openrouter.ai">OpenRouter</a>, which passes it to the model provider for that call. The models a request may use are listed at <a href="/v1/models"><code>/v1/models</code></a>. Once a brief leaves us, OpenRouter's and that provider's terms apply.</li>
+    <li><strong>Your own key.</strong> An OpenRouter key sent in <code>x-llm-key</code> is used for that one call and is never stored or logged.</li>
+    <li><strong>The keyword judge</strong> and the free <code>/v1/byo/*</code> routes call no model.</li>
+  </ul>
+
+  <h2>What is kept, and for how long</h2>
+  <ul>
+    <li><strong>The brief itself:</strong> not stored.</li>
+    <li><strong>Model verdicts and suggestions:</strong> cached for 24 hours so the same brief is not judged twice. The cache key is a SHA-256 hash of the brief, with the ruleset version and model. A verdict holds the rule, the result, a confidence and a short quote copied from the brief as evidence; a suggestion holds the proposed sentence. Nothing is cached when you send your own key, and a score request with <code>no_cache: true</code> skips the cache. The MCP connector caches nothing.</li>
+    <li><strong>Rate limits:</strong> one counter per IP address (or per <code>X-API-Key</code> value), stored as a SHA-256 hash, deleted when its one-minute window ends.</li>
+    <li><strong>Server logs:</strong> our web server and hosting platform record each request's IP address, time, method, path and status. Model calls are logged with the model, status and duration. Brief text and keys are never written to the logs.</li>
+  </ul>
+
+  <h2>In your browser</h2>
+  <p>No cookies and no analytics. The pages remember your theme and language in your browser's local storage, and the landing page hands a brief you typed to the console the same way; the console deletes it on reading. The pages load fonts from welance.com, and the console also loads fonts from Google Fonts, so those servers see your IP address.</p>
+
+  <h2>What we do not do</h2>
+  <p>We do not sell or share what you send, we do not train models on it, and we do not contact anyone because of what a brief said. The <a href="https://github.com/welance/perfect-brief/blob/main/OPERATOR-COVENANT.md">Operator Covenant</a> binds welance to this. There are no accounts and nothing to sign up for.</p>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you may ask what we hold about you, and have it corrected or deleted; you may also complain to a data protection authority. As we keep no accounts and no briefs, there is usually nothing to find beyond short-lived cache entries and server logs. Write to <a href="mailto:hello@welance.com">hello@welance.com</a>. To stop using the connector, remove it from your AI client.</p>
+
+  <p class="small">The code that makes these statements true is open: <a href="https://github.com/welance/perfect-brief">github.com/welance/perfect-brief</a>. See also <a href="data.html">Your brief, your key</a>, <a href="security.html">Security</a> and the <a href="terms.html">Terms</a>. Last updated 23 October 2026.</p>
+</div>
+<div id="site-footer"></div>
+</body>
+</html>

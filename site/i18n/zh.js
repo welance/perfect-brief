@@ -14,6 +14,7 @@ WelanceI18n.register("zh", {
     "chrome.legal": "© 2011–2026 welance · MIT",
     "chrome.outTitle": "运行这套规则的布告板",
     "chrome.privacy": "隐私",
+    "chrome.terms": "条款",
     "chrome.startBriefSub": "在浏览器里，对照十四条公开规则",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "一个运行这套规则的布告板。brief 保持匿名，直到有团队接手。",

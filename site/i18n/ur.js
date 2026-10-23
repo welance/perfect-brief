@@ -182,6 +182,7 @@ WelanceI18n.register("ur", {
     "chrome.menu": "مینو",
     "chrome.outTitle": "وہ نوٹس بورڈ جو یہ ضابطہ چلاتا ہے",
     "chrome.privacy": "پرائیویسی",
+    "chrome.terms": "شرائط",
     "chrome.startBriefSub": "چودہ عوامی اصولوں کے مطابق، براؤزر میں",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "ایک نوٹس بورڈ جو یہ ضابطہ چلاتا ہے۔ بریف اس وقت تک گمنام رہتے ہیں جب تک کوئی ٹیم انہیں نہ اٹھائے۔",

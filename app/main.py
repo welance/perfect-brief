@@ -480,6 +480,17 @@ async def post_suggest_all(
 app.include_router(byo.router(rate_limit))
 
 
+# OpenAI's app review proves domain ownership by fetching this path and finding
+# the token its portal issued. Plain text, the token only; 404 until an operator
+# sets PB_OPENAI_APPS_CHALLENGE, so an unset deploy never claims anything.
+@app.get("/.well-known/openai-apps-challenge", include_in_schema=False)
+async def openai_apps_challenge() -> Response:
+    token = settings().openai_apps_challenge.strip()
+    if not token:
+        raise HTTPException(status_code=404, detail="not found")
+    return Response(token, media_type="text/plain", headers={"Cache-Control": "no-cache"})
+
+
 # ---- the public pages (same files GitHub Pages serves) ---------------------
 
 if SITE.exists():
@@ -608,6 +619,9 @@ if SITE.exists():
             page = PAGES.get(name) or PAGES.get(f"{name.rstrip('/')}/index.html")
             if page is None and name.rstrip("/") in LANGS:
                 page = PAGES.get(f"{name.rstrip('/')}/index.html")
+            if page is None and "." not in name.rstrip("/").rsplit("/", 1)[-1]:
+                # clean URLs, as GitHub Pages serves them: /privacy is privacy.html
+                page = PAGES.get(f"{name.rstrip('/')}.html")
             if page is not None:
                 return HTMLResponse(page, headers={"Cache-Control": "no-cache"})
             return await super().get_response(path, scope)
