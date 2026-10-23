@@ -1,6 +1,6 @@
 [project]
 name = "brief-bar-mcp"
-version = "1.13.9"
+version = "1.14.0"
 description = "Perfect Brief MCP server (free, bring your own model): judge a digital product brief with your own model against an open, versioned ruleset; the bar's code does the arithmetic."
 readme = "README.md"
 requires-python = ">=3.10"

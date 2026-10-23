@@ -8,6 +8,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-10-23
+
 ### Added
 - **Free, bring-your-own-model Perfect Brief.** `/v1/byo/*` and the remote MCP
   server at `/mcp` hand a client's own model the live bar — `get_rules`,
