@@ -116,6 +116,9 @@ class Settings(BaseSettings):
     mcp_hosted_enabled: bool = False
     # Where every advisory result points a reader who wants a team.
     directory_url: str = "https://welance.com/directory?utm_source=perfect-brief&utm_medium=mcp"
+    # The domain-verification token from OpenAI's plugin portal, served as
+    # text/plain at /.well-known/openai-apps-challenge. Empty = 404.
+    openai_apps_challenge: str = ""
 
 
 @lru_cache(maxsize=1)
