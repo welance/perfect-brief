@@ -24,7 +24,13 @@ def test_the_legal_pages_answer_at_every_spelling(client, path):
 
 def test_the_privacy_page_names_the_operators_and_the_sub_processor(client):
     text = client.get("/privacy").text
-    for fact in ("welance ventures GmbH", "welance ventures Italia S.R.L.", "OpenRouter", "24 hours", "SHA-256"):
+    for fact in (
+        "welance ventures GmbH",
+        "welance ventures Italia S.R.L.",
+        "OpenRouter",
+        "24 hours",
+        "SHA-256",
+    ):
         assert fact in text, fact
 
 
