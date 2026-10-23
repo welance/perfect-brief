@@ -108,6 +108,15 @@ class Settings(BaseSettings):
     byok_max_chars: Annotated[int, Field(ge=64, le=4096)] = 512
     cors_origins: list[str] = ["*"]
 
+    # The free MCP at /mcp is bring-your-own-model and never calls a provider.
+    # The older connector whose tools spend the service judge (score_brief,
+    # suggest_fixes) is kept, separately, at /mcp-hosted — off unless an
+    # operator turns it on, and then under the same per-address limits as
+    # /v1/score. The directory itself never needs it: it calls /v1/score.
+    mcp_hosted_enabled: bool = False
+    # Where every advisory result points a reader who wants a team.
+    directory_url: str = "https://welance.com/directory?utm_source=perfect-brief&utm_medium=mcp"
+
 
 @lru_cache(maxsize=1)
 def settings() -> Settings:

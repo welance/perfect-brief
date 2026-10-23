@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from contextlib import asynccontextmanager
+from contextlib import AsyncExitStack, asynccontextmanager
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -18,7 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from brief_bar.llm import JudgeUnparsable
 
-from . import cache, llm_client, mcp_http, scorer
+from . import byo, cache, llm_client, mcp_http, scorer
 from .llm_client import JudgeTruncated, LLMNotConfigured, ModelNotAllowed
 from .models import (
     Health,
@@ -53,8 +53,12 @@ async def lifespan(app: FastAPI):
         llm_client.configured(),
     )
     try:
-        # the hosted MCP connector's session manager lives and dies with the app
-        async with mcp_http.server.session_manager.run():
+        # the MCP connectors' session managers live and die with the app
+        async with AsyncExitStack() as stack:
+            if SITE.exists():
+                await stack.enter_async_context(mcp_http.server.session_manager.run())
+                if settings().mcp_hosted_enabled:
+                    await stack.enter_async_context(mcp_http.hosted.session_manager.run())
             yield
     finally:
         await llm_client.close_openrouter_client()
@@ -105,6 +109,12 @@ TAGS = [
     {
         "name": "ruleset",
         "description": "The bar itself: every rule, its weight, its criteria and its sources, with the version that ties them together.",
+    },
+    {
+        "name": "byo",
+        "description": "Free, bring your own model: the judge prompt and verdict schema for your model, "
+        "deterministic checks, and aggregation of your verdicts with the same engine. No model runs "
+        "here; results are client-judged and advisory, never a publication decision.",
     },
     {
         "name": "meta",
@@ -450,6 +460,11 @@ async def post_suggest_all(
         raise HTTPException(status_code=502, detail=UPSTREAM_ERROR) from exc
 
 
+# ---- bring your own model: free, no provider call ---------------------------
+
+app.include_router(byo.router(rate_limit))
+
+
 # ---- the public pages (same files GitHub Pages serves) ---------------------
 
 if SITE.exists():
@@ -587,11 +602,14 @@ if SITE.exists():
             response.headers["Cache-Control"] = "no-cache"
             return response
 
-    # the hosted MCP connector: the same four tools as mcp-server/, for chats in
-    # the browser that can add a remote server but cannot call the API themselves
+    # the MCP connectors. /mcp is the free bring-your-own-model surface (the
+    # same tools as mcp-server/); /mcp-hosted spends the service judge and is
+    # off unless an operator enables it.
     mcp_http.bind(
         rules=get_rules, health=healthz, score=post_score, suggest_all=post_suggest_all, free_limit=rate_limit
     )
+    if settings().mcp_hosted_enabled:
+        app.mount("/mcp-hosted", mcp_http.hosted_asgi_app(), name="mcp-hosted")
     app.mount("/mcp", mcp_http.asgi_app(), name="mcp")
     app.mount("/a", Immutable(directory=str(SITE)), name="assets")
     app.mount("/", Site(directory=str(SITE), html=True), name="site")
