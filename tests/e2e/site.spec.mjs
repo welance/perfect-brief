@@ -187,6 +187,15 @@ test.describe("nine languages, one choice", () => {
 });
 
 test.describe("the ways in", () => {
+  test("Italian MCP instructions preserve code markup and the uv link", async ({ page }) => {
+    await page.goto("/integrate.html?lang=it");
+    const step = page.locator("[data-i18n-html='int.s1']");
+    await expect(step).toContainText("Non installi nulla");
+    await expect(step.locator("code")).toHaveText(["uvx", "pipx"]);
+    await expect(step.getByRole("link", { name: "uv", exact: true }))
+      .toHaveAttribute("href", "https://docs.astral.sh/uv/");
+  });
+
   test("every route on the integrate page leads somewhere real", async ({ page, request }) => {
     await page.goto("/integrate.html");
     await expect(page.locator(".route")).toHaveCount(4);
