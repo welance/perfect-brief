@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Terms — brief bar</title>
+<meta name="description" content="The terms for using the hosted brief bar service, its API and its MCP connector.">
+<script>/* theme before paint: no flash of the wrong one */
+(function(){try{var t=localStorage.getItem("welance-theme");
+if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="brief bar">
+<link rel="stylesheet" href="welance.css">
+<script src="i18n.js"></script>
+<script src="i18n/de.js"></script>
+<script src="i18n/it.js"></script>
+<script src="i18n/ur.js"></script>
+<script src="i18n/pt-BR.js"></script>
+<script src="i18n/vi.js"></script>
+<script src="i18n/ar.js"></script>
+<script src="i18n/es.js"></script>
+<script src="i18n/zh.js"></script>
+<script src="chrome.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--disp); font-size: var(--fs-base); line-height: 1.65; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-x) var(--sp-8); }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { padding: var(--sp-5) 0; border-bottom: 2px solid var(--ink); margin-bottom: var(--sp-5); }
+  .thesis { font-size: var(--fs-lead); max-width: 56ch; margin: var(--sp-3) 0 0; }
+  h2 { font-size: var(--fs-lg); font-weight: 600; letter-spacing: -.01em; margin: var(--sp-6) 0 var(--sp-2); }
+  p, li { max-width: 68ch; }
+  p { margin: 0 0 var(--flow); }
+  ul { margin: 0 0 var(--flow); padding-inline-start: 1.2em; }
+  li { margin: 0 0 var(--sp-2); }
+  code { font-family: var(--mono); font-size: .92em; overflow-wrap: anywhere; }
+  .small { font-size: var(--fs-md); color: var(--ink-soft); }
+  address { font-style: normal; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<p class="wl-crumb"><span class="dot"></span><span class="cur">terms</span></p>
+<div class="wrap">
+  <header>
+    <h1>Terms<span class="b">_</span></h1>
+    <p class="thesis">The rules for using the hosted brief bar at briefs.welance.com. They are short on purpose.</p>
+  </header>
+
+  <h2>What these terms cover</h2>
+  <p>The hosted service at briefs.welance.com: its pages, the <code>/v1</code> API and the MCP connector at <code>/mcp</code>, run by welance ventures GmbH and welance ventures Italia S.R.L. (<a href="https://welance.com/imprint">company details</a>). The code and the ruleset are open source under the <a href="https://github.com/welance/perfect-brief/blob/main/LICENSE">MIT licence</a>; that licence, not these terms, governs what you do with them, including running your own copy.</p>
+
+  <h2>Free and as-is</h2>
+  <p>The service is free and provided as-is, without warranty of any kind and without a service level. We may change, limit or stop it at any time. Scores, gates and suggestions are advice about a text, not professional, legal or financial advice. Results from the MCP connector are judged by your own AI model and are advisory: they never decide whether a brief may publish on the welance/directory, which scores every brief itself.</p>
+
+  <h2>Rate limits</h2>
+  <p>Each address may make a limited number of calls per minute (currently 60, and 10 for calls that use our model). Over the limit you get HTTP 429 and can try again a minute later. Limits may change without notice.</p>
+
+  <h2>Acceptable use</h2>
+  <ul>
+    <li>Send only text you are allowed to share. Do not send other people's personal data or confidential information without the right to do so.</li>
+    <li>Do not attack, overload or probe the service, and do not work around its rate limits.</li>
+    <li>Do not use it for anything unlawful.</li>
+  </ul>
+  <p>We may block traffic that breaks these rules.</p>
+
+  <h2>Your content</h2>
+  <p>Your briefs stay yours. You allow us to process them only to answer your request, as described in the <a href="privacy.html">privacy notice</a>.</p>
+
+  <h2>Liability</h2>
+  <p>To the extent the law allows, welance is not liable for any loss arising from using the service or relying on its results. Nothing here limits liability that the law does not allow us to limit.</p>
+
+  <h2>Contact</h2>
+  <p><a href="mailto:hello@welance.com">hello@welance.com</a>. Last updated 23 October 2026.</p>
+</div>
+<div id="site-footer"></div>
+</body>
+</html>

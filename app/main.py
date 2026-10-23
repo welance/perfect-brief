@@ -480,6 +480,7 @@ async def post_suggest_all(
 app.include_router(byo.router(rate_limit))
 
 
+
 # ---- the public pages (same files GitHub Pages serves) ---------------------
 
 if SITE.exists():
@@ -608,6 +609,9 @@ if SITE.exists():
             page = PAGES.get(name) or PAGES.get(f"{name.rstrip('/')}/index.html")
             if page is None and name.rstrip("/") in LANGS:
                 page = PAGES.get(f"{name.rstrip('/')}/index.html")
+            if page is None and "." not in name.rstrip("/").rsplit("/", 1)[-1]:
+                # clean URLs, as GitHub Pages serves them: /privacy is privacy.html
+                page = PAGES.get(f"{name.rstrip('/')}.html")
             if page is not None:
                 return HTMLResponse(page, headers={"Cache-Control": "no-cache"})
             return await super().get_response(path, scope)

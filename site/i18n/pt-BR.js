@@ -182,6 +182,7 @@ WelanceI18n.register("pt-BR", {
     "chrome.menu": "menu",
     "chrome.outTitle": "o mural que usa este conjunto de regras",
     "chrome.privacy": "Privacidade",
+    "chrome.terms": "Termos",
     "chrome.startBriefSub": "Contra as catorze regras públicas, no navegador",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "Um mural que usa este conjunto de regras. Os briefs ficam cegos até um time pegar um.",

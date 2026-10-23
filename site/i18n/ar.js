@@ -182,6 +182,7 @@ WelanceI18n.register("ar", {
     "chrome.menu": "القائمة",
     "chrome.outTitle": "لوحة الإعلانات التي تعمل بهذه القواعد",
     "chrome.privacy": "الخصوصية",
+    "chrome.terms": "الشروط",
     "chrome.startBriefSub": "وفق القواعد الأربع عشرة العلنية، في المتصفح",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "لوحة إعلانات واحدة تعمل بهذه القواعد. تبقى الموجزات عمياء حتى يأخذها فريق.",

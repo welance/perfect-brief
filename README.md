@@ -9,6 +9,7 @@
 | **[API docs](https://briefs.welance.com/docs)** | OpenAPI, every field described |
 | **[Integrate](https://briefs.welance.com/integrate.html)** | four routes into your workflow: console · prompt · **MCP** · API |
 | **[Your brief, your key](https://briefs.welance.com/data.html)** | what travels where, what we keep, and how to bring your own key |
+| **[Privacy](https://briefs.welance.com/privacy.html)** · **[Terms](https://briefs.welance.com/terms.html)** | the hosted service and its MCP connector: who runs it, what is kept and for how long, fair use |
 | **[llms.txt](https://briefs.welance.com/llms.txt)** | the bar, written for machines — point your assistant at it |
 
 Eight languages, no build step, no tracking. Same origin serves the pages and

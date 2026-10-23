@@ -326,7 +326,8 @@
       '<nav><button class="wl-theme" type="button" aria-label="' +
         tt("chrome.theme", "light or dark") + '"></button>' +
       '<a href="https://welance.com/imprint">' + tt("chrome.imprint", "Imprint") + "</a>" +
-      '<a href="https://welance.com/privacy">' + tt("chrome.privacy", "Privacy") + "</a>" +
+      '<a href="privacy.html">' + tt("chrome.privacy", "Privacy") + "</a>" +
+      '<a href="terms.html">' + tt("chrome.terms", "Terms") + "</a>" +
       '<a href="https://otto.welance.com" rel="nofollow" target="_blank">' + tt("chrome.login", "Login") + "</a></nav></div>" +
       "</div></div></footer>";
     wireTheme(host);

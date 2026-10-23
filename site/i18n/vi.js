@@ -182,6 +182,7 @@ WelanceI18n.register("vi", {
     "chrome.menu": "menu",
     "chrome.outTitle": "bảng tin chạy bộ quy tắc này",
     "chrome.privacy": "Quyền riêng tư",
+    "chrome.terms": "Điều khoản",
     "chrome.startBriefSub": "Theo mười bốn quy tắc công khai, ngay trong trình duyệt",
     "chrome.startDirectory": "welance/Directory",
     "chrome.startDirectorySub": "Một bảng tin chạy bộ quy tắc này. Brief ẩn danh cho đến khi một đội nhận.",
