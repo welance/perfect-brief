@@ -1,0 +1,23 @@
+id: 0007-real-budget-range-it
+input_type: brief
+input: |
+  # Assistente AI per uno studio di amministrazione condominiale
+
+  Cerchiamo uno sviluppatore o un'agenzia con un prodotto già pronto per amministratori di condominio, da adattare: ricerca semantica su tutti i documenti dello studio, integrata con il gestionale in uso e con una banca dati di norme esterna.
+
+  L'obiettivo è che l'AI confronti le norme più recenti con i documenti caricati dallo studio e segnali cosa cambia.
+
+  Tecnologie: Python, API LLM, FastAPI, PostgreSQL
+  Città: Torino · Full remote
+  Durata stimata: qualche mese o anno
+  Budget: tra 3000 - 5000 €
+expected: {min: 30, max: 48}
+expected_decision: blocked
+expected_verdicts:
+  anonymised: pass
+  budget-floor: fail
+  data-compliance: not_applicable
+notes: >
+  A synthetic Italian brief, modelled on a public listing, (no personal data). "Budget: tra 3000 - 5000 €" used to
+  read as a phone number and fail the anonymised gate; it is an amount range.
+  The brief stays blocked for the right reason: the budget is under the floor.

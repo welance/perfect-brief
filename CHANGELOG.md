@@ -8,6 +8,77 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-10-23
+
+### Fixed
+- `POST https://briefs.welance.com/mcp` (the documented URL, no trailing
+  slash) answered 405 from the static site; `/mcp` and `/mcp-hosted` now
+  answer like `/mcp/`, without a redirect.
+
+### Added
+- **Free, bring-your-own-model Perfect Brief.** `/v1/byo/*` and the remote MCP
+  server at `/mcp` hand a client's own model the live bar — `get_rules`,
+  `get_brief_template`, `get_judge_prompt` (the service judge's prompt, word
+  for word, plus the verdict JSON Schema), `get_improvement_prompt`,
+  `check_brief` (deterministic checks on the pattern catalogue; semantic
+  coverage stated as incomplete), `aggregate_verdicts`, `bar_status` — also as
+  MCP prompts and resources. No provider call, no key, no fallback to the
+  service judge.
+- `aggregate_verdicts` validates client verdicts (every rule once, verbatim
+  quotes, the live `ruleset_version`) and aggregates them with the same parser
+  and engine as `/v1/score`. Results are `evaluation_source: "client"`,
+  advisory, and never authorise directory publication; each links to the
+  welance/directory (`PB_DIRECTORY_URL`).
+- Draft Official MCP Registry entry `com.welance/perfect-brief` in `registry/`;
+  install instructions for Claude, ChatGPT, Cursor and VS Code in the README.
+
+### Changed
+- `/mcp` is now the free BYO surface. The connector whose `score_brief` and
+  `suggest_fixes` spend the service judge moved to `/mcp-hosted`, off unless
+  `PB_MCP_HOSTED_ENABLED=true`. `/v1/score`, `/v1/rules` and `/v1/suggest*`
+  are unchanged.
+- The stdio server exposes the same BYO tools (`perfect-brief-mcp`;
+  `brief-bar-mcp` still works); `score_brief`/`suggest_fixes` are opt-in with
+  `PB_HOSTED_TOOLS=1`.
+
+## [1.13.9] - 2026-10-21
+
+### Fixed
+- **Ruleset 1.1.1 — budget ranges are not phone numbers.** The offline
+  (`mock`) judge read any long run of digits, spaces and hyphens as a phone,
+  so "Budget: tra 3000 - 5000 €" and "tra 10000 - 30000 €" failed the
+  `anonymised` gate and blocked real briefs. Italian national numbers
+  (`347 123 4567`, `02 1234567`) are now found; amounts, ranges, grouped
+  numbers, dates, tax ids and IBANs are not. Detection fails closed: an
+  exclusion hides a phone only if it covers it entirely with no other digits,
+  national numbers yield only to dates, tax ids and IBANs (never to amounts),
+  a `+`/`00` number or a full Italian mobile yields to nothing, and a match
+  that overruns its digit limit backs off to its longest valid prefix, so
+  "030 12345678 / 2024" or "02 1234567 €" still redact the phone.
+- `data-compliance` recognises sensitive, biometric and health data
+  ("dati sensibili/biometrici", "Gesundheitsdaten", "données de santé"...)
+  and reads personal-data and compliance wording in Arabic, Chinese and
+  Japanese too, so such a brief is no longer `not_applicable`.
+
+### Added
+- `brief_bar/patterns/`: one versioned catalogue (`catalogue.json`) of
+  contact patterns, exclusions and data/compliance keywords, with a Python
+  and a dependency-free JavaScript runtime held to the same contract by a
+  dual-engine harness over a labelled corpus of 179 cases in all twelve
+  service locales (`make test-patterns`, part of `make test`). Consumers
+  vendor a pinned copy. Its bytes join the ruleset digest (ruleset 1.1.1).
+- Pattern catalogue 1.1.0: additive **subject spans** (`subject_spans()` /
+  `subjectSpans()`) for a budget-labelled amount or range ("Budget: tra
+  3000 - 5000 €") and a timeline-labelled duration ("Durata stimata: qualche
+  mese o anno"), in both runtimes, labelled in the corpus.
+  Presence only, never a verdict: the Directory uses them to show what a
+  brief already says instead of asking for it again. Contact detection is
+  unchanged.
+- `make improve-patterns`: an offline, capped ($1, 8 rounds) developer loop
+  in which DeepSeek V4.1 Flash proposes catalogue edits and labelled cases and
+  the deterministic harness scores them; it writes a proposal for human
+  review and never edits tracked files. Not run in CI.
+
 ## [1.13.8] - 2026-10-19
 
 ### Fixed

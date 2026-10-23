@@ -14,7 +14,7 @@ def test_healthz(client):
     ]["version"]
     assert body["release_version"] == expected_release
     assert body["redis_connected"] is False
-    assert body["ruleset_version"].startswith("1.1.0+")
+    assert body["ruleset_version"].startswith("1.1.1+")
     assert body["llm_configured"] is False
 
 
@@ -48,7 +48,7 @@ def test_score_accepted(client):
     assert body["decision"] == "accepted"
     assert body["gate"]["passed"] is True
     assert body["score"] >= 85
-    assert body["ruleset_version"].startswith("1.1.0+")
+    assert body["ruleset_version"].startswith("1.1.1+")
 
 
 def test_high_score_but_gate_blocked(client):

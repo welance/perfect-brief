@@ -37,9 +37,14 @@ def semver() -> str:
 
 @lru_cache(maxsize=1)
 def content_digest() -> str:
-    """A short, stable hash of every rule file + scoring.yaml."""
+    """A short, stable hash of every rule file + scoring.yaml + the pattern catalogue.
+
+    The catalogue decides what the offline judge reads as an email, a URL, a
+    phone or personal data, so it is part of the ruleset's identity.
+    """
     h = hashlib.sha256()
-    for p in sorted((_DATA / "rules").glob("*.yaml")) + [_DATA / "scoring.yaml"]:
+    files = sorted((_DATA / "rules").glob("*.yaml")) + [_DATA / "scoring.yaml"]
+    for p in files + [_DATA / "patterns" / "catalogue.json"]:
         h.update(p.name.encode())
         h.update(p.read_bytes())
     return h.hexdigest()[:12]

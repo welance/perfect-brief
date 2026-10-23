@@ -101,7 +101,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     <div class="route">
       <span class="who" data-i18n="int.r3.who">assistant power users</span>
       <h3 data-i18n="int.r3.h">Connect the MCP server</h3>
-      <p data-i18n="int.r3.p">Your assistant gets four tools — read the rules, score, suggest fixes, check the bar — and a guided prompt. It runs on your machine and talks to the public API; bring your own model key if you want to.</p>
+      <p data-i18n="int.r3.p">Your assistant gets seven free tools — read the rules, get a template, get the judge prompt, run deterministic checks, aggregate its own verdicts, plan improvements, check the bar — and guided prompts. Your model does the judging; ours never runs.</p>
       <span class="effort" data-i18n="int.r3.e">5 minutes</span>
       <a class="go" href="#mcp" data-i18n="int.r3.go">→ set it up below</a>
     </div>
@@ -136,7 +136,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 
   <div class="eyebrow" id="mcp"><span data-i18n="int.eb3">the mcp server, step by step</span></div>
   <p class="claim" data-i18n="int.c1">Your assistant, holding a bar it cannot bend.</p>
-  <div class="step"><span class="n">0</span><p data-i18n-html="int.s0">In the browser (claude.ai, ChatGPT): add this URL as a custom connector in the assistant's settings. Same four tools, same prompt, nothing to install. It runs on the service-funded judge, so no key is involved and the usual per-address limit applies.</p></div>
+  <div class="step"><span class="n">0</span><p data-i18n-html="int.s0">In the browser (claude.ai, ChatGPT) or an editor (Cursor, VS Code): add this URL as a custom connector. Free and nothing to install, and no model of ours runs: your assistant judges with the bar's own prompt, and the bar's code does the arithmetic. Results are advisory — the welance/directory scores a brief again before it publishes it.</p></div>
   <div class="code">
     <div class="code-bar">
       <div class="code-lang">url · <span data-i18n="int.hostedLabel">hosted connector</span></div>
@@ -144,7 +144,7 @@ document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
     </div>
 <pre data-lang="url">https://briefs.welance.com/mcp</pre>
   </div>
-  <p class="soft" data-i18n="int.s0b">On your own machine, the local server below is the same bar and adds one thing the hosted one never will: your own key.</p>
+  <p class="soft" data-i18n="int.s0b">On your own machine, the local server below is the same bar with the same seven tools, over stdio.</p>
   <div class="step"><span class="n">1</span><p data-i18n="int.s1">Install nothing: <code>uvx</code> fetches and runs it. You need <a href="https://docs.astral.sh/uv/">uv</a> (or use <code>pipx</code>).</p></div>
   <div class="step"><span class="n">2</span><p data-i18n="int.s2">Add this to your assistant's MCP configuration — Claude Desktop, Claude Code, Cursor, or anything else that speaks MCP.</p></div>
   <div class="code">

@@ -157,6 +157,75 @@ can distinguish model latency from network/UI latency without exposing prompts
 or document contents. `/v1/healthz` also reports whether the optional Redis
 cache/rate-limit store is currently connected.
 
+## MCP: free, bring your own model
+
+`https://briefs.welance.com/mcp` is a free remote MCP server (Streamable HTTP,
+stateless JSON). **No model of ours runs.** Your assistant's own model judges
+the brief with the service judge's own prompt; the bar's code validates those
+verdicts and does the arithmetic with the same engine as `/v1/score`.
+
+| tool | what it does |
+|---|---|
+| `get_rules` | the live catalogue: criteria, weights, gate, policy contexts, status scores, bands, version |
+| `get_brief_template` | a Markdown brief built from the live rules, with the inputs each section needs |
+| `get_judge_prompt` | the judge prompt (word for word the service's) + the verdict JSON Schema, for your model |
+| `get_improvement_prompt` | a gate-first working order for your model to improve the brief |
+| `check_brief` | deterministic checks only (contacts, stated budget/timeline, data cues, placeholders) — semantic coverage is **incomplete**, never a score |
+| `aggregate_verdicts` | validates your model's verdicts (every rule once, verbatim quotes, live version) and aggregates them |
+| `bar_status` | live ruleset version and capabilities |
+
+Also as prompts (`judge_brief`, `improve_brief`, `brief_template`) and resources
+(`perfect-brief://rules`, `…/template`, `…/judge-prompt`, `…/verdict-schema`).
+The same contract is plain HTTP at `/v1/byo/*` (see `/docs`).
+
+**Advisory, never authority.** An aggregated result is tagged
+`evaluation_source: "client"`, `authoritative: false`, with the ruleset version,
+evidence errors and pattern conflicts, and a *Find a team on welance/directory →*
+link (`PB_DIRECTORY_URL`). It cannot authorise publication: the
+welance/directory scores every brief itself on `/v1/score`.
+
+### Install
+
+**Claude** (claude.ai, Desktop): Settings → Connectors → *Add custom connector* →
+`https://briefs.welance.com/mcp`. **Claude Code**:
+
+```bash
+claude mcp add --transport http perfect-brief https://briefs.welance.com/mcp
+```
+
+**ChatGPT**: Settings → Apps & Connectors → Advanced → enable developer mode →
+*Create* → URL `https://briefs.welance.com/mcp`, no authentication
+(availability depends on the plan).
+
+**Cursor** (`~/.cursor/mcp.json` or `.cursor/mcp.json`):
+
+```json
+{ "mcpServers": { "perfect-brief": { "url": "https://briefs.welance.com/mcp" } } }
+```
+
+**VS Code** (`.vscode/mcp.json`, or *MCP: Add Server…* → HTTP):
+
+```json
+{ "servers": { "perfect-brief": { "type": "http", "url": "https://briefs.welance.com/mcp" } } }
+```
+
+**Local (stdio)** — same tools, for any client that runs commands:
+
+```json
+{ "mcpServers": { "perfect-brief": { "command": "uvx",
+  "args": ["--from", "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server", "perfect-brief-mcp"] } } }
+```
+
+Protocol: revisions 2024-11-05 → 2025-11-25 negotiate through `initialize`
+(an unknown one is answered with 2025-11-25); the stateless 2026-07-28
+envelope (`server/discover`) is served too. JSON-RPC batches are refused with
+`400`. No session, no event stream.
+
+The older connector whose `score_brief`/`suggest_fixes` spend the service
+judge lives at `/mcp-hosted`, **off** unless `PB_MCP_HOSTED_ENABLED=true`, and
+then under the same per-address limits. A draft Official MCP Registry entry
+is in [`registry/`](registry/).
+
 ## How `welance.com/directory` consumes it
 
 The directory is a pure consumer. It renders the verdict; it holds **no** scoring

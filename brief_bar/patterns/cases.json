@@ -1,0 +1,2001 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "it-budget-range-3000",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: tra 3000 - 5000 €",
+      "spans": [],
+      "note": "amount range, not a phone (reported)",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-budget-range-10000",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: tra 10000 - 30000 €",
+      "spans": [],
+      "note": "amount range, not a phone (reported)",
+      "subjects": [
+        [
+          "budget",
+          "tra 10000 - 30000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-budget-range-no-currency",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: tra 3000 - 5000",
+      "spans": [],
+      "note": "worded range without currency",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000"
+        ]
+      ]
+    },
+    {
+      "id": "it-budget-range-endash",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 10.000–30.000 €.",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "10.000–30.000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-synthetic-condominio",
+      "locale": "it",
+      "origin": "human",
+      "text": "# Assistente AI per uno studio di amministrazione condominiale\n\nCerchiamo uno sviluppatore o un'agenzia con un prodotto già pronto per amministratori di condominio, da adattare: ricerca semantica su tutti i documenti dello studio, integrata con il gestionale in uso e con una banca dati di norme esterna.\n\nL'obiettivo è che l'AI confronti le norme più recenti con i documenti caricati dallo studio e segnali cosa cambia.\n\nTecnologie: Python, API LLM, FastAPI, PostgreSQL\nCittà: Torino · Full remote\nDurata stimata: qualche mese o anno\nBudget: tra 3000 - 5000 €",
+      "spans": [],
+      "data": false,
+      "note": "synthetic brief modelled on a public listing (no third-party text); budget range is not a phone",
+      "subjects": [
+        [
+          "timeline",
+          "qualche mese o anno"
+        ],
+        [
+          "budget",
+          "tra 3000 - 5000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-synthetic-edge-ai",
+      "locale": "it",
+      "origin": "human",
+      "text": "# Architetto edge per centri benessere con AI locale\n\nProgettiamo dispositivi per centri benessere (cabine di galleggiamento, saune, postazioni di rilassamento guidato) che raccolgono dati e rispondono in tempo reale. Per la privacy dei dati e il funzionamento offline, l'elaborazione resta in locale, senza cloud pubblico.\n\nCerchiamo chi progetti il server locale di ogni centro: raccolta dati dai dispositivi (MQTT/REST), modelli AI in locale (Ollama/vLLM), rete separata tra dispositivi e Wi-Fi ospiti, installazione replicabile con Docker e Ansible.\n\nCompetenze: Linux, Docker Compose, PostgreSQL, VLAN, firewall, WireGuard, MQTT. Protezione dei dati sensibili/biometrici.\n\nCittà: Bologna · meglio se vicino\nDurata stimata: qualche mese o anno\nBudget: tra 10000 - 30000 €",
+      "spans": [],
+      "data": true,
+      "compliance": true,
+      "note": "synthetic brief modelled on a public listing: 'dati sensibili/biometrici' is personal data; 'privacy dei dati' is the cue",
+      "subjects": [
+        [
+          "timeline",
+          "qualche mese o anno"
+        ],
+        [
+          "budget",
+          "tra 10000 - 30000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-mobile-spaced",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ]
+    },
+    {
+      "id": "it-landline-milano",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234567",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ]
+    },
+    {
+      "id": "it-landline-intl",
+      "locale": "it",
+      "origin": "human",
+      "text": "+39 02 1234567",
+      "spans": [
+        [
+          "phone",
+          "+39 02 1234567"
+        ]
+      ]
+    },
+    {
+      "id": "it-mobile-intl",
+      "locale": "it",
+      "origin": "human",
+      "text": "Chiamami al +39 347 123 4567 dopo le 18.",
+      "spans": [
+        [
+          "phone",
+          "+39 347 123 4567"
+        ]
+      ]
+    },
+    {
+      "id": "it-mobile-dash",
+      "locale": "it",
+      "origin": "human",
+      "text": "cell. 347-1234567",
+      "spans": [
+        [
+          "phone",
+          "347-1234567"
+        ]
+      ]
+    },
+    {
+      "id": "it-mobile-compact",
+      "locale": "it",
+      "origin": "human",
+      "text": "WhatsApp 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ]
+    },
+    {
+      "id": "it-mobile-0039",
+      "locale": "it",
+      "origin": "human",
+      "text": "0039 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "0039 347 123 4567"
+        ]
+      ]
+    },
+    {
+      "id": "it-landline-label-dot",
+      "locale": "it",
+      "origin": "human",
+      "text": "Tel.0471 123456",
+      "spans": [
+        [
+          "phone",
+          "0471 123456"
+        ]
+      ]
+    },
+    {
+      "id": "it-landline-parens",
+      "locale": "it",
+      "origin": "human",
+      "text": "(02) 12345678 ufficio",
+      "spans": [
+        [
+          "phone",
+          "(02) 12345678"
+        ]
+      ]
+    },
+    {
+      "id": "de-landline",
+      "locale": "de",
+      "origin": "human",
+      "text": "Rufen Sie uns an: 030 12345678.",
+      "spans": [
+        [
+          "phone",
+          "030 12345678"
+        ]
+      ]
+    },
+    {
+      "id": "de-mobile-intl",
+      "locale": "de",
+      "origin": "human",
+      "text": "Mobil: +49 171 1234567",
+      "spans": [
+        [
+          "phone",
+          "+49 171 1234567"
+        ]
+      ]
+    },
+    {
+      "id": "de-landline-slash",
+      "locale": "de",
+      "origin": "human",
+      "text": "Tel. 089 / 123456",
+      "spans": [
+        [
+          "phone",
+          "089 / 123456"
+        ]
+      ]
+    },
+    {
+      "id": "de-intl-trunk-paren",
+      "locale": "de",
+      "origin": "human",
+      "text": "+49 (0)30 1234567",
+      "spans": [
+        [
+          "phone",
+          "+49 (0)30 1234567"
+        ]
+      ]
+    },
+    {
+      "id": "fr-landline-pairs",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Appelez le 01 23 45 67 89 ou écrivez-nous.",
+      "spans": [
+        [
+          "phone",
+          "01 23 45 67 89"
+        ]
+      ]
+    },
+    {
+      "id": "fr-intl",
+      "locale": "fr",
+      "origin": "human",
+      "text": "+33 1 23 45 67 89",
+      "spans": [
+        [
+          "phone",
+          "+33 1 23 45 67 89"
+        ]
+      ]
+    },
+    {
+      "id": "en-gb-london",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Call 020 7946 0958 today",
+      "spans": [
+        [
+          "phone",
+          "020 7946 0958"
+        ]
+      ]
+    },
+    {
+      "id": "en-gb-mobile",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "mobile 07700 900123",
+      "spans": [
+        [
+          "phone",
+          "07700 900123"
+        ]
+      ]
+    },
+    {
+      "id": "en-gb-intl",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "+44 20 7946 0958",
+      "spans": [
+        [
+          "phone",
+          "+44 20 7946 0958"
+        ]
+      ]
+    },
+    {
+      "id": "en-us-parens",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "US office (212) 555-1234",
+      "spans": [
+        [
+          "phone",
+          "(212) 555-1234"
+        ]
+      ]
+    },
+    {
+      "id": "en-us-dots",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "212.555.1234",
+      "spans": [
+        [
+          "phone",
+          "212.555.1234"
+        ]
+      ]
+    },
+    {
+      "id": "en-us-intl",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "+1 212 555 1234",
+      "spans": [
+        [
+          "phone",
+          "+1 212 555 1234"
+        ]
+      ]
+    },
+    {
+      "id": "es-mobile-intl",
+      "locale": "es",
+      "origin": "human",
+      "text": "Llámanos al +34 612 345 678.",
+      "spans": [
+        [
+          "phone",
+          "+34 612 345 678"
+        ]
+      ]
+    },
+    {
+      "id": "pt-mobile-intl",
+      "locale": "pt",
+      "origin": "human",
+      "text": "Contacto: +351 912 345 678",
+      "spans": [
+        [
+          "phone",
+          "+351 912 345 678"
+        ]
+      ]
+    },
+    {
+      "id": "pt-br-mobile-intl",
+      "locale": "pt-BR",
+      "origin": "human",
+      "text": "WhatsApp +55 11 91234-5678",
+      "spans": [
+        [
+          "phone",
+          "+55 11 91234-5678"
+        ]
+      ]
+    },
+    {
+      "id": "nl-mobile",
+      "locale": "nl",
+      "origin": "human",
+      "text": "Bel 06-12345678 voor info",
+      "spans": [
+        [
+          "phone",
+          "06-12345678"
+        ]
+      ]
+    },
+    {
+      "id": "pl-intl",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Zadzwoń: +48 512 345 678",
+      "spans": [
+        [
+          "phone",
+          "+48 512 345 678"
+        ]
+      ]
+    },
+    {
+      "id": "ar-intl",
+      "locale": "ar",
+      "origin": "human",
+      "text": "اتصل بنا على +971 50 123 4567 اليوم",
+      "spans": [
+        [
+          "phone",
+          "+971 50 123 4567"
+        ]
+      ]
+    },
+    {
+      "id": "zh-intl",
+      "locale": "zh-Hans",
+      "origin": "human",
+      "text": "联系电话：+86 138 0013 8000",
+      "spans": [
+        [
+          "phone",
+          "+86 138 0013 8000"
+        ]
+      ]
+    },
+    {
+      "id": "ja-national",
+      "locale": "ja",
+      "origin": "human",
+      "text": "電話：03-1234-5678 までご連絡ください",
+      "spans": [
+        [
+          "phone",
+          "03-1234-5678"
+        ]
+      ]
+    },
+    {
+      "id": "ja-intl",
+      "locale": "ja",
+      "origin": "human",
+      "text": "電話 +81 3 1234 5678",
+      "spans": [
+        [
+          "phone",
+          "+81 3 1234 5678"
+        ]
+      ]
+    },
+    {
+      "id": "it-two-phones",
+      "locale": "it",
+      "origin": "human",
+      "text": "tel 02 1234567, cell 347 123 4567.",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ],
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ]
+    },
+    {
+      "id": "it-phone-next-to-amount",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 3000 €, tel 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "an exclusion must not swallow a nearby phone",
+      "subjects": [
+        [
+          "budget",
+          "3000 €"
+        ]
+      ]
+    },
+    {
+      "id": "it-phone-then-range",
+      "locale": "it",
+      "origin": "human",
+      "text": "Chiama il 02 1234567. Budget: tra 3000 - 5000 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 - 5000 €"
+        ]
+      ]
+    },
+    {
+      "id": "emoji-before-phone",
+      "locale": "it",
+      "origin": "human",
+      "text": "📞 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "offsets across a surrogate pair"
+    },
+    {
+      "id": "multiline-phone",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Contact\n+44 20 7946 0958\nthanks",
+      "spans": [
+        [
+          "phone",
+          "+44 20 7946 0958"
+        ]
+      ]
+    },
+    {
+      "id": "email-basic",
+      "locale": "it",
+      "origin": "human",
+      "text": "scrivi a mario.rossi@example.it.",
+      "spans": [
+        [
+          "email",
+          "mario.rossi@example.it"
+        ]
+      ]
+    },
+    {
+      "id": "email-digits",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "jobs2025@acme-labs.co.uk, thanks",
+      "spans": [
+        [
+          "email",
+          "jobs2025@acme-labs.co.uk"
+        ]
+      ]
+    },
+    {
+      "id": "email-subdomain",
+      "locale": "de",
+      "origin": "human",
+      "text": "an info@mail.example.de senden",
+      "spans": [
+        [
+          "email",
+          "info@mail.example.de"
+        ]
+      ]
+    },
+    {
+      "id": "email-www-host",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "info@www.example.com",
+      "spans": [
+        [
+          "email",
+          "info@www.example.com"
+        ]
+      ],
+      "note": "equal priority: the longer email wins over the www. inside it"
+    },
+    {
+      "id": "url-trailing-dot",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "See https://example.com/a?b=1.",
+      "spans": [
+        [
+          "url",
+          "https://example.com/a?b=1"
+        ]
+      ]
+    },
+    {
+      "id": "url-markdown",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "[site](https://example.com/path)",
+      "spans": [
+        [
+          "url",
+          "https://example.com/path"
+        ]
+      ]
+    },
+    {
+      "id": "url-www",
+      "locale": "it",
+      "origin": "human",
+      "text": "il sito www.acme.it è vecchio",
+      "spans": [
+        [
+          "url",
+          "www.acme.it"
+        ]
+      ]
+    },
+    {
+      "id": "url-with-number",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "https://example.com/u/3471234567 is the profile",
+      "spans": [
+        [
+          "url",
+          "https://example.com/u/3471234567"
+        ]
+      ],
+      "note": "a phone-like number inside a URL is part of the URL"
+    },
+    {
+      "id": "url-with-email-query",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "https://x.example/?to=a@b.it",
+      "spans": [
+        [
+          "url",
+          "https://x.example/?to=a@b.it"
+        ]
+      ]
+    },
+    {
+      "id": "url-uppercase-scheme",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "HTTPS://EXAMPLE.COM",
+      "spans": [
+        [
+          "url",
+          "HTTPS://EXAMPLE.COM"
+        ]
+      ]
+    },
+    {
+      "id": "contacts-mixed",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Écrivez à paul@example.fr ou appelez le +33 1 23 45 67 89 (site https://example.fr).",
+      "spans": [
+        [
+          "email",
+          "paul@example.fr"
+        ],
+        [
+          "phone",
+          "+33 1 23 45 67 89"
+        ],
+        [
+          "url",
+          "https://example.fr"
+        ]
+      ]
+    },
+    {
+      "id": "amount-00",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 3000 €",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "3000 €"
+        ]
+      ]
+    },
+    {
+      "id": "amount-01",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: 25.000 €",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "25.000 €"
+        ]
+      ]
+    },
+    {
+      "id": "amount-02",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 10 000 EUR",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "10 000 EUR"
+        ]
+      ]
+    },
+    {
+      "id": "amount-03",
+      "locale": "de",
+      "origin": "human",
+      "text": "Budget 30.000–45.000 €",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "30.000–45.000 €"
+        ]
+      ]
+    },
+    {
+      "id": "amount-04",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Budget 12 000 € HT",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "12 000 €"
+        ]
+      ]
+    },
+    {
+      "id": "amount-05",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget £25,000 - £40,000",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "£25,000 - £40,000"
+        ]
+      ]
+    },
+    {
+      "id": "amount-06",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget band 25-40k",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "25-40k"
+        ]
+      ]
+    },
+    {
+      "id": "amount-07",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget $300,000",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "$300,000"
+        ]
+      ]
+    },
+    {
+      "id": "amount-08",
+      "locale": "es",
+      "origin": "human",
+      "text": "Presupuesto: 15.000 €",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "15.000 €"
+        ]
+      ]
+    },
+    {
+      "id": "amount-09",
+      "locale": "pt-BR",
+      "origin": "human",
+      "text": "Orçamento de R$ 50.000",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-10",
+      "locale": "nl",
+      "origin": "human",
+      "text": "Budget € 20.000",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "€ 20.000"
+        ]
+      ]
+    },
+    {
+      "id": "amount-11",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Budżet 40 000 zł",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-12",
+      "locale": "it",
+      "origin": "human",
+      "text": "fatturato 350.000.000 €",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-13",
+      "locale": "it",
+      "origin": "human",
+      "text": "fatturato di 350.000.000",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-14",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "1,250,000 users",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-15",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: tra 3000 e 5000",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "tra 3000 e 5000"
+        ]
+      ]
+    },
+    {
+      "id": "amount-16",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "between 10000 and 30000",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-17",
+      "locale": "de",
+      "origin": "human",
+      "text": "zwischen 10000 - 30000",
+      "spans": [],
+      "note": "amount or range"
+    },
+    {
+      "id": "amount-18",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 10000-30000 euro",
+      "spans": [],
+      "note": "amount or range",
+      "subjects": [
+        [
+          "budget",
+          "10000-30000 euro"
+        ]
+      ]
+    },
+    {
+      "id": "amount-19",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget 300 500 1000 €",
+      "spans": [
+        [
+          "phone",
+          "300 500 1000"
+        ]
+      ],
+      "note": "ambiguous by design: a US number shape followed by a currency stays a phone (fail closed; '212 555 1234 €' must not leak)"
+    },
+    {
+      "id": "date-00",
+      "locale": "it",
+      "origin": "human",
+      "text": "Consegna il 01.02.2025",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-01",
+      "locale": "it",
+      "origin": "human",
+      "text": "Scadenza 12/03/2025",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-02",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Kick-off 2025-03-12",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-03",
+      "locale": "de",
+      "origin": "human",
+      "text": "Termin 31.12.2026",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-04",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "2024 - 2026 roadmap",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-05",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "from 2019 to 2025",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-06",
+      "locale": "it",
+      "origin": "human",
+      "text": "anni 2024-2025",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "date-07",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Q3 2025",
+      "spans": [],
+      "note": "date or year"
+    },
+    {
+      "id": "id-00",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 01234567890",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-01",
+      "locale": "it",
+      "origin": "human",
+      "text": "Partita IVA: 01234567890",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-02",
+      "locale": "de",
+      "origin": "human",
+      "text": "USt-IdNr. DE123456789",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-03",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "VAT number GB123456789",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-04",
+      "locale": "it",
+      "origin": "human",
+      "text": "VAT IT01234567890",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-05",
+      "locale": "fr",
+      "origin": "human",
+      "text": "TVA FR12345678901",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-06",
+      "locale": "nl",
+      "origin": "human",
+      "text": "BTW-nummer NL123456789B01",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-07",
+      "locale": "pl",
+      "origin": "human",
+      "text": "NIP 1234567890",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-08",
+      "locale": "it",
+      "origin": "human",
+      "text": "IBAN IT60 X054 2811 1010 0000 0123 456",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-09",
+      "locale": "de",
+      "origin": "human",
+      "text": "IBAN DE89370400440532013000",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-10",
+      "locale": "it",
+      "origin": "human",
+      "text": "Anche senza P.IVA",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-11",
+      "locale": "it",
+      "origin": "human",
+      "text": "CAP 00185 Roma",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-12",
+      "locale": "it",
+      "origin": "human",
+      "text": "CAP 20121 Milano",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-13",
+      "locale": "de",
+      "origin": "human",
+      "text": "PLZ 10115 Berlin",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "id-14",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "London SW1A 1AA",
+      "spans": [],
+      "note": "tax id, IBAN or postcode"
+    },
+    {
+      "id": "number-00",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "version 1.13.9",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-01",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Node 24.14.0",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-02",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "server 192.168.1.1",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-03",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "order 0012345678901234 shipped",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-04",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "conversion up 30% to 45%",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-05",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "load under 200 ms for 10000 users",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-06",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "ISO 27001 and WCAG 2.2 AA",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-07",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "EN 301 549",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-08",
+      "locale": "it",
+      "origin": "human",
+      "text": "dal 1990 al 2020",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-09",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "12345678",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-10",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "+3",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-11",
+      "locale": "it",
+      "origin": "human",
+      "text": "fino a 1.000.000 di utenti",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-12",
+      "locale": "it",
+      "origin": "human",
+      "text": "il 40% dei 3000 clienti",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-13",
+      "locale": "de",
+      "origin": "human",
+      "text": "über 100 000 Nutzer",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-14",
+      "locale": "ja",
+      "origin": "human",
+      "text": "予算は300万円です",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-15",
+      "locale": "zh-Hans",
+      "origin": "human",
+      "text": "预算 50000 元",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "number-16",
+      "locale": "ar",
+      "origin": "human",
+      "text": "الميزانية 30000 يورو",
+      "spans": [],
+      "note": "number that is not a contact"
+    },
+    {
+      "id": "cue-en-GB-00",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "We process biometric data from the sensors.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-en-GB-01",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Stores health data; GDPR lawful basis is consent.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-en-GB-02",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "A static landing page for the bakery.",
+      "spans": [],
+      "data": false,
+      "compliance": false
+    },
+    {
+      "id": "cue-it-03",
+      "locale": "it",
+      "origin": "human",
+      "text": "Gestiamo dati sensibili/biometrici degli ospiti.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-it-04",
+      "locale": "it",
+      "origin": "human",
+      "text": "Dati sanitari dei pazienti, base giuridica: consenso esplicito.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-it-05",
+      "locale": "it",
+      "origin": "human",
+      "text": "Un configuratore 3D per i nostri tavoli.",
+      "spans": [],
+      "data": false,
+      "compliance": false
+    },
+    {
+      "id": "cue-de-06",
+      "locale": "de",
+      "origin": "human",
+      "text": "Wir verarbeiten Gesundheitsdaten der Mitglieder.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-de-07",
+      "locale": "de",
+      "origin": "human",
+      "text": "Biometrische Daten, Rechtsgrundlage nach DSGVO.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-fr-08",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Nous traitons des données de santé.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-fr-09",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Données biométriques ; base légale : consentement (RGPD).",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-es-10",
+      "locale": "es",
+      "origin": "human",
+      "text": "Tratamos datos de salud de los clientes.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-es-11",
+      "locale": "es",
+      "origin": "human",
+      "text": "Datos biométricos con consentimiento explícito.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-pt-12",
+      "locale": "pt",
+      "origin": "human",
+      "text": "Tratamos dados de saúde.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-pt-BR-13",
+      "locale": "pt-BR",
+      "origin": "human",
+      "text": "Dados biométricos com consentimento (LGPD).",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-nl-14",
+      "locale": "nl",
+      "origin": "human",
+      "text": "We verwerken gezondheidsgegevens.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-nl-15",
+      "locale": "nl",
+      "origin": "human",
+      "text": "Biometrische gegevens met toestemming.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-pl-16",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Przetwarzamy dane medyczne pacjentów.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-pl-17",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Dane biometryczne; podstawa prawna: zgoda.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-ar-18",
+      "locale": "ar",
+      "origin": "human",
+      "text": "نعالج البيانات الصحية للمرضى.",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-ar-19",
+      "locale": "ar",
+      "origin": "human",
+      "text": "بيانات شخصية مع حماية البيانات وفق القانون.",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-zh-Hans-20",
+      "locale": "zh-Hans",
+      "origin": "human",
+      "text": "系统会处理用户的生物识别信息。",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-zh-Hans-21",
+      "locale": "zh-Hans",
+      "origin": "human",
+      "text": "处理个人信息，并取得用户的知情同意。",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-ja-22",
+      "locale": "ja",
+      "origin": "human",
+      "text": "会員の生体情報を扱います。",
+      "spans": [],
+      "data": true,
+      "compliance": false
+    },
+    {
+      "id": "cue-ja-23",
+      "locale": "ja",
+      "origin": "human",
+      "text": "個人情報は本人の同意を得て取得します。",
+      "spans": [],
+      "data": true,
+      "compliance": true
+    },
+    {
+      "id": "cue-ja-24",
+      "locale": "ja",
+      "origin": "human",
+      "text": "社内向けのダッシュボードです。",
+      "spans": [],
+      "data": false,
+      "compliance": false
+    },
+    {
+      "id": "adv-mobile-currency-after",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 123 4567 €",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-currency-before",
+      "locale": "it",
+      "origin": "human",
+      "text": "€ 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-cf-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "cf 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-nip-label",
+      "locale": "pl",
+      "origin": "human",
+      "text": "nip 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-piva-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-then-amount",
+      "locale": "it",
+      "origin": "human",
+      "text": "tel. 02 1234567 - 5000 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-intl-then-range",
+      "locale": "it",
+      "origin": "human",
+      "text": "+39 347 1234567 (budget 3000 - 5000 €)",
+      "spans": [
+        [
+          "phone",
+          "+39 347 1234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)",
+      "subjects": [
+        [
+          "budget",
+          "3000 - 5000 €"
+        ]
+      ]
+    },
+    {
+      "id": "adv-nip-inside-word",
+      "locale": "it",
+      "origin": "human",
+      "text": "snip 3471234567",
+      "spans": [
+        [
+          "phone",
+          "3471234567"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-tva-inside-word",
+      "locale": "fr",
+      "origin": "human",
+      "text": "outva 0123456789",
+      "spans": [
+        [
+          "phone",
+          "0123456789"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-btw-spaced-mobile",
+      "locale": "nl",
+      "origin": "human",
+      "text": "btw 06 12345678",
+      "spans": [
+        [
+          "phone",
+          "06 12345678"
+        ]
+      ],
+      "note": "security review: a numeric exclusion must not hide a real phone (fail closed)"
+    },
+    {
+      "id": "adv-range-currency",
+      "locale": "it",
+      "origin": "human",
+      "text": "10000 - 30000 €",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-piva-not-phone",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 12345678901",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-piva-leading-zero",
+      "locale": "it",
+      "origin": "human",
+      "text": "P.IVA 01234567890",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-landline-spaced-dash",
+      "locale": "it",
+      "origin": "human",
+      "text": "tel. 02 - 1234567",
+      "spans": [
+        [
+          "phone",
+          "02 - 1234567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-spaced-slash",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 / 1234567",
+      "spans": [
+        [
+          "phone",
+          "02 / 1234567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-mobile-spaced-dash",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 - 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 - 123 4567"
+        ]
+      ],
+      "note": "security review: a spaced separator after the prefix is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-tail-spaced-slash",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234 / 5678",
+      "spans": [
+        [
+          "phone",
+          "02 1234 / 5678"
+        ]
+      ],
+      "note": "security review: a spaced slash between later groups is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-landline-slash-groups",
+      "locale": "de",
+      "origin": "human",
+      "text": "030 / 123 / 45678",
+      "spans": [
+        [
+          "phone",
+          "030 / 123 / 45678"
+        ]
+      ],
+      "note": "security review: a spaced slash between later groups is still a phone (fail closed)"
+    },
+    {
+      "id": "adv-trunk-then-year",
+      "locale": "de",
+      "origin": "human",
+      "text": "030 12345678 / 2024",
+      "spans": [
+        [
+          "phone",
+          "030 12345678"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-mobile-then-year",
+      "locale": "it",
+      "origin": "human",
+      "text": "347 123 4567 / 2026",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-trunk-currency-after",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234567 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-trunk-then-range",
+      "locale": "it",
+      "origin": "human",
+      "text": "02 1234567 - 5000 €",
+      "spans": [
+        [
+          "phone",
+          "02 1234567"
+        ]
+      ],
+      "note": "security review: a tail or currency after a phone never hides it (back-off, fail closed)"
+    },
+    {
+      "id": "adv-date-dashed",
+      "locale": "it",
+      "origin": "human",
+      "text": "12-10-2026",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "adv-short-amount",
+      "locale": "it",
+      "origin": "human",
+      "text": "3000 €",
+      "spans": [],
+      "note": "security review: still not a phone"
+    },
+    {
+      "id": "subject-it-budget-is",
+      "locale": "it",
+      "origin": "human",
+      "text": "Il budget è di 15.000 € per la prima fase.",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "15.000 €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-budget-max",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget massimo: 8k",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "8k"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-two-lines",
+      "locale": "it",
+      "origin": "human",
+      "text": "Durata: 6 mesi · Budget: 20k €",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "6 mesi"
+        ],
+        [
+          "budget",
+          "20k €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-deadline-date",
+      "locale": "it",
+      "origin": "human",
+      "text": "Scadenza: 12/03/2026.",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "12/03/2026"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-year-not-budget",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget 2026: da definire con il CFO.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-people-not-budget",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: 2 persone part-time",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-price-unlabelled",
+      "locale": "it",
+      "origin": "human",
+      "text": "Il prodotto costa 3000 € al mese e lo sconto è del 30 %.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-it-phone-after-label",
+      "locale": "it",
+      "origin": "human",
+      "text": "Budget: chiamare il 347 123 4567",
+      "spans": [
+        [
+          "phone",
+          "347 123 4567"
+        ]
+      ],
+      "subjects": [],
+      "note": "a phone after a budget label is a phone, never a budget"
+    },
+    {
+      "id": "subject-it-timeline-no-colon",
+      "locale": "it",
+      "origin": "human",
+      "text": "La durata stimata sarà di qualche mese.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budget-range",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Our budget is €40k-€60k. Timeline: 3 months; launch in May",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "€40k-€60k"
+        ],
+        [
+          "timeline",
+          "3 months"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budget-currency",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budget: €5,000",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "€5,000"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-en-budgetary",
+      "locale": "en-GB",
+      "origin": "human",
+      "text": "Budgetary approval of 5000 € is pending.",
+      "spans": [],
+      "subjects": [],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-de-laufzeit",
+      "locale": "de",
+      "origin": "human",
+      "text": "Laufzeit: 6 Monate\nBudget: 25.000 EUR",
+      "spans": [],
+      "subjects": [
+        [
+          "timeline",
+          "6 Monate"
+        ],
+        [
+          "budget",
+          "25.000 EUR"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-fr-budget",
+      "locale": "fr",
+      "origin": "human",
+      "text": "Budget : entre 10 000 et 20 000 €\nDurée estimée : 4 mois",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "entre 10 000 et 20 000 €"
+        ],
+        [
+          "timeline",
+          "4 mois"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-es-presupuesto",
+      "locale": "es",
+      "origin": "human",
+      "text": "Presupuesto: entre 10.000 y 20.000 €",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "entre 10.000 y 20.000 €"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-pt-orcamento",
+      "locale": "pt",
+      "origin": "human",
+      "text": "Orçamento: até 15.000 €\nPrazo: 3 meses",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "até 15.000 €"
+        ],
+        [
+          "timeline",
+          "3 meses"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-nl-budget",
+      "locale": "nl",
+      "origin": "human",
+      "text": "Budget: tussen 10.000 en 20.000 euro",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "tussen 10.000 en 20.000 euro"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    },
+    {
+      "id": "subject-pl-budzet",
+      "locale": "pl",
+      "origin": "human",
+      "text": "Budżet: od 40 000 do 60 000 zł",
+      "spans": [],
+      "subjects": [
+        [
+          "budget",
+          "od 40 000 do 60 000 zł"
+        ]
+      ],
+      "note": "subject span (budget/timeline presence, never a verdict)"
+    }
+  ]
+}
