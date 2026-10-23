@@ -1,20 +1,21 @@
 [project]
 name = "brief-bar-mcp"
 version = "1.13.9"
-description = "MCP server for The Brief Bar — score a digital product brief against an open, versioned ruleset your assistant cannot bend."
+description = "Perfect Brief MCP server (free, bring your own model): judge a digital product brief with your own model against an open, versioned ruleset; the bar's code does the arithmetic."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "welance", email = "hello@welance.com" }]
 keywords = ["mcp", "brief", "product", "scoring", "welance"]
-dependencies = ["mcp>=1.2", "httpx>=0.27"]
+dependencies = ["mcp>=2.0", "httpx>=0.27"]
 
 [project.urls]
 Homepage = "https://briefs.welance.com"
 Source = "https://github.com/welance/perfect-brief"
 
 [project.scripts]
-brief-bar-mcp = "server:main"
+perfect-brief-mcp = "server:main"
+brief-bar-mcp = "server:main"  # the original name, kept for existing configs
 
 [build-system]
 requires = ["hatchling"]

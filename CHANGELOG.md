@@ -8,6 +8,32 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+### Added
+- **Free, bring-your-own-model Perfect Brief.** `/v1/byo/*` and the remote MCP
+  server at `/mcp` hand a client's own model the live bar — `get_rules`,
+  `get_brief_template`, `get_judge_prompt` (the service judge's prompt, word
+  for word, plus the verdict JSON Schema), `get_improvement_prompt`,
+  `check_brief` (deterministic checks on the pattern catalogue; semantic
+  coverage stated as incomplete), `aggregate_verdicts`, `bar_status` — also as
+  MCP prompts and resources. No provider call, no key, no fallback to the
+  service judge.
+- `aggregate_verdicts` validates client verdicts (every rule once, verbatim
+  quotes, the live `ruleset_version`) and aggregates them with the same parser
+  and engine as `/v1/score`. Results are `evaluation_source: "client"`,
+  advisory, and never authorise directory publication; each links to the
+  welance/directory (`PB_DIRECTORY_URL`).
+- Draft Official MCP Registry entry `com.welance/perfect-brief` in `registry/`;
+  install instructions for Claude, ChatGPT, Cursor and VS Code in the README.
+
+### Changed
+- `/mcp` is now the free BYO surface. The connector whose `score_brief` and
+  `suggest_fixes` spend the service judge moved to `/mcp-hosted`, off unless
+  `PB_MCP_HOSTED_ENABLED=true`. `/v1/score`, `/v1/rules` and `/v1/suggest*`
+  are unchanged.
+- The stdio server exposes the same BYO tools (`perfect-brief-mcp`;
+  `brief-bar-mcp` still works); `score_brief`/`suggest_fixes` are opt-in with
+  `PB_HOSTED_TOOLS=1`.
+
 ## [1.13.9] - 2026-10-21
 
 ### Fixed
