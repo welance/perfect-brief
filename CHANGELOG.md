@@ -8,6 +8,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.14.1] - 2026-10-23
+
 ### Added
 - `/privacy.html` and `/terms.html` (also `/privacy`, `/terms`): what the
   hosted service and its MCP connector receive, keep and for how long, the
