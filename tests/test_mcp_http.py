@@ -265,10 +265,72 @@ def test_remote_and_local_servers_are_the_same_bar():
 
         assert schema(remote_tools[name]) == schema(tool), name
         assert remote_tools[name].annotations == tool.annotations, name
-    remote_prompts = {p.name: p.description for p in asyncio.run(mcp_http.server.list_prompts())}
-    local_prompts = {p.name: p.description for p in asyncio.run(local.server.list_prompts())}
+        assert remote_tools[name].title == tool.title, name
+    remote_prompts = {p.name: (p.title, p.description) for p in asyncio.run(mcp_http.server.list_prompts())}
+    local_prompts = {p.name: (p.title, p.description) for p in asyncio.run(local.server.list_prompts())}
     assert remote_prompts == local_prompts
-    remote_res = {str(r.uri): r.description for r in asyncio.run(mcp_http.server.list_resources())}
-    local_res = {str(r.uri): r.description for r in asyncio.run(local.server.list_resources())}
+    remote_res = {str(r.uri): (r.title, r.description) for r in asyncio.run(mcp_http.server.list_resources())}
+    local_res = {str(r.uri): (r.title, r.description) for r in asyncio.run(local.server.list_resources())}
     assert remote_res == local_res
     assert mcp_http.server.instructions == local.server.instructions
+
+
+# --- directory listings: Claude's and ChatGPT's reviews read these fields ---------------------
+
+
+def _all_tool_sets():
+    """Every tool any of our MCP servers can list, remote and local, default and opt-in."""
+    local = pytest.importorskip("server", reason="MCP SDK not installed")
+    from mcp.server.mcpserver import MCPServer
+
+    opt_in = MCPServer("opt-in")
+    local.register_hosted_tools(opt_in)
+    return {
+        "remote": asyncio.run(mcp_http.server.list_tools()),
+        "remote-hosted": asyncio.run(mcp_http.hosted.list_tools()),
+        "local": asyncio.run(local.server.list_tools()),
+        "local-opt-in": asyncio.run(opt_in.list_tools()),
+    }
+
+
+def test_every_tool_has_a_title_and_explicit_safety_hints():
+    for where, tools in _all_tool_sets().items():
+        assert tools, where
+        for t in tools:
+            assert t.title and t.title.strip(), (where, t.name)
+            assert t.annotations is not None, (where, t.name)
+            hints = t.annotations
+            # the directories require readOnlyHint or destructiveHint; we state all four
+            assert hints.read_only_hint is not None or hints.destructive_hint is not None, (where, t.name)
+            for field in ("read_only_hint", "destructive_hint", "idempotent_hint", "open_world_hint"):
+                assert getattr(hints, field) is not None, (where, t.name, field)
+            # nothing any of our servers exposes writes or deletes anything
+            assert hints.read_only_hint is True and hints.destructive_hint is False, (where, t.name)
+
+
+def test_only_the_service_judge_tools_reach_a_model_provider():
+    for where, tools in _all_tool_sets().items():
+        for t in tools:
+            expected = t.name in {"score_brief", "suggest_fixes"}
+            assert t.annotations.open_world_hint is expected, (where, t.name)
+
+
+def test_the_opt_in_tools_match_the_remote_hosted_ones():
+    sets = _all_tool_sets()
+    remote = {t.name: (t.title, t.annotations) for t in sets["remote-hosted"]}
+    for t in sets["local-opt-in"]:
+        assert remote[t.name] == (t.title, t.annotations), t.name
+
+
+def test_the_listing_metadata_travels_over_the_wire(client):
+    tools = rpc(client, "tools/list")["result"]["tools"]
+    for t in tools:
+        assert t["title"], t["name"]
+        assert {"readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint"} <= t["annotations"].keys()
+    assert all(p.get("title") for p in rpc(client, "prompts/list")["result"]["prompts"])
+    assert all(r.get("title") for r in rpc(client, "resources/list")["result"]["resources"])
+    info = client.post("/mcp/", json=init("2025-06-18"), headers=headers(None)).json()["result"]
+    assert info["serverInfo"]["title"] == "Perfect Brief"
+    assert info["serverInfo"]["websiteUrl"] == "https://briefs.welance.com"
+    assert "https://briefs.welance.com/privacy.html" in info["instructions"]
+    assert "https://briefs.welance.com/terms.html" in info["instructions"]

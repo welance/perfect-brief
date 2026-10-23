@@ -41,14 +41,25 @@ INSTRUCTIONS = (
     "Read the rules (get_rules), judge the brief with your own model using get_judge_prompt, then "
     "send your JSON verdicts to aggregate_verdicts: the bar's own code computes score, gate and "
     "decision. Fix the gate first. Never state a score you did not get from aggregate_verdicts, and "
-    "say it is client-judged and advisory: only the welance/directory's own scoring can publish."
+    "say it is client-judged and advisory: only the welance/directory's own scoring can publish. "
+    "Privacy: https://briefs.welance.com/privacy.html. Terms: https://briefs.welance.com/terms.html."
 )
 
 READ_ONLY = ToolAnnotations(
     read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=False
 )
+# The opt-in service-judge tools (score_brief, suggest_fixes) change nothing either,
+# but they send the brief to a model provider through OpenRouter: open world.
+SERVICE_JUDGE = ToolAnnotations(
+    read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=True
+)
 
-server = MCPServer("perfect-brief", instructions=INSTRUCTIONS)
+server = MCPServer(
+    "perfect-brief",
+    title="Perfect Brief",
+    website_url="https://briefs.welance.com",
+    instructions=INSTRUCTIONS,
+)
 
 
 def _headers(byok: bool = False) -> dict[str, str]:
@@ -89,7 +100,7 @@ def _verdict_list(verdicts: list[dict[str, Any]] | str) -> Any:
 # ---- tools (same names and words as the remote server at /mcp) ----------------
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Read the brief rules", annotations=READ_ONLY)
 async def get_rules() -> dict:
     """Read the bar before judging anything. Free; no model runs.
 
@@ -102,7 +113,7 @@ async def get_rules() -> dict:
     return await _get("/v1/byo/rules")
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get a brief template", annotations=READ_ONLY)
 async def get_brief_template() -> dict:
     """A brief template built from the live rules, with the inputs each section needs.
 
@@ -112,7 +123,7 @@ async def get_brief_template() -> dict:
     return await _get("/v1/byo/template")
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get the judge prompt", annotations=READ_ONLY)
 async def get_judge_prompt(brief: str = "") -> dict:
     """The judge prompt and verdict JSON Schema, for YOUR model to answer. Free.
 
@@ -126,7 +137,7 @@ async def get_judge_prompt(brief: str = "") -> dict:
     return await _post("/v1/byo/judge-prompt", {"brief": brief or None})
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Get an improvement prompt", annotations=READ_ONLY)
 async def get_improvement_prompt(
     brief: str,
     verdicts: list[dict[str, Any]] | str | None = None,
@@ -145,7 +156,7 @@ async def get_improvement_prompt(
     return await _post("/v1/byo/improvement-prompt", payload)
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Run deterministic checks", annotations=READ_ONLY)
 async def check_brief(brief: str, directory_context: bool = True) -> dict:
     """Deterministic checks only — semantic coverage is INCOMPLETE. Never a score.
 
@@ -159,7 +170,7 @@ async def check_brief(brief: str, directory_context: bool = True) -> dict:
     return await _post("/v1/byo/check", {"brief": brief, "directory_context": directory_context})
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Score from your verdicts", annotations=READ_ONLY)
 async def aggregate_verdicts(
     brief: str,
     verdicts: list[dict[str, Any]] | str,
@@ -191,7 +202,7 @@ async def aggregate_verdicts(
     )
 
 
-@server.tool(annotations=READ_ONLY)
+@server.tool(title="Bar status", annotations=READ_ONLY)
 async def bar_status() -> dict:
     """Which ruleset version is live, and what this free surface can do.
 
@@ -204,13 +215,13 @@ async def bar_status() -> dict:
 # ---- prompts ---------------------------------------------------------------------
 
 
-@server.prompt()
+@server.prompt(title="Judge a brief")
 async def judge_brief(brief: str = "") -> str:
     """The judge prompt with the brief in it: answer with the JSON array, then aggregate_verdicts."""
     return (await _post("/v1/byo/judge-prompt", {"brief": brief or None}))["prompt"]
 
 
-@server.prompt()
+@server.prompt(title="Improve a brief")
 async def improve_brief(brief: str = "") -> str:
     """A working order for turning a draft into a publishable brief, with your own model."""
     if not brief.strip():
@@ -218,7 +229,7 @@ async def improve_brief(brief: str = "") -> str:
     return (await _post("/v1/byo/improvement-prompt", {"brief": brief}))["prompt"]
 
 
-@server.prompt()
+@server.prompt(title="Brief template")
 async def brief_template() -> str:
     """The brief template built from the live rules, as Markdown to fill in."""
     return (await _get("/v1/byo/template"))["template"]
@@ -227,25 +238,25 @@ async def brief_template() -> str:
 # ---- resources -------------------------------------------------------------------
 
 
-@server.resource("perfect-brief://rules", mime_type="application/json")
+@server.resource("perfect-brief://rules", title="Rules", mime_type="application/json")
 async def rules_resource() -> str:
     """The live ruleset and its arithmetic (same as get_rules)."""
     return json.dumps(await _get("/v1/byo/rules"), ensure_ascii=False)
 
 
-@server.resource("perfect-brief://template", mime_type="text/markdown")
+@server.resource("perfect-brief://template", title="Brief template", mime_type="text/markdown")
 async def template_resource() -> str:
     """The brief template (same as get_brief_template)."""
     return (await _get("/v1/byo/template"))["template"]
 
 
-@server.resource("perfect-brief://judge-prompt", mime_type="text/plain")
+@server.resource("perfect-brief://judge-prompt", title="Judge prompt", mime_type="text/plain")
 async def judge_prompt_resource() -> str:
     """The judge prompt with a {{BRIEF}} placeholder (same as get_judge_prompt without a brief)."""
     return (await _post("/v1/byo/judge-prompt", {"brief": None}))["prompt"]
 
 
-@server.resource("perfect-brief://verdict-schema", mime_type="application/schema+json")
+@server.resource("perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json")
 async def verdict_schema_resource() -> str:
     """The JSON Schema a verdict array must meet."""
     return json.dumps((await _post("/v1/byo/judge-prompt", {"brief": None}))["verdict_schema"])
@@ -279,8 +290,8 @@ async def suggest_fixes(brief: str, rule_ids: list[str] | None = None) -> list[d
 
 
 def register_hosted_tools(target: MCPServer) -> None:
-    target.tool()(score_brief)
-    target.tool()(suggest_fixes)
+    target.tool(title="Score with the service judge", annotations=SERVICE_JUDGE)(score_brief)
+    target.tool(title="Suggest fixes", annotations=SERVICE_JUDGE)(suggest_fixes)
 
 
 if HOSTED_TOOLS:
