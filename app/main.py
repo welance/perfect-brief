@@ -158,6 +158,21 @@ app.add_middleware(
 )
 
 
+# The MCP apps are mounted at /mcp and /mcp-hosted, and a mount only matches
+# below its prefix: the documented URL without the trailing slash fell through
+# to the static site (405 on POST). Serve both spellings, no redirect: MCP
+# clients do not follow redirects on POST.
+_MCP_ROOTS = ("/mcp", "/mcp-hosted")
+
+
+@app.middleware("http")
+async def mcp_bare_path(request: Request, call_next):
+    if request.scope["path"] in _MCP_ROOTS:
+        request.scope["path"] += "/"
+        request.scope["raw_path"] = request.scope["path"].encode()
+    return await call_next(request)
+
+
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     response = await call_next(request)
