@@ -83,11 +83,20 @@ pins a case the bar was getting away with.
 
 ## MCP
 
-- Hosted connector (for chats in the browser): https://briefs.welance.com/mcp —
-  Streamable HTTP, stateless, four tools: get_rules, score_brief,
-  suggest_fixes, bar_status, plus the improve_brief prompt.
-- Local server (on your machine, may bring your own key):
-  uvx --from "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server" brief-bar-mcp
+- Free remote server, bring your own model: https://briefs.welance.com/mcp —
+  Streamable HTTP, stateless JSON. No welance model runs. Tools: get_rules,
+  get_brief_template, get_judge_prompt, get_improvement_prompt, check_brief
+  (deterministic only; semantic coverage incomplete), aggregate_verdicts,
+  bar_status; prompts judge_brief, improve_brief, brief_template. Your model
+  judges with the service judge's prompt; aggregate_verdicts validates the
+  verdicts and aggregates them with the same engine as /v1/score. Results are
+  client-judged and advisory (evaluation_source: client): they never authorise
+  publication on the welance/directory, which scores briefs itself.
+- Same contract over HTTP: /v1/byo/rules, /v1/byo/template,
+  /v1/byo/judge-prompt, /v1/byo/improvement-prompt, /v1/byo/check,
+  /v1/byo/aggregate, /v1/byo/status.
+- Local server (stdio, same tools):
+  uvx --from "git+https://github.com/welance/perfect-brief#subdirectory=mcp-server" perfect-brief-mcp
 
 ## Related welance tools
 
