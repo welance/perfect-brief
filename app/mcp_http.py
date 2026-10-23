@@ -62,7 +62,7 @@ SERVICE_JUDGE = ToolAnnotations(
 
 server = MCPServer(
     "perfect-brief",
-    title="Perfect Brief",
+    title="brief bar",
     website_url="https://briefs.welance.com",
     instructions=INSTRUCTIONS,
 )
@@ -252,7 +252,9 @@ def judge_prompt_resource() -> str:
     return byo.judge_prompt_payload(None)["prompt"]
 
 
-@server.resource("perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json")
+@server.resource(
+    "perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json"
+)
 def verdict_schema_resource() -> str:
     """The JSON Schema a verdict array must meet."""
     return json.dumps(byo.judge_prompt_payload(None)["verdict_schema"])
@@ -265,7 +267,7 @@ def verdict_schema_resource() -> str:
 
 hosted = MCPServer(
     "brief-bar-hosted",
-    title="Perfect Brief (service judge)",
+    title="brief bar (service judge)",
     website_url="https://briefs.welance.com",
     instructions=(
         "A bar for digital product briefs that the assistant does not control. "

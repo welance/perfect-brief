@@ -326,11 +326,13 @@ def test_the_listing_metadata_travels_over_the_wire(client):
     tools = rpc(client, "tools/list")["result"]["tools"]
     for t in tools:
         assert t["title"], t["name"]
-        assert {"readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint"} <= t["annotations"].keys()
+        assert {"readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint"} <= t[
+            "annotations"
+        ].keys()
     assert all(p.get("title") for p in rpc(client, "prompts/list")["result"]["prompts"])
     assert all(r.get("title") for r in rpc(client, "resources/list")["result"]["resources"])
     info = client.post("/mcp/", json=init("2025-06-18"), headers=headers(None)).json()["result"]
-    assert info["serverInfo"]["title"] == "Perfect Brief"
+    assert info["serverInfo"]["title"] == "brief bar"
     assert info["serverInfo"]["websiteUrl"] == "https://briefs.welance.com"
     assert "https://briefs.welance.com/privacy.html" in info["instructions"]
     assert "https://briefs.welance.com/terms.html" in info["instructions"]

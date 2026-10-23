@@ -56,7 +56,7 @@ SERVICE_JUDGE = ToolAnnotations(
 
 server = MCPServer(
     "perfect-brief",
-    title="Perfect Brief",
+    title="brief bar",
     website_url="https://briefs.welance.com",
     instructions=INSTRUCTIONS,
 )
@@ -256,7 +256,9 @@ async def judge_prompt_resource() -> str:
     return (await _post("/v1/byo/judge-prompt", {"brief": None}))["prompt"]
 
 
-@server.resource("perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json")
+@server.resource(
+    "perfect-brief://verdict-schema", title="Verdict schema", mime_type="application/schema+json"
+)
 async def verdict_schema_resource() -> str:
     """The JSON Schema a verdict array must meet."""
     return json.dumps((await _post("/v1/byo/judge-prompt", {"brief": None}))["verdict_schema"])
