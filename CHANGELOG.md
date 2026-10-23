@@ -21,6 +21,8 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 - The site serves clean URLs: `/rules` is `rules.html`, as on GitHub Pages.
 
 ### Fixed
+
+- /integrate.html#mcp: the translated MCP install step renders its `<code>` and the uv link instead of showing literal tags (from PR #23).
 - MCP listings: every tool on `/mcp`, `/mcp-hosted` and the stdio server now
   has a human `title` and explicit `readOnlyHint`, `destructiveHint`,
   `idempotentHint` and `openWorldHint` (Claude's connectors directory rejects
