@@ -20,6 +20,7 @@ import yaml
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "mcp-server"))
 
 from app import llm_client, mcp_http, scorer  # noqa: E402
+from app.version import SERVICE_VERSION  # noqa: E402
 from brief_bar import load_bundled, loader  # noqa: E402
 
 BYO_TOOLS = {
@@ -334,5 +335,6 @@ def test_the_listing_metadata_travels_over_the_wire(client):
     info = client.post("/mcp/", json=init("2025-06-18"), headers=headers(None)).json()["result"]
     assert info["serverInfo"]["title"] == "brief bar"
     assert info["serverInfo"]["websiteUrl"] == "https://briefs.welance.com"
+    assert info["serverInfo"]["version"] == SERVICE_VERSION
     assert "https://briefs.welance.com/privacy.html" in info["instructions"]
     assert "https://briefs.welance.com/terms.html" in info["instructions"]
