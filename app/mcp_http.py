@@ -41,6 +41,7 @@ from starlette.requests import Request
 
 from app import byo
 from app.models import ScoreRequest, SuggestAllRequest
+from app.version import SERVICE_VERSION
 
 INSTRUCTIONS = (
     "Perfect Brief: an open bar for digital product briefs, free, with your own model. "
@@ -63,6 +64,8 @@ SERVICE_JUDGE = ToolAnnotations(
 server = MCPServer(
     "perfect-brief",
     title="brief bar",
+    # Directories and the MCP Registry read serverInfo.version; unset it ships "".
+    version=SERVICE_VERSION,
     website_url="https://briefs.welance.com",
     instructions=INSTRUCTIONS,
 )

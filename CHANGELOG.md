@@ -8,6 +8,14 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+### Fixed
+- The MCP server reports its release in `serverInfo.version` (it was `""`),
+  which the MCP Registry and the connector directories read.
+
+### Changed
+- `registry/server.json` is no longer a draft: `com.welance` is proven over
+  HTTP at `https://welance.com/.well-known/mcp-registry-auth`.
+
 ## [1.14.1] - 2026-10-23
 
 ### Added

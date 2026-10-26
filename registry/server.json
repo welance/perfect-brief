@@ -3,7 +3,7 @@
   "name": "com.welance/perfect-brief",
   "title": "Perfect Brief",
   "description": "Free bar for digital product briefs: your model judges, open rules and code score it.",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "websiteUrl": "https://briefs.welance.com/integrate.html",
   "repository": {
     "url": "https://github.com/welance/perfect-brief",
@@ -17,8 +17,6 @@
   ],
   "_meta": {
     "io.modelcontextprotocol.registry/publisher-provided": {
-      "status": "draft",
-      "note": "Not published. Publish only after the com.welance namespace is verified (DNS TXT on welance.com) and /mcp serves the BYO tools in production.",
       "byo_model": true,
       "provider_calls": 0
     }
