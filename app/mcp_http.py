@@ -9,7 +9,7 @@ are advisory: they can never authorise publication on the welance/directory,
 which keeps scoring every brief itself on `/v1/score`.
 
 Design:
-- Seven tools, three prompts, four resources, all thin doors onto `app.byo`.
+- Seven tools, four prompts, four resources, all thin doors onto `app.byo`.
   The stdio adapter in `mcp-server/` exposes the same names and words; a test
   holds the two in parity.
 - Zero provider calls: this module never imports the LLM client, takes no
@@ -60,6 +60,33 @@ SERVICE_JUDGE = ToolAnnotations(
     read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=True
 )
 
+
+def _hints(base: ToolAnnotations, title: str) -> ToolAnnotations:
+    """The base hints with the tool's title, which directory listings read from annotations."""
+    return base.model_copy(update={"title": title})
+
+
+# The usage guidance for the free tools lives in a prompt, not in tool descriptions:
+# directory policy keeps tool descriptions purely descriptive.
+WORKFLOW = """Score this brief against the brief bar with your own model.
+
+1. Call get_rules to read the live catalogue and its arithmetic.
+2. Optionally call check_brief for the deterministic pre-flight; it is never a score.
+3. Call get_judge_prompt with the brief. Answer that prompt with your own model,
+   at temperature 0 if you can, and keep only the JSON array it asks for.
+4. Send that array, the same brief and the returned ruleset_version to
+   aggregate_verdicts. Any validation error means no score: fix and resend.
+5. Fix gate.missing first, then the failing rules in weight order
+   (get_improvement_prompt helps with the writing).
+6. Report only the score aggregate_verdicts returned, and say that it is
+   client-judged and advisory: only the welance/directory's own scoring can
+   publish a brief.
+
+The brief:
+
+{brief}
+"""
+
 server = MCPServer(
     "perfect-brief",
     title="brief bar",
@@ -105,9 +132,9 @@ def _verdict_list(verdicts: list[dict[str, Any]] | str) -> Any:
 # ---- tools ---------------------------------------------------------------------
 
 
-@server.tool(title="Read the brief rules", annotations=READ_ONLY)
+@server.tool(title="Read the brief rules", annotations=_hints(READ_ONLY, "Read the brief rules"))
 async def get_rules(ctx: Context) -> dict:
-    """Read the bar before judging anything. Free; no model runs.
+    """The live brief rules catalogue and its arithmetic. Free; no model runs.
 
     Returns the live catalogue with its version: every rule's id, title,
     criteria (what the judge reads), weight, gate role, policy context and how
@@ -118,63 +145,66 @@ async def get_rules(ctx: Context) -> dict:
     return await _free(ctx, byo.rules_payload)
 
 
-@server.tool(title="Get a brief template", annotations=READ_ONLY)
+@server.tool(title="Get a brief template", annotations=_hints(READ_ONLY, "Get a brief template"))
 async def get_brief_template(ctx: Context) -> dict:
     """A brief template built from the live rules, with the inputs each section needs.
 
-    Use it to start a brief from nothing, or to see which section a gap belongs
-    in. Markdown, one section per rule, gate rules marked; write in any language.
+    Markdown, one section per rule, with the gate rules marked. It serves as a
+    starting point for a new brief and shows which section each gap belongs
+    in. Briefs may be written in any language.
     """
     return await _free(ctx, byo.template_payload)
 
 
-@server.tool(title="Get the judge prompt", annotations=READ_ONLY)
+@server.tool(title="Get the judge prompt", annotations=_hints(READ_ONLY, "Get the judge prompt"))
 async def get_judge_prompt(ctx: Context, brief: str = "") -> dict:
-    """The judge prompt and verdict JSON Schema, for YOUR model to answer. Free.
+    """The judge prompt and verdict JSON Schema, for a client-side model. Free.
 
-    This is the service judge's own prompt, word for word, so your model grades
-    against the same bar. Pass the brief to get it embedded, or leave it empty
-    for a template with a {{BRIEF}} placeholder. Answer the prompt with your
-    own model (temperature 0 if you can), return only the JSON array it asks
-    for, and send that array with the brief and the returned ruleset_version to
-    aggregate_verdicts. welance runs no model for this.
+    The prompt is the service judge's own, word for word, so a client-side
+    judgement grades against the same bar. With `brief` set, the brief is
+    embedded in the prompt; with `brief` empty, the prompt carries a {{BRIEF}}
+    placeholder. The response also carries the ruleset_version the prompt was
+    built at and the rule ids the verdict array covers. No model runs on
+    welance's side.
     """
     return await _free(ctx, lambda: byo.judge_prompt_payload(brief or None))
 
 
-@server.tool(title="Get an improvement prompt", annotations=READ_ONLY)
+@server.tool(title="Get an improvement prompt", annotations=_hints(READ_ONLY, "Get an improvement prompt"))
 async def get_improvement_prompt(
     ctx: Context,
     brief: str,
     verdicts: list[dict[str, Any]] | str | None = None,
     directory_context: bool = True,
 ) -> dict:
-    """A working order for improving a brief with your own model, gate first.
+    """A prompt for improving a brief with a client-side model, gate rules first.
 
-    Pass the verdicts you already have (the JSON array from your model) to
-    target the failing rules in weight order; without them the prompt walks
-    every rule. The prompt keeps the author's voice and forbids invented
-    scores and facts. Nothing is generated here: your model does the writing.
+    `verdicts` is an optional JSON array of verdicts already produced for the
+    brief: with it, the prompt targets the failing rules in weight order;
+    without it, the prompt covers every rule. The prompt keeps the author's
+    voice and forbids invented scores and facts. Only prompt text is returned;
+    nothing is generated on welance's side. `directory_context` false drops the
+    directory-only policy rules.
     """
     parsed = _verdict_list(verdicts) if verdicts else None
     return await _free(ctx, lambda: byo.improvement_prompt_payload(brief, parsed, directory_context))
 
 
-@server.tool(title="Run deterministic checks", annotations=READ_ONLY)
+@server.tool(title="Run deterministic checks", annotations=_hints(READ_ONLY, "Run deterministic checks"))
 async def check_brief(ctx: Context, brief: str, directory_context: bool = True) -> dict:
-    """Deterministic checks only — semantic coverage is INCOMPLETE. Never a score.
+    """Deterministic pattern checks on a brief. Not a score; semantic coverage is incomplete.
 
-    Finds what a pattern can find for certain: emails, URLs and phone numbers
-    (which block anonymisation), a stated budget and timeline, personal-data
-    cues without a compliance cue, unfilled placeholders, the title line and
-    labelled sections. It does not judge meaning: company or person names, a
-    vague problem or an unmeasurable goal pass straight through. Use it as a
-    quick pre-flight, then judge with get_judge_prompt and aggregate_verdicts.
+    Detects what a pattern can find with certainty: emails, URLs and phone
+    numbers (which block anonymisation), a stated budget and timeline,
+    personal-data cues without a compliance cue, unfilled placeholders, the
+    title line and labelled sections. It does not judge meaning: company or
+    person names, a vague problem or an unmeasurable goal are not detected.
+    `directory_context` false drops the directory-only policy rules.
     """
     return await _free(ctx, lambda: byo.check_payload(brief, directory_context))
 
 
-@server.tool(title="Score from your verdicts", annotations=READ_ONLY)
+@server.tool(title="Score from your verdicts", annotations=_hints(READ_ONLY, "Score from your verdicts"))
 async def aggregate_verdicts(
     ctx: Context,
     brief: str,
@@ -182,29 +212,30 @@ async def aggregate_verdicts(
     ruleset_version: str,
     directory_context: bool = True,
 ) -> dict:
-    """Turn your model's verdicts into the bar's score, gate and decision. Advisory.
+    """The bar's score, gate and decision computed from a client's verdicts. Advisory.
 
     Validates the verdicts against the live ruleset (every rule exactly once,
-    valid status and confidence, the version you judged at) and against the
-    brief (each quote must be copied verbatim), then aggregates them with the
-    same engine that scores on the service: same verdicts, same number.
-    Any error means no score — fix and resend.
+    valid status and confidence, the ruleset_version they were judged at) and
+    against the brief (each quote must appear in it verbatim), then aggregates
+    them with the same engine that scores on the service: the same verdicts
+    give the same number. A validation error returns an error and no score.
 
-    The result is tagged evaluation_source "client" and authoritative false:
-    your model wrote the verdicts, so it is advice, never a welance score, and
-    it cannot authorise publication on the welance/directory (the directory
-    scores every brief itself). Say so when you report it. Fix gate.missing
-    first. directory_context false drops the directory-only policy rules.
+    The result is labelled evaluation_source "client" and authoritative false:
+    the verdicts come from a client-side model, so the score is advisory, is
+    not a welance score, and cannot authorise publication on the
+    welance/directory, which scores every brief itself. gate.missing lists the
+    gate rules not yet met. `directory_context` false drops the directory-only
+    policy rules.
     """
     parsed = _verdict_list(verdicts)
     return await _free(ctx, lambda: byo.aggregate_payload(brief, parsed, ruleset_version, directory_context))
 
 
-@server.tool(title="Bar status", annotations=READ_ONLY)
+@server.tool(title="Bar status", annotations=_hints(READ_ONLY, "Bar status"))
 async def bar_status(ctx: Context) -> dict:
-    """Which ruleset version is live, and what this free surface can do.
+    """The live ruleset version and the capabilities of this free surface.
 
-    Confirms the mode (bring your own model, zero provider calls, no fallback
+    Reports the mode (bring your own model, zero provider calls, no fallback
     to welance's model) and the tools available.
     """
     return await _free(ctx, byo.status_payload)
@@ -223,6 +254,12 @@ def judge_brief(brief: str = "") -> str:
 def improve_brief(brief: str = "") -> str:
     """A working order for turning a draft into a publishable brief, with your own model."""
     return byo.improvement_prompt_text(brief)
+
+
+@server.prompt(title="Score a brief with your own model")
+def score_with_your_model(brief: str = "") -> str:
+    """The workflow: rules, judge prompt, your model's verdicts, aggregate_verdicts, gate first, advisory."""
+    return WORKFLOW.format(brief=brief.strip() or "(paste the brief here)")
 
 
 @server.prompt(title="Brief template")
@@ -301,9 +338,11 @@ async def _guarded(ctx: Context, call: Callable[[Request], Awaitable[Any]]) -> A
     return result.model_dump() if hasattr(result, "model_dump") else result
 
 
-@hosted.tool(name="get_rules", title="Read the brief rules", annotations=READ_ONLY)
+@hosted.tool(
+    name="get_rules", title="Read the brief rules", annotations=_hints(READ_ONLY, "Read the brief rules")
+)
 async def hosted_get_rules(ctx: Context) -> dict:
-    """Read the bar before judging anything.
+    """The live brief rules.
 
     Returns the whole ruleset: every rule's id, human title, the `criteria` the
     judge actually reads, its weight (all weights sum to 100), whether it is
@@ -314,19 +353,21 @@ async def hosted_get_rules(ctx: Context) -> dict:
     return await _guarded(ctx, lambda _r: _rules())
 
 
-@hosted.tool(title="Score with the service judge", annotations=SERVICE_JUDGE)
+@hosted.tool(
+    title="Score with the service judge", annotations=_hints(SERVICE_JUDGE, "Score with the service judge")
+)
 async def score_brief(
     ctx: Context,
     brief: str,
     directory_context: bool = True,
     judge: str | None = None,
 ) -> dict:
-    """Score a brief with the service judge (welance's model, rate-limited per address).
+    """Scores a brief with the service judge (welance's model, rate-limited per address).
 
     Returns score, band, gate {passed, missing}, decision, one verdict per rule
-    with a verbatim quote, and the ruleset_version. Fix `gate.missing` first.
-    directory_context False drops the directory-only policy rules. Never report
-    a score you did not get from this tool.
+    with a verbatim quote, and the ruleset_version. `gate.missing` lists the
+    gate rules not yet met. `directory_context` false drops the directory-only
+    policy rules.
     """
     assert _score is not None
     req = ScoreRequest(
@@ -339,7 +380,7 @@ async def score_brief(
     return await _guarded(ctx, lambda r: _score(req, r, None))
 
 
-@hosted.tool(title="Suggest fixes", annotations=SERVICE_JUDGE)
+@hosted.tool(title="Suggest fixes", annotations=_hints(SERVICE_JUDGE, "Suggest fixes"))
 async def suggest_fixes(ctx: Context, brief: str, rule_ids: list[str] | None = None) -> list[dict]:
     """Ready-to-paste insertions for the rules a brief fails, written by the service model
     and reviewed by a second one. Drafts for a human to accept, edit or reject."""
@@ -351,7 +392,7 @@ async def suggest_fixes(ctx: Context, brief: str, rule_ids: list[str] | None = N
     return [s.model_dump() if hasattr(s, "model_dump") else s for s in out]
 
 
-@hosted.tool(name="bar_status", title="Bar status", annotations=READ_ONLY)
+@hosted.tool(name="bar_status", title="Bar status", annotations=_hints(READ_ONLY, "Bar status"))
 async def hosted_bar_status(ctx: Context) -> dict:
     """Which ruleset version is live, and whether a real judge is configured."""
     assert _health is not None

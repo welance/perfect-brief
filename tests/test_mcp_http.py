@@ -148,7 +148,7 @@ def test_the_seven_tools_are_listed_and_read_only(client):
 
 def test_prompts_and_resources_mirror_the_tools(client):
     prompts = {p["name"] for p in rpc(client, "prompts/list")["result"]["prompts"]}
-    assert prompts == {"judge_brief", "improve_brief", "brief_template"}
+    assert prompts == {"judge_brief", "improve_brief", "brief_template", "score_with_your_model"}
     uris = {r["uri"] for r in rpc(client, "resources/list")["result"]["resources"]}
     assert uris == {
         "perfect-brief://rules",
@@ -211,7 +211,7 @@ def test_the_connector_makes_no_provider_call(client, monkeypatch):
         ("bar_status", {}),
     ]:
         call(client, name, **args)
-    for p in ("judge_brief", "improve_brief", "brief_template"):
+    for p in ("judge_brief", "improve_brief", "brief_template", "score_with_your_model"):
         rpc(client, "prompts/get", {"name": p, "arguments": {}})
     assert calls == []
 
@@ -336,3 +336,38 @@ def test_the_listing_metadata_travels_over_the_wire(client):
     assert info["serverInfo"]["websiteUrl"] == "https://briefs.welance.com"
     assert "https://briefs.welance.com/privacy.html" in info["instructions"]
     assert "https://briefs.welance.com/terms.html" in info["instructions"]
+
+
+# --- directory policy: tool descriptions describe, they do not direct -----------------------
+
+
+def test_no_tool_description_names_another_tool_or_directs_the_model():
+    """Claude's directory: descriptions carry no instructions about model behaviour or other
+    tools. The workflow lives in the score_with_your_model prompt instead."""
+    import re
+
+    sets = _all_tool_sets()
+    names = {t.name for tools in sets.values() for t in tools}
+    directives = (
+        "say so",
+        "never report",
+        "never state",
+        "fix gate",
+        "use it",
+        "answer the prompt",
+        "send that",
+    )
+    for where, tools in sets.items():
+        for t in tools:
+            text = t.description or ""
+            for other in names - {t.name}:
+                assert not re.search(rf"\b{other}\b", text), (where, t.name, other)
+            assert not any(d in text.lower() for d in directives), (where, t.name)
+            assert t.annotations.title == t.title, (where, t.name)
+
+
+def test_the_workflow_prompt_carries_the_guidance(client):
+    got = rpc(client, "prompts/get", {"name": "score_with_your_model", "arguments": {"brief": "MY BRIEF"}})
+    text = got["result"]["messages"][0]["content"]["text"]
+    for needle in ("get_judge_prompt", "aggregate_verdicts", "gate.missing", "advisory", "MY BRIEF"):
+        assert needle in text, needle
