@@ -8,6 +8,23 @@ version below — a rule change bumps the ruleset, a service change bumps this.
 
 ## [Unreleased]
 
+## [1.14.2] - 2026-10-27
+
+### Fixed
+- MCP tool descriptions are purely descriptive, as Claude's connectors
+  directory requires: no directions to the model and no references to other
+  tools. The facts stay (advisory, client-judged, `authoritative: false`,
+  verbatim-quote validation, the live catalogue sets the rule count). Applies
+  to `/mcp`, `/mcp-hosted` and the stdio server, which stay in parity.
+- Every tool's annotations carry its `title` too (`annotations.title`), not
+  only the tool-level title.
+
+### Added
+- MCP prompt `score_with_your_model` (title "Score a brief with your own
+  model"): the usage workflow that used to live in tool descriptions — read
+  the rules, judge with the judge prompt, aggregate the verdicts, fix the gate
+  first, report the score as client-judged and advisory.
+
 ## [1.14.1] - 2026-10-23
 
 ### Added
