@@ -57,6 +57,7 @@ def test_the_free_tools_prompts_and_resources_exist():
         "judge_brief",
         "improve_brief",
         "brief_template",
+        "score_with_your_model",
     }
     assert len(asyncio.run(server.server.list_resources())) == 4
 

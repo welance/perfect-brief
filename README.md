@@ -175,7 +175,8 @@ verdicts and does the arithmetic with the same engine as `/v1/score`.
 | `aggregate_verdicts` | validates your model's verdicts (every rule once, verbatim quotes, live version) and aggregates them |
 | `bar_status` | live ruleset version and capabilities |
 
-Also as prompts (`judge_brief`, `improve_brief`, `brief_template`) and resources
+Also as prompts (`score_with_your_model` — the whole workflow, gate first —
+`judge_brief`, `improve_brief`, `brief_template`) and resources
 (`perfect-brief://rules`, `…/template`, `…/judge-prompt`, `…/verdict-schema`).
 The same contract is plain HTTP at `/v1/byo/*` (see `/docs`).
 
